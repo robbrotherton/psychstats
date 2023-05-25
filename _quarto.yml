@@ -1,0 +1,32 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: Psych Stats
+  search: false
+  navbar:
+    title: PSYCH<span id="navbar-line">-</span>STATS
+    background: light
+    right:
+      - about.qmd
+      - icon: twitter
+        href: https://twitter.com/rob_brotherton
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/robbrotherton/psychstats
+          - text: Report a Bug
+            url:  https://github.com/robbrotherton/psychstats/issues/new
+
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+execute: 
+  freeze: true
+  echo: false
+

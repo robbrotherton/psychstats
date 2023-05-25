@@ -1,0 +1,944 @@
+---
+title: "(Un)Biased estimates"
+format: 
+  html:
+    page-layout: full
+toc: false
+execute: 
+  echo: false
+---
+
+
+:::: {#controls}
+::: {#controls-container}
+:::
+
+::: {#select-estimate}
+Show: 
+[$M$]{.select-mean .selector .unselected}
+[$SD_{n}$]{.select-population .selector}
+[$SD_{n - 1}$]{.select-sample .selector}
+:::
+::::
+
+::: {.g-row}
+
+::: {#population-container}
+:::
+
+::: {#timeline-container}
+:::
+
+:::
+
+
+
+```{ojs}
+jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
+```
+
+```{r}
+data <- tibble::tibble(value = seq(-4, 4, length.out = 201),
+                       density = dnorm(value)) |> 
+  purrr::transpose()
+
+ojs_define(data)
+
+set.seed(4)
+population <- rnorm(550)
+population <- scale(population)
+# sd(population) # should be 1
+ojs_define(population)
+```
+
+
+```{ojs}
+w = 800
+h = 400
+
+maxWidth = 900;
+maxHeight = 550;
+
+timeseriesVertical = false;
+
+panelSpacing = 5;
+
+populationPanelWidth = maxWidth * 0.6;
+populationPanelHeight = maxHeight;
+
+populationSubPanelProportion = 0.4;
+sampleSubPanelProportion = 0.05;
+
+estimatesSubPanelProportion = 0.55;
+
+estimatesPanelWidth = maxWidth - populationPanelWidth;
+estimatesPanelHeight = populationPanelHeight;
+
+timeSeriesPanelWidth = maxWidth - populationPanelWidth;
+
+
+
+radius = 4; //1.4
+sampleSize = 5;
+
+    
+xScalePopulation = d3.scaleLinear()
+    .domain([-4, 4])
+    .range([0 + radius, (populationPanelWidth) - radius])
+yScalePopulation = d3.scaleLinear()
+    .domain([0, 300])
+    .range([populationPanelHeight * populationSubPanelProportion, 0])
+
+xScaleEstimates = d3.scaleLinear()
+    .domain([-1.25, 1.25])
+    .range([0, estimatesPanelWidth])
+    
+yScaleEstimates = d3.scaleLinear()
+    .domain([20, 0])
+    .range([maxHeight - 30, maxHeight * (1 - estimatesSubPanelProportion) + 30])
+
+xAxisEstimatesValues = [-2, -1, 0, 1, 2];
+xAxisEstimates = d3.axisBottom(xScalePopulation)
+  .tickValues(xAxisEstimatesValues)
+  .tickFormat(d => d)
+  .tickSize(-maxHeight * (1 - estimatesSubPanelProportion) - 10)
+  
+```
+
+
+
+
+```{ojs}
+update_svg = {
+
+  var sample = [];
+  var sampleData = [];
+  var sample_estimates = [];
+  var running_averages = [{param: "population", value: [0], id: [0]},
+                          {param: "sample",     value: [0], id: [0]},
+                          {param: "mean",       value: [0], id: [0]}];
+  
+  var nSamplesDrawn = 0;
+  
+  var legendSelected = ["sample", "population"]
+  
+  var timeX, timeY, biasLine, timeXAxis, timeYAxis;
+  var timeSvg, 
+  timeScaleBias, 
+  timeScaleId, 
+  timeBiasAxis, 
+  timeIdAxis, 
+  timeseriesDataLayer,
+  timeseriesBiasAxisLayer,
+  timeseriesIdAxisLayer;
+
+  let isLargeScreen;
+
+  function newSample() {
+    
+    nSamplesDrawn++
+    
+    // pick random observations from the population by their index
+    for (var i = 0; i < sampleSize; i++) {
+      let randomIndex = Math.floor(Math.random() * popData.length);
+      sample[i] = xScalePopulation.invert(popData[randomIndex].cx);
+      sampleData[i] = popData[randomIndex];
+    }
+    
+    var estimates = getSampleEstimates(sample)
+    estimates.map(d => d.id = nSamplesDrawn);
+    sample_estimates.push(estimates)
+    
+    updateRunningAverages(estimates);
+    updateBiasChart();
+    updateSampleCircles();
+    animateEstimates(sampleData, estimates);
+    updatePath();
+    updateVisibility();
+  }
+  
+  function updateBiasChart() {
+      yScaleEstimates.domain([nSamplesDrawn-20, nSamplesDrawn])
+      
+      biasDots.selectAll("path").remove()
+      biasDots.selectAll("path")
+          .data(sample_estimates.flat())
+          .enter()
+          .append("path")
+            .attr("id", d => d.param + "-estimate")
+            .attr("d", d3.symbol().type(d3.symbolSquare).size(radius * radius * 2))
+            .attr("transform", d => `translate(${xScalePopulation(d.value)}, ${yScaleEstimates(d.id + 1)}) rotate(45)`)
+            .attr("opacity", d => (d.id === nSamplesDrawn ? 0 : 1))
+            .transition()
+            .attr("transform", d => `translate(${xScalePopulation(d.value)}, ${yScaleEstimates(d.id)}) rotate(45)`)
+            
+  }
+  
+
+  
+  function updateSampleCircles() {
+  
+  let durationMultiplier = 5;
+  if (playing) durationMultiplier = 1;
+  
+    sampleCircles.selectAll('circle').remove()
+    sampleCircles.selectAll('circle')
+      .data(sampleData)
+      .enter().append("circle")
+      .attr("class", "sample")
+      .attr("r", radius)
+      .attr("cx", d => d.cx)
+      .attr("cy", d => yScalePopulation(d.cy))
+      .attr("fill", d => d.fill)
+      .transition()
+      .duration(d => d.cy * durationMultiplier)
+      .ease(d3.easeBounceOut)
+      .attr("cy", populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius)
+  }
+  
+  
+  
+  function animateEstimates(sampleData, estimates) {
+  
+    sampleEstimatesTemp.selectAll("path").remove()
+    
+    var wait = Math.max(...sampleData.map(z => z.cy));
+    
+    for (let i = 0; i < estimates.length; i++) {
+
+    var p = estimates[i].param;
+    var endPosition = estimates[i].value;
+    var dur = (playing ? 0 : 1000);
+    var convergeWait = (playing ? 0 : wait * 5);
+    var moveDownWait = (playing ? 250 : 0);
+    
+    sampleData.forEach((s) => {
+    
+    // first, place estimate symbols where each sample dot lands
+      sampleEstimatesTemp
+      .append("path")
+      .attr("id", p + "-estimate")
+      .attr("d", d3.symbol().type(d3.symbolSquare).size(radius * radius * 2))
+        .attr("transform", d => `translate(${s.cx}, ${populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius}) rotate(45)`)
+        .attr("opacity", 0)
+        
+    // then move them all to the estimate
+        .transition().duration(dur * 0.67).delay(convergeWait)
+        .attr("opacity", 1)
+        .attr("transform", d => `translate(${xScalePopulation(endPosition)}, ${populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius}) rotate(45)`)
+        
+    // then move them down to the estimates tracker
+    .transition().duration((playing ? 250 : (dur * 0.33))).delay(0)
+      .ease(d3.easeCubicOut)
+        .attr("opacity", 1)
+        .attr("transform", `translate(${xScalePopulation(endPosition)}, ${yScaleEstimates(nSamplesDrawn)}) rotate(45)`)
+    })
+
+    }
+  }
+  
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+  var playing = false;
+  function playButtonClicked() {
+    
+    playing = !playing; 
+  
+  play_button.text(function(){
+    if(playing) {
+      return "◼"
+  } else {
+    return "▶"
+  }
+  })
+  
+  if (playing) {
+    continuouslyDrawSamples();
+  }
+  }
+  
+  function continuouslyDrawSamples() {
+    if (playing) {
+      newSample();
+      sleep(200).then(continuouslyDrawSamples);
+    }
+  }
+  
+    
+  var popData = [];
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+  for (let i = 0; i < population.length; ++i) {
+    const cx = xScalePopulation(population[i]);
+    const cy = 10 + (dodge(cx) - radius - 1);
+    <!-- const cy = yScalePopulation(dodge(cx)); -->
+    const fill = color(i % 10);
+    popData.push({cx, cy, fill})
+  }
+  
+  
+  
+  const populationLabels = [{label: "Population", top: 0},
+                            {label: "Sample",     top: (panelSpacing /  maxHeight + populationSubPanelProportion) * 100},
+                            {label: "Under/over-</br>estimation of</br>parameter",     top: (panelSpacing /  maxHeight + populationSubPanelProportion + sampleSubPanelProportion) * 100}]
+  
+  const populationContainer = d3.select("#population-container")
+    .style("position", "relative")
+    <!-- .style("height", maxHeight) -->
+    
+    // panel labels
+  populationContainer.selectAll("text").data(populationLabels).enter()
+    .append("text")
+    .style("position", "absolute")
+    .html(d => d.label)
+    .style("top", d => d.top + "%")
+    .style("line-height", "1em")
+
+  const populationAndSampleSvg = d3.select("#population-container")
+    .append("svg").attr("id", "populationAndSample-svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + (populationPanelWidth) + " " + populationPanelHeight)
+    
+    // panel backgrounds
+  populationAndSampleSvg.append("rect")
+    .attr("width", populationPanelWidth)
+    .attr("height", populationPanelHeight * populationSubPanelProportion)
+    .attr("fill", "var(--population-panel-background)")
+    .attr("rx", 5)
+  populationAndSampleSvg.append("rect")
+    .attr("width", populationPanelWidth)
+    .attr("y", panelSpacing + populationPanelHeight * populationSubPanelProportion)
+    .attr("height", populationPanelHeight * sampleSubPanelProportion - panelSpacing)
+    .attr("fill", "var(--sample-panel-background)")
+    .attr("rx", 5)
+  populationAndSampleSvg.append("rect")
+    .attr("width", populationPanelWidth)
+    .attr("y", panelSpacing + populationPanelHeight * (1 - estimatesSubPanelProportion))
+    .attr("height", populationPanelHeight * estimatesSubPanelProportion - panelSpacing)
+    .attr("fill", "var(--estimates-panel-background)")
+    .attr("rx", 5)
+    
+
+    
+  const pop = populationAndSampleSvg.append("g")
+  const parameters = populationAndSampleSvg.append("g")
+  const sampleEstimates = populationAndSampleSvg.append("g")
+  const sampleEstimatesTemp = populationAndSampleSvg.append("g")
+  const sampleCircles = populationAndSampleSvg.append("g")
+
+  const biasDots  = sampleEstimates.append("g")
+  
+  pop.selectAll("circle")
+      .data(popData)
+      .enter()
+      .append("circle")
+        .attr("class", "pop")
+        .attr("cx", d => d.cx)
+        .attr("cy", d => yScalePopulation(d.cy))
+        .attr("r", radius)
+        .attr("fill", d => d.fill)
+        
+    // estimates axis
+    
+  const estimatesAxis = sampleEstimates.append("g")
+    .attr("transform", `translate(0, ${yScaleEstimates(21)})`)
+  
+  estimatesAxis.append("rect")
+    .attr("width", populationPanelWidth)
+    .attr("height", populationPanelHeight - yScaleEstimates(21))
+    .attr("fill", "var(--estimates-panel-background)")
+    .attr("rx", 5)
+  estimatesAxis.call(xAxisEstimates)
+  estimatesAxis.select(".domain").remove()
+  
+
+
+  
+  formatAxes(estimatesAxis.selectAll("line"));
+  
+    
+  var legendStatus = [{param: "mean",       hide: true},
+                      {param: "population", hide: false},
+                      {param: "sample",     hide: false}]
+                      
+  
+  function updateLegendStatus(param) {
+    var index;
+    if (param==="mean") {index = 0;}
+    if (param==="population") {index = 1;}
+    if (param==="sample") {index = 2;}
+    legendStatus[index].hide = !legendStatus[index].hide
+
+    var classes = "#" + param + "-estimate"
+    
+    populationAndSampleSvg.selectAll(classes).classed("hide", legendStatus[index].hide)
+    timeSvg.selectAll("#" + param + "-path").classed("hide", legendStatus[index].hide)
+    legend.classed("unselected", d => d.hide)
+  }
+  
+    const legend = d3.selectAll(".selector")
+    legend
+      .data(legendStatus)
+      .classed("unselected", d => d.hide)
+      .on("click", function(event, d){updateLegendStatus(d.param);})
+  
+
+
+  
+  // buttons
+  const controls = d3.select("#controls-container")
+  
+  const reset_button = controls.append("button")
+    // .attr("class", "button invertable")
+    // .attr("type", "button")
+    .text("Reset")
+    .on("click", clearData)
+  
+  const button = controls.append("button")
+    .text("Take one sample")
+    .on("click", newSample)
+    
+  const play_button = controls.append("button")
+    .attr("id", "play-button")
+    // .attr("class", "button invertable")
+    .attr("x", 50)
+    .attr("y", h - 50)
+    .html("►")
+    .on("click", playButtonClicked)
+    
+
+
+// make timeseries chart
+const timeChart = {
+    width: timeSeriesPanelWidth,
+    height: maxHeight,
+    margin: {left: 30, right: 30, top: 50, bottom: 60}
+}
+
+const timeChartHorizontal = {
+    width: populationPanelWidth,
+    height: 300,
+    margin: {left: 30, right: 30, top: 50, bottom: 60}
+}
+
+  const timeseriesContainer = d3.select("#timeline-container");
+  timeseriesContainer.style("position", "relative")
+
+  updateTimeseriesDimensions(window.innerWidth);
+
+  // Re-render the chart whenever the window size changes
+  window.addEventListener("resize", () => updateTimeseriesDimensions(window.innerWidth)); 
+
+
+
+  function updateTimeseriesDimensions(winWidth) {
+
+    const largeScreen = winWidth > 600;
+    if (largeScreen === isLargeScreen) return;
+    // Update the screen state
+    isLargeScreen = largeScreen;
+    
+  var params;
+  var orientation = (winWidth > 600) ? "vertical" : "horizontal;"
+
+  console.log(orientation);
+
+  // first, set up chart dimensions and axes
+  if (winWidth > 600) {
+
+    params = timeChart;
+
+    timeScaleBias = d3.scaleLinear()
+      .domain([-0.5, 0.5])
+      .range([params.margin.left, params.width - params.margin.right])
+    timeScaleId = d3.scaleLinear()
+      .domain([0, 200])
+      .range([params.margin.top, params.height - params.margin.bottom])
+    biasLine = function(x, y){
+        return d3.line()
+        .x(function(d,i) { return timeScaleBias(x[i]); })
+        .y(function(d,i) { return timeScaleId(y[i]); })
+        (Array(x.length));
+    }
+    timeBiasAxis = d3.axisTop(timeScaleBias)
+      .ticks(5)
+      .tickSize(-(params.height - params.margin.top - params.margin.bottom)) // 440
+    timeIdAxis = d3.axisRight(timeScaleId).tickSize(0)
+  } else {
+
+      params = timeChartHorizontal;
+
+      timeScaleBias = d3.scaleLinear()
+        .domain([-0.5, 0.5])
+        .range([params.height - params.margin.bottom, params.margin.top])
+        
+      timeScaleId = d3.scaleLinear()
+        .domain([0, 200])
+        .range([params.margin.left, params.width - params.margin.right])
+      biasLine = function(x, y){
+          return d3.line()
+          .x(function(d,i) { return timeScaleId(y[i]); })
+          .y(function(d,i) { return timeScaleBias(x[i]); })
+          (Array(x.length));
+      }
+    timeIdAxis = d3.axisBottom(timeScaleId)
+      .tickSize(0)
+    timeBiasAxis = d3.axisLeft(timeScaleBias)
+      .ticks(5).tickSize(-params.width - params.margin.left - params.margin.right)
+  }
+
+  // then instantiate the chart svg itself
+  d3.select("#timeline-container").select("svg").remove();
+  d3.select("#timeline-container").selectAll("text").remove();
+  timeSvg = makeTimeseriesChart(params);
+  timeseriesDataLayer = timeSvg.append("g");
+  timeseriesBiasAxisLayer = timeSvg.append("g");
+  timeseriesIdAxisLayer = timeSvg.append("g");
+
+  // then place the axes
+  positionTimeAxes(orientation, params);
+
+  // then draw the current data
+  updatePath();
+}
+
+  
+
+  
+  function makeTimeseriesChart(params) {
+    
+    // text labels
+    timeseriesContainer.append("text")
+    .style("position", "absolute")
+    .style("left", 0)
+    .text("Average under/over-estimation")
+  
+  timeseriesContainer.append("text")
+    .style("position", "absolute")
+    .style("line-height", "1em")
+    .style("bottom", 0)
+    .style("right", 0)
+    .style("text-align", "right")
+    .html("Total<br>samples")
+    
+    const svg = d3.select("#timeline-container")
+    .append("svg").attr("id", "timeline-svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + params.width + " " + params.height)
+    
+    // background panel
+  svg.append("rect")
+    .attr("width", params.width)
+    .attr("height", params.height)
+    .attr("rx", 5)
+    .attr("fill", "var(--timeseries-panel-background)")
+    
+    return svg;
+    
+  }
+  
+  
+  function positionTimeAxes(orientation, params) {
+    if (orientation === "vertical") {
+      timeseriesBiasAxisLayer.attr("transform", `translate(0, ${params.margin.top})`)
+
+      timeseriesBiasAxisLayer.append("rect")
+        .attr("width", params.width)
+        .attr("y", -params.margin.top)
+        .attr("height", params.margin.top)
+        .attr("rx", 5)
+        .attr("fill", "var(--timeseries-panel-background)")
+
+        timeseriesIdAxisLayer.attr("transform", `translate(${params.width - params.margin.right}, 0)`)
+  
+    } else {
+      timeseriesIdAxisLayer.attr("transform", `translate(0, ${params.height - params.margin.bottom})`)
+
+      // todo: this isn't positioned correctly
+      timeseriesBiasAxisLayer.append("rect")
+        .attr("x", -params.margin.left)
+        .attr("width", params.margin.left)
+        .attr("height", params.height)
+        .attr("rx", 5)
+        .attr("fill", "var(--timeseries-panel-background)")
+      
+      timeseriesBiasAxisLayer.attr("transform", `translate(${params.margin.left}, 0)`)
+        
+      
+    }
+    timeseriesIdAxisLayer.call(timeIdAxis)
+    timeseriesBiasAxisLayer.call(timeBiasAxis);
+    timeseriesBiasAxisLayer.select(".domain").remove();
+    timeseriesIdAxisLayer.select(".domain").remove();
+    
+    formatAxes(timeSvg.selectAll("line"));
+    
+    timeSvg.selectAll("line").classed("dark", true)
+  }
+  
+  
+  function updatePath() {
+      timeseriesDataLayer.selectAll("g").remove()
+      
+      if (nSamplesDrawn > 201) {
+        timeScaleId.domain([nSamplesDrawn - 200, nSamplesDrawn]);
+        // timeIdAxis = d3.axisRight(timeScaleId).tickSize(0);
+        timeseriesIdAxisLayer.call(timeIdAxis);
+        timeseriesIdAxisLayer.select(".domain").remove();
+      }
+      
+      timeseriesDataLayer.selectAll("g")
+        .data(running_averages)
+        .enter()
+        .append("g")
+        .attr("class", "bias-paths")
+        .append("path")
+          .attr("d", d => biasLine(d.value.slice(1), d.id.slice(1)))
+          .attr("id", d => d.param + "-path")
+
+  }
+  
+
+
+function clearData() {
+    sample = [];
+    sample_estimates = [];
+    running_averages = [{param: "population",   value: [0], id: [0]},
+                          {param: "sample",     value: [0], id: [0]},
+                          {param: "mean",       value: [0], id: [0]}];
+    nSamplesDrawn = 0;
+    
+    timeScaleId.domain([0, 200]);
+    timeseriesIdAxisLayer.call(timeIdAxis);
+    timeseriesIdAxisLayer.select(".domain").remove();
+    
+    sampleCircles.selectAll('circle').remove()
+    sampleEstimates.selectAll("path").remove()
+    sampleEstimatesTemp.selectAll("path").remove()
+    timeseriesDataLayer.selectAll("path").remove()
+  }
+  
+  function updateRunningAverages(estimates) {
+  
+      var cur_n = nSamplesDrawn
+      var prev_n = cur_n - 1
+      
+      var old = running_averages[0].value[prev_n]
+      var new_pop = ((old * prev_n) + estimates[0].value)/cur_n
+      running_averages[0].value.push(new_pop)
+      
+      var old = running_averages[1].value[prev_n]
+      var new_sam = ((old * prev_n) + estimates[1].value)/cur_n
+      running_averages[1].value.push(new_sam)
+      
+      var old = running_averages[2].value[prev_n]
+      var new_mea = ((old * prev_n) + estimates[2].value)/cur_n
+      running_averages[2].value.push(new_mea)
+    
+      running_averages[0].id.push(cur_n)
+      running_averages[1].id.push(cur_n)
+      running_averages[2].id.push(cur_n)
+
+}
+
+  function updateVisibility() {
+  
+    var params = ["mean", "population", "sample"]
+    
+    for (var i = 0; i < 3; i++) {
+      var param = params[i]
+      var elementIds = "#" + param + "-estimate, #" + param + "-line"
+      
+      populationAndSampleSvg.selectAll(elementIds).classed("hide", legendStatus[i].hide)
+      <!-- populationAndSampleSvg.selectAll("#" + param + "-estimate").classed("hide", legendStatus[i].hide) -->
+      timeSvg.selectAll("#" + param + "-path").classed("hide", legendStatus[i].hide)
+    }
+  }
+  
+}
+
+```
+
+:::{.content-hidden}
+# Helper functions
+:::
+
+```{ojs}
+
+dodger = radius => {
+  const radius2 = radius ** 1.9;
+  const bisect = d3.bisector(d => d.x);
+  const circles = [];
+  return x => {
+    const l = bisect.left(circles, x - radius);
+    const r = bisect.right(circles, x + radius, l);
+    let y = 0;
+    for (let i = l; i < r; ++i) {
+      const { x: xi, y: yi } = circles[i];
+      const x2 = (xi - x) ** 2;
+      const y2 = (yi - y) ** 2;
+      if (radius2 > x2 + y2) {
+        y = yi + Math.sqrt(radius2 - x2) + 1e-6;
+        i = l - 1;
+        continue;
+      }
+    }
+    circles.splice(bisect.left(circles, x, l, r), 0, { x, y });
+    <!-- populationPanelHeight * 0.7 - d.cy + (radius * 2) -->
+    return y;
+  };
+}
+
+dodge = dodger(radius * 2 + 0.75);
+```
+
+```{ojs}
+
+function mean(array) {
+    return array.reduce((a, b) => a + b) / array.length;
+}
+
+function sample_variance(array) {
+    const n = array.length
+    const m = mean(array)
+    return array.map(x => Math.pow(x - m, 2)).reduce((a, b) => a + b) / (n - 1);
+}
+
+function population_variance(array) {
+    const n = array.length
+    const m = mean(array)
+    return array.map(x => Math.pow(x - m, 2)).reduce((a, b) => a + b) / n;
+}
+
+function get_descriptives (array) {
+    return {mean: mean(array),
+            sample_variance: sample_variance(array) - 1, 
+            population_variance: population_variance(array) - 1}
+}
+
+function getNewData (array) {
+    
+    return {sample_estimates: getSampleEstimates(array)
+            <!-- running_averages: getRunningAverages(array) -->
+            }
+}
+
+function getSampleEstimates(array) {
+    return [{param: "population", value: population_variance(array) - 1},
+            {param: "sample",     value: sample_variance(array) - 1},
+            {param: "mean",       value: mean(array)}]
+}
+
+
+function formatAxes(elements) {
+  elements._groups[0].forEach((l) => {
+    if (l.__data__ === 0) {
+      l.classList = "axis-major";
+    } else {
+      l.classList = "axis-minor";
+    }
+  })
+}
+  
+```
+
+::: {.content-hidden}
+# CSS
+:::
+
+```{css}
+
+:root {
+  --population-color: pink;
+  --sample-color: dodgerblue;
+  --mean-color: purple;
+  --mu-color: purple;
+  --sigma-color: var(--link-color);
+  --population-panel-background: #c3ddff;
+  --sample-panel-background: #d3d8a8;
+  --estimates-panel-background: #eee;
+  --timeseries-panel-background: #444;
+}
+
+.g-row {
+  width: 100%;
+}
+
+/* for desktop */
+#population-container {
+  float: left; 
+  width: 59.7%;
+}
+
+#timeline-container {
+  color: var(--text-color-dark);
+  float: right;
+  width: 39.8%;
+}
+
+#controls {
+  width: fit-content;
+  display: flex;
+  margin: auto;
+}
+
+#controls-container {
+  color: var(--text-color);
+  font-size: 0.8em;
+  /* float: right; */
+  width: fit-content;
+  margin-right: 1em;
+}
+
+#select-estimates {
+  width: fit-content;
+  font-size: 0.7em;
+}
+
+@media screen and (max-width: 600px) {
+  #population-container {
+    width: 100%;
+  }
+
+  #timeline-container {
+    width: 100%;
+    margin-top: 1vw;
+  }
+
+  #controls {
+    width: 100%;
+    display: block;
+  }
+  #controls-container {
+    width: fit-content;
+    margin: auto;
+  }
+
+  #select-estimate {
+    width: fit-content;
+    margin: auto;
+  }
+}
+
+.axis {
+  font-size: 0.75em;
+}
+.bias-chart-title {
+  font-size: 1.2em;
+}
+.axis-major {
+  stroke: #aaa;
+  stroke-width: 1;
+}
+.axis-minor {
+  stroke: #ddd;
+  stroke-width: 1;
+}
+
+.axis-major.dark {
+  stroke: #ccc;
+  stroke-width: 1;
+}
+.axis-minor.dark {
+  stroke: #777;
+  stroke-width: 1;
+}
+
+
+.sample {
+  stroke: white;
+}
+
+#sample-estimate, #sample-line, #sample-legend {
+  fill: var(--sample-color);
+  stroke: var(--sample-color);
+}
+
+#mean-estimate, #mean-line, #mean-legend {
+  fill:   var(--mean-color);
+  stroke: var(--mean-color);
+}
+
+#population-estimate, #population-line, #population-legend {
+  fill:   var(--population-color);
+  stroke: var(--population-color);
+}
+
+.legend-unselected {
+  fill-opacity: 0.1 !important;
+}
+
+
+.bias-paths {
+  fill: none;
+  stroke-width: 2;
+}
+
+#mean-path {
+  stroke: var(--mean-color);
+}
+#sample-path {
+  stroke: var(--sample-color);
+}
+#population-path {
+  stroke: var(--population-color);
+}
+
+.hide {
+  fill: none !important;
+  stroke: none !important;
+}
+
+
+.button {
+   font-family: Times;
+}
+.button:hover {
+  fill: red;
+  cursor: pointer;
+}
+
+
+.legend-dots:hover {
+  cursor: pointer;
+}
+
+
+.selector {
+  margin-right: 1em;
+  cursor: pointer;
+}
+.selector::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  transform: translate(50%, -10%) rotate(45deg);
+}
+
+.select-mean::after {
+  background-color: var(--mean-color);
+  border: 1px solid var(--mean-color);
+}
+.select-mean::after .unselected {
+  background-color: "black";
+  border: 1px solid var(--mean-color);
+}
+.select-population::after {
+  background-color: var(--population-color);
+  border: 1px solid var(--population-color);
+}
+.select-sample::after {
+  background-color: var(--sample-color);
+  border: 1px solid var(--sample-color);
+}
+
+.unselected::after {
+  opacity: 0.2;
+}
+
+.unselected:hover::after {
+  opacity: 0.5;
+}
+
+```

@@ -1,0 +1,26 @@
+{
+  "index.qmd": {
+    "index.html": "476a620d"
+  },
+  "about.qmd": {
+    "about.html": "4af670b6"
+  },
+  "games/triplett/triplett.qmd": {
+    "triplett.html": "6f97ea46"
+  },
+  "games/triplett.qmd": {
+    "triplett.html": "61f1c08e"
+  },
+  "visualizations/unbiased-estimates.qmd": {
+    "unbiased-estimates.html": "9b8363a2"
+  },
+  "docs/games/jellybeans.qmd": {
+    "jellybeans.html": "0eb7030d"
+  },
+  "docs/games/jellybeans.ipynb": {
+    "jellybeans.html": "fdda5085"
+  },
+  "games/jellybeans.qmd": {
+    "jellybeans.html": "f24ed0fc"
+  }
+}

@@ -1,0 +1,45 @@
+---
+title: "PSYCH STATS"
+description: "A collection of interactive demos and visualizations I find useful when I teach statistics for psychologists."
+title-block-banner: "#ddd"
+toc: false
+---
+
+## Visualizations
+
+Interactive visualization of fundamental statistical concepts.
+
+[(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)
+
+
+## Games
+
+Some 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.
+
+[Triplett](games/triplett/triplett.qmd)
+
+[Jellybeans](games/jellybeans.qmd)
+
+
+
+```{ojs}
+
+bannerImage = {
+
+    d3.select(".quarto-title .title")
+        .style("display", "none")
+
+    d3.select(".description")
+        .style("float", "right")
+        .style("width", "50%")
+        .style("padding", "0 1em")
+
+    d3.select(".quarto-title").append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + 50 + " " + 20)
+        .style("background", "pink")
+        .style("width", "50%")
+        .style("float", "left")
+}
+
+```

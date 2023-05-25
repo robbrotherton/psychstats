@@ -1,0 +1,140 @@
+body {
+    /* max-width: 800px; */
+    /* font-family: Permanent Marker; */
+    /* font-size: 1.8em; */
+    margin: 3em auto;
+}
+
+.title {
+    font-family: Permanent Marker;
+    font-size: calc(min(1.5em, 5vw));
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+#instructions {
+    font-family: Pangolin;
+    font-size: calc(max(min(3vw, 1em), 0.6em));
+    margin-top: 1em;
+}
+
+.machine {
+    /* content: ""; */
+    width: 90%;
+    margin: 0 auto;
+    padding: 1px;
+    border-radius: 10px;
+    background: #e1ccb2;
+}
+
+
+#time {
+    font-family: Permanent Marker;
+    margin: 0 auto;
+    width: 9em;
+}
+
+.nav {
+    font-family: Permanent Marker;
+    font-size: 1em;
+    background: none;
+    border-radius: 5px;
+    border: none;
+    margin: 0 1em;
+    color: #aaa;
+}
+.nav:hover {
+    background: lightblue;
+}
+
+.nav.selected {
+    color: black;
+}
+
+.reset-button {
+    margin-left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.track {
+    position: relative; 
+    width: 80%; 
+    height: 20px; 
+    margin: 2em auto; 
+    background: #eee;
+}
+
+.flag {
+    position: absolute; 
+    font-size: 2em; 
+    top: -20px;
+    cursor: default;
+}
+
+#flag {
+    filter: invert(1);
+}
+
+.finish {
+    position: absolute; 
+    right: -1em; 
+    font-size: 2em; 
+    transform: rotate(90deg);
+    top: -0.45em;
+    cursor: default;
+}
+
+.handle {
+    touch-action: manipulation;
+    position: relative;
+    left: -2em;
+    top: -0.4em;
+    border: none;
+    width: 2em;
+    height: 3em;
+    background: none;
+}
+
+.handle:after {
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    content: "";
+    width: 80%;
+    height: 60%;
+    background: brown;
+    color: red;
+    border-radius: 3px;
+}
+
+.handle > span {
+    position: absolute;
+    font-size: 2em;
+    font-weight: 800;
+    transform: translate(-50%, -20%);
+}
+#handle1 {
+    cursor: grab;
+}
+
+#handle2 {
+    cursor: auto;
+}
+#handle1:hover > span {
+    color: red;
+}
+
+#records-table {
+    border: 1px solid;
+    font-family: Permanent Marker;
+    font-size: 0.8em;
+    margin: 2em auto;
+    table-layout: fixed;
+    width: 70%;
+}
+#records-table td {
+    text-align: center;
+}
