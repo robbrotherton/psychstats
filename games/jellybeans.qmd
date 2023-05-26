@@ -242,7 +242,7 @@ function handleReset() {
 <style>
 
 .heading {
-    font-size: 5em;
+    font-size: 5vw;
     font-family: "Just Another Hand";
     margin-top: 1em;
     text-align: center;
