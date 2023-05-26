@@ -1,12 +1,13 @@
 project:
   type: website
   output-dir: docs
+  resources: theme-dark.scss
 
 website:
   title: Psych Stats
   search: false
   navbar:
-    title: PSYCH<span id="navbar-line">-</span>STATS
+    title: "<svg id='logo-svg' viewBox='0 0 200 40'><polyline class='logo-path' points='0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38' /><text class='logo-text' x='0' y='35'>PSYCH</text><text class='logo-text' x='185' y='35' text-anchor='end' >STATS</text></svg>"
     background: light
     right:
       - about.qmd
@@ -22,9 +23,14 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: cosmo
+      dark: [cosmo, theme-dark.scss]
     css: styles.css
-    toc: true
+    toc: false
+    header-includes: |
+      <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css"/>
+
 
 execute: 
   freeze: true

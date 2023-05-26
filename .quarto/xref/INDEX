@@ -22,5 +22,8 @@
   },
   "games/jellybeans.qmd": {
     "jellybeans.html": "f24ed0fc"
+  },
+  "visualizations/quincunx.qmd": {
+    "quincunx.html": "6acc6baa"
   }
 }

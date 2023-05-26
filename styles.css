@@ -1,1 +1,35 @@
 /* css styles */
+
+#title-svg {
+    width: 50%;
+}
+
+#logo-svg {
+    width: 200px;
+    height: 40px;
+}
+
+.logo-path {
+    fill: #c3ddff;
+    stroke: black;
+}
+
+.logo-text {
+    fill: #545555;
+    font-size: 1.4em;
+    text-transform: lowercase;
+}
+#logo-svg:hover text {
+    fill: #75AADB;
+}
+
+
+.quarto-title .title {
+    display: none;
+}
+
+.description {
+    padding-right: 1em;
+    width: 50%;
+    float: right;
+}

@@ -1,0 +1,23 @@
+/*-- scss:defaults --*/
+// Base document colors
+$body-bg: #444;
+$body-color: white;
+$link-color: #75AADB;
+$navbar-bg: #222;
+$navbar-fg: #eee;
+
+// Code blocks
+$code-block-bg-alpha: -.8;
+
+/*-- scss:rules --*/
+#title-block-header > div.quarto-title-banner.page-columns.page-full {
+    background: #777;
+}
+
+.navbar-dark .logo-text {
+    fill: white;
+}
+
+.navbar-dark .logo-path {
+    stroke: white;
+}

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>psychstats - (Un)Biased estimates</title>
+<title>Psych Stats - (Un)Biased estimates</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,26 +89,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -129,6 +121,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="ojs-define">
 {"contents":[{"name":"population","value":[[0.2601],[-0.5257],[0.9582],[0.6527],[1.7287],[0.7492],[-1.2904],[-0.1848],[1.9988],[1.8749],[0.6222],[0.052],[0.4323],[-0.0109],[0.0713],[0.2107],[1.2416],[-0.01],[-0.0681],[-0.2576],[1.6306],[0.2067],[1.3892],[1.3692],[0.6495],[-0.2571],[1.3357],[0.9775],[-0.9248],[1.3194],[0.1946],[1.1246],[-0.7449],[-1.4984],[0.9271],[-0.3829],[-0.1996],[1.0026],[-0.4465],[-0.6241],[1.4266],[0.2237],[1.3736],[-1.7115],[-0.814],[-0.8566],[0.1381],[-0.353],[0.7851],[-1.8246],[-0.6512],[-0.6098],[-0.0466],[0.4867],[2.0758],[-0.5819],[-0.5361],[0.7561],[-0.1253],[1.432],[-1.0702],[1.1375],[-1.323],[2.1718],[0.1718],[-0.204],[-0.3755],[0.9564],[0.5804],[-0.1415],[0.2],[-0.4669],[-0.9567],[0.2226],[0.7828],[-0.3467],[0.2816],[-0.6535],[-0.789],[-0.0177],[1.3678],[-0.1859],[-0.5591],[-1.4865],[-1.0332],[-1.3166],[-0.8319],[-1.1345],[0.4175],[-0.1731],[-1.2867],[-0.7902],[0.2004],[0.6721],[0.7478],[-0.0129],[2.4478],[-0.562],[1.0382],[-0.2515],[0.7446],[-0.0834],[-0.3332],[-0.0737],[0.0822],[-1.7509],[1.6461],[0.8394],[-1.1012],[-1.7528],[0.4784],[0.8064],[0.9313],[0.3518],[-0.0822],[0.4743],[-0.7899],[-0.5896],[1.8109],[-0.7053],[-0.1021],[-0.999],[1.9752],[-0.3134],[1.0432],[1.0582],[-0.9385],[0.3972],[-0.5795],[-2.43],[1.1516],[0.7274],[-0.9627],[-2.0087],[-0.5695],[1.039],[0.6074],[-0.0493],[-1.6997],[1.2909],[1.0714],[0.7803],[-0.8382],[0.6796],[-0.7122],[-0.4295],[-1.2016],[0.4399],[-0.4987],[0.9775],[0.9435],[-0.809],[1.629],[1.4585],[-0.4644],[0.6054],[-0.8516],[-0.696],[-2.1348],[1.1738],[0.3898],[0.5438],[-0.9289],[-1.4422],[1.0457],[-1.5648],[0.0541],[-0.7661],[-0.2016],[-0.2482],[1.8948],[-0.4591],[-0.5798],[-2.3013],[1.7774],[0.1106],[-0.4197],[0.6843],[-0.7921],[-1.1318],[-1.0252],[0.1093],[0.4309],[-1.6437],[2.0029],[-0.7055],[0.4296],[0.4921],[0.3021],[-0.15],[-0.6785],[0.0353],[0.6212],[-1.2153],[-0.3225],[-0.6372],[-0.885],[1.5646],[-1.2016],[1.8476],[1.2931],[-1.5663],[-0.2771],[1.1114],[-0.759],[1.6139],[-2.4712],[0.6116],[1.1801],[0.208],[-0.1976],[-0.2006],[-0.2263],[2.1766],[1.6745],[-1.0434],[0.0271],[-1.3451],[0.1874],[-0.7797],[-0.2634],[0.726],[-0.1056],[0.2677],[1.1921],[-1.4531],[0.6924],[-0.4809],[1.2015],[-0.0679],[-1.113],[0.7168],[-0.009],[0.6862],[-0.9339],[-0.3341],[-0.0109],[-0.3245],[-0.3358],[0.4453],[-0.9827],[0.0123],[-0.8798],[0.5378],[-0.8249],[1.2501],[0.0989],[0.198],[0.5211],[0.6],[0.4452],[-0.9179],[-0.6645],[-1.9763],[0.16],[1.3462],[-1.1007],[0.489],[0.6738],[0.0543],[-1.2469],[-0.4861],[1.3987],[0.8581],[0.5378],[2.4899],[-0.2558],[0.2417],[0.8744],[-0.0908],[1.0788],[0.5715],[-0.2023],[-0.1377],[-2.5271],[-0.5865],[0.0684],[1.3049],[-0.688],[-1.5211],[-0.1973],[0.0265],[-1.4944],[-1.8768],[-0.8399],[1.3355],[-1.3621],[0.3709],[0.1587],[0.7082],[0.7413],[2.6416],[0.3489],[-0.6513],[0.1009],[-1.1935],[-0.3995],[-0.7381],[-0.095],[-1.0186],[-2.9034],[1.6002],[1.5287],[0.5589],[-0.7481],[0.2938],[-0.2922],[0.1423],[-0.1833],[0.3158],[-0.282],[0.9568],[0.4374],[-2.3183],[-0.5335],[0.3777],[-0.5833],[-1.2705],[0.8258],[0.9062],[0.1995],[1.119],[-0.64],[-0.9586],[-0.1724],[0.7537],[-0.9972],[-0.9989],[-0.3403],[1.1305],[1.1526],[1.3172],[0.9198],[-0.8063],[-0.345],[1.1926],[0.1535],[-0.4244],[-1.4606],[-0.3621],[0.6497],[0.2894],[-1.7712],[0.1004],[-1.0883],[-0.0755],[0.5028],[1.1685],[0.9735],[-0.9967],[-0.7052],[0.4732],[0.4839],[0.1233],[0.6072],[-0.5208],[0.1659],[1.0749],[1.1452],[-0.4304],[1.0278],[0.9718],[-1.2387],[-0.2649],[-1.6743],[0.0745],[-2.0785],[0.1509],[0.3579],[-0.6255],[1.0012],[-0.2465],[1.3212],[-1.0621],[1.9901],[-1.1733],[0.4695],[-1.6746],[0.2189],[-0.1132],[2.4813],[1.2954],[0.4532],[0.6958],[-0.8845],[-1.3255],[0.2202],[-1.4379],[-1.5206],[-1.0773],[0.1825],[0.3072],[1.2715],[-1.7103],[0.2842],[-1.1282],[-0.8442],[-0.3148],[-0.026],[-0.1235],[-1.1878],[0.508],[-0.2109],[0.8764],[-0.7205],[-2.2354],[1.0724],[1.2441],[0.8324],[1.6794],[0.3994],[-0.5173],[-0.2591],[-0.0188],[0.1025],[-0.5632],[0.0227],[0.9732],[-0.4929],[0.259],[-0.5685],[-1.2239],[0.212],[0.1715],[-0.2122],[-0.5506],[0.0762],[-1.9423],[0.0098],[0.7242],[1.4051],[3.3212],[-1.8983],[-1.3596],[2.4202],[0.3002],[0.9345],[0.4041],[-1.1499],[0.342],[-0.6846],[1.2623],[1.6144],[0.4714],[1.6496],[1.7213],[0.215],[-0.3153],[-1.2862],[0.0983],[-1.1383],[-0.0298],[-0.7225],[1.1475],[1.5665],[-2.586],[-0.8127],[0.3658],[-0.9683],[-0.3639],[-0.0018],[0.8507],[0.48],[0.7153],[-0.739],[0.0481],[-0.5923],[1.4911],[-0.6164],[-0.8696],[-1.1991],[0.4163],[-0.6888],[-0.4046],[1.085],[0.471],[1.4076],[1.1168],[-0.64],[-1.6822],[-1.5271],[0.3596],[-1.9284],[-0.5907],[-0.3276],[-1.01],[-0.4284],[0.9342],[0.1177],[-0.6542],[-0.0754],[0.5276],[-0.8304],[0.4789],[-0.6328],[0.6326],[-0.0582],[-0.1431],[-0.4396],[-0.5663],[-1.6666],[-0.8129],[-1.7013],[0.4748],[-0.3252],[-0.0184],[-0.2485],[0.5691],[-1.3155],[1.7944],[-0.4844],[-0.2798],[-0.642],[0.3189],[-1.7488],[-0.471],[-0.1051],[-0.3854],[1.6426],[0.9315],[0.3966],[-1.2668],[0.5283],[0.9393],[-0.5269],[0.237],[0.4486],[0.1709],[-0.5797],[0.7621],[-0.1236],[0.6423],[1.2445],[-2.3475],[0.8847],[0.7832],[0.1368],[1.7309],[-0.5225],[-0.4328],[-1.25],[0.0816],[0.043],[-0.9926],[0.7761],[0.6571],[-0.0211],[0.758],[0.8788],[-2.3662]]}]}
 </script>
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css">
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
@@ -143,24 +136,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">psychstats</span>
+    <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 200 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="35">PSYCH</text><text class="logo-text" x="185" y="35" text-anchor="end">STATS</text></svg></span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
-  </li>  
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/rob_brotherton" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats" rel="" target="">
+ <span class="dropdown-text">Source Code</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats/issues/new" rel="" target="">
+ <span class="dropdown-text">Report a Bug</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -1347,6 +1360,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
