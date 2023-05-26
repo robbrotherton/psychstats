@@ -25,29 +25,55 @@
 }
 
 .quarto-title-banner {
-    padding-top: 0em;
-    padding-bottom: 0em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 .quarto-title .title {
     display: none;
 }
 
-.description {
-    padding-right: 1em;
-    width: 50%;
-    float: right;
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+.quarto-title.column-body {
+    position: relative;
 }
+
+.description {
+    padding-right: 5em;
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 @media screen and (max-width: 650px) {
+    .quarto-title.column-body {
+        position: relative;
+    }
     #title-svg {
+        display: block;
         width: 80%;
         margin-left: 10%;
+        margin-top: 3em;
     }
     .description {
+        display: block;
+        left: 0;
+        top: 0;
         padding: 0;
         width: 100%;
         text-align: center;
+    }
+}
+
+@media screen and (max-width: 505px) {
+    #title-svg {
+        margin: 0;
+        width: 100%;
+
+    }
+    .description {
+        position: static;
     }
 }

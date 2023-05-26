@@ -55,9 +55,12 @@ bannerImage = {
     svg.selectAll("circle").data(data).enter().append("circle")
         .attr("cx", d => d.x)
         .attr("cy", d => 20 - d.y)
-        .attr("r", radius / 2)
+        .attr("r", 0)
         .attr("stroke", "none")
         .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
+        .transition().duration(300)
+        .delay(d => d.y * 100)
+        .attr("r", radius/2)
 
 }
 
