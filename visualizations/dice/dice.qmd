@@ -1,0 +1,47 @@
+---
+title: Dice Roller
+include-in-header:
+    text: '<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>'
+---
+
+<div style="text-align: center;">
+<div class="ui-controls">
+<button id="roll-btn">Throw the dice</button>
+<button id="add-100">+100</button>
+<button id="add-1000">+1,000</button>
+<label for="nDice">Number of dice:</label>
+<select name="nDice" id="nDice">
+	<option value="1">1</option>
+	<option value="2" selected="true">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="10">10</option>
+</select>
+</div>
+
+<div class="content" style="width: 500px; height: 300px; position: relative; margin: 0 auto;">
+<canvas id="canvas"></canvas>
+<div id="overlay"></div>
+<!-- border: 2px solid #D77; border-radius: 5px;  -->
+<div class="score" style="position: absolute; width: 100%; bottom: 4%; text-align: center;"><span
+				id="score-result"></span></div>
+</div>
+<div id="chart-container"></div>
+<div class="throws" style="width: 100%; text-align: left;">
+<span>Throws: <span id="throw-counter"></span></span>
+<button id="reset-chart" style="float: right;">Reset</button>
+</div>
+	
+</div>
+<script type="importmap">
+		{
+		"imports": {
+		  "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+		  "three/addons/": "https://unpkg.com/three@0.138.0/examples/jsm/"
+		}
+	  }
+	</script>
+<script type="module" src="./main.js"></script>
+<script type="module" src="./chart.js"></script>
+

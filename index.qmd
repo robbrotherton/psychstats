@@ -15,6 +15,8 @@ Interactive visualization of fundamental statistical concepts.
 
 [Quincunx](visualizations/quincunx.qmd)
 
+[Dice Roller](visualizations/dice/dice.qmd)
+
 
 ## Games
 

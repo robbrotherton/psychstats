@@ -1,8 +1,10 @@
 {
-  "hash": "d92df1cb4d18eb1f7884089fd95bbcb6",
+  "hash": "1214cef257a543773b6b9cfff7b45105",
   "result": {
-    "markdown": "---\ntitle: \"PSYCH STATS\"\ndescription: \"A collection of interactive demos, visualizations, and games I find useful when I teach statistics for psychologists.\"\ntitle-block-banner: \"#c3ddff\"\ntoc: false\n---\n\n\n## Visualizations\n\nInteractive visualization of fundamental statistical concepts.\n\n[Sampling](visualizations/sampling/sampling.qmd)\n\n[(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)\n\n[Quincunx](visualizations/quincunx.qmd)\n\n\n## Games\n\nSome 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.\n\n[Triplett](games/triplett/triplett.qmd)\n\n[Jellybeans](games/jellybeans.qmd)\n\n\n\n\n```{ojs}\n\nbannerImage = {\n\n    const svg = d3.select(\".quarto-title\").append(\"svg\")\n        .attr(\"id\", \"title-svg\")\n        .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n        .attr(\"viewBox\", \"0 0 \" + 50 + \" \" + 20)\n\n    svg.selectAll(\"circle\").data(data).enter().append(\"circle\")\n        .attr(\"cx\", d => d.x)\n        .attr(\"cy\", d => 20 - d.y)\n        .attr(\"r\", radius / 2)\n        .attr(\"stroke\", \"none\")\n        .attr(\"fill\", (d, i) => d3.schemeCategory10[i % 10])\n\n}\n\n```",
-    "supporting": [],
+    "markdown": "---\ntitle: \"PSYCH STATS\"\ndescription: \"A collection of interactive demos, visualizations, and games I find useful when I teach statistics for psychologists.\"\ntitle-block-banner: \"#c3ddff\"\ntoc: false\n---\n\n\n## Visualizations\n\nInteractive visualization of fundamental statistical concepts.\n\n[Sampling](visualizations/sampling/sampling.qmd)\n\n[(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)\n\n[Quincunx](visualizations/quincunx.qmd)\n\n[Dice Roller](visualizations/dice/dice.qmd)\n\n\n## Games\n\nSome 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.\n\n[Triplett](games/triplett/triplett.qmd)\n\n[Jellybeans](games/jellybeans.qmd)\n\n\n\n\n```{ojs}\n\nbannerImage = {\n\n    const svg = d3.select(\".quarto-title\").append(\"svg\")\n        .attr(\"id\", \"title-svg\")\n        .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n        .attr(\"viewBox\", \"0 0 \" + 50 + \" \" + 20)\n\n    svg.selectAll(\"circle\").data(data).enter().append(\"circle\")\n        .attr(\"cx\", d => d.x)\n        .attr(\"cy\", d => 20 - d.y)\n        .attr(\"r\", radius / 2)\n        .attr(\"stroke\", \"none\")\n        .attr(\"fill\", (d, i) => d3.schemeCategory10[i % 10])\n\n}\n\n```",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

@@ -34,5 +34,8 @@
   },
   "games/jellybeans2.qmd": {
     "jellybeans2.html": "b54ee207"
+  },
+  "visualizations/dice/dice.qmd": {
+    "dice.html": "f71d0fcc"
   }
 }
