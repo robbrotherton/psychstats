@@ -9,6 +9,8 @@ toc: false
 
 Interactive visualization of fundamental statistical concepts.
 
+[Sampling](visualizations/sampling/sampling.qmd)
+
 [(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)
 
 [Quincunx](visualizations/quincunx.qmd)

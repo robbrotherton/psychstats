@@ -25,5 +25,14 @@
   },
   "visualizations/quincunx.qmd": {
     "quincunx.html": "6acc6baa"
+  },
+  "visualizations/sampling/sampling.qmd": {
+    "sampling.html": "285d63ba"
+  },
+  "visualizations/sampling/sampling-backend.qmd": {
+    "sampling-backend.html": "475128d6"
+  },
+  "games/jellybeans2.qmd": {
+    "jellybeans2.html": "b54ee207"
   }
 }

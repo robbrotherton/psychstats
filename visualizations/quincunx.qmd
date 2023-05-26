@@ -2,10 +2,11 @@
 title: Quincunx
 ---
 
-:::{#container}
-:::{#board}
+
+:::{#container style="width: 100%; background-color: red; position: relative;"}
+:::{#board style="position: absolute;"}
 :::
-:::{#overlay}
+:::{#overlay style="position: absolute;"}
 :::
 :::
 
@@ -88,7 +89,7 @@ function initialize() {
         options: {
             width: width,
             height: height,
-            background: "#ffffff",
+            background: "transparent",
             wireframes: false,
             showSleeping: false
         }
@@ -203,7 +204,7 @@ function make_pegs() {
                         friction: 0,
                         frictionStatic: 0,
                         render: {
-                            fillStyle: "#000000"
+                            fillStyle: "black"
                         },
                     chamfer: {
                         radius: [ballRadius * 0.2, ballRadius * 0.2, 0, 0]
@@ -278,8 +279,8 @@ function drawNormalDistribution() {
 
     for (var i in values) {
         let value = values[i];
-        let density = jStat.normal.pdf(value, 0, 0.9);
-        ctx.lineTo((value + 4)*(width/8), height-(density*2.2*yMultiplier) - 5);
+        let density = jStat.normal.pdf(value, 0, 0.8);
+        ctx.lineTo((value + 4)*(width/8), height-(density*1.95*yMultiplier) - 5);
         ctx.stroke();
     }
 }
@@ -296,6 +297,7 @@ function reset() {
     console.log('reset clicked');
     
     initialize();
+    scaleCanvas();
     make_pegs();
     make_balls();
     createFunnel();
@@ -303,9 +305,38 @@ function reset() {
 }
 
 
+function scaleCanvas() {
+    
+    var containerWidth = document.getElementById("quarto-document-content").offsetWidth
+
+    var scaleFactor = containerWidth / (width * 1);
+    d3.select("canvas")
+        // .style("transform", `scale(${scaleFactor})`)
+        .style("width", `${width * scaleFactor}px`)
+        .style("height", `${height * scaleFactor}px`);
+    canvas
+        // .style("transform", `scale(${scaleFactor})`)
+        .style("width", `${width * scaleFactor}px`)
+        .style("height", `${height * scaleFactor}px`);
+
+    // d3.select("#flex-container")
+    //     .style("width", `${Math.ceil(width * scaleFactor)}px`)
+
+    // d3.select("#container")
+    //     .style("font-size", `${1/scaleFactor}em`)
+}
+
+
+// Update the canvas position when the window is resized
+window.addEventListener('resize', function () {
+    scaleCanvas();
+});
+
+
 //
 
 initialize();
+scaleCanvas();
 make_pegs();
 make_balls();
 createFunnel();

@@ -10,58 +10,59 @@ header-includes: |
 ---
 
 
-```{=html}
 <div class="game-select" style="width: 100%; display: flex; justify-content: center; font-family: Permanent Marker;">
-        <button id="practice-button" class="nav">practice</button>
-        <button id="alone-button" class="nav">race alone</button>
-        <button id="competition-button" class="nav">race together</button>
-        <button id="about-button" class="nav">About</button>
+<button id="practice-button" class="nav">practice</button>
+<button id="alone-button" class="nav">race alone</button>
+<button id="competition-button" class="nav">race together</button>
+<button id="about-button" class="nav">About</button>
 </div>
 
     
 <div class="title">Competition Machine &mdash; </div>
 
 <div class="machine">
-        <div id="track" class="track">
-        <button type="button" id="handle1" class="handle"><span id="handle-text">┘</span></button>
-        <div id="finish" class="finish">🏁</div>
-        <div id="flag" class="flag">🚩</div>
-    </div>
 
-    <div id="track2" class="track">
-        <button id="handle2" class="handle"><span id="handle2-text">┘</span></button>
-        <div id="finish"class="finish">🏁</div>
-        <div id="flag2" class="flag">🚩</div>
-    </div>
+<div id="track" class="track">
+<button type="button" id="handle1" class="handle"><span id="handle-text">┘</span></button>
+<div id="finish" class="finish">🏁</div>
+<div id="flag" class="flag">🚩</div>
+</div>
+
+<div id="track2" class="track">
+<button id="handle2" class="handle"><span id="handle2-text">┘</span></button>
+<div id="finish"class="finish">🏁</div>
+<div id="flag2" class="flag">🚩</div>
+</div>
+
 </div>
     
 <div id="time"><span>Your time: </span><span id="seconds">0.00</span></div>
 <button id="reset-button" class="reset-button nav">Reset</button>
     
 
-    <div id="instructions">
-        <ul>
-            <li>Click the 'handle' to the left of the 'track' to start.</li>
-            <li>Keep clicking as fast as you can until your flag reaches the end.</li>
-            <li>Click Race Alone to do a timed race by yourself.</li>
-            <li>Click Race Together to race against a competitor.</li>
-        </ul>
-    </div>
+<div id="instructions">
+<ul>
+    <li>Click the 'handle' to the left of the 'track' to start.</li>
+    <li>Keep clicking as fast as you can until your flag reaches the end.</li>
+    <li>Click Race Alone to do a timed race by yourself.</li>
+    <li>Click Race Together to race against a competitor.</li>
+</ul>
+</div>
 
-    <div id="records">
-        
-        <table id="records-table">
-            <colgroup>
-                <col span="1" style="width: 40%; text-align: right;">
-                <col span="1" style="width: 30%;">
-                <col span="1" style="width: 30%;">
-              </colgroup>
-            <thead><th>👑 Records 👑</th><th>Previous</th><th>Best</th></thead>
-            <tr><td>🚩 Alone</td><td><span id="alone-previous">-</span></td><td><span id="alone-best">-</span></td></tr>
-            <tr><td>🚩<span style="filter: invert(1);">🚩</span>Competition</td><td><span id="competition-previous">-</span></td><td><span id="competition-best">-</span></td></tr>
-        </table>
-    </div>
-```
+<div id="records">
+    
+<table id="records-table">
+    <colgroup>
+        <col span="1" style="width: 40%; text-align: right;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 30%;">
+      </colgroup>
+    <thead><th>👑 Records 👑</th><th>Previous</th><th>Best</th></thead>
+    <tr><td>🚩 Alone</td><td><span id="alone-previous">-</span></td><td><span id="alone-best">-</span></td></tr>
+    <tr><td>🚩<span style="filter: invert(1);">🚩</span>Competition</td><td><span id="competition-previous">-</span></td><td><span id="competition-best">-</span></td></tr>
+</table>
+</div>
+
 
 ```{ojs}
 //| echo: false

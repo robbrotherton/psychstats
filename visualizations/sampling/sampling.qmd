@@ -1,0 +1,121 @@
+---
+title: Sampling
+---
+
+<div id="options" style="margin: auto; width: fit-content;">
+Distribution:
+    <select name="dist" id="dist">
+        <option value="normal">Normal</option>
+        <option value="positive">Positive skew</option>
+        <option value="negative">Negative skew</option>
+        <option value="uniform">Uniform</option>
+        <option value="custom">Custom</option>
+    </select>
+    Sample size:
+    <input id="sampleSize" style="width: 2em;" value="10">
+    <button onclick="reset()">Reset</button>
+</div>
+
+<div id="container"></div>
+<div id="controls" style="margin: 0.2em auto; width: fit-content;">
+<button id="singleSampleBtn">Take a sample</button>
+<button id="startSamplingBtn">Start</button>
+<button id="stopSamplingBtn">Stop</button>
+<button id="samples1000Btn">1,000</button>
+<button id="samples10000Btn">10,000</button>
+<button id="samples100000Btn">100,000</button>
+<button id="clearSamplesBtn">clear</button>
+</div>
+
+<div>
+<!-- Text description goes here. -->
+</div>
+
+
+```{ojs}
+//| echo: false
+
+import {sampling} from "./sampling-backend.qmd"
+
+```
+
+
+<style>
+
+/* body, html {
+    overflow-x: hidden;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+} */
+
+h1 {
+    font-weight: 800;
+    text-align: center;
+}
+
+#options {
+     /* display: contents;
+     font-size: 1em; */
+}
+
+#flex-container {
+    margin: 0 auto;
+    width: 100%;
+    background-color: red;
+}
+
+#container {
+    /* background-color: lightblue; */
+    /* margin-left: 50px; */
+    /* margin-right: 50px; */
+    /* position: relative; */
+    /* top: 0; */
+    /* align-items: top; */
+    /* justify-content: flex-start; */
+    /* transform: scale(0.5); */
+    /* background-color: red; */
+    margin: 0 auto;
+    width: 100%;
+    transform-origin: 0 0;
+}
+
+
+span.panel-label.labels {
+    font-size: 1.5em;
+    font-weight: bold;
+    font-variant-caps: all-small-caps;
+    line-height: 1em;
+    margin-top: -0.2em;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#overlay2 {
+    padding-right: 1em;
+    display: block;
+}
+
+span.panel-label.numbers {
+    /* width: 700px; */
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Times New Roman', Times, serif;
+    /* display: block; */
+    /* float: right; */
+    /* padding-right: 1em; */
+    /* color: red; */
+    /* display: block; */
+    /* text-align: right; */
+    /* float: right; */
+    /* margin-right: 1em; */
+}
+
+#samplingDistParams {
+    margin-bottom: 0.5em;
+}
+
+.hide {
+    display:none;
+}
+
+</style>
