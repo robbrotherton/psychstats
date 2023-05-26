@@ -23,6 +23,7 @@ Some 'games' (I'm using the term loosely!) that I use to illustrate statistical 
 [Jellybeans](games/jellybeans.qmd)
 
 ```{r}
+#| include: false
 
 library(dplyr)
 library(ggplot2)
@@ -31,10 +32,6 @@ radius <- 1
 set.seed(4)
 data <- data.frame(x = rnorm(300, 25, 8) |> round(0)) |>
     dplyr::mutate(y = 1:dplyr::n() * radius, .by = x)
-
-# ggplot(data) +
-#     ggforce::geom_circle(aes(x0 = x, y0 = y, r = radius/2)) +
-#     coord_fixed()
 
 data <- purrr::transpose(data)
 
