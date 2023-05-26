@@ -17,12 +17,17 @@
 .logo-text {
     fill: #545555;
     font-size: 1.4em;
+    font-weight: 600;
     text-transform: lowercase;
 }
 #logo-svg:hover text {
     fill: #75AADB;
 }
 
+.quarto-title-banner {
+    padding-top: 0em;
+    padding-bottom: 0em;
+}
 
 .quarto-title .title {
     display: none;
@@ -32,4 +37,17 @@
     padding-right: 1em;
     width: 50%;
     float: right;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+@media screen and (max-width: 650px) {
+    #title-svg {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .description {
+        padding: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
