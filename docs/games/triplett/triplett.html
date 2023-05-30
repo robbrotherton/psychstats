@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.78">
+<meta name="generator" content="quarto-1.3.310">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -132,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 200 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="35">PSYCH</text><text class="logo-text" x="185" y="35" text-anchor="end">STATS</text></svg></span>
+    <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -167,9 +138,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
   </li>
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -426,7 +397,7 @@ Best
 </main> <!-- /main -->
 
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"game = {\r\n    var start, myTimer, myTurner;\r\nvar sec = d3.select(\"#seconds\")\r\nvar cli = d3.select(\"#clicks\")\r\nvar flag = d3.select(\"#flag\")\r\nvar flag2 = d3.select(\"#flag2\")\r\nvar clicks = 0;\r\nvar state;\r\nconst target_clicks = 50;\r\nvar mode = practice;\r\n\r\nvar records = [{prev: 0, best: 0},{prev: 0, best: 0}]\r\n\r\nvar handleState = 0;\r\nconst handle = d3.select(\"#handle-text\");\r\nconst handle2 = d3.select(\"#handle2-text\");\r\nconst handleText = [\"┘\",\"└\"]\r\n\r\nd3.select(\"#handle1\").on(\"click\", clicked);\r\nd3.select(\"#practice-button\").on(\"click\", practice);\r\nd3.select(\"#alone-button\").on(\"click\", alone);\r\nd3.select(\"#competition-button\").on(\"click\", competition);\r\nd3.select(\"#reset-button\").on(\"click\", reset);\r\n\r\nfunction handleClicked() {\r\n    handleState++;\r\n    handle.text(handleText[handleState % 2]);\r\n}\r\n\r\nfunction turnHandle2() {\r\n    var handle2State = 0;\r\n    myTurner = setInterval( function(){\r\n        handle2State++;\r\n        handle2.text(handleText[handle2State % 2]);\r\n        if (handle2State > target_clicks) clearInterval(myTurner);\r\n    }, 7000 / target_clicks);\r\n}\r\n\r\nfunction clicked() {\r\n    handleClicked();\r\n    \r\n    if (clicks==0) {startTimer(); turnHandle2();}\r\n    if (clicks < target_clicks) {\r\n        clicks++;\r\n    cli.text(clicks);\r\n    flag.transition().duration(300).style(\"left\", `${clicks*(100/target_clicks)*1.00}%`);\r\n    } \r\n    if (clicks == target_clicks) stopTimer();\r\n}\r\n\r\nfunction startTimer() {\r\n    start = Date.now();\r\n    myTimer= setInterval( function(){\r\n        var delta = Date.now() - start; // milliseconds elapsed since start\r\n        sec.html(delta / 1000);\r\n    }, 10);\r\n\r\n    flag2.transition().ease(d3.easeLinear).duration(7000).style(\"left\", \"100%\")\r\n}\r\n\r\nfunction stopTimer() {\r\n    clearInterval(myTimer);\r\n\r\n    var time = Number(sec.html());\r\n\r\n    if(state!=\"practice\") {\r\n        d3.select(\"#\" + state + \"-previous\").text(time);\r\n\r\n        var previousBest = Number(d3.select(\"#\" + state + \"-best\").text());\r\n        if(isNaN(previousBest)) d3.select(\"#\" + state + \"-best\").text(time);\r\n        else if (time < previousBest) d3.select(\"#\" + state + \"-best\").text(time);\r\n    }\r\n}\r\n\r\n// function updateTable(time, cell) {\r\n//     d3.select(cell).text(time);\r\n// }\r\n\r\nfunction practice() {\r\n    state = \"practice\";\r\n    reset();\r\n    d3.selectAll(\".nav\").classed(\"selected\", false);\r\n    d3.select(\"#practice-button\").classed(\"selected\", true);\r\n    // d3.select(\"#practice\").style(\"display\", \"block\");\r\n    d3.select(\"#instructions\").style(\"display\", \"block\");\r\n    d3.select(\"#track2\").style(\"display\", \"none\");\r\n    d3.select(\"#time\").style(\"display\", \"none\");\r\n}\r\n\r\nfunction alone() {\r\n    state = \"alone\";\r\n    reset();\r\n    d3.selectAll(\".nav\").classed(\"selected\", false);\r\n    d3.select(\"#alone-button\").classed(\"selected\", true);\r\n    d3.select(\"#time\").style(\"display\", \"block\");\r\n    d3.select(\"#track2\").style(\"display\", \"none\");\r\n    d3.select(\"#instructions\").style(\"display\", \"none\");\r\n}\r\n\r\nfunction competition() {\r\n    state = \"competition\";\r\n    reset();\r\n    d3.selectAll(\".nav\").classed(\"selected\", false);\r\n    d3.select(\"#competition-button\").classed(\"selected\", true);\r\n    d3.select(\"#time\").style(\"display\", \"block\");\r\n    d3.select(\"#track2\").style(\"display\", \"block\");\r\n    d3.select(\"#instructions\").style(\"display\", \"none\");\r\n}\r\n\r\nfunction reset() {\r\n    clearInterval(myTimer);\r\n    clearInterval(myTurner);\r\n    sec.text(\"0.00\");\r\n    cli.text(0);\r\n    flag.transition().duration(1000).style(\"left\", \"0%\");\r\n    flag2.transition().duration(1000).style(\"left\", \"0%\");\r\n    clicks = 0;\r\n}\r\n\r\npractice();\r\n}\r\n"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"game = {\n    var start, myTimer, myTurner;\nvar sec = d3.select(\"#seconds\")\nvar cli = d3.select(\"#clicks\")\nvar flag = d3.select(\"#flag\")\nvar flag2 = d3.select(\"#flag2\")\nvar clicks = 0;\nvar state;\nconst target_clicks = 50;\nvar mode = practice;\n\nvar records = [{prev: 0, best: 0},{prev: 0, best: 0}]\n\nvar handleState = 0;\nconst handle = d3.select(\"#handle-text\");\nconst handle2 = d3.select(\"#handle2-text\");\nconst handleText = [\"┘\",\"└\"]\n\nd3.select(\"#handle1\").on(\"click\", clicked);\nd3.select(\"#practice-button\").on(\"click\", practice);\nd3.select(\"#alone-button\").on(\"click\", alone);\nd3.select(\"#competition-button\").on(\"click\", competition);\nd3.select(\"#reset-button\").on(\"click\", reset);\n\nfunction handleClicked() {\n    handleState++;\n    handle.text(handleText[handleState % 2]);\n}\n\nfunction turnHandle2() {\n    var handle2State = 0;\n    myTurner = setInterval( function(){\n        handle2State++;\n        handle2.text(handleText[handle2State % 2]);\n        if (handle2State > target_clicks) clearInterval(myTurner);\n    }, 7000 / target_clicks);\n}\n\nfunction clicked() {\n    handleClicked();\n    \n    if (clicks==0) {startTimer(); turnHandle2();}\n    if (clicks < target_clicks) {\n        clicks++;\n    cli.text(clicks);\n    flag.transition().duration(300).style(\"left\", `${clicks*(100/target_clicks)*1.00}%`);\n    } \n    if (clicks == target_clicks) stopTimer();\n}\n\nfunction startTimer() {\n    start = Date.now();\n    myTimer= setInterval( function(){\n        var delta = Date.now() - start; // milliseconds elapsed since start\n        sec.html(delta / 1000);\n    }, 10);\n\n    flag2.transition().ease(d3.easeLinear).duration(7000).style(\"left\", \"100%\")\n}\n\nfunction stopTimer() {\n    clearInterval(myTimer);\n\n    var time = Number(sec.html());\n\n    if(state!=\"practice\") {\n        d3.select(\"#\" + state + \"-previous\").text(time);\n\n        var previousBest = Number(d3.select(\"#\" + state + \"-best\").text());\n        if(isNaN(previousBest)) d3.select(\"#\" + state + \"-best\").text(time);\n        else if (time < previousBest) d3.select(\"#\" + state + \"-best\").text(time);\n    }\n}\n\n// function updateTable(time, cell) {\n//     d3.select(cell).text(time);\n// }\n\nfunction practice() {\n    state = \"practice\";\n    reset();\n    d3.selectAll(\".nav\").classed(\"selected\", false);\n    d3.select(\"#practice-button\").classed(\"selected\", true);\n    // d3.select(\"#practice\").style(\"display\", \"block\");\n    d3.select(\"#instructions\").style(\"display\", \"block\");\n    d3.select(\"#track2\").style(\"display\", \"none\");\n    d3.select(\"#time\").style(\"display\", \"none\");\n}\n\nfunction alone() {\n    state = \"alone\";\n    reset();\n    d3.selectAll(\".nav\").classed(\"selected\", false);\n    d3.select(\"#alone-button\").classed(\"selected\", true);\n    d3.select(\"#time\").style(\"display\", \"block\");\n    d3.select(\"#track2\").style(\"display\", \"none\");\n    d3.select(\"#instructions\").style(\"display\", \"none\");\n}\n\nfunction competition() {\n    state = \"competition\";\n    reset();\n    d3.selectAll(\".nav\").classed(\"selected\", false);\n    d3.select(\"#competition-button\").classed(\"selected\", true);\n    d3.select(\"#time\").style(\"display\", \"block\");\n    d3.select(\"#track2\").style(\"display\", \"block\");\n    d3.select(\"#instructions\").style(\"display\", \"none\");\n}\n\nfunction reset() {\n    clearInterval(myTimer);\n    clearInterval(myTurner);\n    sec.text(\"0.00\");\n    cli.text(0);\n    flag.transition().duration(1000).style(\"left\", \"0%\");\n    flag2.transition().duration(1000).style(\"left\", \"0%\");\n    clicks = 0;\n}\n\npractice();\n}\n"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -578,9 +549,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -645,6 +630,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

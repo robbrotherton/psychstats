@@ -7,7 +7,7 @@ toc: false
 
 ## Visualizations
 
-Interactive visualization of fundamental statistical concepts.
+Interactive visualizations of fundamental statistical concepts.
 
 [Sampling](visualizations/sampling/sampling.qmd)
 

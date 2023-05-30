@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.78">
+<meta name="generator" content="quarto-1.3.310">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -129,7 +100,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 200 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="35">PSYCH</text><text class="logo-text" x="185" y="35" text-anchor="end">STATS</text></svg></span>
+    <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -164,9 +135,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
   </li>
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -205,7 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="18" data-source-offset="-64"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 17;"><span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Matter <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"</span>)</span>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="18" data-source-offset="-61"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 17;"><span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Matter <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"</span>)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>jStat <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"</span>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
@@ -560,7 +531,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\r\n// code adapted from https://codepen.io/lmeetr/pen/NWPxomj\r\n\r\nMatter = require(\"https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js\")\r\n\r\njStat = require(\"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js\")\r\n\r\n\r\nboard = {\r\n\r\n\r\n// https://codesandbox.io/s/github/rjoxford/MatterJSGaltonBoard\r\n// https://www.tylermw.com/plinko-statistics-insights-from-the-bean-machine/\r\n\r\n\r\nlet width = 700;\r\nlet height = 600;\r\nlet x0 = width / 2;\r\n\r\n// ball properties\r\nconst ballRadius = 4;\r\nlet y_start = 0;\r\n\r\nlet generation_speed = 20;\r\nlet nBalls = 650;\r\nlet mass = 100;\r\nlet density = 1;\r\n\r\n// peg board properties\r\nlet rows = 20;\r\nlet y_peg_start = 20;\r\nlet pegGap = 6.5 * ballRadius;\r\nlet pegRadius = 0.5 * ballRadius;\r\nlet xGap = pegGap;\r\nlet yGap = 0.6 * xGap;\r\nlet pegAngle = 0; // Math.PI / 4;\r\nlet gap_between_pegs_and_buckets = 0;\r\n\r\n// funnel properties\r\nconst funnelTostartGap = yGap;\r\nconst funnelWallLength = 600;\r\nconst funnelAngle = Math.PI / 3;\r\nconst funnelOpening = 5 * ballRadius;\r\n\r\n// physics properties\r\nlet restitution = 0.5; // bounciness\r\nlet friction = 0.01;\r\nlet frictionAir = 0.045;\r\nlet frictionStatic = 0;\r\n\r\n\r\nlet intervalId;\r\n\r\n\r\nvar {Engine, Render, Runner, \r\n    Composite, Composites, Common, \r\n    MouseConstraint, Mouse, Events, \r\n    World, Bodies, Body} = Matter;\r\n\r\nlet engine, render, runner, world;\r\n\r\n\r\n\r\nfunction initialize() {\r\n    // create engine\r\n    engine = Engine.create({\r\n        enableSleeping: true\r\n    }),\r\n        world = engine.world;\r\n    \r\n    // create renderer\r\n    render = Render.create({\r\n        element: document.getElementById(\"board\"),\r\n        engine: engine,\r\n        options: {\r\n            width: width,\r\n            height: height,\r\n            background: \"transparent\",\r\n            wireframes: false,\r\n            showSleeping: false\r\n        }\r\n    });\r\n    Render.run(render);\r\n\r\n    // engine.gravity.y = 1;\r\n    // engine.timing.timeScale = 1;\r\n    \r\n    // create runner\r\n    runner = Runner.create();\r\n    Runner.run(runner, engine);\r\n    render.canvas.addEventListener(\"mousedown\", reset);\r\n    render.canvas.position = \"absolute\";\r\n}\r\n\r\n\r\n\r\n// Create top funnel\r\nlet leftBumper_x =  x0 - (funnelWallLength * Math.cos(funnelAngle) + funnelOpening) / 2;\r\nlet rightBumper_x = x0 + (funnelWallLength * Math.cos(funnelAngle) + funnelOpening) / 2;\r\nlet bumper_y = y_peg_start - ((funnelWallLength * Math.sin(funnelAngle)) / 2 - funnelTostartGap);\r\nconsole.log(bumper_y)\r\n\r\nlet createFunnel = () => {\r\n\r\n        let leftBumper = Bodies.rectangle(leftBumper_x, bumper_y, funnelWallLength, 3, {\r\n            restitution,\r\n            friction: 0,\r\n            frictionStatic: 0,\r\n            isStatic: true\r\n        });\r\n        Matter.Body.rotate(leftBumper, funnelAngle);\r\n\r\n        let rightBumper = Bodies.rectangle(rightBumper_x, bumper_y, funnelWallLength, 3, {\r\n            restitution: 0.6,\r\n            friction: 0,\r\n            frictionStatic: 0,\r\n            isStatic: true\r\n        });\r\n        Matter.Body.rotate(rightBumper, -funnelAngle);\r\n\r\n        Matter.Composite.add(world, [leftBumper, rightBumper]);\r\n}\r\n\r\n\r\nfunction make_balls() {\r\n\r\n    let total = nBalls;\r\n    clearInterval(intervalId);\r\n\r\n    intervalId = setInterval(() => {\r\n        let balls = [];\r\n        if (total-- > 0) {\r\n            const circle = Bodies.circle(x0 + (-0.5 + Math.random()) * 1, -20, ballRadius, {\r\n                label: \"circle\",\r\n                friction: 0.001,\r\n                restitution,\r\n                mass,\r\n                slop: 0.05,\r\n                density,\r\n                frictionAir,\r\n                sleepThreshold: Infinity,\r\n                render: {\r\n                    fillStyle: d3.schemeCategory10[total % 10]\r\n                }\r\n            });\r\n            // Matter.Events.on(circle, \"sleepStart\", () => {\r\n            //     Matter.Body.setStatic(circle, true);\r\n            // });\r\n            \r\n            Matter.Composite.add(world, circle);\r\n        }\r\n    }, generation_speed);\r\n}\r\n\r\nlet existingBalls = () => {\r\n    return world.bodies.filter((body) => body.label === \"circle\");\r\n  };\r\n\r\nconst makeStaticInterval = setInterval(() => {\r\n    existingBalls().forEach(function(ball) {\r\n      let ballHeight = ball.position.y;\r\n      let ballSpeed = ball.speed;\r\n      let minHeight = 350; // height - (floorHeight + wallHeight);\r\n      if (ballHeight > minHeight && ballSpeed < 0.02) {\r\n        // ball.render.opacity = 0.5;\r\n        Body.setStatic(ball, true);\r\n      }\r\n    });\r\n  }, 200);\r\n\r\n\r\nfunction make_pegs() {\r\n    const pegs = [];\r\n    const spacingY = ballRadius*4;\r\n    const spacingX = ballRadius*4;\r\n    var i, j, lastI;\r\n    for (i = 0; i < rows; i++) {\r\n        for (j = 1; j < i; j++) {\r\n            pegs.push(\r\n                // Bodies.rectangle(\r\n                Bodies.circle(\r\n                    x0 + (j * xGap - i * (xGap / 2)),\r\n                    y_peg_start + i * yGap,\r\n                    pegRadius,\r\n                    // ballRadius * 1.2,\r\n                    // 2,\r\n                    {\r\n                        angle: pegAngle,\r\n                        isStatic: true,\r\n                        friction: 0,\r\n                        frictionStatic: 0,\r\n                        render: {\r\n                            fillStyle: \"black\"\r\n                        },\r\n                    chamfer: {\r\n                        radius: [ballRadius * 0.2, ballRadius * 0.2, 0, 0]\r\n                    }\r\n        })\r\n            );\r\n        }\r\n        lastI = i;\r\n    }\r\n    // bins\r\n    for (i = 0; i < rows; i++) {\r\n        Matter.Composite.add(\r\n            world,\r\n            Bodies.rectangle(\r\n\r\n                x0 - (rows - 1) * (xGap / 2) + i * xGap,\r\n                y_peg_start + rows * yGap + gap_between_pegs_and_buckets + (height-(y_peg_start + rows * yGap))/2,\r\n                4,\r\n                (height-(y_peg_start + rows * yGap)),\r\n                {\r\n                    isStatic: true,\r\n                    density: 1000,\r\n                    mass: 1000,\r\n                    slop: 0,\r\n                    render: {\r\n                        fillStyle: \"#000000\",\r\n                        visible: true\r\n                    },\r\n                    chamfer: {\r\n                        radius: [ballRadius * 0.4, ballRadius * 0.4, 0, 0]\r\n                    }\r\n                }\r\n            )\r\n        );\r\n    }\r\n    // ground\r\n    Matter.Composite.add(\r\n        world,\r\n        Bodies.rectangle(400, height, 1000, 10, {\r\n            isStatic: true,\r\n            render: {\r\n                fillStyle: \"#000000\",\r\n                visible: true\r\n            }\r\n        })\r\n    );\r\n\r\n\r\n    World.add(world, pegs);\r\n}\r\n\r\nconst canvas = d3.select(\"#overlay\")\r\n.append(\"canvas\")\r\n.attr(\"id\", \"overlay\")\r\n.attr(\"position\", \"absolute\")\r\n.attr(\"width\", width)\r\n.attr(\"height\", height);\r\n\r\nconst ctx = canvas.node().getContext('2d');\r\ncanvas.on(\"mousedown\", reset);\r\n\r\nfunction drawNormalDistribution() {\r\n\r\n    ctx.strokeStyle = 'red';\r\n    ctx.lineWidth = 3;\r\n    ctx.beginPath();\r\n    ctx.moveTo(0, height - 5);\r\n\r\n    let yMultiplier = (height-(y_peg_start + rows * yGap));\r\n    var values = jStat(-4, 4, 210)[0]\r\n\r\n\r\n    for (var i in values) {\r\n        let value = values[i];\r\n        let density = jStat.normal.pdf(value, 0, 0.8);\r\n        ctx.lineTo((value + 4)*(width/8), height-(density*1.95*yMultiplier) - 5);\r\n        ctx.stroke();\r\n    }\r\n}\r\n\r\nfunction reset() {\r\n    Composite.clear(world);\r\n    Engine.clear(engine);\r\n    Render.stop(render);\r\n    Runner.stop(runner);\r\n    render.canvas.remove();\r\n    render.canvas = null;\r\n    render.context = null;\r\n    render.textures = {};\r\n    console.log('reset clicked');\r\n    \r\n    initialize();\r\n    scaleCanvas();\r\n    make_pegs();\r\n    make_balls();\r\n    createFunnel();\r\n    drawNormalDistribution();\r\n}\r\n\r\n\r\nfunction scaleCanvas() {\r\n    \r\n    var containerWidth = document.getElementById(\"quarto-document-content\").offsetWidth\r\n\r\n    var scaleFactor = containerWidth / (width * 1);\r\n    d3.select(\"canvas\")\r\n        // .style(\"transform\", `scale(${scaleFactor})`)\r\n        .style(\"width\", `${width * scaleFactor}px`)\r\n        .style(\"height\", `${height * scaleFactor}px`);\r\n    canvas\r\n        // .style(\"transform\", `scale(${scaleFactor})`)\r\n        .style(\"width\", `${width * scaleFactor}px`)\r\n        .style(\"height\", `${height * scaleFactor}px`);\r\n\r\n    // d3.select(\"#flex-container\")\r\n    //     .style(\"width\", `${Math.ceil(width * scaleFactor)}px`)\r\n\r\n    // d3.select(\"#container\")\r\n    //     .style(\"font-size\", `${1/scaleFactor}em`)\r\n}\r\n\r\n\r\n// Update the canvas position when the window is resized\r\nwindow.addEventListener('resize', function () {\r\n    scaleCanvas();\r\n});\r\n\r\n\r\n//\r\n\r\ninitialize();\r\nscaleCanvas();\r\nmake_pegs();\r\nmake_balls();\r\ncreateFunnel();\r\ndrawNormalDistribution();\r\n  \r\n}\r\n\r\n"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\n// code adapted from https://codepen.io/lmeetr/pen/NWPxomj\n\nMatter = require(\"https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js\")\n\njStat = require(\"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js\")\n\n\nboard = {\n\n\n// https://codesandbox.io/s/github/rjoxford/MatterJSGaltonBoard\n// https://www.tylermw.com/plinko-statistics-insights-from-the-bean-machine/\n\n\nlet width = 700;\nlet height = 600;\nlet x0 = width / 2;\n\n// ball properties\nconst ballRadius = 4;\nlet y_start = 0;\n\nlet generation_speed = 20;\nlet nBalls = 650;\nlet mass = 100;\nlet density = 1;\n\n// peg board properties\nlet rows = 20;\nlet y_peg_start = 20;\nlet pegGap = 6.5 * ballRadius;\nlet pegRadius = 0.5 * ballRadius;\nlet xGap = pegGap;\nlet yGap = 0.6 * xGap;\nlet pegAngle = 0; // Math.PI / 4;\nlet gap_between_pegs_and_buckets = 0;\n\n// funnel properties\nconst funnelTostartGap = yGap;\nconst funnelWallLength = 600;\nconst funnelAngle = Math.PI / 3;\nconst funnelOpening = 5 * ballRadius;\n\n// physics properties\nlet restitution = 0.5; // bounciness\nlet friction = 0.01;\nlet frictionAir = 0.045;\nlet frictionStatic = 0;\n\n\nlet intervalId;\n\n\nvar {Engine, Render, Runner, \n    Composite, Composites, Common, \n    MouseConstraint, Mouse, Events, \n    World, Bodies, Body} = Matter;\n\nlet engine, render, runner, world;\n\n\n\nfunction initialize() {\n    // create engine\n    engine = Engine.create({\n        enableSleeping: true\n    }),\n        world = engine.world;\n    \n    // create renderer\n    render = Render.create({\n        element: document.getElementById(\"board\"),\n        engine: engine,\n        options: {\n            width: width,\n            height: height,\n            background: \"transparent\",\n            wireframes: false,\n            showSleeping: false\n        }\n    });\n    Render.run(render);\n\n    // engine.gravity.y = 1;\n    // engine.timing.timeScale = 1;\n    \n    // create runner\n    runner = Runner.create();\n    Runner.run(runner, engine);\n    render.canvas.addEventListener(\"mousedown\", reset);\n    render.canvas.position = \"absolute\";\n}\n\n\n\n// Create top funnel\nlet leftBumper_x =  x0 - (funnelWallLength * Math.cos(funnelAngle) + funnelOpening) / 2;\nlet rightBumper_x = x0 + (funnelWallLength * Math.cos(funnelAngle) + funnelOpening) / 2;\nlet bumper_y = y_peg_start - ((funnelWallLength * Math.sin(funnelAngle)) / 2 - funnelTostartGap);\nconsole.log(bumper_y)\n\nlet createFunnel = () => {\n\n        let leftBumper = Bodies.rectangle(leftBumper_x, bumper_y, funnelWallLength, 3, {\n            restitution,\n            friction: 0,\n            frictionStatic: 0,\n            isStatic: true\n        });\n        Matter.Body.rotate(leftBumper, funnelAngle);\n\n        let rightBumper = Bodies.rectangle(rightBumper_x, bumper_y, funnelWallLength, 3, {\n            restitution: 0.6,\n            friction: 0,\n            frictionStatic: 0,\n            isStatic: true\n        });\n        Matter.Body.rotate(rightBumper, -funnelAngle);\n\n        Matter.Composite.add(world, [leftBumper, rightBumper]);\n}\n\n\nfunction make_balls() {\n\n    let total = nBalls;\n    clearInterval(intervalId);\n\n    intervalId = setInterval(() => {\n        let balls = [];\n        if (total-- > 0) {\n            const circle = Bodies.circle(x0 + (-0.5 + Math.random()) * 1, -20, ballRadius, {\n                label: \"circle\",\n                friction: 0.001,\n                restitution,\n                mass,\n                slop: 0.05,\n                density,\n                frictionAir,\n                sleepThreshold: Infinity,\n                render: {\n                    fillStyle: d3.schemeCategory10[total % 10]\n                }\n            });\n            // Matter.Events.on(circle, \"sleepStart\", () => {\n            //     Matter.Body.setStatic(circle, true);\n            // });\n            \n            Matter.Composite.add(world, circle);\n        }\n    }, generation_speed);\n}\n\nlet existingBalls = () => {\n    return world.bodies.filter((body) => body.label === \"circle\");\n  };\n\nconst makeStaticInterval = setInterval(() => {\n    existingBalls().forEach(function(ball) {\n      let ballHeight = ball.position.y;\n      let ballSpeed = ball.speed;\n      let minHeight = 350; // height - (floorHeight + wallHeight);\n      if (ballHeight > minHeight && ballSpeed < 0.02) {\n        // ball.render.opacity = 0.5;\n        Body.setStatic(ball, true);\n      }\n    });\n  }, 200);\n\n\nfunction make_pegs() {\n    const pegs = [];\n    const spacingY = ballRadius*4;\n    const spacingX = ballRadius*4;\n    var i, j, lastI;\n    for (i = 0; i < rows; i++) {\n        for (j = 1; j < i; j++) {\n            pegs.push(\n                // Bodies.rectangle(\n                Bodies.circle(\n                    x0 + (j * xGap - i * (xGap / 2)),\n                    y_peg_start + i * yGap,\n                    pegRadius,\n                    // ballRadius * 1.2,\n                    // 2,\n                    {\n                        angle: pegAngle,\n                        isStatic: true,\n                        friction: 0,\n                        frictionStatic: 0,\n                        render: {\n                            fillStyle: \"black\"\n                        },\n                    chamfer: {\n                        radius: [ballRadius * 0.2, ballRadius * 0.2, 0, 0]\n                    }\n        })\n            );\n        }\n        lastI = i;\n    }\n    // bins\n    for (i = 0; i < rows; i++) {\n        Matter.Composite.add(\n            world,\n            Bodies.rectangle(\n\n                x0 - (rows - 1) * (xGap / 2) + i * xGap,\n                y_peg_start + rows * yGap + gap_between_pegs_and_buckets + (height-(y_peg_start + rows * yGap))/2,\n                4,\n                (height-(y_peg_start + rows * yGap)),\n                {\n                    isStatic: true,\n                    density: 1000,\n                    mass: 1000,\n                    slop: 0,\n                    render: {\n                        fillStyle: \"#000000\",\n                        visible: true\n                    },\n                    chamfer: {\n                        radius: [ballRadius * 0.4, ballRadius * 0.4, 0, 0]\n                    }\n                }\n            )\n        );\n    }\n    // ground\n    Matter.Composite.add(\n        world,\n        Bodies.rectangle(400, height, 1000, 10, {\n            isStatic: true,\n            render: {\n                fillStyle: \"#000000\",\n                visible: true\n            }\n        })\n    );\n\n\n    World.add(world, pegs);\n}\n\nconst canvas = d3.select(\"#overlay\")\n.append(\"canvas\")\n.attr(\"id\", \"overlay\")\n.attr(\"position\", \"absolute\")\n.attr(\"width\", width)\n.attr(\"height\", height);\n\nconst ctx = canvas.node().getContext('2d');\ncanvas.on(\"mousedown\", reset);\n\nfunction drawNormalDistribution() {\n\n    ctx.strokeStyle = 'red';\n    ctx.lineWidth = 3;\n    ctx.beginPath();\n    ctx.moveTo(0, height - 5);\n\n    let yMultiplier = (height-(y_peg_start + rows * yGap));\n    var values = jStat(-4, 4, 210)[0]\n\n\n    for (var i in values) {\n        let value = values[i];\n        let density = jStat.normal.pdf(value, 0, 0.8);\n        ctx.lineTo((value + 4)*(width/8), height-(density*1.95*yMultiplier) - 5);\n        ctx.stroke();\n    }\n}\n\nfunction reset() {\n    Composite.clear(world);\n    Engine.clear(engine);\n    Render.stop(render);\n    Runner.stop(runner);\n    render.canvas.remove();\n    render.canvas = null;\n    render.context = null;\n    render.textures = {};\n    console.log('reset clicked');\n    \n    initialize();\n    scaleCanvas();\n    make_pegs();\n    make_balls();\n    createFunnel();\n    drawNormalDistribution();\n}\n\n\nfunction scaleCanvas() {\n    \n    var containerWidth = document.getElementById(\"quarto-document-content\").offsetWidth\n\n    var scaleFactor = containerWidth / (width * 1);\n    d3.select(\"canvas\")\n        // .style(\"transform\", `scale(${scaleFactor})`)\n        .style(\"width\", `${width * scaleFactor}px`)\n        .style(\"height\", `${height * scaleFactor}px`);\n    canvas\n        // .style(\"transform\", `scale(${scaleFactor})`)\n        .style(\"width\", `${width * scaleFactor}px`)\n        .style(\"height\", `${height * scaleFactor}px`);\n\n    // d3.select(\"#flex-container\")\n    //     .style(\"width\", `${Math.ceil(width * scaleFactor)}px`)\n\n    // d3.select(\"#container\")\n    //     .style(\"font-size\", `${1/scaleFactor}em`)\n}\n\n\n// Update the canvas position when the window is resized\nwindow.addEventListener('resize', function () {\n    scaleCanvas();\n});\n\n\n//\n\ninitialize();\nscaleCanvas();\nmake_pegs();\nmake_balls();\ncreateFunnel();\ndrawNormalDistribution();\n  \n}\n\n"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -712,9 +683,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -779,6 +764,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
