@@ -6,6 +6,7 @@ import * as CANNON from 'https://cdn.skypack.dev/cannon-es';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 import { createSumsHistogram, updateSumsHistogram, resetChart } from './chart.js';
+import { scaleCanvas } from '/utils/utils.js'
 
 const canvasWidth = 500;
 const canvasHeight = 300;
@@ -30,7 +31,7 @@ const colorPal = [
 ];
 
 
-
+const container = d3.select("#content");
 const canvasEl = document.querySelector('#canvas');
 const scoreResult = document.querySelector('#score-result');
 const rollBtn = document.querySelector('#roll-btn');
@@ -39,8 +40,8 @@ const add100Btn = document.querySelector('#add-100');
 const add1000Btn = document.querySelector('#add-1000');
 const resetChartBtn = document.querySelector('#reset-chart');
 
-canvasEl.width = canvasWidth;
-canvasEl.height = canvasHeight;
+// canvasEl.width = canvasWidth;
+// canvasEl.height = canvasHeight;
 
 canvasEl.addEventListener('mousedown', onMouseDown, false);
 canvasEl.addEventListener('mousemove', onMouseMove, false);
@@ -79,8 +80,8 @@ overlay
 .style("position", "absolute")
 .style("left", "5%")
 .style("top", "5%")
-.style("width", (canvasWidth * 0.9) + "px")
-.style("height", (canvasHeight * 0.9) + "px")
+.style("width", "90%")
+.style("height", "90%")
 // .style("margin", "auto")
     .style("z-index", -1)
 
@@ -202,6 +203,7 @@ function createFloor() {
         new THREE.PlaneGeometry(1000, 1000),
         // new THREE.MeshStandardMaterial({
         //     color: "#ccc",
+        //     opacity: 0.5
         // }),
         new THREE.ShadowMaterial({
             opacity: 0.05,
@@ -535,11 +537,21 @@ function render() {
 }
 
 function updateSceneSize() {
-    // var availableWidth = window.visualViewport.width;
-    // document.body.style.width // scale using Math.min(...)
-    camera.aspect = canvasWidth / canvasHeight;
+    const availableWidth = document.getElementById("quarto-document-content").offsetWidth;;
+    const scaleFactor = Math.min(1, availableWidth / canvasWidth);
+    const newWidth = canvasWidth * scaleFactor;
+    const newHeight = canvasHeight * scaleFactor;
+    
+    camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(canvasWidth, canvasHeight);
+    renderer.setSize(newWidth, newHeight);
+    // document.getElementById("content").style.width = newWidth;
+    // document.getElementById("content").style.height = newHeight;
+
+    // container.attr("width", newWidth);
+    container
+        .style("width", newWidth + "px")
+        .style("height", newHeight + "px");
 }
 
 function throwDice() {
@@ -756,3 +768,5 @@ function onTouchEnd(event) {
     event.preventDefault();
     onMouseUp(event);
 }
+
+// scaleCanvas("quarto-document-content", width, height)

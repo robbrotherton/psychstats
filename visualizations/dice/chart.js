@@ -2,8 +2,10 @@
 export function createSumsHistogram(width, height) {
     const svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", width * 0.92)
-        .attr("height", height)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + (width * 0.92) + " " + height)
+        // .attr("width", width * 0.92)
+        // .attr("height", height)
         // .style("background", "pink")
         .style("margin", "0 auto")
 
@@ -21,9 +23,9 @@ export function updateSumsHistogram(svg, data, params) {
       }, 0);
     
     d3.select("#throw-counter").text(totalRolls);
-    const svgWidth = svg.attr("width");
+    const svgWidth = 500 * 0.92; //svg.attr("width");
     const barWidth = svgWidth / maxSum;
-
+      
     const x = d3.scaleLinear()
         .domain([params.numberOfDice, params.numberOfDice * 6])
         .range([0, svgWidth- barWidth])

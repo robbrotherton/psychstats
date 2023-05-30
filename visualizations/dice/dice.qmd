@@ -6,9 +6,9 @@ include-in-header:
 
 <div style="text-align: center;">
 <div class="ui-controls">
-<button id="roll-btn">Throw the dice</button>
-<button id="add-100">+100</button>
-<button id="add-1000">+1,000</button>
+<button class="btn btn-outline-primary" id="roll-btn">Throw the dice</button>
+<button class="btn btn-outline-primary" id="add-100">+100</button>
+<button class="btn btn-outline-primary" id="add-1000">+1,000</button>
 <label for="nDice">Number of dice:</label>
 <select name="nDice" id="nDice">
 	<option value="1">1</option>
@@ -20,17 +20,17 @@ include-in-header:
 </select>
 </div>
 
-<div class="content" style="width: 500px; height: 300px; position: relative; margin: 0 auto;">
+<div id="content" style="width: 500px; height: 300px; position: relative; margin: 0 auto; text-align: left;">
 <canvas id="canvas"></canvas>
 <div id="overlay"></div>
 <!-- border: 2px solid #D77; border-radius: 5px;  -->
 <div class="score" style="position: absolute; width: 100%; bottom: 4%; text-align: center;"><span
 				id="score-result"></span></div>
-</div>
-<div id="chart-container"></div>
+<div id="chart-container" style="margin-top: -5px;"></div>
 <div class="throws" style="width: 100%; text-align: left;">
 <span>Throws: <span id="throw-counter"></span></span>
-<button id="reset-chart" style="float: right;">Reset</button>
+<button class="btn btn-outline-primary" id="reset-chart" style="float: right;">Reset</button>
+</div>
 </div>
 	
 </div>
