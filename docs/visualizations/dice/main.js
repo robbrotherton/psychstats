@@ -6,7 +6,6 @@ import * as CANNON from 'https://cdn.skypack.dev/cannon-es';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 import { createSumsHistogram, updateSumsHistogram, resetChart } from './chart.js';
-import { scaleCanvas } from '/utils/utils.js'
 
 const canvasWidth = 500;
 const canvasHeight = 300;
