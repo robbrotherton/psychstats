@@ -43,5 +43,11 @@
   },
   "games/guess-the-correlation.qmd": {
     "guess-the-correlation.html": "31980355"
+  },
+  "visualizations/mean-balance-beam.qmd": {
+    "mean-balance-beam.html": "95471c7c"
+  },
+  "visualizations/least-squared-error.qmd": {
+    "least-squared-error.html": "ef581ce6"
   }
 }

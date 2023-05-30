@@ -7,11 +7,15 @@ toc: false
 
 ## Visualizations
 
-Interactive visualizations of fundamental statistical concepts.
+[Interactive visualizations of fundamental statistical concepts.]{.lead}
+
+[Central Tendency and the Mean](visualizations/mean-balance-beam.qmd)
 
 [Sampling](visualizations/sampling/sampling.qmd)
 
 [(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)
+
+[Regression: The Least Squared Error Method](visualizations/least-squared-error.qmd)
 
 [Quincunx](visualizations/quincunx.qmd)
 
@@ -20,7 +24,7 @@ Interactive visualizations of fundamental statistical concepts.
 
 ## Games
 
-Some 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.
+[Some 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.]{.lead}
 
 [Guess the Correlation](games/guess-the-correlation.qmd)
 

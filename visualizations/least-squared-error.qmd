@@ -1,0 +1,177 @@
+---
+title: Least Squared Error
+---
+
+# Regression: The Least Squared Error Solution
+
+<label>Intercept ($a$): <span id="a-output">hi</span>
+<input id="a-control" type="range" class="form-range" value="4.5" min="0" max="10" step="0.01"></label>
+
+<label>Slope ($b$): <span id="b-output">hi</span>
+<input id="b-control" type="range" class="form-range" value="0.5" min="-1" max="1" step="0.01"></label>
+
+::: {#error-plot-container}
+:::
+
+```{ojs}
+
+changable_chart = {
+
+  const w = 600;
+  const h = 500;
+  
+  const margin = {top: 20, right: 20, left: 110, bottom: 75}
+
+  const x_values = [4,5,7,8,11]
+  const y_values = [5,8,8,10,9]
+  const yhat_values = [0,0,0,0,0]
+  
+  const data = [{xVal: 4, yVal: 5},
+                {xVal: 5, yVal: 8},
+                {xVal: 7, yVal: 8},
+                {xVal: 8, yVal: 10},
+                {xVal: 11, yVal: 9}]
+                
+  const aInput = d3.select("#a-control")
+  const bInput = d3.select("#b-control")
+  
+  aInput.on("input", drawFitLine);
+  bInput.on("input", drawFitLine);
+  
+  const x = d3.scaleLinear()
+    .range([margin.left, w - margin.right])
+    .domain([0, 12])
+  const y = d3.scaleLinear()
+    .range([h - margin.bottom, margin.top])
+    .domain([0, 10])
+  
+  const xAxis = d3.axisBottom(x);
+  const yAxis = d3.axisLeft(y);
+  
+  
+  const svg = d3.select("#error-plot-container").append("svg")
+    .attr("width", w)
+    .attr("height", h)
+    
+  const axes = svg.append("g")
+  const axisFontSize = "0.7em"
+  axes.append("g").attr("transform", `translate(0, ${h - margin.bottom})`).call(xAxis).style("font-size", axisFontSize).attr("font-family", "Times New Roman");
+  axes.append("g").attr("transform", `translate(${margin.left}, 0)`).call(yAxis).style("font-size", axisFontSize).attr("font-family", "Times New Roman");
+  
+  const axisTitles = svg.append("g")
+    .style("font-size", "0.8em")
+    .style("font-family", "Times New Roman")
+    .style("fill", "var(--text-color)")
+  
+  axisTitles.append("text")
+    .attr("transform", `translate(${margin.left + (w - margin.left - margin.right) / 2}, ${h - 10})`).text("Sleep duration")
+    .attr("text-anchor", "middle");
+  
+  axisTitles.append("text")
+    .attr("transform", `translate(0, ${margin.top + (h - margin.top - margin.bottom) / 2})`)
+    .text("Score")
+    
+  
+  const residuals = svg.append("g")
+  residuals.selectAll("line").data(data).enter()
+      .append("line")
+        .attr("x1", d => x(d.xVal))
+        .attr("x2", d => x(d.xVal))
+        .attr("y1", d => y(d.yVal))
+        <!-- .attr("y2", d => y(d.yVal)) -->
+        .style("stroke", "red")
+        .style("stroke-width", 2)
+        .attr("stroke-dasharray", [5, 3])
+        
+  const fitLine = svg.append("line")
+    .style("stroke", "dodgerblue")
+    .style("stroke-width", 3)
+    
+  const dots = svg.append("g")
+  const squares = svg.append("g")
+  const ssResidualSquare = svg.append("g").append("polygon")
+    .style("fill", "plum")
+    .style("opacity", 0.5)
+    
+  dots.selectAll("circle").data(data).enter().append("circle")
+    .attr("cx", d => x(d.xVal))
+    .attr("cy", d => y(d.yVal))
+    .attr("r", 5)
+    .style("fill", "var(--text-color)")
+    
+  squares.selectAll("polygon").data(data).enter()
+    .append("polygon")
+    .style("fill", "plum")
+    .style("opacity", 0.5)
+    
+  function drawFitLine() {
+    var a = Number(aInput.property("value"));
+    d3.select("#a-output").text(a);
+    var b = Number(bInput.property("value"));
+    d3.select("#b-output").text(b);
+    
+    var yhat1 = a
+    var yhat2 = b * 12 + a
+    
+    fitLine
+      .attr("x1", x(0))
+      .attr("x2", x(12))
+      .attr("y1", y(yhat1))
+      .attr("y2", y(yhat2))
+      
+    var ssResidual = 0;
+    
+    for(var i = 0; i < data.length; i++) {
+      var yHat = b * data[i].xVal + a;
+      var residual = data[i].yVal - yHat
+      data[i].yHat = yHat;
+      data[i].res = residual;
+      
+      ssResidual += Math.pow(residual, 2);
+    }
+    
+    residuals.selectAll("line")
+        .attr("y2", d => y(d.yHat))
+        
+    squares.selectAll("polygon")
+      .attr("points", d => [[x(d.xVal), y(d.yVal)],
+                            [x(d.xVal), y(d.yHat)],
+                            [x(d.xVal + Math.abs(d.res)), y(d.yHat)],
+                            [x(d.xVal + Math.abs(d.res)), y(d.yVal)]])
+                            
+    ssResidualSquare
+    .attr("points", [[x(9), y(3)],
+                     [x(9), y(3 - Math.sqrt(ssResidual))],
+                     [x(9 + Math.sqrt(ssResidual)), y(3 - Math.sqrt(ssResidual))],
+                     [x(9 + Math.sqrt(ssResidual)), y(3)]])
+  }
+  
+  drawFitLine();
+  
+  svg.append("polygon")
+    .attr("points", [[x(9), y(3)],
+                     [x(9), y(3 - Math.sqrt(6.5))],
+                     [x(9 + Math.sqrt(6.5)), y(3 - Math.sqrt(6.5))],
+                     [x(9 + Math.sqrt(6.5)), y(3)]])
+    .style("fill", "none")
+    .style("stroke", "black")
+    .style("stroke-dasharray", [5, 3])
+    
+
+  
+
+}
+```
+
+<style>
+
+.form-range {
+    width: 200px;
+}
+
+</style>
+
+
+### About
+
+Explanation goes here.

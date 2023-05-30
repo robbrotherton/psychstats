@@ -1,0 +1,387 @@
+---
+title: "Central Tendency"
+---
+
+# Central Tendency: The Mean as the Balance Point
+
+::: {#controls}
+<button id="showDevs">Show/hide deviations</button>
+<button id="showDevsSq">Show/hide squared deviations</button>
+:::
+
+
+::: {#chart}
+:::
+
+
+```{ojs}
+
+width = 600
+height = 600
+n_boxes = 5
+scale_width = 11
+box_size = width / scale_width
+beam_height = box_size / 4
+radius = box_size
+
+// multiply the deviations lined up at the bottom to fit on the screen
+multiplier = 6/n_boxes
+
+box_data_ = make_box_data(n_boxes)
+
+
+chart = {
+
+  let deviations_hidden = false;
+  let squared_deviations_hidden = false;
+  
+  <!-- const controls = d3.select("#controls") -->
+  <!-- const button = controls -->
+  <!--     .append("input") -->
+  <!--     .attr("type", "button") -->
+  <!--     .attr("name", "showDevs") -->
+  <!--     .attr("value", "Toggle") -->
+  <!--     .attr("onclick", noDevs) -->
+
+  function round_position(x) {
+    let interval = width / scale_width
+    return Math.round(x / interval)*interval
+  }
+
+  function rounded_position_index(x) {
+    let interval = width / scale_width
+    let x0 = Math.round(x / interval)*interval
+    return Math.round(x0/(width/scale_width))  
+  }
+  
+  let positions = d3.range(scale_width).map(i => (0))
+
+  function stack_boxes() {
+    for (let i = 0; i < box_data.length; i++) {
+      box_data[i].level = positions[box_data[i].x0]
+      positions[box_data[i].x0]++
+    }
+  }
+
+  let starting_boxes = [1, 2, 6, 6, 10]
+  
+  // let box_data = d3.range(n_boxes).map(i => ({
+  //     // x: (Math.random() * (width - box_size * 2) + box_size),
+  //     x0: Math.floor(Math.random() *   scale_width),
+  //     y: -box_size, // height/2 - beam_height/2 - radius,
+  //     color: d3.schemeCategory10[i % 10],
+  //     level: 0
+  //     }))
+      
+  let box_data = box_data_;
+
+  for (let i = 0; i < box_data.length; i++) box_data[i].x = box_data[i].x0 * box_size
+  
+  
+  let mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length
+  let pivot = mean
+  
+  box_data = box_data.sort(function(a, b) { return Math.abs(a.x - pivot) - Math.abs(b.x - pivot); })
+  for (let i = 0; i < box_data.length; i++) {
+    box_data[i].id = i
+  }
+    
+    stack_boxes()
+    
+    
+  const svg = d3.select("#chart").append("svg")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("stroke-width", 2)
+
+  const x_ = d3.scaleLinear()
+    .range([0, width])
+    .domain([0, 10])
+    
+  // draw the ground
+  svg.append("rect")
+    .attr("width", width)
+    .attr("height", 50)
+    .attr("fill", "#f0f0f0")
+    .attr("stroke", "none")
+    .attr("transform", `translate(0, ${height - 51})`)
+
+  const beam_and_boxes = svg.append("g")
+    .attr("transform", `translate(0, ${height - 50 - radius - beam_height})`)
+  
+  // draw the beam
+  beam_and_boxes.append("rect")
+    .attr("width", width)
+    .attr("height",  beam_height)
+    .attr("rx", 3)
+    .attr("fill", "black")
+    // .attr("transform", `translate(0, ${height/2 - beam_height / 2})`)
+
+  const boxes = beam_and_boxes.append("g")
+  const deviations = beam_and_boxes.append("g")
+  const deviations_vertical = deviations.append("g")
+  const deviations_horizontal = deviations.append("g")
+  const deviations_sum = svg.append("g").attr("transform", `translate(0, ${height - 25})`)
+  const deviations_sum_negative = deviations_sum.append("g").attr("transform", `translate(0, -10)`)
+  const deviations_sum_positive = deviations_sum.append("g").attr("transform", `translate(0, 10)`)
+  
+  // draw the boxes
+  boxes.selectAll("rect")
+    .data(box_data)
+    .join("rect")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y - d.level*box_size)
+      .attr("width", box_size)
+      .attr("height", box_size)
+      .attr("rx", 1)
+      .attr("fill", d => d.color)
+      .attr("stroke", null)
+      .call(d3.drag().on("start", start_dragging_box)
+                     .on("drag", dragging_box)
+                     .on("end", stop_dragging_box));
+  
+  // draw a circle at the true mean point
+  const circle = beam_and_boxes.append("circle")
+    .attr("cx", mean)
+    .attr("cy", beam_height/2)
+    .attr("r", 5)
+    .attr("fill", "#777777")
+    .call(d3.drag()
+             .on("start", start_dragging_mean)
+             .on("drag", dragging_mean)
+             .on("end", stop_dragging_mean))
+  
+  // draw a triangle at the pivot point
+  const triangle = svg.append("polygon")
+    .attr("points", [[0, -radius/2], [radius/2, radius/2], [-radius/2, radius/2]])
+    .attr("fill", "red")
+    .attr("transform", `translate(${pivot}, ${height-50-radius/2})`)
+    .call(d3.drag()
+             .on("start", start_dragging_mean)
+             .on("drag", dragging_mean)
+             .on("end", stop_dragging_mean))
+  
+    
+  draw_deviations()
+  
+
+  function start_dragging_mean(event, d) {triangle.attr("fill", "dodgerblue")}
+  
+  function stop_dragging_mean(event, d) {triangle.attr("fill", "red")}
+  
+  function dragging_mean(event, d) {
+      pivot = event.x
+      tip_scale()
+  }
+  
+  function tip_scale() {
+  
+    let angle = Math.abs((mean - pivot)*0.5);
+    let hypotenuse, direction;
+    
+    if (pivot < mean) {
+      hypotenuse = width - pivot;
+      direction = 1;
+    } else {
+      hypotenuse = pivot;
+      direction = -1;
+    }
+    
+    let tri_angle = 90 - (Math.acos(radius / hypotenuse) * 180/Math.PI)
+    angle = direction * (Math.min(angle, tri_angle))
+    
+      triangle
+        .attr("transform", `translate(${pivot}, ${height-50-radius/2})`)
+      beam_and_boxes
+        .attr("transform", `translate(0, ${height-50-radius-beam_height}) rotate(${angle}, ${pivot}, ${0})`)
+      draw_deviations()
+  }
+
+  
+  function start_dragging_box(event, d) {
+    d3.select(this).raise().attr("stroke", "black")
+    // console.log("x:" + d.x + " x0:" + d.x0 + " level:" + d.level)
+  }
+
+  function dragging_box(event, d) {
+    box_data[d.id].x = event.x
+    // box_data[d.id].x0 = round_position(box_data[d.id].x) + box_size/2
+    
+    let current_position = box_data[d.id].x0
+    let current_level = box_data[d.id].level
+    let new_position = rounded_position_index(event.x)
+    
+    if(new_position != current_position) {
+      console.log("moved! from " + current_position + " to " + new_position)
+      
+      // update the box's position
+      box_data[d.id].x0 = new_position
+      
+      // now this box should go on top of the stack for new_position
+      box_data[d.id].level = positions[new_position]
+      
+      // and update the total number of boxes in that position
+      positions[new_position]++
+      
+      // for the old position, reduce the number of boxes by one, and
+      // bump down any boxes that had a higher level that this box
+      positions[current_position]--
+      for (let i = 0; i < box_data.length; i++) {
+        if (d.id==i) continue
+        if (box_data[i].x0==current_position && box_data[i].level > current_level) {
+            box_data[i].level--
+            console.log("movin on down")
+        } 
+      }
+    }
+    
+    tip_scale()
+    // draw_deviations()
+  }
+
+  function stop_dragging_box(event, d) {
+    d3.select(this).attr("stroke", null)
+  }
+  
+  
+
+
+  function draw_deviations() {
+    
+    mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length
+    
+    boxes.selectAll("rect")
+      .attr("x", d => d.x0 * box_size)
+      .attr("y", d => d.y - d.level*box_size)
+    
+    circle.attr("cx", mean)
+    
+    // calculate deviations
+    for (let i = 0; i < box_data.length; i++) box_data[i].dev = (box_data[i].x0*box_size + (box_size/2)) - pivot
+    
+    let deviations_negative = box_data.filter(function(d){ return d.dev < 0})
+    for (let i = 0; i < deviations_negative.length; i++) {
+      if (i==0) deviations_negative[i].dev_start = 0
+      else deviations_negative[i].dev_start = deviations_negative[i-1].dev_end
+      deviations_negative[i].dev_end = deviations_negative[i].dev_start + Math.abs(deviations_negative[i].dev)
+    }
+    
+    let deviations_positive = box_data.filter(function(d){ return d.dev > 0})
+    for (let i = 0; i < deviations_positive.length; i++) {
+      if (i==0) deviations_positive[i].dev_start = 0
+      else deviations_positive[i].dev_start = deviations_positive[i-1].dev_end
+      deviations_positive[i].dev_end = deviations_positive[i].dev_start + Math.abs(deviations_positive[i].dev)
+    }
+    
+    deviations_vertical.selectAll("line")
+      .data(box_data)
+      .join("line")
+        .attr("x1", d => box_size * d.x0 + box_size/2)
+        .attr("x2", d => box_size * d.x0 + box_size/2)
+        .attr("y1", d => d.y - d.level * box_size)
+        .attr("y2", d => d.y - box_size/2 - d.level * box_size - d.id * 25)
+        .attr("stroke", "black")
+        .attr("stroke-dasharray", [5, 5])
+        
+    deviations_vertical
+      .append("line")
+      .attr("x1", pivot).attr("x2", pivot)
+      .attr("y1", 0).attr("y2", -height)
+      .attr("stroke", "red").attr("stroke-dasharray", [10, 10])
+
+    deviations_horizontal.selectAll("line")
+      .data(box_data)
+      .join("line")
+        .attr("x1", d => box_size * d.x0 + box_size/2)
+        .attr("x2", pivot)
+        .attr("y1", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)
+        .attr("y2", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)
+        .attr("stroke", d => d.color)
+        .attr("stroke-width", 3)
+        
+    if (!squared_deviations_hidden) update_squared_deviations();
+    
+
+    deviations_sum_negative.selectAll("line")
+      .data(deviations_negative)
+      .join("line")
+        .attr("x1", d => d.dev_start * multiplier)
+        .attr("x2", d => d.dev_end * multiplier)
+        .attr("stroke", d => d.color)
+        .attr("stroke-width", 8)
+        
+    deviations_sum_positive.selectAll("line")
+      .data(deviations_positive)
+      .join("line")
+      .attr("x1", d => d.dev_start * multiplier)
+        .attr("x2", d => d.dev_end * multiplier)
+        .attr("stroke", d => d.color)
+        .attr("stroke-width", 8)
+  };
+  
+  
+  function update_squared_deviations() {
+      deviations_horizontal.selectAll("rect")
+      .data(box_data)
+      .join("rect")
+        .attr("x", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })
+        .attr("y", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))
+        .attr("width", d => Math.abs(d.dev))
+        .attr("height", d => Math.abs(d.dev))
+        .attr("height", function(d){if(squared_deviations_hidden){return 0} else{return Math.abs(d.dev)}})
+        .attr("fill", d => d.color)
+        .attr("opacity", 0.5)
+        .attr("stroke", "none")
+  }
+  
+  
+
+  function noDevs() {
+    deviations_hidden = !deviations_hidden
+    deviations.attr("opacity", Number(!deviations_hidden))
+  }
+  
+  function noDevsSq() {
+    squared_deviations_hidden = !squared_deviations_hidden
+  
+    if (squared_deviations_hidden) {
+      deviations_horizontal
+        .selectAll("rect")
+        .data(box_data)
+        .transition().duration(1000)
+        .attr("y", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)
+        .attr("height", 0)
+    } else {
+        deviations_horizontal
+          .selectAll("rect")
+          .data(box_data)
+          .attr("x", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })
+          .attr("width", d => Math.abs(d.dev))
+          .transition().duration(1000)
+          .attr("y", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))
+          .attr("height", d => Math.abs(d.dev))
+    }
+    
+  }
+
+  noDevs()
+  noDevsSq()
+  d3.select("#showDevs").on("click", noDevs)
+  d3.select("#showDevsSq").on("click", noDevsSq)
+
+
+}
+
+```
+
+
+```{ojs}
+function make_box_data(n) {
+    return d3.range(n).map(i => ({
+      // x: (Math.random() * (width - box_size * 2) + box_size),
+      x0: Math.floor(Math.random() *   scale_width),
+      y: -box_size, // height/2 - beam_height/2 - radius,
+      color: d3.schemeCategory10[i % 10],
+      level: 0
+      }))
+  }
+```
