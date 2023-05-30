@@ -1,0 +1,264 @@
+
+
+<div id="game-container" style="max-width: 1000px; margin: 0 auto;">
+    
+<div id="scores" style="width: 90%; height: 0; margin: 0 auto; text-align: center;">
+<div id="p1">
+<input class="points-label" onClick="this.select();" value="Player 1" id="userid" />
+<div id="p1-points" class="points"></div>
+</div>
+<div id="p2">
+<input class="points-label" onClick="this.select();" value="Player 2" id="userid" />
+<div id="p2-points" class="points"></div>
+</div>
+</div>
+
+<div class="svg-container"></div>
+    
+
+<div id="guesses">
+<div><input id="p1-guess" class="guess" type="number" min=0 max=1 step=0.01></div>
+<div><button id="refresh" type="button" class="btn btn-primary">Guess</button></div>
+<div><input id="p2-guess" class="guess" type="number" min=0 max=1 step=0.01></div>
+</div>
+
+<div id="results" style="width: 70%; margin: 0 auto; display: flex; justify-content: space-between; text-align: center;">
+<div id="p1-error" class="resettable" style="text-align: center;"></div>
+<div id="true-r" class="resettable" style="font-size: 1.5em;"></div>
+<div id="p2-error" class="resettable"></div>
+</div>
+
+</div>
+
+<!-- <script src="guess-the-correlation.js"></script> -->
+
+
+```{ojs}
+
+jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
+
+game = {
+const f = d3.format(".2f");
+const res = d3.format("+.2f");
+const line = d3.line();
+
+
+// SVG
+
+const w = 500;
+const h = 350;
+const margin = {top: 10, right: 10, bottom: 30, left: 10}
+const radius = 4;
+var r;
+var p1error, p2error, winnerIndex;
+var scores = [0,0];
+
+
+const scoreValues = [d3.select("#p1-points"), d3.select("#p2-points")];
+
+
+const svg = d3.select(".svg-container")
+.append("svg")
+.attr("class", "svg-content")
+.attr("preserveAspectRatio", "xMinYMin meet")
+.attr("viewBox", `0 0 ${w} ${h}`);
+
+const axisLine = svg.append("path")
+    .style("stroke", "black").style("fill", "none")
+    .style("stroke-linecap", "square").style("stroke-width", 2);
+    
+axisLine.attr("d", line([[margin.left, margin.top],
+                        [margin.left, h - margin.bottom],
+                        [w - margin.right, h - margin.bottom]]));
+                              
+
+function makeChart() {
+    var data = makeData(100);
+
+    var x = d3.scaleLinear()
+        .domain([d3.min(data, d => d.xVal), d3.max(data, d => d.xVal)])
+        .range([margin.left + 2*radius, w - margin.right - 2*radius])
+    const y = d3.scaleLinear()
+        .domain([d3.min(data, d => d.yVal), d3.max(data, d => d.yVal)])
+        .range([h - margin.bottom - 2*radius, margin.top + 2*radius])
+
+    svg.selectAll("circle").remove();
+    svg.selectAll("circle").data(data).enter()
+        .append("circle")
+        .attr("cx", d => x(d.xVal))
+        .attr("cy", d => y(d.yVal))
+        .attr("r", radius)
+        .style("fill", "plum")
+        .style("opacity", 0)
+        .transition().delay((d,i) => i * 10).duration(0)
+            .style("opacity" ,1)
+ 
+}
+
+function adjudicateGuesses() {
+    var p1guess = d3.select("#p1-guess").property("value");
+    var p2guess = d3.select("#p2-guess").property("value");
+    p1error = r - p1guess;
+    p2error = r - p2guess;
+
+    var errors = [Math.abs(p1error), Math.abs(p2error)]
+    winnerIndex = errors.indexOf(Math.min(...errors));
+    
+    showResults();
+    addPoint(winnerIndex);
+    d3.select("#refresh").text("Next").on("click", reset);
+}
+
+function showResults() {
+    let winner = Array(2).fill("");
+    winner[winnerIndex] = "<span style='font-size: 2em;'>👑</span>";
+    d3.select("#p1-error").html(res(p1error * -1) + "<br>" + winner[0]);
+    d3.select("#p2-error").html(res(p2error * -1) + "<br>" + winner[1]);
+    d3.select("#true-r").text("True r = " + f(r));
+}
+
+d3.select("#p1-points").selectAll("div").data([0,1,2]).enter().append("span").classed("placeholder-coin", true).text("🪙")
+d3.select("#p2-points").selectAll("div").data([0,1,2]).enter().append("span").classed("placeholder-coin", true).text("🪙")
+
+function addPoint(i) {
+    scores[i]++;
+    if(scores[i] > 2) {
+        // declareWinner(i);
+        scoreValues[i].selectAll("span").filter(d => d < scores[i]).classed("placeholder-coin", false);
+    } else {
+        scoreValues[i].selectAll("span").filter(d => d < scores[i]).classed("placeholder-coin", false);
+    }
+}
+
+function declareWinner(winnerIndex) {
+    // alert("Player " + (winnerIndex + 1) + " wins!!!")
+    // window.location.reload();
+}
+
+
+function reset() {
+    d3.selectAll(".resettable").html("")
+    d3.selectAll(".guess").property("value", "");
+    
+    d3.select("#refresh").text("Guess").on("click", adjudicateGuesses);
+    makeChart();
+}
+
+// d3.selectAll(".points-label").each(() => this.on("click", this.select()));
+
+function makeData(n) {
+    let arr = [];
+    let arrX = [];
+    let arrY = [];
+
+    var target_r = Math.random();
+    console.log("target r = " + target_r);
+
+    for (var i = 0; i < n; i++) {
+        var A = jStat.normal.inv(Math.random(), 0, 1);
+        var B = jStat.normal.inv(Math.random(), 0, 1);
+        
+        var X = A;
+        var Y = A * target_r + B * Math.pow(1 - Math.pow(target_r, 2), 0.5);
+        
+        arr.push({xVal: X, yVal: Y});
+        arrX.push(X);
+        arrY.push(Y);
+    }
+    // var stats = new Statistics(arr, {xVal: 'metric', yVal: 'metric'});
+    // r = stats.correlationCoefficient('xVal', 'yVal').correlationCoefficient;
+    console.log(arrX);
+    r = jStat.corrcoeff(arrX, arrY);
+    console.log("Actual r = " + r);
+    return arr;
+}
+
+d3.select("#refresh").on("click", adjudicateGuesses);
+makeChart();
+
+}
+
+```
+
+
+<style>
+/* body > div {
+    font-family: Rubik Mono One;
+} */
+.points-label {
+    border: 0px;
+    text-align: center;
+}
+.placeholder-coin {
+    opacity: 0.1;
+    filter: grayscale(1);
+}
+
+#p1, #p2 {
+    width: 50%;
+    font-size: calc(max(2vw, 2em));
+}
+#p1 {
+    float: left;
+}
+#p2 {
+    float: right;
+}
+
+#guesses {
+    width: 100%; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-evenly;
+    font-size: 2em;
+}
+
+.guess {
+    /* width: 50px; */
+    /* margin-left: 1em;
+    margin-right: 1em; */
+    text-align: center;
+}
+
+#refresh {
+    font-size: 0.8em;
+    width: 4em;
+}
+
+
+@media only screen and (max-width: 650px) {
+    #scores {width: 100%;}
+    #p1, #p2 {
+        width: 100%;
+        font-size: 1.5em;
+    }
+    .points-label {float: left; width: 50%; text-align: right;}
+    .points {float: right; width: 50%; text-align: left; transform: translateY(-10%);}
+}
+
+@media (max-width: 400px) {
+    #p1, #p2 {
+        width: 100%;
+        font-size: 1.5em;
+    }
+    .points-label {float: left; width: 50%; text-align: right;}
+    .points {float: right; width: 50%; text-align: left; transform: translateY(-10%);}
+}
+
+.svg-container {
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 70%;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.svg-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>

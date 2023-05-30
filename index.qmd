@@ -22,6 +22,8 @@ Interactive visualizations of fundamental statistical concepts.
 
 Some 'games' (I'm using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.
 
+[Guess the Correlation](games/guess-the-correlation.qmd)
+
 [Triplett](games/triplett/triplett.qmd)
 
 [Jellybeans](games/jellybeans.qmd)

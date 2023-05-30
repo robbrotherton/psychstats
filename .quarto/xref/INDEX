@@ -37,5 +37,11 @@
   },
   "visualizations/dice/dice.qmd": {
     "dice.html": "f71d0fcc"
+  },
+  "games/correlation/guess-the-correlation.qmd": {
+    "guess-the-correlation.html": "8071e363"
+  },
+  "games/guess-the-correlation.qmd": {
+    "guess-the-correlation.html": "31980355"
   }
 }
