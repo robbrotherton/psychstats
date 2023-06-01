@@ -8,9 +8,33 @@ body {
     text-align: justify;
 }
 
-.author {
+/* for the About page */
+.about-banner {
+    position: relative; 
+    height: 220px; 
+    /* margin-bottom: 5em;  */
+    width: 70%; 
+    margin: auto;
+}
+
+.about-banner-image {
+    position: absolute;
+}
+
+.about-banner-text {
+    position: absolute; 
+    display: flex; 
+    align-items: center; 
+    height: 200px; 
+    left: 220px;
+}
+.about-banner-text > p {
+    margin: 0;
+}
+
+.author-image {
     text-align: center;
-    width: 150px;
+    width: 200px;
     margin-right: 2em;
 }
 
@@ -79,6 +103,10 @@ body {
         width: 100%;
         text-align: center;
     }
+
+    .about-banner {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 505px) {
@@ -90,4 +118,42 @@ body {
     .description {
         position: static;
     }
+}
+
+@media screen and (max-width: 425px) {
+    .about-banner {
+        height: 160px;
+    }
+    .about-banner-image {
+        height: 150px;
+    }
+    .about-banner-text {
+        height: 150px;
+        left: 145px;
+        font-size: 0.9em;
+    }
+    .author-image {
+        width: 140px;
+    }
+}
+
+@media screen and (max-width: 365px) {
+    .about-banner, .about-banner-image, .about-banner-text {
+        position: unset;
+        height: fit-content;
+        font-size: 1em;
+    }
+    .about-banner-image {
+        text-align: center;
+    }
+    .author-image {
+        width: 200px;
+        margin: 0;
+    }
+    .about-banner-text > p {
+        margin-bottom: 1em;
+    }
+    /* .author-image {
+        width: 140px;
+    } */
 }

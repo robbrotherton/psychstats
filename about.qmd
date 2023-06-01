@@ -2,15 +2,16 @@
 title: "About"
 ---
 
-:::: {.columns}
-::: {.column style="width: 40%; text-align: right;"}
-![](images/rob.png){.author}
+:::: {.about-banner}
+::: {.about-banner-image}
+![](images/rob-halftone.svg){.author-image}
 :::
 
-::: {.column width="40%"}
+::: {.about-banner-text}
 This is the personal website of Rob Brotherton. I'm an academic psychologist and writer. I teach statistics and political psychology at Barnard College in New York City.
 :::
 ::::
+
 
 This site collects together some of the visualizations and games I've made as part of my statistics course. Statistics, at its core, is about understanding the patterns and principles that govern our world, and it's much more than just a set of abstract equations. To help bring this vision to life, I created an array of interactive visualizations and games. Rather than just learning about a statistical concept like the Central Limit Theorem, these help you to experience it in action, to see the narratives that numbers can create. My hope is to bridge the gap between abstract equations and hypothetical distributions on one hand, and on the other hand, the real, messy processes that somehow produce those predictable patterns. Seeing these basic processes in action goes a long way towards understanding how statistical stories play out in our day-to-day lives. 
 
