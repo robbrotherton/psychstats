@@ -139,7 +139,7 @@ body {
 
 @media screen and (max-width: 365px) {
     .about-banner, .about-banner-image, .about-banner-text {
-        position: unset;
+        position: static;
         height: fit-content;
         font-size: 1em;
     }
