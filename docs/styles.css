@@ -9,19 +9,15 @@ body {
 }
 
 /* for the About page */
-.about-banner {
-    position: relative; 
-    height: 220px; 
-    /* margin-bottom: 5em;  */
-    width: 70%; 
-    margin: auto;
+.about-banner-image {
+    text-align: center;
 }
-
+/* 
 .about-banner-image {
     position: absolute;
-}
+} */
 
-.about-banner-text {
+/* .about-banner-text {
     position: absolute; 
     display: flex; 
     align-items: center; 
@@ -30,12 +26,11 @@ body {
 }
 .about-banner-text > p {
     margin: 0;
-}
+} */
 
 .author-image {
-    text-align: center;
-    width: 200px;
-    margin-right: 2em;
+    max-width: 200px;
+    width: 100%;
 }
 
 .navbar-brand-container {
@@ -104,9 +99,9 @@ body {
         text-align: center;
     }
 
-    .about-banner {
+    /* .about-banner {
         width: 100%;
-    }
+    } */
 }
 
 @media screen and (max-width: 505px) {
@@ -120,7 +115,7 @@ body {
     }
 }
 
-@media screen and (max-width: 425px) {
+/* @media screen and (max-width: 425px) {
     .about-banner {
         height: 160px;
     }
@@ -156,4 +151,4 @@ body {
     /* .author-image {
         width: 140px;
     } */
-}
+} */
