@@ -49,5 +49,8 @@
   },
   "visualizations/least-squared-error.qmd": {
     "least-squared-error.html": "ef581ce6"
+  },
+  "visualizations/confidence-intervals.qmd": {
+    "confidence-intervals.html": "91407817"
   }
 }

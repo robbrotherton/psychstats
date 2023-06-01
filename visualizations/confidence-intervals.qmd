@@ -1,0 +1,198 @@
+---
+title: "Confidence Intervals"
+page-layout: full
+---
+
+
+::: {#controls}
+
+<label for="ci-input" style="font-family: KaTeX_Main; font-size: 1em; font-style: italic; height: 1em;">CI =&nbsp;</label>80<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
+
+<input type="number" id="sample1" name="sample" value="" style="width: 3em;">
+<input type="number" id="sample2" name="sample" value="" style="width: 3em;">
+<input type="number" id="sample3" name="sample" value="" style="width: 3em;">
+<button id="addToPlot" class="btn btn-outline-primary">Add to plot</button>
+<button id="addRandom" class="btn btn-outline-primary">Random</button>
+
+
+:::
+
+::: {#plot-container}
+:::
+
+
+::: {#summary}
+:::
+
+
+```{ojs}
+
+jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
+
+chart = {
+
+  const w = 1050
+  const h = 600
+  const margin = {left: 50, right: 50, top: 50, bottom: 50}
+  
+  var x = d3.scaleLinear()
+    .domain([0, 30])
+    .range([margin.left, w - margin.right])
+  const y = d3.scaleLinear()
+    .domain([2, 12])
+    .range([h - margin.bottom, margin.top])
+    
+  const yAxis = d3.axisLeft(y).ticks(11);
+
+  var sampleArr = []
+  var meansArr = []
+  var ciArr = []
+  
+  const ciInput = document.getElementById('ci-input')
+  const sample = document.getElementById('m-input')
+  const sample1 = document.getElementById('sample1')
+  const sample2 = document.getElementById('sample2')
+  const sample3 = document.getElementById('sample3')
+  const button = document.getElementById('addToPlot')
+  const buttonRandom = document.getElementById('addRandom')
+  
+  var ciWidth = Number(ciInput.value)
+  
+  button.onclick = addSampleToPlot
+  
+  function addSampleToPlot() {
+  
+    var value1 = Number(sample1.value)
+    var value2 = Number(sample2.value)
+    var value3 = Number(sample3.value)
+    
+    var values = [value1, value2, value3]
+    var mean = getM(values)
+    var sd = getSD(values)
+    var ci = getCI(values, ciWidth)
+    var containsMu = ciContainsMu(mean, ci)
+    var n = sampleArr.length + 1
+    
+    
+    sampleArr.push({sample: values, mean: mean, ci: ci, containsMu: containsMu, id: n})
+    console.log(sampleArr)
+    
+    addCI(sampleArr.length, mean, ci)
+  }
+  
+  buttonRandom.onclick = function() {
+    sample1.value = Math.floor(Math.random() * 11 + 2)
+    sample3.value = Math.floor(Math.random() * 11 + 2)
+    sample2.value = Math.floor(Math.random() * 11 + 2)
+    addSampleToPlot()
+  }
+  
+  
+  ciInput.oninput = function() {
+    ciWidth = ciInput.value
+    updateCIs(ciWidth)
+  }
+
+  
+  
+  const svg = d3.select("#plot-container").append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + w + " " + h)
+    
+  const gridY = svg.append("g")
+  
+  gridY.append("line")
+    .attr("x1", x(0))
+    .attr("x2", x(30))
+    .attr("y1", y(7))
+    .attr("y2", y(7))
+    .style("stroke", "grey")
+  
+  const axisY = svg.append("g")
+    .call(yAxis)
+    .attr("transform", `translate(${x(0)},0)`)
+    
+  const dots = svg.append("g")
+  const lines = svg.append("g")
+
+
+
+  
+  function addCI(n, point, ci) {
+  
+  <!-- dot for the point estimate -->
+    dots.append("circle")
+      .attr("r", 3)
+      .attr("cx", x(n))
+      .attr("cy", y(point))
+  
+  
+  <!-- dot for the point estimate -->
+   lines.append("line")
+      .attr("x1", x(n))
+      .attr("x2", x(n))
+      .attr("y1", y(point + ci))
+      .attr("y2", y(point - ci))
+      .style("stroke", ciContainsMu(point, ci))
+  }
+  
+
+
+
+  function updateCIs (confidence) {
+  
+  <!-- take the array and recalculate all CIs -->
+  
+  for (var i = 0; i < sampleArr.length; i++) {
+    sampleArr[i].ci = getCI(sampleArr[i].sample, confidence)
+  }
+  
+  <!-- then redraw all CIs on the svg -->
+  lines.selectAll("line").remove()
+  
+  lines.selectAll("line")
+  .data(sampleArr)
+  .enter()
+    .append("line")
+      .attr("x1", d => x(d.id))
+      .attr("x2", d => x(d.id))
+      .attr("y1", d => y(d.mean + d.ci))
+      .attr("y2", d => y(d.mean - d.ci))
+      .style("stroke", d => ciContainsMu(d.mean, d.ci))
+  }
+  
+  
+  
+}
+
+
+function getM (array) {
+  const n = array.length
+  const mean = array.reduce((a, b) => a + b) / n
+  return mean
+}
+
+function getSD (array) {
+  const n = array.length
+  const df = n - 1
+  const mean = getM(array)
+  return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / df)
+}
+
+function getCI (array, confidence) {
+  const pt = 1 - (100 - confidence)/100 * 0.5
+  const n = array.length
+  const sd = getSD(array)
+  const t = jStat.studentt.inv(pt, n - 1)
+  return t * (sd / Math.sqrt(n))
+}
+
+function ciContainsMu (point, ci) {
+  if (point + ci > 7 && point - ci < 7) return "blue"
+  else return "red"
+}
+
+
+```
+
+
