@@ -4,21 +4,21 @@
     "href": "index.html",
     "title": "PSYCH STATS",
     "section": "",
-    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nRegression: The Least Squared Error Method\nQuincunx\nDice Roller"
+    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nRegression: The Least Squared Error Method\nConfidence Intervals"
   },
   {
     "objectID": "index.html#visualizations",
     "href": "index.html#visualizations",
     "title": "PSYCH STATS",
     "section": "",
-    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nRegression: The Least Squared Error Method\nQuincunx\nDice Roller"
+    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nRegression: The Least Squared Error Method\nConfidence Intervals"
   },
   {
     "objectID": "index.html#games",
     "href": "index.html#games",
     "title": "PSYCH STATS",
     "section": "Games",
-    "text": "Games\nSome ‘games’ (I’m using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.\nGuess the Correlation\nTriplett\nJellybeans\n\nbannerImage = {\n\n    const svg = d3.select(\".quarto-title\").append(\"svg\")\n        .attr(\"id\", \"title-svg\")\n        .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n        .attr(\"viewBox\", \"0 0 \" + 50 + \" \" + 20)\n\n    svg.selectAll(\"circle\").data(data).enter().append(\"circle\")\n        .attr(\"cx\", d =&gt; d.x)\n        .attr(\"cy\", d =&gt; 20 - d.y)\n        .attr(\"r\", 0)\n        .attr(\"stroke\", \"none\")\n        .attr(\"fill\", (d, i) =&gt; d3.schemeCategory10[i % 10])\n        .transition().duration(300)\n        .delay(d =&gt; d.y * 100)\n        .attr(\"r\", radius/2)\n\n}"
+    "text": "Games\nSome ‘games’ (I’m using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.\nGuess the Correlation\nTriplett\nJellybeans\nQuincunx\nDice Roller\n\nbannerImage = {\n\n    const svg = d3.select(\".quarto-title\").append(\"svg\")\n        .attr(\"id\", \"title-svg\")\n        .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n        .attr(\"viewBox\", \"0 0 \" + 50 + \" \" + 20)\n\n    svg.selectAll(\"circle\").data(data).enter().append(\"circle\")\n        .attr(\"cx\", d =&gt; d.x)\n        .attr(\"cy\", d =&gt; 20 - d.y)\n        .attr(\"r\", 0)\n        .attr(\"stroke\", \"none\")\n        .attr(\"fill\", (d, i) =&gt; d3.schemeCategory10[i % 10])\n        .transition().duration(300)\n        .delay(d =&gt; d.y * 100)\n        .attr(\"r\", radius/2)\n\n}"
   },
   {
     "objectID": "about.html",

@@ -200,8 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="./visualizations/sampling/sampling.html">Sampling</a></p>
 <p><a href="./visualizations/unbiased-estimates.html">(Un)Biased Estimates</a></p>
 <p><a href="./visualizations/least-squared-error.html">Regression: The Least Squared Error Method</a></p>
-<p><a href="./visualizations/quincunx.html">Quincunx</a></p>
-<p><a href="./visualizations/dice/dice.html">Dice Roller</a></p>
+<p><a href="./visualizations/confidence-intervals.html">Confidence Intervals</a></p>
 </section>
 <section id="games" class="level2">
 <h2 class="anchored" data-anchor-id="games">Games</h2>
@@ -209,25 +208,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="./games/guess-the-correlation.html">Guess the Correlation</a></p>
 <p><a href="./games/triplett/triplett.html">Triplett</a></p>
 <p><a href="./games/jellybeans.html">Jellybeans</a></p>
+<p><a href="./visualizations/quincunx.html">Quincunx</a></p>
+<p><a href="./visualizations/dice/dice.html">Dice Roller</a></p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="52" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 51;"><span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>bannerImage <span class="op">=</span> {</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(<span class="st">".quarto-title"</span>)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"title-svg"</span>)</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMinYMin meet"</span>)</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="st">"0 0 "</span> <span class="op">+</span> <span class="dv">50</span> <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="dv">20</span>)</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"circle"</span>)<span class="op">.</span><span class="fu">data</span>(data)<span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="dv">20</span> <span class="op">-</span> d<span class="op">.</span><span class="at">y</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">0</span>)</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> (d<span class="op">,</span> i) <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[i <span class="op">%</span> <span class="dv">10</span>])</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">transition</span>()<span class="op">.</span><span class="fu">duration</span>(<span class="dv">300</span>)</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">delay</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span> <span class="op">*</span> <span class="dv">100</span>)</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> radius<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="54" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>bannerImage <span class="op">=</span> {</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(<span class="st">".quarto-title"</span>)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"title-svg"</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMinYMin meet"</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="st">"0 0 "</span> <span class="op">+</span> <span class="dv">50</span> <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="dv">20</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"circle"</span>)<span class="op">.</span><span class="fu">data</span>(data)<span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="dv">20</span> <span class="op">-</span> d<span class="op">.</span><span class="at">y</span>)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">0</span>)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> (d<span class="op">,</span> i) <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[i <span class="op">%</span> <span class="dv">10</span>])</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">transition</span>()<span class="op">.</span><span class="fu">duration</span>(<span class="dv">300</span>)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">delay</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span> <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> radius<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 

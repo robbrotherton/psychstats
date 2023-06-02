@@ -17,9 +17,7 @@ toc: false
 
 [Regression: The Least Squared Error Method](visualizations/least-squared-error.qmd)
 
-[Quincunx](visualizations/quincunx.qmd)
-
-[Dice Roller](visualizations/dice/dice.qmd)
+[Confidence Intervals](visualizations/confidence-intervals.qmd)
 
 
 ## Games
@@ -31,6 +29,10 @@ toc: false
 [Triplett](games/triplett/triplett.qmd)
 
 [Jellybeans](games/jellybeans.qmd)
+
+[Quincunx](visualizations/quincunx.qmd)
+
+[Dice Roller](visualizations/dice/dice.qmd)
 
 ```{r}
 #| include: false
