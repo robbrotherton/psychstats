@@ -36,6 +36,7 @@ chart = {
 
   const sampleSize = 3;
   let sampling = false;
+  let sample = [];
 
   const w = 1050
   const h = 600
@@ -98,13 +99,14 @@ chart = {
   d3.select("#drawContinuously").on("click", sampleContinuously);
 
   function newSample() {
-    const sample = [];
+    sample = [];
     for (let i = 1; i < sampleSize + 1; i++) {
       const value = Math.floor(Math.random() * 11 + 2);
       sample.push(value);
       d3.select("#card" + i).html(randomCard(value - 1)).classed("playing-card-blank", false);
     }
     addSampleToPlot(sample);
+
   }
   
   function randomCard(value) {
@@ -123,6 +125,10 @@ chart = {
     ciWidth = ciInput.value
     d3.select("#ci-width").text(ciWidth);
     updateCIs(ciWidth)
+
+    const newCI = getCI(sample, ciWidth);
+    const m = getM(sample);
+    d3.select("#mean").text(f(m) + " [" + f(m - newCI) + ", " + f(m + newCI) + "]");
   }
 
 let samplingInterval;
