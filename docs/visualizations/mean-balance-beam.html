@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.78">
+<meta name="generator" content="quarto-1.3.310">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -164,9 +135,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
   </li>
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -210,7 +181,7 @@ Show/hide squared deviations
 
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="19" data-source-offset="-2"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 18;"><span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">600</span></span>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="19" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 18;"><span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">600</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> <span class="dv">600</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>n_boxes <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>scale_width <span class="op">=</span> <span class="dv">11</span></span>
@@ -657,7 +628,7 @@ Show/hide squared deviations
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\r\nwidth = 600\r\nheight = 600\r\nn_boxes = 5\r\nscale_width = 11\r\nbox_size = width / scale_width\r\nbeam_height = box_size / 4\r\nradius = box_size\r\n\r\n// multiply the deviations lined up at the bottom to fit on the screen\r\nmultiplier = 6/n_boxes\r\n\r\nbox_data_ = make_box_data(n_boxes)\r\n\r\n\r\nchart = {\r\n\r\n  let deviations_hidden = false;\r\n  let squared_deviations_hidden = false;\r\n  \r\n  <!-- const controls = d3.select(\"#controls\") -->\r\n  <!-- const button = controls -->\r\n  <!--     .append(\"input\") -->\r\n  <!--     .attr(\"type\", \"button\") -->\r\n  <!--     .attr(\"name\", \"showDevs\") -->\r\n  <!--     .attr(\"value\", \"Toggle\") -->\r\n  <!--     .attr(\"onclick\", noDevs) -->\r\n\r\n  function round_position(x) {\r\n    let interval = width / scale_width\r\n    return Math.round(x / interval)*interval\r\n  }\r\n\r\n  function rounded_position_index(x) {\r\n    let interval = width / scale_width\r\n    let x0 = Math.round(x / interval)*interval\r\n    return Math.round(x0/(width/scale_width))  \r\n  }\r\n  \r\n  let positions = d3.range(scale_width).map(i => (0))\r\n\r\n  function stack_boxes() {\r\n    for (let i = 0; i < box_data.length; i++) {\r\n      box_data[i].level = positions[box_data[i].x0]\r\n      positions[box_data[i].x0]++\r\n    }\r\n  }\r\n\r\n  let starting_boxes = [1, 2, 6, 6, 10]\r\n  \r\n  // let box_data = d3.range(n_boxes).map(i => ({\r\n  //     // x: (Math.random() * (width - box_size * 2) + box_size),\r\n  //     x0: Math.floor(Math.random() *   scale_width),\r\n  //     y: -box_size, // height/2 - beam_height/2 - radius,\r\n  //     color: d3.schemeCategory10[i % 10],\r\n  //     level: 0\r\n  //     }))\r\n      \r\n  let box_data = box_data_;\r\n\r\n  for (let i = 0; i < box_data.length; i++) box_data[i].x = box_data[i].x0 * box_size\r\n  \r\n  \r\n  let mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length\r\n  let pivot = mean\r\n  \r\n  box_data = box_data.sort(function(a, b) { return Math.abs(a.x - pivot) - Math.abs(b.x - pivot); })\r\n  for (let i = 0; i < box_data.length; i++) {\r\n    box_data[i].id = i\r\n  }\r\n    \r\n    stack_boxes()\r\n    \r\n    \r\n  const svg = d3.select(\"#chart\").append(\"svg\")\r\n      .attr(\"viewBox\", [0, 0, width, height])\r\n      .attr(\"stroke-width\", 2)\r\n\r\n  const x_ = d3.scaleLinear()\r\n    .range([0, width])\r\n    .domain([0, 10])\r\n    \r\n  // draw the ground\r\n  svg.append(\"rect\")\r\n    .attr(\"width\", width)\r\n    .attr(\"height\", 50)\r\n    .attr(\"fill\", \"#f0f0f0\")\r\n    .attr(\"stroke\", \"none\")\r\n    .attr(\"transform\", `translate(0, ${height - 51})`)\r\n\r\n  const beam_and_boxes = svg.append(\"g\")\r\n    .attr(\"transform\", `translate(0, ${height - 50 - radius - beam_height})`)\r\n  \r\n  // draw the beam\r\n  beam_and_boxes.append(\"rect\")\r\n    .attr(\"width\", width)\r\n    .attr(\"height\",  beam_height)\r\n    .attr(\"rx\", 3)\r\n    .attr(\"fill\", \"black\")\r\n    // .attr(\"transform\", `translate(0, ${height/2 - beam_height / 2})`)\r\n\r\n  const boxes = beam_and_boxes.append(\"g\")\r\n  const deviations = beam_and_boxes.append(\"g\")\r\n  const deviations_vertical = deviations.append(\"g\")\r\n  const deviations_horizontal = deviations.append(\"g\")\r\n  const deviations_sum = svg.append(\"g\").attr(\"transform\", `translate(0, ${height - 25})`)\r\n  const deviations_sum_negative = deviations_sum.append(\"g\").attr(\"transform\", `translate(0, -10)`)\r\n  const deviations_sum_positive = deviations_sum.append(\"g\").attr(\"transform\", `translate(0, 10)`)\r\n  \r\n  // draw the boxes\r\n  boxes.selectAll(\"rect\")\r\n    .data(box_data)\r\n    .join(\"rect\")\r\n      .attr(\"x\", d => d.x)\r\n      .attr(\"y\", d => d.y - d.level*box_size)\r\n      .attr(\"width\", box_size)\r\n      .attr(\"height\", box_size)\r\n      .attr(\"rx\", 1)\r\n      .attr(\"fill\", d => d.color)\r\n      .attr(\"stroke\", null)\r\n      .call(d3.drag().on(\"start\", start_dragging_box)\r\n                     .on(\"drag\", dragging_box)\r\n                     .on(\"end\", stop_dragging_box));\r\n  \r\n  // draw a circle at the true mean point\r\n  const circle = beam_and_boxes.append(\"circle\")\r\n    .attr(\"cx\", mean)\r\n    .attr(\"cy\", beam_height/2)\r\n    .attr(\"r\", 5)\r\n    .attr(\"fill\", \"#777777\")\r\n    .call(d3.drag()\r\n             .on(\"start\", start_dragging_mean)\r\n             .on(\"drag\", dragging_mean)\r\n             .on(\"end\", stop_dragging_mean))\r\n  \r\n  // draw a triangle at the pivot point\r\n  const triangle = svg.append(\"polygon\")\r\n    .attr(\"points\", [[0, -radius/2], [radius/2, radius/2], [-radius/2, radius/2]])\r\n    .attr(\"fill\", \"red\")\r\n    .attr(\"transform\", `translate(${pivot}, ${height-50-radius/2})`)\r\n    .call(d3.drag()\r\n             .on(\"start\", start_dragging_mean)\r\n             .on(\"drag\", dragging_mean)\r\n             .on(\"end\", stop_dragging_mean))\r\n  \r\n    \r\n  draw_deviations()\r\n  \r\n\r\n  function start_dragging_mean(event, d) {triangle.attr(\"fill\", \"dodgerblue\")}\r\n  \r\n  function stop_dragging_mean(event, d) {triangle.attr(\"fill\", \"red\")}\r\n  \r\n  function dragging_mean(event, d) {\r\n      pivot = event.x\r\n      tip_scale()\r\n  }\r\n  \r\n  function tip_scale() {\r\n  \r\n    let angle = Math.abs((mean - pivot)*0.5);\r\n    let hypotenuse, direction;\r\n    \r\n    if (pivot < mean) {\r\n      hypotenuse = width - pivot;\r\n      direction = 1;\r\n    } else {\r\n      hypotenuse = pivot;\r\n      direction = -1;\r\n    }\r\n    \r\n    let tri_angle = 90 - (Math.acos(radius / hypotenuse) * 180/Math.PI)\r\n    angle = direction * (Math.min(angle, tri_angle))\r\n    \r\n      triangle\r\n        .attr(\"transform\", `translate(${pivot}, ${height-50-radius/2})`)\r\n      beam_and_boxes\r\n        .attr(\"transform\", `translate(0, ${height-50-radius-beam_height}) rotate(${angle}, ${pivot}, ${0})`)\r\n      draw_deviations()\r\n  }\r\n\r\n  \r\n  function start_dragging_box(event, d) {\r\n    d3.select(this).raise().attr(\"stroke\", \"black\")\r\n    // console.log(\"x:\" + d.x + \" x0:\" + d.x0 + \" level:\" + d.level)\r\n  }\r\n\r\n  function dragging_box(event, d) {\r\n    box_data[d.id].x = event.x\r\n    // box_data[d.id].x0 = round_position(box_data[d.id].x) + box_size/2\r\n    \r\n    let current_position = box_data[d.id].x0\r\n    let current_level = box_data[d.id].level\r\n    let new_position = rounded_position_index(event.x)\r\n    \r\n    if(new_position != current_position) {\r\n      console.log(\"moved! from \" + current_position + \" to \" + new_position)\r\n      \r\n      // update the box's position\r\n      box_data[d.id].x0 = new_position\r\n      \r\n      // now this box should go on top of the stack for new_position\r\n      box_data[d.id].level = positions[new_position]\r\n      \r\n      // and update the total number of boxes in that position\r\n      positions[new_position]++\r\n      \r\n      // for the old position, reduce the number of boxes by one, and\r\n      // bump down any boxes that had a higher level that this box\r\n      positions[current_position]--\r\n      for (let i = 0; i < box_data.length; i++) {\r\n        if (d.id==i) continue\r\n        if (box_data[i].x0==current_position && box_data[i].level > current_level) {\r\n            box_data[i].level--\r\n            console.log(\"movin on down\")\r\n        } \r\n      }\r\n    }\r\n    \r\n    tip_scale()\r\n    // draw_deviations()\r\n  }\r\n\r\n  function stop_dragging_box(event, d) {\r\n    d3.select(this).attr(\"stroke\", null)\r\n  }\r\n  \r\n  \r\n\r\n\r\n  function draw_deviations() {\r\n    \r\n    mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length\r\n    \r\n    boxes.selectAll(\"rect\")\r\n      .attr(\"x\", d => d.x0 * box_size)\r\n      .attr(\"y\", d => d.y - d.level*box_size)\r\n    \r\n    circle.attr(\"cx\", mean)\r\n    \r\n    // calculate deviations\r\n    for (let i = 0; i < box_data.length; i++) box_data[i].dev = (box_data[i].x0*box_size + (box_size/2)) - pivot\r\n    \r\n    let deviations_negative = box_data.filter(function(d){ return d.dev < 0})\r\n    for (let i = 0; i < deviations_negative.length; i++) {\r\n      if (i==0) deviations_negative[i].dev_start = 0\r\n      else deviations_negative[i].dev_start = deviations_negative[i-1].dev_end\r\n      deviations_negative[i].dev_end = deviations_negative[i].dev_start + Math.abs(deviations_negative[i].dev)\r\n    }\r\n    \r\n    let deviations_positive = box_data.filter(function(d){ return d.dev > 0})\r\n    for (let i = 0; i < deviations_positive.length; i++) {\r\n      if (i==0) deviations_positive[i].dev_start = 0\r\n      else deviations_positive[i].dev_start = deviations_positive[i-1].dev_end\r\n      deviations_positive[i].dev_end = deviations_positive[i].dev_start + Math.abs(deviations_positive[i].dev)\r\n    }\r\n    \r\n    deviations_vertical.selectAll(\"line\")\r\n      .data(box_data)\r\n      .join(\"line\")\r\n        .attr(\"x1\", d => box_size * d.x0 + box_size/2)\r\n        .attr(\"x2\", d => box_size * d.x0 + box_size/2)\r\n        .attr(\"y1\", d => d.y - d.level * box_size)\r\n        .attr(\"y2\", d => d.y - box_size/2 - d.level * box_size - d.id * 25)\r\n        .attr(\"stroke\", \"black\")\r\n        .attr(\"stroke-dasharray\", [5, 5])\r\n        \r\n    deviations_vertical\r\n      .append(\"line\")\r\n      .attr(\"x1\", pivot).attr(\"x2\", pivot)\r\n      .attr(\"y1\", 0).attr(\"y2\", -height)\r\n      .attr(\"stroke\", \"red\").attr(\"stroke-dasharray\", [10, 10])\r\n\r\n    deviations_horizontal.selectAll(\"line\")\r\n      .data(box_data)\r\n      .join(\"line\")\r\n        .attr(\"x1\", d => box_size * d.x0 + box_size/2)\r\n        .attr(\"x2\", pivot)\r\n        .attr(\"y1\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\r\n        .attr(\"y2\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\r\n        .attr(\"stroke\", d => d.color)\r\n        .attr(\"stroke-width\", 3)\r\n        \r\n    if (!squared_deviations_hidden) update_squared_deviations();\r\n    \r\n\r\n    deviations_sum_negative.selectAll(\"line\")\r\n      .data(deviations_negative)\r\n      .join(\"line\")\r\n        .attr(\"x1\", d => d.dev_start * multiplier)\r\n        .attr(\"x2\", d => d.dev_end * multiplier)\r\n        .attr(\"stroke\", d => d.color)\r\n        .attr(\"stroke-width\", 8)\r\n        \r\n    deviations_sum_positive.selectAll(\"line\")\r\n      .data(deviations_positive)\r\n      .join(\"line\")\r\n      .attr(\"x1\", d => d.dev_start * multiplier)\r\n        .attr(\"x2\", d => d.dev_end * multiplier)\r\n        .attr(\"stroke\", d => d.color)\r\n        .attr(\"stroke-width\", 8)\r\n  };\r\n  \r\n  \r\n  function update_squared_deviations() {\r\n      deviations_horizontal.selectAll(\"rect\")\r\n      .data(box_data)\r\n      .join(\"rect\")\r\n        .attr(\"x\", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })\r\n        .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))\r\n        .attr(\"width\", d => Math.abs(d.dev))\r\n        .attr(\"height\", d => Math.abs(d.dev))\r\n        .attr(\"height\", function(d){if(squared_deviations_hidden){return 0} else{return Math.abs(d.dev)}})\r\n        .attr(\"fill\", d => d.color)\r\n        .attr(\"opacity\", 0.5)\r\n        .attr(\"stroke\", \"none\")\r\n  }\r\n  \r\n  \r\n\r\n  function noDevs() {\r\n    deviations_hidden = !deviations_hidden\r\n    deviations.attr(\"opacity\", Number(!deviations_hidden))\r\n  }\r\n  \r\n  function noDevsSq() {\r\n    squared_deviations_hidden = !squared_deviations_hidden\r\n  \r\n    if (squared_deviations_hidden) {\r\n      deviations_horizontal\r\n        .selectAll(\"rect\")\r\n        .data(box_data)\r\n        .transition().duration(1000)\r\n        .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\r\n        .attr(\"height\", 0)\r\n    } else {\r\n        deviations_horizontal\r\n          .selectAll(\"rect\")\r\n          .data(box_data)\r\n          .attr(\"x\", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })\r\n          .attr(\"width\", d => Math.abs(d.dev))\r\n          .transition().duration(1000)\r\n          .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))\r\n          .attr(\"height\", d => Math.abs(d.dev))\r\n    }\r\n    \r\n  }\r\n\r\n  noDevs()\r\n  noDevsSq()\r\n  d3.select(\"#showDevs\").on(\"click\", noDevs)\r\n  d3.select(\"#showDevsSq\").on(\"click\", noDevsSq)\r\n\r\n\r\n}\r\n\r\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function make_box_data(n) {\r\n    return d3.range(n).map(i => ({\r\n      // x: (Math.random() * (width - box_size * 2) + box_size),\r\n      x0: Math.floor(Math.random() *   scale_width),\r\n      y: -box_size, // height/2 - beam_height/2 - radius,\r\n      color: d3.schemeCategory10[i % 10],\r\n      level: 0\r\n      }))\r\n  }\r\n"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\nwidth = 600\nheight = 600\nn_boxes = 5\nscale_width = 11\nbox_size = width / scale_width\nbeam_height = box_size / 4\nradius = box_size\n\n// multiply the deviations lined up at the bottom to fit on the screen\nmultiplier = 6/n_boxes\n\nbox_data_ = make_box_data(n_boxes)\n\n\nchart = {\n\n  let deviations_hidden = false;\n  let squared_deviations_hidden = false;\n  \n  <!-- const controls = d3.select(\"#controls\") -->\n  <!-- const button = controls -->\n  <!--     .append(\"input\") -->\n  <!--     .attr(\"type\", \"button\") -->\n  <!--     .attr(\"name\", \"showDevs\") -->\n  <!--     .attr(\"value\", \"Toggle\") -->\n  <!--     .attr(\"onclick\", noDevs) -->\n\n  function round_position(x) {\n    let interval = width / scale_width\n    return Math.round(x / interval)*interval\n  }\n\n  function rounded_position_index(x) {\n    let interval = width / scale_width\n    let x0 = Math.round(x / interval)*interval\n    return Math.round(x0/(width/scale_width))  \n  }\n  \n  let positions = d3.range(scale_width).map(i => (0))\n\n  function stack_boxes() {\n    for (let i = 0; i < box_data.length; i++) {\n      box_data[i].level = positions[box_data[i].x0]\n      positions[box_data[i].x0]++\n    }\n  }\n\n  let starting_boxes = [1, 2, 6, 6, 10]\n  \n  // let box_data = d3.range(n_boxes).map(i => ({\n  //     // x: (Math.random() * (width - box_size * 2) + box_size),\n  //     x0: Math.floor(Math.random() *   scale_width),\n  //     y: -box_size, // height/2 - beam_height/2 - radius,\n  //     color: d3.schemeCategory10[i % 10],\n  //     level: 0\n  //     }))\n      \n  let box_data = box_data_;\n\n  for (let i = 0; i < box_data.length; i++) box_data[i].x = box_data[i].x0 * box_size\n  \n  \n  let mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length\n  let pivot = mean\n  \n  box_data = box_data.sort(function(a, b) { return Math.abs(a.x - pivot) - Math.abs(b.x - pivot); })\n  for (let i = 0; i < box_data.length; i++) {\n    box_data[i].id = i\n  }\n    \n    stack_boxes()\n    \n    \n  const svg = d3.select(\"#chart\").append(\"svg\")\n      .attr(\"viewBox\", [0, 0, width, height])\n      .attr(\"stroke-width\", 2)\n\n  const x_ = d3.scaleLinear()\n    .range([0, width])\n    .domain([0, 10])\n    \n  // draw the ground\n  svg.append(\"rect\")\n    .attr(\"width\", width)\n    .attr(\"height\", 50)\n    .attr(\"fill\", \"#f0f0f0\")\n    .attr(\"stroke\", \"none\")\n    .attr(\"transform\", `translate(0, ${height - 51})`)\n\n  const beam_and_boxes = svg.append(\"g\")\n    .attr(\"transform\", `translate(0, ${height - 50 - radius - beam_height})`)\n  \n  // draw the beam\n  beam_and_boxes.append(\"rect\")\n    .attr(\"width\", width)\n    .attr(\"height\",  beam_height)\n    .attr(\"rx\", 3)\n    .attr(\"fill\", \"black\")\n    // .attr(\"transform\", `translate(0, ${height/2 - beam_height / 2})`)\n\n  const boxes = beam_and_boxes.append(\"g\")\n  const deviations = beam_and_boxes.append(\"g\")\n  const deviations_vertical = deviations.append(\"g\")\n  const deviations_horizontal = deviations.append(\"g\")\n  const deviations_sum = svg.append(\"g\").attr(\"transform\", `translate(0, ${height - 25})`)\n  const deviations_sum_negative = deviations_sum.append(\"g\").attr(\"transform\", `translate(0, -10)`)\n  const deviations_sum_positive = deviations_sum.append(\"g\").attr(\"transform\", `translate(0, 10)`)\n  \n  // draw the boxes\n  boxes.selectAll(\"rect\")\n    .data(box_data)\n    .join(\"rect\")\n      .attr(\"x\", d => d.x)\n      .attr(\"y\", d => d.y - d.level*box_size)\n      .attr(\"width\", box_size)\n      .attr(\"height\", box_size)\n      .attr(\"rx\", 1)\n      .attr(\"fill\", d => d.color)\n      .attr(\"stroke\", null)\n      .call(d3.drag().on(\"start\", start_dragging_box)\n                     .on(\"drag\", dragging_box)\n                     .on(\"end\", stop_dragging_box));\n  \n  // draw a circle at the true mean point\n  const circle = beam_and_boxes.append(\"circle\")\n    .attr(\"cx\", mean)\n    .attr(\"cy\", beam_height/2)\n    .attr(\"r\", 5)\n    .attr(\"fill\", \"#777777\")\n    .call(d3.drag()\n             .on(\"start\", start_dragging_mean)\n             .on(\"drag\", dragging_mean)\n             .on(\"end\", stop_dragging_mean))\n  \n  // draw a triangle at the pivot point\n  const triangle = svg.append(\"polygon\")\n    .attr(\"points\", [[0, -radius/2], [radius/2, radius/2], [-radius/2, radius/2]])\n    .attr(\"fill\", \"red\")\n    .attr(\"transform\", `translate(${pivot}, ${height-50-radius/2})`)\n    .call(d3.drag()\n             .on(\"start\", start_dragging_mean)\n             .on(\"drag\", dragging_mean)\n             .on(\"end\", stop_dragging_mean))\n  \n    \n  draw_deviations()\n  \n\n  function start_dragging_mean(event, d) {triangle.attr(\"fill\", \"dodgerblue\")}\n  \n  function stop_dragging_mean(event, d) {triangle.attr(\"fill\", \"red\")}\n  \n  function dragging_mean(event, d) {\n      pivot = event.x\n      tip_scale()\n  }\n  \n  function tip_scale() {\n  \n    let angle = Math.abs((mean - pivot)*0.5);\n    let hypotenuse, direction;\n    \n    if (pivot < mean) {\n      hypotenuse = width - pivot;\n      direction = 1;\n    } else {\n      hypotenuse = pivot;\n      direction = -1;\n    }\n    \n    let tri_angle = 90 - (Math.acos(radius / hypotenuse) * 180/Math.PI)\n    angle = direction * (Math.min(angle, tri_angle))\n    \n      triangle\n        .attr(\"transform\", `translate(${pivot}, ${height-50-radius/2})`)\n      beam_and_boxes\n        .attr(\"transform\", `translate(0, ${height-50-radius-beam_height}) rotate(${angle}, ${pivot}, ${0})`)\n      draw_deviations()\n  }\n\n  \n  function start_dragging_box(event, d) {\n    d3.select(this).raise().attr(\"stroke\", \"black\")\n    // console.log(\"x:\" + d.x + \" x0:\" + d.x0 + \" level:\" + d.level)\n  }\n\n  function dragging_box(event, d) {\n    box_data[d.id].x = event.x\n    // box_data[d.id].x0 = round_position(box_data[d.id].x) + box_size/2\n    \n    let current_position = box_data[d.id].x0\n    let current_level = box_data[d.id].level\n    let new_position = rounded_position_index(event.x)\n    \n    if(new_position != current_position) {\n      console.log(\"moved! from \" + current_position + \" to \" + new_position)\n      \n      // update the box's position\n      box_data[d.id].x0 = new_position\n      \n      // now this box should go on top of the stack for new_position\n      box_data[d.id].level = positions[new_position]\n      \n      // and update the total number of boxes in that position\n      positions[new_position]++\n      \n      // for the old position, reduce the number of boxes by one, and\n      // bump down any boxes that had a higher level that this box\n      positions[current_position]--\n      for (let i = 0; i < box_data.length; i++) {\n        if (d.id==i) continue\n        if (box_data[i].x0==current_position && box_data[i].level > current_level) {\n            box_data[i].level--\n            console.log(\"movin on down\")\n        } \n      }\n    }\n    \n    tip_scale()\n    // draw_deviations()\n  }\n\n  function stop_dragging_box(event, d) {\n    d3.select(this).attr(\"stroke\", null)\n  }\n  \n  \n\n\n  function draw_deviations() {\n    \n    mean = box_data.reduce((total, next) => total + next.x + box_size/2, 0) / box_data.length\n    \n    boxes.selectAll(\"rect\")\n      .attr(\"x\", d => d.x0 * box_size)\n      .attr(\"y\", d => d.y - d.level*box_size)\n    \n    circle.attr(\"cx\", mean)\n    \n    // calculate deviations\n    for (let i = 0; i < box_data.length; i++) box_data[i].dev = (box_data[i].x0*box_size + (box_size/2)) - pivot\n    \n    let deviations_negative = box_data.filter(function(d){ return d.dev < 0})\n    for (let i = 0; i < deviations_negative.length; i++) {\n      if (i==0) deviations_negative[i].dev_start = 0\n      else deviations_negative[i].dev_start = deviations_negative[i-1].dev_end\n      deviations_negative[i].dev_end = deviations_negative[i].dev_start + Math.abs(deviations_negative[i].dev)\n    }\n    \n    let deviations_positive = box_data.filter(function(d){ return d.dev > 0})\n    for (let i = 0; i < deviations_positive.length; i++) {\n      if (i==0) deviations_positive[i].dev_start = 0\n      else deviations_positive[i].dev_start = deviations_positive[i-1].dev_end\n      deviations_positive[i].dev_end = deviations_positive[i].dev_start + Math.abs(deviations_positive[i].dev)\n    }\n    \n    deviations_vertical.selectAll(\"line\")\n      .data(box_data)\n      .join(\"line\")\n        .attr(\"x1\", d => box_size * d.x0 + box_size/2)\n        .attr(\"x2\", d => box_size * d.x0 + box_size/2)\n        .attr(\"y1\", d => d.y - d.level * box_size)\n        .attr(\"y2\", d => d.y - box_size/2 - d.level * box_size - d.id * 25)\n        .attr(\"stroke\", \"black\")\n        .attr(\"stroke-dasharray\", [5, 5])\n        \n    deviations_vertical\n      .append(\"line\")\n      .attr(\"x1\", pivot).attr(\"x2\", pivot)\n      .attr(\"y1\", 0).attr(\"y2\", -height)\n      .attr(\"stroke\", \"red\").attr(\"stroke-dasharray\", [10, 10])\n\n    deviations_horizontal.selectAll(\"line\")\n      .data(box_data)\n      .join(\"line\")\n        .attr(\"x1\", d => box_size * d.x0 + box_size/2)\n        .attr(\"x2\", pivot)\n        .attr(\"y1\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\n        .attr(\"y2\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\n        .attr(\"stroke\", d => d.color)\n        .attr(\"stroke-width\", 3)\n        \n    if (!squared_deviations_hidden) update_squared_deviations();\n    \n\n    deviations_sum_negative.selectAll(\"line\")\n      .data(deviations_negative)\n      .join(\"line\")\n        .attr(\"x1\", d => d.dev_start * multiplier)\n        .attr(\"x2\", d => d.dev_end * multiplier)\n        .attr(\"stroke\", d => d.color)\n        .attr(\"stroke-width\", 8)\n        \n    deviations_sum_positive.selectAll(\"line\")\n      .data(deviations_positive)\n      .join(\"line\")\n      .attr(\"x1\", d => d.dev_start * multiplier)\n        .attr(\"x2\", d => d.dev_end * multiplier)\n        .attr(\"stroke\", d => d.color)\n        .attr(\"stroke-width\", 8)\n  };\n  \n  \n  function update_squared_deviations() {\n      deviations_horizontal.selectAll(\"rect\")\n      .data(box_data)\n      .join(\"rect\")\n        .attr(\"x\", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })\n        .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))\n        .attr(\"width\", d => Math.abs(d.dev))\n        .attr(\"height\", d => Math.abs(d.dev))\n        .attr(\"height\", function(d){if(squared_deviations_hidden){return 0} else{return Math.abs(d.dev)}})\n        .attr(\"fill\", d => d.color)\n        .attr(\"opacity\", 0.5)\n        .attr(\"stroke\", \"none\")\n  }\n  \n  \n\n  function noDevs() {\n    deviations_hidden = !deviations_hidden\n    deviations.attr(\"opacity\", Number(!deviations_hidden))\n  }\n  \n  function noDevsSq() {\n    squared_deviations_hidden = !squared_deviations_hidden\n  \n    if (squared_deviations_hidden) {\n      deviations_horizontal\n        .selectAll(\"rect\")\n        .data(box_data)\n        .transition().duration(1000)\n        .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25)\n        .attr(\"height\", 0)\n    } else {\n        deviations_horizontal\n          .selectAll(\"rect\")\n          .data(box_data)\n          .attr(\"x\", function(d) {if(d.dev < 0) {return box_size * d.x0 + box_size/2} else {return pivot} })\n          .attr(\"width\", d => Math.abs(d.dev))\n          .transition().duration(1000)\n          .attr(\"y\", (d, i) => d.y - box_size/2 - d.level * box_size - d.id * 25 - Math.abs(d.dev))\n          .attr(\"height\", d => Math.abs(d.dev))\n    }\n    \n  }\n\n  noDevs()\n  noDevsSq()\n  d3.select(\"#showDevs\").on(\"click\", noDevs)\n  d3.select(\"#showDevsSq\").on(\"click\", noDevsSq)\n\n\n}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"function make_box_data(n) {\n    return d3.range(n).map(i => ({\n      // x: (Math.random() * (width - box_size * 2) + box_size),\n      x0: Math.floor(Math.random() *   scale_width),\n      y: -box_size, // height/2 - beam_height/2 - radius,\n      color: d3.schemeCategory10[i % 10],\n      level: 0\n      }))\n  }\n"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -809,9 +780,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -876,6 +861,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

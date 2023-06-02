@@ -4,15 +4,17 @@ page-layout: full
 ---
 
 
-::: {#controls}
+::: {#controls width="100%"}
 
-<label for="ci-input" style="font-family: KaTeX_Main; font-size: 1em; font-style: italic; height: 1em;">CI =&nbsp;</label>80<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
+<label for="ci-input">CI =&nbsp;</label><span id="ci-width">80</span>%<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
 
-<input type="number" id="sample1" name="sample" value="" style="width: 3em;">
-<input type="number" id="sample2" name="sample" value="" style="width: 3em;">
-<input type="number" id="sample3" name="sample" value="" style="width: 3em;">
-<button id="addToPlot" class="btn btn-outline-primary">Add to plot</button>
-<button id="addRandom" class="btn btn-outline-primary">Random</button>
+<div style="display: flex; width: 100%;">
+<button id="addRandom" class="btn btn-outline-primary">Draw cards</button>
+<button id="drawContinuously" class="btn btn-outline-success" style="margin-right: 1em;"><i class="bi bi-play"></i></button>
+<div id="cards" style="display: flex;"></div>
+
+<div>M = <span id="mean"></span></div>
+</div>
 
 
 :::
@@ -21,7 +23,8 @@ page-layout: full
 :::
 
 
-::: {#summary}
+::: {.summary}
+<span id="proportion">#</span>% of <span id="count">#</span> samples contain mu
 :::
 
 
@@ -31,66 +34,115 @@ jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
 
 chart = {
 
+  const sampleSize = 3;
+  let sampling = false;
+
   const w = 1050
   const h = 600
   const margin = {left: 50, right: 50, top: 50, bottom: 50}
   
-  var x = d3.scaleLinear()
+  let x = d3.scaleLinear()
     .domain([0, 30])
     .range([margin.left, w - margin.right])
   const y = d3.scaleLinear()
     .domain([2, 12])
     .range([h - margin.bottom, margin.top])
     
-  const yAxis = d3.axisLeft(y).ticks(11);
+  const yAxis = d3.axisLeft(y)
+    .ticks(11)
+
+  const f = d3.format(".2f")
 
   var sampleArr = []
   var meansArr = []
   var ciArr = []
   
   const ciInput = document.getElementById('ci-input')
-  const sample = document.getElementById('m-input')
-  const sample1 = document.getElementById('sample1')
-  const sample2 = document.getElementById('sample2')
-  const sample3 = document.getElementById('sample3')
-  const button = document.getElementById('addToPlot')
-  const buttonRandom = document.getElementById('addRandom')
+  const buttonRandom = document.getElementById('addRandom');
+  // const sampleContinuouslyBtn = document.getElementById('drawContinuously')
   
   var ciWidth = Number(ciInput.value)
+
+  function makeCards(divId) {
+    for (let i = 0; i < sampleSize; i++) {
+
+      d3.select("#" + divId).append("div")
+        .attr("id", "card" + (i + 1))
+        .attr("class", "playing-card-container")
+        .classed("playing-card-blank", true)
+    }
+  }
+
+  makeCards("cards");
   
-  button.onclick = addSampleToPlot
   
-  function addSampleToPlot() {
+  function addSampleToPlot(values) {
   
-    var value1 = Number(sample1.value)
-    var value2 = Number(sample2.value)
-    var value3 = Number(sample3.value)
-    
-    var values = [value1, value2, value3]
-    var mean = getM(values)
-    var sd = getSD(values)
-    var ci = getCI(values, ciWidth)
-    var containsMu = ciContainsMu(mean, ci)
-    var n = sampleArr.length + 1
-    
+    let mean = getM(values)
+    let sd = getSD(values)
+    let ci = getCI(values, ciWidth)
+    let containsMu = ciContainsMu(mean, ci)
+    let n = sampleArr.length + 1
     
     sampleArr.push({sample: values, mean: mean, ci: ci, containsMu: containsMu, id: n})
-    console.log(sampleArr)
     
-    addCI(sampleArr.length, mean, ci)
+    // addCI(sampleArr.length, mean, ci)
+    drawCIs(sampleArr);
+
+    d3.select("#proportion").text(Math.round(proportionOfCIs(sampleArr) * 100));
+    d3.select("#count").text(sampleArr.length);
+    d3.select("#mean").text(f(mean) + " [" + f(mean - ci) + ", " + f(mean + ci) + "]");
   }
   
-  buttonRandom.onclick = function() {
-    sample1.value = Math.floor(Math.random() * 11 + 2)
-    sample3.value = Math.floor(Math.random() * 11 + 2)
-    sample2.value = Math.floor(Math.random() * 11 + 2)
-    addSampleToPlot()
+  buttonRandom.onclick = newSample;
+  d3.select("#drawContinuously").on("click", sampleContinuously);
+
+  function newSample() {
+    const sample = [];
+    for (let i = 1; i < sampleSize + 1; i++) {
+      const value = Math.floor(Math.random() * 11 + 2);
+      sample.push(value);
+      d3.select("#card" + i).html(randomCard(value - 1)).classed("playing-card-blank", false);
+    }
+    addSampleToPlot(sample);
   }
   
+  function randomCard(value) {
+
+    const suits = ["\u2660","\u2665","\u2666","\u2663"];
+    const colors = ["black", "red", "red", "black"];
+    const cards = ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"];
+    
+    const suitIndex = Math.floor(Math.random() * suits.length);
+    const cardIndex = value;
+
+    return "<div class='playing-card-value'>" + cards[cardIndex] + "</div>" + "<div class='playing-card playing-card-" + colors[suitIndex] + "'>" + suits[suitIndex] + "</div>";
+  }
   
   ciInput.oninput = function() {
     ciWidth = ciInput.value
+    d3.select("#ci-width").text(ciWidth);
     updateCIs(ciWidth)
+  }
+
+let samplingInterval;
+const sampleContinuouslyBtn = d3.select("#drawContinuously");
+
+  function sampleContinuously() {
+
+    if (!sampling) {
+      sampling = true;
+      samplingInterval = setInterval(() => {
+        newSample();
+    }, 200);
+
+    sampleContinuouslyBtn.html("<i class='bi bi-stop'></i>").attr("class", "btn btn-danger")
+
+    } else {
+      sampleContinuouslyBtn.html("<i class='bi bi-play'></i>").attr("class", "btn btn-outline-success")
+      clearInterval(samplingInterval);
+      sampling = false;
+    }
   }
 
   
@@ -101,24 +153,36 @@ chart = {
     
   const gridY = svg.append("g")
   
+  // population mean line
   gridY.append("line")
     .attr("x1", x(0))
     .attr("x2", x(30))
     .attr("y1", y(7))
     .attr("y2", y(7))
     .style("stroke", "grey")
+    .attr("stroke-width", 2)
+  gridY.append("text")
+    .attr("x", x(0.2))
+    .attr("y", y(7.05))
+    .text("true population mean")
+    
+  const lines = svg.append("g")
+  const dots = svg.append("g")
   
   const axisY = svg.append("g")
-    .call(yAxis)
+  axisY.append("rect").attr("x", -margin.left).attr("width", margin.left).attr("height", h)
+    .attr("fill", "var(--mermaid-bg-color)");
+  axisY.call(yAxis)
     .attr("transform", `translate(${x(0)},0)`)
-    
-  const dots = svg.append("g")
-  const lines = svg.append("g")
 
 
 
   
   function addCI(n, point, ci) {
+
+    if (n > 30) {
+      x.domain([n - 30, n]);
+    }
   
   <!-- dot for the point estimate -->
     dots.append("circle")
@@ -126,16 +190,47 @@ chart = {
       .attr("cx", x(n))
       .attr("cy", y(point))
   
-  
   <!-- dot for the point estimate -->
    lines.append("line")
       .attr("x1", x(n))
       .attr("x2", x(n))
       .attr("y1", y(point + ci))
       .attr("y2", y(point - ci))
-      .style("stroke", ciContainsMu(point, ci))
+      .attr("class", "ci-line")
+      .classed("ci-contains-mu", ciContainsMu(point, ci))
   }
   
+  function drawCIs(arr) {
+
+    if (arr.length > 30) {
+      x.domain([arr.length - 30, arr.length]);
+    }
+  
+  <!-- dot for the point estimate -->
+  dots.selectAll("circle").remove();
+
+    dots.selectAll("circle").data(arr).enter().append("circle")
+      .attr("r", 3)
+      .attr("cx", d => x(d.id))
+      .attr("cy", d => y(d.mean))
+  
+  // lines.selectAll("line")
+  //   .attr("x1", x(n))
+  //   .attr("x2", x(n))
+  
+  <!-- lines for CI -->
+  lines.selectAll("line").remove();
+  
+  lines.selectAll("line").data(arr).enter().append("line")
+      .attr("x1", d => x(d.id))
+      .attr("x2", d => x(d.id))
+      .attr("y1", d => y(d.mean + d.ci))
+      .attr("y2", d => y(d.mean - d.ci))
+      .attr("class", "ci-line")
+      .classed("ci-contains-mu", d => d.containsMu)
+  }
+
+
 
 
 
@@ -144,7 +239,8 @@ chart = {
   <!-- take the array and recalculate all CIs -->
   
   for (var i = 0; i < sampleArr.length; i++) {
-    sampleArr[i].ci = getCI(sampleArr[i].sample, confidence)
+    sampleArr[i].ci = getCI(sampleArr[i].sample, confidence);
+    sampleArr[i].containsMu = ciContainsMu(sampleArr[i].mean, sampleArr[i].ci);
   }
   
   <!-- then redraw all CIs on the svg -->
@@ -158,7 +254,10 @@ chart = {
       .attr("x2", d => x(d.id))
       .attr("y1", d => y(d.mean + d.ci))
       .attr("y2", d => y(d.mean - d.ci))
-      .style("stroke", d => ciContainsMu(d.mean, d.ci))
+      .attr("class", "ci-line")
+      .classed("ci-contains-mu", d => ciContainsMu(d.mean, d.ci))
+    
+    d3.select("#proportion").text(Math.round(proportionOfCIs(sampleArr) * 100));
   }
   
   
@@ -187,12 +286,75 @@ function getCI (array, confidence) {
   return t * (sd / Math.sqrt(n))
 }
 
+
 function ciContainsMu (point, ci) {
-  if (point + ci > 7 && point - ci < 7) return "blue"
-  else return "red"
+  return (point + ci > 7 && point - ci < 7);
 }
+
+function proportionOfCIs(arr) {
+    const x = arr.map(a => a.containsMu);
+    const prop = x.reduce((acc, curr) => {
+  return acc + (curr ? curr : 0);
+}, 0);
+
+    return prop / arr.length;
+}
+
+
 
 
 ```
 
 
+<style>
+
+.playing-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 35px; 
+  height: 50px; 
+  border: 1px solid black; 
+  border-radius: 2px; 
+  margin-right: 0.5em;
+}
+.playing-card-value {
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: 5px;
+}
+.playing-card {
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: -10px;
+}
+
+.playing-card-red {
+  color: red;
+}
+
+.playing-card-blank {
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image:  linear-gradient(135deg, #444cf7 25%, transparent 25%), linear-gradient(225deg, #444cf7 25%, transparent 25%), linear-gradient(45deg, #444cf7 25%, transparent 25%), linear-gradient(315deg, #444cf7 25%, #e5e5f7 25%);
+  background-position:  10px 0, 10px 0, 0 0, 0 0;
+  background-size: 10px 10px;
+  background-repeat: repeat;
+}
+.ci-line {
+  stroke-width: 3;
+  stroke: tomato;
+}
+
+.ci-contains-mu {
+  stroke: dodgerblue;
+}
+
+.summary {
+  text-align: center;
+}
+
+
+
+</style>
