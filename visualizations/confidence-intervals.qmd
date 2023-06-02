@@ -230,7 +230,7 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
   function updateCIs (confidence) {
   
   <!-- take the array and recalculate all CIs -->
-  
+  const n = sampleArr.length;
   for (var i = 0; i < sampleArr.length; i++) {
     sampleArr[i].ci = getCI(sampleArr[i].sample, confidence);
     sampleArr[i].containsMu = ciContainsMu(sampleArr[i].mean, sampleArr[i].ci);
@@ -243,8 +243,8 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
   .data(sampleArr)
   .enter()
     .append("line")
-      .attr("x1", d => x(d.id))
-      .attr("x2", d => x(d.id))
+      .attr("x1", d => (n > 30) ? x(d.id - 1) : x(d.id))
+      .attr("x2", d => (n > 30) ? x(d.id - 1) : x(d.id))
       .attr("y1", d => y(d.mean + d.ci))
       .attr("y2", d => y(d.mean - d.ci))
       .attr("class", "ci-line")
