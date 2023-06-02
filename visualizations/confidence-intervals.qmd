@@ -63,8 +63,8 @@ chart = {
   
   var ciWidth = Number(ciInput.value)
 
-  function makeCards(divId) {
-    for (let i = 0; i < sampleSize; i++) {
+  function makeCards(n, divId) {
+    for (let i = 0; i < n; i++) {
 
       d3.select("#" + divId).append("div")
         .attr("id", "card" + (i + 1))
@@ -73,7 +73,7 @@ chart = {
     }
   }
 
-  makeCards("cards");
+  makeCards(sampleSize, "cards");
   
   
   function addSampleToPlot(values) {
@@ -94,17 +94,27 @@ chart = {
     d3.select("#mean").text(f(mean) + " [" + f(mean - ci) + ", " + f(mean + ci) + "]");
   }
   
-  buttonRandom.onclick = newSample;
+  buttonRandom.onclick = () => newSample(false);
   d3.select("#drawContinuously").on("click", sampleContinuously);
 
-  function newSample() {
+  function newSample(quick = true) {
+
     sample = [];
     for (let i = 1; i < sampleSize + 1; i++) {
-      const value = Math.floor(Math.random() * 11 + 2);
+      const value = Math.floor(Math.random() * 12 + 1);
       sample.push(value);
-      d3.select("#card" + i).html(randomCard(value - 1)).classed("playing-card-blank", false);
+      d3.select("#card" + i).html(randomCard(value - 1))
     }
+
     addSampleToPlot(sample);
+
+    if (!quick) {
+    d3.selectAll(".playing-card-container")
+      .data(sample)
+      .classed("playing-card-blank", true)
+      .transition().duration(0).delay((d,i) => 100 + i * 100)
+      .attr("class", "playing-card-container")
+    }
 
   }
   
@@ -334,6 +344,9 @@ function proportionOfCIs(arr) {
   background-position:  10px 0, 10px 0, 0 0, 0 0;
   background-size: 10px 10px;
   background-repeat: repeat;
+}
+.playing-card-blank > div {
+  display: none;
 }
 .ci-line {
   stroke-width: 3;
