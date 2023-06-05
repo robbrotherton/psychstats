@@ -8,13 +8,14 @@ page-layout: full
 
 <label for="ci-input">CI =&nbsp;</label><span id="ci-width">80</span>%<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
 
-<div style="display: flex; width: 100%;">
+<div style="margin: 0 auto 1em auto; width: fit-content;">
 <button id="addRandom" class="btn btn-outline-primary">Draw cards</button>
 <button id="drawContinuously" class="btn btn-outline-success" style="margin-right: 1em;"><i class="bi bi-play"></i></button>
-<div id="cards" style="display: flex;"></div>
-
-<div>M = <span id="mean"></span></div>
 </div>
+<div id="cards" style="margin: auto; width: 100%; display: flex; justify-content: center; flex-wrap: wrap;"></div>
+
+<div style="width: 100%; text-align: center;">M = <span id="mean"></span></div>
+<!-- </div> -->
 
 
 :::
@@ -147,6 +148,9 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
 
     if (!sampling) {
       sampling = true;
+      d3.selectAll(".playing-card-container")
+      .classed("playing-card-blank", false);
+
       samplingInterval = setInterval(() => {
         newSample();
     }, 200);
@@ -193,8 +197,10 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
   
   function drawCIs(arr) {
 
-    if (arr.length > 30) {
-      x.domain([arr.length - 30, arr.length]);
+    const n = arr.length;
+
+    if (n > 30) {
+      x.domain([n - 30, n]);
     }
   
   <!-- dot for the point estimate -->
@@ -219,8 +225,15 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("y2", d => y(d.mean - d.ci))
       .attr("class", "ci-line")
       .classed("ci-contains-mu", d => d.containsMu)
+      .classed("newest-line", d => (d.id == n) ? true : false)
 
-    if (arr.length > 30) {
+    // lines.selectAll(".newest-line")
+    // .transition().duration(0)
+    //   .attr("y1", y(arr[n-1].mean)).attr("y2", y(arr[n-1].mean))
+    // .transition().duration(250)
+    //   .attr("y1", y(arr[n-1].mean + arr[n-1].ci)).attr("y2", y(arr[n-1].mean - arr[n-1].ci))
+
+    if (n > 30) {
       dots.selectAll("circle")
       .transition().duration(200).ease(d3.easeLinear)
       .attr("cx", d => x(d.id - 1))
@@ -230,6 +243,7 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("x1", d => x(d.id - 1))
       .attr("x2", d => x(d.id - 1))
     }
+
       
   }
 
@@ -284,9 +298,13 @@ function getSD (array) {
 function getCI (array, confidence) {
   const pt = 1 - (100 - confidence)/100 * 0.5
   const n = array.length
-  const sd = getSD(array)
-  const t = jStat.studentt.inv(pt, n - 1)
+  // const sd = getSD(array)
+  const sd = 3.778162;
+  // const t = jStat.studentt.inv(pt, n - 1)
+  const t = jStat.normal.inv(pt, 0, 1);
+  console.log(sd);
   return t * (sd / Math.sqrt(n))
+
 }
 
 
