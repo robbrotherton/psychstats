@@ -5,6 +5,12 @@ title-block-banner: "#c3ddff"
 toc: false
 ---
 
+<style>
+.quarto-title .title {
+    display: none;
+}
+</style>
+
 ## Visualizations
 
 [Interactive visualizations of fundamental statistical concepts.]{.lead}

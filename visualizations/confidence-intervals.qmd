@@ -1,5 +1,6 @@
 ---
-title: "Confidence Intervals"
+title: Confidence Intervals
+subtitle: Demonstrating confidence interval coverage using a deck of cards
 page-layout: full
 ---
 
@@ -9,6 +10,13 @@ page-layout: full
 <label for="ci-input">CI =&nbsp;</label><span id="ci-width">80</span>%<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
 
 <div style="margin: 0 auto 1em auto; width: fit-content;">
+<label for="sampleSize">Number of cards:</label>
+<select name="sampleSize" id="sampleSize">
+	<option value="3" selected="true">3</option>
+	<option value="5">5</option>
+	<option value="10">10</option>
+	<option value="30">30</option>
+</select>
 <button id="addRandom" class="btn btn-outline-primary">Draw cards</button>
 <button id="drawContinuously" class="btn btn-outline-success" style="margin-right: 1em;"><i class="bi bi-play"></i></button>
 </div>
@@ -29,13 +37,32 @@ page-layout: full
 :::
 
 
+## About
+
+A deck of playing cards is a known population consisting of the numbers 1 through 13 repeated 4 times, once for each suit. The average of this population ($\mu$) is 7.00, and the standard deviation ($\sigma$) is 3.78. 
+
+In the visualization above, you can take samples from this population repeatedly. Each sample produces an estimate of the population parameter with a margin of uncertainty: this is the confidence interval for the sample.
+
+The interpretation of the confidence interval, however, is subtle. The confidence interval is a statement about repeated, long-run probabilities. If we sample from a population repeatedly, the proportion of confidence intervals which include the true population mean will be equal to the specified level of confidence. For example, if we compute an 80% CI for each sample, around 80% of those CIs will include the population mean.
+
+So what does the confidence interval for a single sample tell us? The width of the CI reflects the variability in our sample, but it doesn't allow us to put a probabilistic value on the population parameter. A common mistake is to think that the confidence interval tells us, with the given degree of confidence, that the true population parameter is a value somewhere within the stated range. This sounds intuitive but it's not quite true. Under the frequentist approach, the population parameter is a fixed constant, and we can't make probabilistic statements about constants. So strictly speaking, the CI for a single sample reflects the uncertainty in that sample's estimate of the parameter rather than uncertainty about the true value of the parameter.
+
+Maybe that sounds a bit disappointing. Surely the whole point of taking a sample is to be able to say something about the population it came from? Well, yes. This is where confidence intervals connect to Null Hypothesis Significance Testing. Rather than saying how confident we are that the population parameter is within a certain range, the sample (and its CI) can help us make an inference about whether the parameter is (or isn't) some specific hypothetical value.
+
+Let's say we suspect that someone has removed some cards from our deck and so its population mean is not, in fact, 7. Our "alternative hypothesis" would be that $\mu \ne 7$. The null hypothesis, that our deck hasn't been tampered with, would be that $\mu = 7$. We will reject the null hypothesis if the sample looks sufficiently unlikely to have been produced by the hypotheical null hypothesis population. To quantify "sufficiently unlikely" we choose an "alpha" ($\alpha$) value, some low probability. We're willing to accept the risk that we're making a mistake.
+
+The visualization about really is sampling from a fair deck with a mean of 7. But as you'll see, some of the confidence intervals in the visualization above don't include the true population mean. They would cause us to reject the null hypothesis ($\mu = 7$) and lead us to believe that someone has indeed tampered with the cards. We'd be making a mistake; it just so happened that we obtained a sample for which the confidence interval didn't contain the true population mean--which is what we can expect to happen with a probability equal to the specified confidence. So in this sense, the interpretation of any single confidence interval is most closely related to the binary decision about the null hypothesis; if the null value lies outside our confidence interval, we reject the null hypothesis; if it's inside, we don't reject it.
+
+The deck cards is a convenient example of a known population, but generally speaking we don't know the true population parameter--that's the whole reason for taking sample and applying statistics!
+
+
 ```{ojs}
 
 jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
 
 chart = {
 
-  const sampleSize = 10;
+  let sampleSize = Number(d3.select("#sampleSize").property("value"));
   let sampling = false;
   let sample = [];
 
@@ -47,24 +74,31 @@ chart = {
     .domain([0, 30])
     .range([margin.left, w - margin.right])
   const y = d3.scaleLinear()
-    .domain([2, 12])
+    .domain([1, 13])
     .range([h - margin.bottom, margin.top])
     
   const yAxis = d3.axisLeft(y)
     .ticks(11)
 
   const f = d3.format(".2f")
+  const f1 = d3.format(".1f")
 
   var sampleArr = []
   var meansArr = []
   var ciArr = []
   
-  const ciInput = document.getElementById('ci-input')
+  const ciInput = document.getElementById('ci-input');
+  const sampleSizeInput = d3.select('#sampleSize');
   const buttonRandom = document.getElementById('addRandom');
   
+
+  sampleSizeInput.on("change", () => setup()); 
+
   var ciWidth = Number(ciInput.value)
 
   function makeCards(n, divId) {
+
+    d3.select("#" + divId).selectAll("div").remove();
     for (let i = 0; i < n; i++) {
 
       d3.select("#" + divId).append("div")
@@ -74,13 +108,34 @@ chart = {
     }
   }
 
+  function setup() {
+    sampleSize = Number(d3.select("#sampleSize").property("value"));
+    reset();
+    makeCards(sampleSize, "cards");
+  }
+
+  function reset() {
+    sample = [];
+    sampleArr = [];
+
+    dots.selectAll("circle").remove();
+    lines.selectAll("line").remove();
+
+    d3.select("#proportion").text("#");
+    d3.select("#count").text("#");
+    d3.select("#mean").text("");
+
+    x.domain([0, 30]);
+  }
+
   makeCards(sampleSize, "cards");
   
   
   function addSampleToPlot(values) {
   
     let mean = getM(values)
-    let sd = getSD(values)
+    // let sd = getSD(values)
+    let sd = jStat.stdev(values, true);
     let ci = getCI(values, ciWidth)
     let containsMu = ciContainsMu(mean, ci)
     let n = sampleArr.length + 1
@@ -90,22 +145,24 @@ chart = {
     // addCI(sampleArr.length, mean, ci)
     drawCIs(sampleArr);
 
-    d3.select("#proportion").text(Math.round(proportionOfCIs(sampleArr) * 100));
+    d3.select("#proportion").text(f1(proportionOfCIs(sampleArr) * 100));
     d3.select("#count").text(sampleArr.length);
     d3.select("#mean").text(f(mean) + " [" + f(mean - ci) + ", " + f(mean + ci) + "]");
   }
   
-  buttonRandom.onclick = () => newSample(false);
+  buttonRandom.onclick = () => newSample(sampleSize, false);
   d3.select("#drawContinuously").on("click", sampleContinuously);
 
-  function newSample(quick = true) {
+  function newSample(sampleSize, quick = true) {
 
     sample = [];
     for (let i = 1; i < sampleSize + 1; i++) {
-      const value = Math.floor(Math.random() * 12 + 1);
+      const value = Math.floor(Math.random() * 13 + 1);
       sample.push(value);
       d3.select("#card" + i).html(randomCard(value - 1))
     }
+
+    console.log(sample);
 
     addSampleToPlot(sample);
 
@@ -152,8 +209,8 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .classed("playing-card-blank", false);
 
       samplingInterval = setInterval(() => {
-        newSample();
-    }, 200);
+        newSample(sampleSize);
+    }, 10);
 
     sampleContinuouslyBtn.html("<i class='bi bi-stop'></i>").attr("class", "btn btn-danger")
 
@@ -274,7 +331,7 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("class", "ci-line")
       .classed("ci-contains-mu", d => ciContainsMu(d.mean, d.ci))
     
-    d3.select("#proportion").text(Math.round(proportionOfCIs(sampleArr) * 100));
+    d3.select("#proportion").text(f1(proportionOfCIs(sampleArr) * 100));
   }
   
   
@@ -296,14 +353,9 @@ function getSD (array) {
 }
 
 function getCI (array, confidence) {
-  const pt = 1 - (100 - confidence)/100 * 0.5
-  const n = array.length
-  // const sd = getSD(array)
-  const sd = 3.778162;
-  // const t = jStat.studentt.inv(pt, n - 1)
-  const t = jStat.normal.inv(pt, 0, 1);
-  console.log(sd);
-  return t * (sd / Math.sqrt(n))
+  const mean = jStat.mean(array);
+  const alpha = 1 - confidence / 100;
+  return mean - jStat.tci(mean, alpha, array )[0];
 
 }
 

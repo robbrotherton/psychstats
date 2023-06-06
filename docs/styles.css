@@ -1,4 +1,7 @@
 /* css styles */
+:root {
+    --sample-panel-background: #d3d8a8;
+}
 
 #title-svg {
     width: 50%;
@@ -47,9 +50,7 @@ body {
     padding-bottom: 0.5em;
 }
 
-.quarto-title .title {
-    display: none;
-}
+
 
 .quarto-title.column-body {
     position: relative;
