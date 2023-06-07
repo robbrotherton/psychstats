@@ -11,6 +11,10 @@ body {
     text-align: justify;
 }
 
+h2 {
+    padding-bottom: 0;
+}
+
 /* for the About page */
 .about-banner-image {
     text-align: center;
