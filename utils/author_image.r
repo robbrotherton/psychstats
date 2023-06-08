@@ -4,8 +4,8 @@ library(dplyr)
 library(tibble)
 library(ggplot2)
 
-source <- here::here("Documents", "psychstats", "images", "rob-square.jpeg") # path to source image
-output <- here::here("Documents", "psychstats", "images", "rob-halftone.svg") # path to output image
+source <- here::here("images", "rob-edit.jpg") # path to source image
+output <- here::here("images", "rob-halftone.svg") # path to output image
 
 # dimensions of desired output
 pixels_wide <- 1000
@@ -43,7 +43,8 @@ draw_halftone <- function(data, threshold = .2, scaling = 1) {
     scale_y_reverse(name = NULL, expand = c(0,0), breaks = NULL) + 
     scale_size_identity() + 
     theme_void() +
-    coord_fixed()
+    coord_fixed(ratio = 1) + 
+    NULL
   
   return(pic)
 }
@@ -64,11 +65,11 @@ save_halftone <- function(plot, file, pixels_wide, pixels_high) {
 
 # processing pipeline
 source %>% 
-  read_halftone(x.samp = 70, y.samp = 70) %>% 
-  draw_halftone(threshold = .1, scaling = 1.2) |> 
+  read_halftone(x.samp = 90, y.samp = 120) %>% 
+  draw_halftone(threshold = 0, scaling = 2) |>
   save_halftone(
     file = output,
-    pixels_wide = pixels_wide,
-    pixels_high = pixels_high
+    pixels_wide = 225 * 8,
+    pixels_high = 300 * 8
   )
   

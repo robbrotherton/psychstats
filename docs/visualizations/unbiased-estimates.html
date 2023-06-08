@@ -219,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 </div>
-<section id="about" class="level2">
+<section id="about" class="level2 about">
 <h2 class="anchored" data-anchor-id="about">About</h2>
 <p>To say a statistic is <em>unbiased</em> is to say that, <em>on average</em>, its value is equal to the parameter it is estimating. Sampling error, the inherent randomness which determines which observations appear in the sample, ensures that each individual sample will produce a different estimate; any given sample’s statistic won’t be exactly equal to the parameter. But if many samples are taken, the average of all those statistics will converge on the true population parameter’s value.</p>
 <p>The arithmetic average is an unbiased statistic. Each sample’s mean will be different, some above the true population mean and some below. Because the discrepancy is random, however, with many samples the overestimates and underestimates balance out. The average of all the differences between each sample average and the true population average will be close to zero. That’s what makes the mean unbiased.</p>
@@ -231,6 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In the case of variance and standard deviation, the constraint is the sample mean. Once we’ve calculated the sample mean, the sum of the deviations from the mean must equal zero. This means that once we know the deviations of <em>n - 1</em> values, the deviation of the nth value is completely determined. So, we say we have <em>n - 1</em> degrees of freedom.</p>
 <p>When you divide by <em>n - 1</em> instead of ‘n’, you are effectively adjusting the sample variance and sample standard deviation upwards to account for the fact that you’ve underestimated the squared deviations because you used the sample mean instead of the population mean. This adjustment gives a larger value for the sample variance and sample standard deviation, which on average gives a better (i.e., unbiased) estimate of the population variance and population standard deviation.</p>
 <p>This visualization can demonstrate this effect: if you take many samples and calculate the sample standard deviation using <em>n</em> and <em>n - 1</em> in the denominator, you’ll see that the average of the sample standard deviations calculated with <em>n - 1</em> in the denominator will be closer to the true population standard deviation, while those calculated with ‘n’ in the denominator will tend to underestimate it. This shows how the <em>n - 1</em> adjustment corrects for the bias in estimating the population standard deviation from a sample.</p>
+</section>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb1" data-startfrom="53" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 52;"><span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>jStat <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1359,7 +1360,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 
 
-</section>
 
 </main> <!-- /main -->
 

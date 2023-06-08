@@ -25,7 +25,7 @@ Show: [$M$]{.select-mean .selector .unselected} [$SD_{n}$]{.select-population .s
 
 ::::
 
-
+:::: {.about}
 ## About
 
 To say a statistic is *unbiased* is to say that, *on average*, its value is equal to the parameter it is estimating. Sampling error, the inherent randomness which determines which observations appear in the sample, ensures that each individual sample will produce a different estimate; any given sample's statistic won't be exactly equal to the parameter. But if many samples are taken, the average of all those statistics will converge on the true population parameter's value.
@@ -47,7 +47,7 @@ In the case of variance and standard deviation, the constraint is the sample mea
 When you divide by *n - 1* instead of 'n', you are effectively adjusting the sample variance and sample standard deviation upwards to account for the fact that you've underestimated the squared deviations because you used the sample mean instead of the population mean. This adjustment gives a larger value for the sample variance and sample standard deviation, which on average gives a better (i.e., unbiased) estimate of the population variance and population standard deviation.
 
 This visualization can demonstrate this effect: if you take many samples and calculate the sample standard deviation using *n* and *n - 1* in the denominator, you'll see that the average of the sample standard deviations calculated with *n - 1* in the denominator will be closer to the true population standard deviation, while those calculated with 'n' in the denominator will tend to underestimate it. This shows how the *n - 1* adjustment corrects for the bias in estimating the population standard deviation from a sample.
-
+::::
 
 
 ```{ojs}

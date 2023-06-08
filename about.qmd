@@ -8,7 +8,7 @@ title: "About"
 :::
 
 ::: {.about-banner-text}
-This is the personal website of Rob Brotherton. I'm an academic psychologist and writer. I teach statistics and political psychology at Barnard College in New York City.
+This website was made by Rob Brotherton. I'm an academic psychologist and writer. I teach statistics and political psychology at Barnard College in New York City.
 :::
 ::::
 
