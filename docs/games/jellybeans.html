@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.78">
+<meta name="generator" content="quarto-1.3.310">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -167,9 +138,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
   </li>
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -196,7 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span id="revealBtn">Reveal</span>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="31" data-source-offset="-2"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 30;"><span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { scaleCanvas } <span class="im">from</span> <span class="st">'../utils/utils.js'</span><span class="op">;</span></span>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="31" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 30;"><span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { scaleCanvas } <span class="im">from</span> <span class="st">'../utils/utils.js'</span><span class="op">;</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>jar <span class="op">=</span> {</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> width <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
@@ -456,7 +427,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\r\nimport { scaleCanvas } from '../utils/utils.js';\r\n\r\njar = {\r\n    let width = 500;\r\nlet height = 600;\r\nlet x0 = width / 2;\r\n\r\nlet colorPal = [\r\n    '#ff8aa6', // Pastel Pink\r\n    '#ff9b48', // Pastel Orange\r\n    '#fff067', // Pastel Yellow\r\n    '#9EE09E', // Pastel Green\r\n    '#71c4e6', // Pastel Blue\r\n    '#edceff', // Pastel Purple\r\n    '#fc5c30', // Pastel Brown\r\n    '#CAF7E2'  // Pastel Mint\r\n];\r\n\r\n\r\nfunction randomColor(colorPal) {\r\n    return colorPal[Math.floor(Math.random() * colorPal.length)];\r\n}\r\n\r\nfunction getBeanProperties(colorPal) {\r\n    return {\r\n        label: \"circle\",\r\n        mass: 100,\r\n        restitution: 0.5,\r\n        friction: 0.01,\r\n        frictionAir: 0.025,\r\n        frictionStatic: 0,\r\n        density: 1,\r\n        slop: 0.05,\r\n        sleepThreshold: 15,\r\n        render: { fillStyle: randomColor(colorPal) }\r\n    };\r\n}\r\n\r\n\r\nvar { Engine, Render, Runner,\r\n    Composite, Composites, Common,\r\n    MouseConstraint, Mouse, Events,\r\n    World, Bodies, Body } = Matter;\r\n\r\nlet intervalId = null;\r\nconst generationSpeed = 20;\r\n\r\nlet params = randomizeParams();\r\nlet engine = initializeWorld(\"board\", \"canvas\", width, height);\r\n\r\nComposite.add(engine.world, makeJar(params));\r\n\r\nlet generateBean = createBeanGenerator(params, x0, colorPal);\r\naddBeansToWorld(engine.world, generateBean, generationSpeed);\r\n\r\nengine;\r\n\r\nfunction randomizeParams() {\r\n    const generationSpeed = 20;\r\n    const jarCount = 0;\r\n    const jarWidth = 0.5 + Math.random() * 0.4;\r\n    const jarHeight = 0.5 + Math.random() * 0.2;\r\n    const beanRadius = 6 + Math.random() * 6;\r\n    const nBeans = Math.floor(4000 * (jarWidth * jarHeight) * (1 / beanRadius));\r\n    \r\n    return {nBeans, beanRadius, generationSpeed, jarWidth, jarHeight, jarCount};\r\n}\r\n\r\nfunction initializeWorld(element, canvas, width, height) {\r\n    let engine = Engine.create({\r\n        enableSleeping: true\r\n    }),\r\n    world = engine.world;\r\n    // create renderer\r\n    let render = Render.create({\r\n        element: document.getElementById(element),\r\n        canvas: document.getElementById(canvas),\r\n        engine: engine,\r\n        options: {\r\n            width: width,\r\n            height: height,\r\n            background: \"transparent\",\r\n            wireframes: false,\r\n            showSleeping: false\r\n        }\r\n    });\r\n    Render.run(render);\r\n    \r\n    let runner = Runner.create();\r\n    Runner.run(runner, engine);\r\n\r\n    // Reset simulation on mousedown events\r\n    render.canvas.addEventListener(\"mousedown\", handleReset);\r\n\r\n    return {world, render};\r\n}\r\n\r\n\r\nfunction createBeanGenerator(params, x, colors) {\r\n    let total = params.nBeans;\r\n\r\n    return function generateBean() {\r\n        if (total-- > 0) {\r\n            const circle = Bodies.circle(x + (-0.5 + Math.random()) * 250, -20, params.beanRadius + Math.random() * 8, \r\n            getBeanProperties(colorPal)\r\n            );\r\n\r\n            Events.on(circle, \"sleepStart\", function () {\r\n                circle.isStatic = true;\r\n                circle.label = \"inJar\";\r\n            });\r\n\r\n            return circle;\r\n        } else {\r\n            return null;\r\n        }\r\n    }\r\n}\r\n\r\nfunction addBeansToWorld(world, generatorFunction, speed) {\r\n    intervalId = setInterval(() => {\r\n        let bean = generatorFunction();\r\n        if (bean) {\r\n            Composite.add(world, bean);\r\n        } else {\r\n            clearInterval(intervalId);\r\n            intervalId = null;\r\n        }\r\n    }, speed);\r\n}\r\n\r\n\r\nconst existingBalls = () => {\r\n    return engine.world.bodies.filter((body) => body.label === \"circle\");\r\n};\r\n\r\nconst makeStaticInterval = setInterval(() => {\r\n    existingBalls().forEach((ball) => removeBall(engine, ball, height));\r\n}, 200);\r\n\r\nfunction removeBall(engine, ball, canvasHeight) {\r\n    let ballHeight = ball.position.y;\r\n    if (ballHeight > canvasHeight) {\r\n        console.log(\"gonner\");\r\n        Composite.remove(engine.world, ball);\r\n    }\r\n}\r\n\r\nfunction makeJar(params) {\r\n\r\n    const thickness = 10;\r\n    const properties = {\r\n        isStatic: true,\r\n        render: {\r\n            fillStyle: \"#000000\",\r\n            visible: true\r\n        },\r\n        chamfer: { radius: [5, 5, 5, 5]}\r\n    };\r\n\r\n    const leftWall = Bodies.rectangle(width * (1 - params.jarWidth) / 2, (height) - (height * params.jarHeight/2), thickness, height * params.jarHeight, properties);\r\n    const rightWall = Bodies.rectangle(width * (1 - (1 - params.jarWidth) / 2), (height) - (height * params.jarHeight/2), thickness, height * params.jarHeight, properties);\r\n    const bottom = Bodies.rectangle(width * 0.5, height - 5, width * params.jarWidth, thickness, properties);\r\n\r\n    return [leftWall, rightWall, bottom];\r\n}\r\n\r\nconst btn = document.getElementById(\"revealBtn\");\r\n\r\nfunction countBeansInJar(world) {\r\n    return world.bodies.filter((body) => body.label === \"inJar\").length;\r\n}\r\n\r\nbtn.addEventListener(\"click\", function(event) {\r\n    btn.innerHTML = countBeansInJar(engine.world);\r\n})\r\n\r\nfunction resetRevealButton(button) {\r\n    button.innerHTML = \"Reveal\";\r\n}\r\n\r\n\r\nfunction reset() {\r\n    const newParams = randomizeParams();\r\n    const newEngine = initializeWorld(\"board\", \"canvas\");\r\n    const newJar = makeJar(newParams);\r\n    const newBeans = createBeanGenerator(newParams, x0, colorPal);\r\n\r\n    return { newParams, newEngine, newBeans, newJar };\r\n}\r\n\r\nfunction handleReset() {\r\n    resetRevealButton(btn);\r\n    // Composite.clear(engine.world);\r\n    \r\n    if (intervalId) {\r\n        clearInterval(intervalId);\r\n        intervalId = null;\r\n    }\r\n    \r\n    const { newParams, newEngine, newBeans, newJar } = reset();\r\n    params = newParams;\r\n    engine = newEngine;\r\n    Composite.add(engine.world, newJar)\r\n    generateBean = newBeans;\r\n    addBeansToWorld(engine.world, generateBean, generationSpeed);\r\n}\r\n\r\nscaleCanvas(\"container\", width, height);\r\nwindow.addEventListener(\"resize\", () => scaleCanvas(\"container\", width, height))\r\n\r\n}\r\n\r\n"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\nimport { scaleCanvas } from '../utils/utils.js';\n\njar = {\n    let width = 500;\nlet height = 600;\nlet x0 = width / 2;\n\nlet colorPal = [\n    '#ff8aa6', // Pastel Pink\n    '#ff9b48', // Pastel Orange\n    '#fff067', // Pastel Yellow\n    '#9EE09E', // Pastel Green\n    '#71c4e6', // Pastel Blue\n    '#edceff', // Pastel Purple\n    '#fc5c30', // Pastel Brown\n    '#CAF7E2'  // Pastel Mint\n];\n\n\nfunction randomColor(colorPal) {\n    return colorPal[Math.floor(Math.random() * colorPal.length)];\n}\n\nfunction getBeanProperties(colorPal) {\n    return {\n        label: \"circle\",\n        mass: 100,\n        restitution: 0.5,\n        friction: 0.01,\n        frictionAir: 0.025,\n        frictionStatic: 0,\n        density: 1,\n        slop: 0.05,\n        sleepThreshold: 15,\n        render: { fillStyle: randomColor(colorPal) }\n    };\n}\n\n\nvar { Engine, Render, Runner,\n    Composite, Composites, Common,\n    MouseConstraint, Mouse, Events,\n    World, Bodies, Body } = Matter;\n\nlet intervalId = null;\nconst generationSpeed = 20;\n\nlet params = randomizeParams();\nlet engine = initializeWorld(\"board\", \"canvas\", width, height);\n\nComposite.add(engine.world, makeJar(params));\n\nlet generateBean = createBeanGenerator(params, x0, colorPal);\naddBeansToWorld(engine.world, generateBean, generationSpeed);\n\nengine;\n\nfunction randomizeParams() {\n    const generationSpeed = 20;\n    const jarCount = 0;\n    const jarWidth = 0.5 + Math.random() * 0.4;\n    const jarHeight = 0.5 + Math.random() * 0.2;\n    const beanRadius = 6 + Math.random() * 6;\n    const nBeans = Math.floor(4000 * (jarWidth * jarHeight) * (1 / beanRadius));\n    \n    return {nBeans, beanRadius, generationSpeed, jarWidth, jarHeight, jarCount};\n}\n\nfunction initializeWorld(element, canvas, width, height) {\n    let engine = Engine.create({\n        enableSleeping: true\n    }),\n    world = engine.world;\n    // create renderer\n    let render = Render.create({\n        element: document.getElementById(element),\n        canvas: document.getElementById(canvas),\n        engine: engine,\n        options: {\n            width: width,\n            height: height,\n            background: \"transparent\",\n            wireframes: false,\n            showSleeping: false\n        }\n    });\n    Render.run(render);\n    \n    let runner = Runner.create();\n    Runner.run(runner, engine);\n\n    // Reset simulation on mousedown events\n    render.canvas.addEventListener(\"mousedown\", handleReset);\n\n    return {world, render};\n}\n\n\nfunction createBeanGenerator(params, x, colors) {\n    let total = params.nBeans;\n\n    return function generateBean() {\n        if (total-- > 0) {\n            const circle = Bodies.circle(x + (-0.5 + Math.random()) * 250, -20, params.beanRadius + Math.random() * 8, \n            getBeanProperties(colorPal)\n            );\n\n            Events.on(circle, \"sleepStart\", function () {\n                circle.isStatic = true;\n                circle.label = \"inJar\";\n            });\n\n            return circle;\n        } else {\n            return null;\n        }\n    }\n}\n\nfunction addBeansToWorld(world, generatorFunction, speed) {\n    intervalId = setInterval(() => {\n        let bean = generatorFunction();\n        if (bean) {\n            Composite.add(world, bean);\n        } else {\n            clearInterval(intervalId);\n            intervalId = null;\n        }\n    }, speed);\n}\n\n\nconst existingBalls = () => {\n    return engine.world.bodies.filter((body) => body.label === \"circle\");\n};\n\nconst makeStaticInterval = setInterval(() => {\n    existingBalls().forEach((ball) => removeBall(engine, ball, height));\n}, 200);\n\nfunction removeBall(engine, ball, canvasHeight) {\n    let ballHeight = ball.position.y;\n    if (ballHeight > canvasHeight) {\n        console.log(\"gonner\");\n        Composite.remove(engine.world, ball);\n    }\n}\n\nfunction makeJar(params) {\n\n    const thickness = 10;\n    const properties = {\n        isStatic: true,\n        render: {\n            fillStyle: \"#000000\",\n            visible: true\n        },\n        chamfer: { radius: [5, 5, 5, 5]}\n    };\n\n    const leftWall = Bodies.rectangle(width * (1 - params.jarWidth) / 2, (height) - (height * params.jarHeight/2), thickness, height * params.jarHeight, properties);\n    const rightWall = Bodies.rectangle(width * (1 - (1 - params.jarWidth) / 2), (height) - (height * params.jarHeight/2), thickness, height * params.jarHeight, properties);\n    const bottom = Bodies.rectangle(width * 0.5, height - 5, width * params.jarWidth, thickness, properties);\n\n    return [leftWall, rightWall, bottom];\n}\n\nconst btn = document.getElementById(\"revealBtn\");\n\nfunction countBeansInJar(world) {\n    return world.bodies.filter((body) => body.label === \"inJar\").length;\n}\n\nbtn.addEventListener(\"click\", function(event) {\n    btn.innerHTML = countBeansInJar(engine.world);\n})\n\nfunction resetRevealButton(button) {\n    button.innerHTML = \"Reveal\";\n}\n\n\nfunction reset() {\n    const newParams = randomizeParams();\n    const newEngine = initializeWorld(\"board\", \"canvas\");\n    const newJar = makeJar(newParams);\n    const newBeans = createBeanGenerator(newParams, x0, colorPal);\n\n    return { newParams, newEngine, newBeans, newJar };\n}\n\nfunction handleReset() {\n    resetRevealButton(btn);\n    // Composite.clear(engine.world);\n    \n    if (intervalId) {\n        clearInterval(intervalId);\n        intervalId = null;\n    }\n    \n    const { newParams, newEngine, newBeans, newJar } = reset();\n    params = newParams;\n    engine = newEngine;\n    Composite.add(engine.world, newJar)\n    generateBean = newBeans;\n    addBeansToWorld(engine.world, generateBean, generationSpeed);\n}\n\nscaleCanvas(\"container\", width, height);\nwindow.addEventListener(\"resize\", () => scaleCanvas(\"container\", width, height))\n\n}\n\n"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -608,9 +579,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -675,6 +660,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

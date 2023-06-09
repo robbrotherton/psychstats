@@ -1,56 +1,41 @@
 {
   "index.qmd": {
-    "index.html": "476a620d"
+    "index.html": "c9794db9"
   },
   "about.qmd": {
-    "about.html": "4af670b6"
-  },
-  "games/triplett/triplett.qmd": {
-    "triplett.html": "6f97ea46"
-  },
-  "games/triplett.qmd": {
-    "triplett.html": "61f1c08e"
-  },
-  "visualizations/unbiased-estimates.qmd": {
-    "unbiased-estimates.html": "9b8363a2"
-  },
-  "docs/games/jellybeans.qmd": {
-    "jellybeans.html": "0eb7030d"
-  },
-  "docs/games/jellybeans.ipynb": {
-    "jellybeans.html": "fdda5085"
-  },
-  "games/jellybeans.qmd": {
-    "jellybeans.html": "f24ed0fc"
-  },
-  "visualizations/quincunx.qmd": {
-    "quincunx.html": "6acc6baa"
-  },
-  "visualizations/sampling/sampling.qmd": {
-    "sampling.html": "285d63ba"
-  },
-  "visualizations/sampling/sampling-backend.qmd": {
-    "sampling-backend.html": "475128d6"
-  },
-  "games/jellybeans2.qmd": {
-    "jellybeans2.html": "b54ee207"
-  },
-  "visualizations/dice/dice.qmd": {
-    "dice.html": "f71d0fcc"
-  },
-  "games/correlation/guess-the-correlation.qmd": {
-    "guess-the-correlation.html": "8071e363"
-  },
-  "games/guess-the-correlation.qmd": {
-    "guess-the-correlation.html": "31980355"
-  },
-  "visualizations/mean-balance-beam.qmd": {
-    "mean-balance-beam.html": "95471c7c"
-  },
-  "visualizations/least-squared-error.qmd": {
-    "least-squared-error.html": "ef581ce6"
+    "about.html": "b9f3a289"
   },
   "visualizations/confidence-intervals.qmd": {
-    "confidence-intervals.html": "91407817"
+    "confidence-intervals.html": "9a5ba479"
+  },
+  "visualizations/unbiased-estimates.qmd": {
+    "unbiased-estimates.html": "260bae81"
+  },
+  "visualizations/least-squared-error.qmd": {
+    "least-squared-error.html": "f0f1e5f3"
+  },
+  "visualizations/dice/dice.qmd": {
+    "dice.html": "37a68e2a"
+  },
+  "visualizations/sampling/sampling.qmd": {
+    "sampling.html": "81b9d366"
+  },
+  "visualizations/sampling/sampling-backend.qmd": {
+    "sampling-backend.html": "54a5d92f"
+  },
+  "visualizations/mean-balance-beam.qmd": {
+    "mean-balance-beam.html": "dc22f38e"
+  },
+  "visualizations/quincunx.qmd": {
+    "quincunx.html": "5c4b3d89"
+  },
+  "games/jellybeans.qmd": {
+    "jellybeans.html": "b81ae82e"
+  },
+  "games/triplett/triplett.qmd": {
+    "triplett.html": "e329841b"
+  },
+  "games/guess-the-correlation.qmd": {
+    "guess-the-correlation.html": "e29ba50d"
   }
 }
