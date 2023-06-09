@@ -65,6 +65,7 @@ chart = {
   let sampleSize = Number(d3.select("#sampleSize").property("value"));
   let sampling = false;
   let sample = [];
+  const samplingSpeed = 150;
 
   const w = 1050
   const h = 600
@@ -142,8 +143,7 @@ chart = {
     
     sampleArr.push({sample: values, mean: mean, ci: ci, containsMu: containsMu, id: n})
     
-    // addCI(sampleArr.length, mean, ci)
-    drawCIs(sampleArr);
+    drawNewCI(n, mean, ci);
 
     d3.select("#proportion").text(f1(proportionOfCIs(sampleArr) * 100));
     d3.select("#count").text(sampleArr.length);
@@ -210,7 +210,7 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
 
       samplingInterval = setInterval(() => {
         newSample(sampleSize);
-    }, 100);
+    }, samplingSpeed);
 
     sampleContinuouslyBtn.html("<i class='bi bi-stop'></i>").attr("class", "btn btn-danger")
 
@@ -242,8 +242,9 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
     .attr("y", y(7.05))
     .text("true population mean")
     
-  const lines = svg.append("g")
-  const dots = svg.append("g")
+  const svgDataLayer = svg.append("g")
+  const lines = svgDataLayer.append("g")
+  const dots = svgDataLayer.append("g")
   
   const axisY = svg.append("g")
   axisY.append("rect").attr("x", -margin.left).attr("width", margin.left).attr("height", h)
@@ -251,6 +252,41 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
   axisY.call(yAxis)
     .attr("transform", `translate(${x(0)},0)`)
 
+function drawNewCI(n, point, margin) {
+
+  const px = x.invert(1);
+    // const n = sampleArr.length;
+    const includesMu = ciContainsMu(point, margin);
+
+    dots.append("circle")
+      .attr("r", 4)
+      .attr("cx", x(n))
+      .attr("cy", y(point))
+
+    lines.append("line")
+      .attr("x1", x(n))
+      .attr("x2", x(n))
+      .attr("y1", y(point))
+      .attr("y2", y(point))
+      .attr("class", "ci-line")
+      .classed("ci-contains-mu", includesMu)
+      .transition("grow").duration(samplingSpeed)
+      .attr("y1", y(point + margin))
+      .attr("y2", y(point - margin))
+  
+    if (n > 30) {
+      
+      console.log("shifting x axis)");
+      x.domain([n - 30, n]);
+      // svgDataLayer.attr("transform", `translate(${-px * (n - 30)}, 0)`)
+      dots.selectAll("circle").data(sampleArr)
+      .transition().duration(samplingSpeed).ease(d3.easeLinear)
+      .attr("cx", d => x(d.id))
+      lines.selectAll("line").data(sampleArr)
+      .transition().duration(samplingSpeed).ease(d3.easeLinear)
+      .attr("x1", d => x(d.id)).attr("x2", d => x(d.id))
+    } 
+  }
   
   function drawCIs(arr) {
 
@@ -269,7 +305,7 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("cy", d => y(d.mean))
   
   <!-- lines for CI -->
-  lines.selectAll("line").remove();
+  // lines.selectAll("line").remove();
   
   lines.selectAll("line").data(arr).enter().append("line")
       .attr("x1", d => x(d.id))
@@ -314,8 +350,8 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
   .data(sampleArr)
   .enter()
     .append("line")
-      .attr("x1", d => (n > 30) ? x(d.id - 1) : x(d.id))
-      .attr("x2", d => (n > 30) ? x(d.id - 1) : x(d.id))
+      .attr("x1", d => x(d.id))
+      .attr("x2", d => x(d.id))
       .attr("y1", d => y(d.mean + d.ci))
       .attr("y2", d => y(d.mean - d.ci))
       .attr("class", "ci-line")
