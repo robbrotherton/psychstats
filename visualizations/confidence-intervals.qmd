@@ -268,10 +268,6 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("cx", d => x(d.id))
       .attr("cy", d => y(d.mean))
   
-  // lines.selectAll("line")
-  //   .attr("x1", x(n))
-  //   .attr("x2", x(n))
-  
   <!-- lines for CI -->
   lines.selectAll("line").remove();
   
@@ -283,12 +279,6 @@ const sampleContinuouslyBtn = d3.select("#drawContinuously");
       .attr("class", "ci-line")
       .classed("ci-contains-mu", d => d.containsMu)
       .classed("newest-line", d => (d.id == n) ? true : false)
-
-    // lines.selectAll(".newest-line")
-    // .transition().duration(0)
-    //   .attr("y1", y(arr[n-1].mean)).attr("y2", y(arr[n-1].mean))
-    // .transition().duration(250)
-    //   .attr("y1", y(arr[n-1].mean + arr[n-1].ci)).attr("y2", y(arr[n-1].mean - arr[n-1].ci))
 
     if (n > 30) {
       dots.selectAll("circle")
