@@ -15,6 +15,11 @@ h2 {
     padding-bottom: 0;
 }
 
+#about {
+    max-width: 600px;
+    margin: auto;
+}
+
 /* for the About page */
 .about-banner-image {
     text-align: center;
