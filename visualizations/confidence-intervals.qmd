@@ -10,14 +10,14 @@ page-layout: full
 <label for="ci-input">CI =&nbsp;</label><span id="ci-width">80</span>%<input data-prevent-swipe type="range" id="ci-input" class="form-range" name="ci" value="80" min="0" max="100" style="border: none; height: 1em; font-family: KaTeX_Main; font-size: 1em; margin-left: 0.5em; width: 50%; vertical-align: unset;">
 
 <div style="margin: 0 auto 1em auto; width: fit-content;">
-<label for="sampleSize">Number of cards:</label>
-<select name="sampleSize" id="sampleSize">
+<label for="sampleSize" class="form-label mt-4">Number of cards:</label>
+<select class="form-select" name="sampleSize" id="sampleSize">
 	<option value="3" selected="true">3</option>
 	<option value="5">5</option>
 	<option value="10">10</option>
 	<option value="30">30</option>
 </select>
-<button id="addRandom" class="btn btn-outline-primary">Draw cards</button>
+<button id="addRandom" class="btn btn-primary">Draw</button>
 <button id="drawContinuously" class="btn btn-outline-success" style="margin-right: 1em;"><i class="bi bi-play"></i></button>
 </div>
 <div id="cards" style="margin: auto; width: 100%; display: flex; justify-content: center; flex-wrap: wrap;"></div>
@@ -66,7 +66,7 @@ chart = {
   let sampling = false;
   let sample = [], sampleArr = [];
   let numberOfCIsThatContainMu = 0;
-  const samplingSpeed = 15;
+  const samplingSpeed = 150;
 
   const w = 1050
   const h = 600
@@ -343,6 +343,8 @@ function countOfCIs(arr) {
 <style>
 
 .playing-card-container {
+  background-color: #fcfcfc;
+  color: black;
   display: flex;
   justify-content: center;
   align-items: center;

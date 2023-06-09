@@ -3,6 +3,11 @@
     --sample-panel-background: #d3d8a8;
 }
 
+.form-select {
+    display: unset;
+    width: auto;
+}
+
 #title-svg {
     width: 50%;
 }
