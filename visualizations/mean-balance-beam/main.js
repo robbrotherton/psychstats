@@ -5,14 +5,25 @@ let nBoxes = 5
 let scale_width = 11 // how many spots are there?
 let box_size = width / scale_width
 let HALF_BOXSIZE = box_size * 0.5;
-let beam_height = box_size / 4
+let beam_height = box_size / 4;
+let groundHeight = 75;
 let radius = box_size
 
+
+let boxPath = [[0, -HALF_BOXSIZE],
+[box_size, -HALF_BOXSIZE],
+[box_size, HALF_BOXSIZE],
+[0, HALF_BOXSIZE],
+[0, -HALF_BOXSIZE]]
+
 const f = d3.format(".2f")
-const formatDeviationLabels = d3.format("+.1f")
+const formatDeviationLabels = d3.format("+.1~f")
 
 let xScale = d3.scaleLinear()
     .domain([0, scale_width])
+    .range([0, width])
+
+let devScale = d3.scaleLinear()
     .range([0, width])
 
 let meanX, meanPx, pivotX, pivotPx;
@@ -26,23 +37,57 @@ let squared_deviations_hidden = false;
 let positionsArr = d3.range(scale_width).map(i => (0));
 
 
-let boxPositions = randomXPositions(5, 11);
+// let boxPositions = randomXPositions(5, 11);
 
-let svg = makeSvg("#chart", { width: width, height: height, nPositions: scale_width, boxSize: box_size, beam_height: beam_height });
+let svg = makeSvg("#chart", { width: width, height: height, nPositions: scale_width, boxSize: box_size, beam_height: beam_height, groundHeight });
 
 let boxArr = makeBoxes(nBoxes, box_size, scale_width, width);
-console.log(boxArr);
+
 drawMean(meanX, svg.meanCircle);
 drawPivot(xScale(meanX + 0.5), svg.pivot)
 drawBoxes(boxArr, svg.boxes);
 drawDeviations(boxArr, svg.deviations);
 
-console.log(meanX, meanPx, pivotX, pivotPx);
-
 svg.boxes.selectAll("polygon").call(d3.drag().on("start", startDragBox)
     .on("drag", draggingBox)
     .on("end", stopDragBox));
 
+
+svg.background.on("click", function (event) {
+    // convert mouse position to data values
+    var coords = d3.pointer(event);
+
+    let newBoxX = rounded_position_index(coords[0] - HALF_BOXSIZE);
+    let newBoxLevel = positionsArr[newBoxX];
+    let newBoxId = boxArr.length;
+
+    let newBox = {
+        x: newBoxX,
+        level: newBoxLevel,
+        id: newBoxId,
+        dev: newBoxX - pivotX,
+        color: d3.schemeCategory10[newBoxId % 10]
+    }
+
+    boxArr.push(newBox);
+
+    positionsArr[newBoxX]++;
+
+    addBox(newBox);
+    svg.boxes.selectAll("polygon").data(boxArr)
+    svg.boxes.selectAll("polygon").call(d3.drag().on("start", startDragBox)
+        .on("drag", draggingBox)
+        .on("end", stopDragBox));
+});
+
+function addBox(box) {
+    svg.boxes.append("polygon")
+        .attr("points", boxPath)
+        .attr("fill", box.color)
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
+        .attr("transform", `translate(${xScale(box.x)}, ${-box_size * 0.5 + box.level * -box_size})`)
+}
 
 function makeSvg(element, attributes) {
 
@@ -50,16 +95,42 @@ function makeSvg(element, attributes) {
         .attr("viewBox", [0, 0, attributes.width, attributes.height])
         .attr("stroke-width", 2);
 
+    const background = svg.append("rect")
+        .attr("width", attributes.width)
+        .attr("height", attributes.height)
+        .attr("fill", "none")
+        .style("pointer-events", "visible")
+
     // draw the 'ground' (a box on which the pivot sits, and inside which the deviations appear)
     svg.append("rect")
         .attr("width", width)
-        .attr("height", 50)
+        .attr("height", attributes.groundHeight)
         .attr("fill", "#f0f0f0")
         .attr("stroke", "none")
-        .attr("transform", `translate(0, ${height - 51})`)
+        .attr("transform", `translate(0, ${height - attributes.groundHeight})`)
+
+    svg.append("text")
+        .attr("x", width * 0.5)
+        .attr("y", height - attributes.groundHeight + 20)
+        .attr("fill", "black")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "bottom")
+        .attr("stroke", "none")
+        .text("The sum of deviations above and below the mean")
+
+    svg.append("text")
+        .attr("x", width * 0.5)
+        .attr("y", height - attributes.groundHeight + 20)
+        .attr("fill", "black")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "bottom")
+        .attr("stroke", "none")
+        .text("The sum of deviations above and below the mean")
 
     let beam_and_boxes = svg.append("g")
-        .attr("transform", `translate(0, ${attributes.height - 50 - attributes.boxSize - attributes.beam_height})`)
+        .attr("transform", `translate(0, ${attributes.height - attributes.groundHeight - attributes.boxSize - attributes.beam_height})`)
+
+    const boxes = beam_and_boxes.append("g");
 
     // draw the beam
     beam_and_boxes.append("rect")
@@ -68,12 +139,13 @@ function makeSvg(element, attributes) {
         .attr("rx", 3)
         .attr("fill", "black");
 
-    // for debugging
+    // for debugging: numeric labels along balance beam
     beam_and_boxes.selectAll("text").data(d3.range(scale_width)).enter().append("text")
         .attr("x", (d, i) => box_size * 0.5 + i * box_size)
-        .attr("y", attributes.beam_height)
+        .attr("y", attributes.beam_height - 2)
         .text(d => d)
         .attr("fill", "white")
+        .style("font-size", "0.8em")
         .attr("text-anchor", "middle");
 
 
@@ -85,15 +157,16 @@ function makeSvg(element, attributes) {
             .on("drag", draggingPivot)
             .on("end", stopDragPivot))
 
-    let label = svg.append("text").attr("text-anchor", "middle");
+    let label = svg.append("text")
+        .attr("y", 15)
+        .attr("text-anchor", "middle");
 
     // for debugging
     let meanCircle = beam_and_boxes.append("circle")
         .attr("r", 5)
-        .attr("fill", "pink");
+        .attr("fill", "grey");
 
     // append group elements for other elements to be drawn
-    const boxes = beam_and_boxes.append("g");
     const deviations = beam_and_boxes.append("g");
     const deviations_vertical = deviations.append("g");
     const deviations_horizontal = deviations.append("g");
@@ -102,6 +175,7 @@ function makeSvg(element, attributes) {
     const deviations_sum_positive = deviations_sum.append("g").attr("transform", `translate(0, 10)`);
 
     return {
+        background,
         beam_and_boxes,
         boxes,
         meanCircle,
@@ -169,7 +243,7 @@ function draggingBox(event, d) {
             }
         }
 
-        
+
         meanX = jStat.mean(boxArr.map(x => x.x));
         meanPx = xScale(meanX + 0.5);
         boxArr = computeDeviations(boxArr);
@@ -234,11 +308,11 @@ function sortBoxes(boxArr, pivot) {
 }
 
 function drawPivot(meanPx, svgElement) {
-    svgElement.triangle.attr("transform", `translate(${meanPx}, ${height - 50 - radius / 2})`);
+    svgElement.triangle.attr("transform", `translate(${meanPx}, ${height - groundHeight - radius / 2})`);
 
     // for debugging
     svgElement.label.text(f(pivotX))
-    .attr("transform", `translate(${meanPx}, ${height - 50 - radius / 2})`);
+        .attr("transform", `translate(${meanPx}, ${height - groundHeight - radius / 2})`);
 }
 
 
@@ -248,12 +322,6 @@ function drawMean(meanX, svgElement) {
 
 
 function drawBoxes(boxArr, svgGroup) {
-
-    let boxPath = [[0, -HALF_BOXSIZE],
-    [box_size, -HALF_BOXSIZE],
-    [box_size, HALF_BOXSIZE],
-    [0, HALF_BOXSIZE],
-    [0, -HALF_BOXSIZE]]
 
     svgGroup.selectAll("polygon")
         .data(boxArr)
@@ -312,12 +380,19 @@ function drawDeviations(boxArr, svgElement) {
 
     boxArr = computeDeviations(boxArr);
 
+    // devScale.domain([0, Math.max(boxArr.map(d => d.dev))])
+
     let deviations_negative = boxArr.filter(function (d) { return d.dev < 0 });
     deviations_negative = devStartAndEndPositions(deviations_negative);
     console.log(deviations_negative);
 
     let deviations_positive = boxArr.filter(function (d) { return d.dev > 0 })
     deviations_positive = devStartAndEndPositions(deviations_positive);
+
+    let maxSumOfDeviations = Math.max(deviations_negative[deviations_negative.length - 1].dev_end,
+        deviations_positive[deviations_positive.length - 1].dev_end);
+
+    devScale.domain([0, Math.max(scale_width, maxSumOfDeviations)])
 
     updateDeviations(deviations_negative, svgElement.negative);
     updateDeviations(deviations_positive, svgElement.positive);
@@ -326,17 +401,19 @@ function drawDeviations(boxArr, svgElement) {
 
 function updateDeviations(data, svgElement) {
     svgElement.selectAll("line")
-    .data(data)
-    .join("line")
-    .attr("x1", d => xScale(d.dev_start * multiplier))
-    .attr("x2", d => xScale(d.dev_end * multiplier))
-    .attr("stroke", d => d.color)
-    .attr("stroke-width", 8)
+        .data(data)
+        .join("line")
+        .attr("x1", d => devScale(d.dev_start))
+        .attr("x2", d => devScale(d.dev_end))
+        .attr("stroke", d => d.color)
+        .attr("stroke-width", 8)
 }
 
 
 function tipScale(trueMeanPixel, pivotPixel, svgElement) {
 
+    // transforms the svg 'scales' element by rotating by computed
+    // angle around the pivot point
     let angle = Math.abs((trueMeanPixel - pivotPixel) * 0.5);
     let hypotenuse, direction;
 
@@ -352,8 +429,9 @@ function tipScale(trueMeanPixel, pivotPixel, svgElement) {
     angle = direction * (Math.min(angle, tri_angle));
 
     svgElement
-        .attr("transform", `translate(0, ${height - 50 - radius - beam_height}) rotate(${angle}, ${pivotPixel}, ${0})`);
+        .attr("transform", `translate(0, ${height - groundHeight - radius - beam_height}) rotate(${angle}, ${pivotPixel}, ${0})`);
 }
+
 
 
 // helper functions
@@ -368,3 +446,10 @@ function rounded_position_index(x) {
     return Math.round(x0 / (width / scale_width))
 }
 
+// function unitToPixelPosition(unit, geometry) {
+
+// }
+
+// function pixelPositionToUnit(pixel, geometry) {
+
+// }

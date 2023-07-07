@@ -1,7 +1,14 @@
 ---
 title: Central Tendency
+subtitle: The mean as the balance point of a distribution
+
 include-in-header:
-    text: '<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>'
+    text: |
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+include-after-body: 
+    text: |
+        <script src="./main.js"></script>
 ---
 
 
@@ -9,8 +16,6 @@ include-in-header:
 :::
 
 
-## About
+<!-- ## About
 
-Placeholder text.
-
-<script type="module" src="./main.js"></script>
+Placeholder text. -->
