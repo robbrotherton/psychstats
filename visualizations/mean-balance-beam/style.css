@@ -1,0 +1,6 @@
+.box-label {
+    fill: white;
+    text-anchor: middle;
+    text-align: center;
+    pointer-events: none;
+}

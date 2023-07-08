@@ -7,7 +7,6 @@ let box_size = width / scale_width
 let HALF_BOXSIZE = box_size * 0.5;
 let beam_height = box_size / 4;
 let groundHeight = 75;
-let radius = box_size
 
 
 let boxPath = [[0, -HALF_BOXSIZE],
@@ -27,9 +26,12 @@ let devScale = d3.scaleLinear()
     .range([0, width])
 
 let meanX, meanPx, pivotX, pivotPx;
+let boxesCreated = nBoxes;
+
+// let meanAndPivotPositions;
 
 // multiply the deviations lined up at the bottom to fit on the screen
-let multiplier = 6 / nBoxes
+// let multiplier = 6 / nBoxes
 
 let deviations_hidden = false;
 let squared_deviations_hidden = false;
@@ -48,18 +50,19 @@ drawPivot(xScale(meanX + 0.5), svg.pivot)
 drawBoxes(boxArr, svg.boxes);
 drawDeviations(boxArr, svg.deviations);
 
-svg.boxes.selectAll("polygon").call(d3.drag().on("start", startDragBox)
-    .on("drag", draggingBox)
-    .on("end", stopDragBox));
+
 
 
 svg.background.on("click", function (event) {
     // convert mouse position to data values
     var coords = d3.pointer(event);
 
+    boxesCreated++;
+
     let newBoxX = rounded_position_index(coords[0] - HALF_BOXSIZE);
     let newBoxLevel = positionsArr[newBoxX];
-    let newBoxId = boxArr.length;
+    let newBoxId = boxesCreated;
+    console.log(newBoxId);
 
     let newBox = {
         x: newBoxX,
@@ -74,7 +77,17 @@ svg.background.on("click", function (event) {
     positionsArr[newBoxX]++;
 
     addBox(newBox);
+
+    meanX = getTrueMean(boxArr);
+    meanPx = xScale(meanX + 0.5);
+
+    drawMean(meanX, svg.meanCircle);
+    tipScale(meanPx, pivotPx, svg.beam_and_boxes, 500, 300);
+    drawDeviations(boxArr, svg.deviations);
+
     svg.boxes.selectAll("polygon").data(boxArr)
+    svg.boxes.selectAll("text").data(boxArr)
+
     svg.boxes.selectAll("polygon").call(d3.drag().on("start", startDragBox)
         .on("drag", draggingBox)
         .on("end", stopDragBox));
@@ -86,8 +99,19 @@ function addBox(box) {
         .attr("fill", box.color)
         .attr("stroke", "white")
         .attr("stroke-width", 1)
+        .attr("transform", `translate(${xScale(box.x)}, ${-500})`)
+
+        .transition().duration(500).ease(d3.easeCubicIn)
         .attr("transform", `translate(${xScale(box.x)}, ${-box_size * 0.5 + box.level * -box_size})`)
+
+    svg.boxes.append("text")
+        .text(formatDeviationLabels(box.dev))
+        .attr("class", "box-label")
+        .attr("alignment-baseline", "middle")
+        .attr("transform", `translate(${xScale(box.x + 0.5)}, ${-box_size * 0.5 + box.level * -box_size})`)
+
 }
+
 
 function makeSvg(element, attributes) {
 
@@ -95,6 +119,7 @@ function makeSvg(element, attributes) {
         .attr("viewBox", [0, 0, attributes.width, attributes.height])
         .attr("stroke-width", 2);
 
+    // clickable background, so boxes can be added on click
     const background = svg.append("rect")
         .attr("width", attributes.width)
         .attr("height", attributes.height)
@@ -203,31 +228,45 @@ function draggingPivot(event, d) {
 
 
 
+let clickedBoxIndex, clickedBoxX, clickedBoxLevel;
 
 function startDragBox(event, d) {
+    // clickedBoxIndex = boxArr.findIndex(arr => arr.id == d.id);
+    clickedBoxIndex = boxArr.indexOf(d);
+
+// console.log("index: " + boxArr.indexOf(d));
+
+    clickedBoxX = boxArr[clickedBoxIndex].x;
+    clickedBoxLevel = boxArr[clickedBoxIndex].level;
+
     d3.select(this).attr("stroke", "black");
-    d.initialPosition = boxArr[d.id].x;
-    d.initialPx = xScale(boxArr[d.id].x);
+    
+    // d.initialPosition = boxArr[clickedBoxIndex].x;
+    // d.level = boxArr[clickedBoxIndex].level;
+    d.initialPx = xScale(boxArr[clickedBoxIndex].x);
+
+    d.moved = false;
 }
 
 
 function draggingBox(event, d) {
 
-    let current_position = boxArr[d.id].x;
-    let current_level = boxArr[d.id].level;
+    let current_position = boxArr[clickedBoxIndex].x;
+    let current_level = boxArr[clickedBoxIndex].level;
     let new_position = rounded_position_index(d.initialPx + event.x);
 
     if (new_position != current_position) {
+        d.moved = true;
         // console.log("current: " + current_position + "; new: " + new_position);
         console.log("moved! from " + current_position + " to " + new_position);
         // d.currentSpotsMoved = spotsMoved;
 
         // update the box's position
-        boxArr[d.id].x = new_position;
-        boxArr[d.id].xPx = new_position * box_size + (box_size * 0.5);
+        boxArr[clickedBoxIndex].x = new_position;
+        boxArr[clickedBoxIndex].xPx = new_position * box_size + (box_size * 0.5);
 
         // now this box should go on top of the stack for new_position
-        boxArr[d.id].level = positionsArr[new_position]
+        boxArr[clickedBoxIndex].level = positionsArr[new_position]
 
         // and update the total number of boxes in that position
         positionsArr[new_position]++;
@@ -236,7 +275,7 @@ function draggingBox(event, d) {
         // bump down any boxes that had a higher level that this box
         positionsArr[current_position]--
         for (let i = 0; i < boxArr.length; i++) {
-            if (d.id == i) continue;
+            if (clickedBoxIndex == i) continue;
             if (boxArr[i].x == current_position && boxArr[i].level > current_level) {
                 boxArr[i].level--;
                 console.log("movin on down")
@@ -249,13 +288,42 @@ function draggingBox(event, d) {
         boxArr = computeDeviations(boxArr);
         drawMean(meanX, svg.meanCircle);
         moveBoxes(boxArr, svg.boxes);
-        tipScale(xScale(meanX + 0.5), pivotPx, svg.beam_and_boxes);
+        tipScale(xScale(meanX + 0.5), pivotPx, svg.beam_and_boxes, 0, 300);
         drawDeviations(boxArr, svg.deviations);
     }
 }
 
 function stopDragBox(event, d) {
-    d3.select(this).attr("stroke", "white");
+
+    if (!d.moved) {
+        // remove the clicked box from the array of boxes
+        boxArr.splice(clickedBoxIndex, 1);
+
+        positionsArr[clickedBoxX]--;
+        // any boxes that were above the removed box need to be moved down a level
+        for (let i = 0; i < boxArr.length; i++) {
+            if (boxArr[i].x == clickedBoxX && boxArr[i].level > clickedBoxLevel) {
+                boxArr[i].level--;
+            }
+        }
+
+        drawBoxes(boxArr, svg.boxes);
+
+        meanX = jStat.mean(boxArr.map(box => box.x));
+        meanPx = xScale(meanX + 0.5);
+
+        drawMean(meanX, svg.meanCircle);
+        tipScale(meanPx, pivotPx, svg.beam_and_boxes, 0, 300);
+        drawDeviations(boxArr, svg.deviations);
+
+
+    } else {
+        d3.select(this).attr("stroke", "white");
+    }
+}
+
+function removeBox(box) {
+    boxArr.splice(d.id, 1);
 }
 
 function randomXPositions(nBoxes, nPositions) {
@@ -308,11 +376,11 @@ function sortBoxes(boxArr, pivot) {
 }
 
 function drawPivot(meanPx, svgElement) {
-    svgElement.triangle.attr("transform", `translate(${meanPx}, ${height - groundHeight - radius / 2})`);
+    svgElement.triangle.attr("transform", `translate(${meanPx}, ${height - groundHeight - HALF_BOXSIZE})`);
 
     // for debugging
     svgElement.label.text(f(pivotX))
-        .attr("transform", `translate(${meanPx}, ${height - groundHeight - radius / 2})`);
+        .attr("transform", `translate(${meanPx}, ${height - groundHeight - HALF_BOXSIZE})`);
 }
 
 
@@ -322,6 +390,9 @@ function drawMean(meanX, svgElement) {
 
 
 function drawBoxes(boxArr, svgGroup) {
+
+    svgGroup.selectAll("polygon").remove();
+    svgGroup.selectAll("text").remove();
 
     svgGroup.selectAll("polygon")
         .data(boxArr)
@@ -337,13 +408,15 @@ function drawBoxes(boxArr, svgGroup) {
         .data(boxArr)
         .enter()
         .append("text")
-        .attr("class", "box-labels")
+        .attr("class", "box-label")
         .text(d => formatDeviationLabels(d.dev))
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "middle")
         .attr("transform", d => `translate(${xScale(d.x + 0.5)}, ${-box_size * 0.5 + d.level * -box_size})`)
-        .attr("fill", d => d.color)
-        .attr("fill", "white")
+
+        svg.boxes.selectAll("polygon").call(d3.drag().on("start", startDragBox)
+        .on("drag", draggingBox)
+        .on("end", stopDragBox));
 }
 
 function moveBoxes(boxArr, svgGroup) {
@@ -380,11 +453,10 @@ function drawDeviations(boxArr, svgElement) {
 
     boxArr = computeDeviations(boxArr);
 
-    // devScale.domain([0, Math.max(boxArr.map(d => d.dev))])
-
+    // TODO : Causes error if there are no pos/neg deviations
     let deviations_negative = boxArr.filter(function (d) { return d.dev < 0 });
     deviations_negative = devStartAndEndPositions(deviations_negative);
-    console.log(deviations_negative);
+    // console.log(deviations_negative);
 
     let deviations_positive = boxArr.filter(function (d) { return d.dev > 0 })
     deviations_positive = devStartAndEndPositions(deviations_positive);
@@ -400,6 +472,9 @@ function drawDeviations(boxArr, svgElement) {
 }
 
 function updateDeviations(data, svgElement) {
+    svgElement.selectAll("line").remove();
+
+    if (data.length > 0) {
     svgElement.selectAll("line")
         .data(data)
         .join("line")
@@ -407,10 +482,11 @@ function updateDeviations(data, svgElement) {
         .attr("x2", d => devScale(d.dev_end))
         .attr("stroke", d => d.color)
         .attr("stroke-width", 8)
+    }
 }
 
 
-function tipScale(trueMeanPixel, pivotPixel, svgElement) {
+function tipScale(trueMeanPixel, pivotPixel, svgElement, delay = 0, duration = 0) {
 
     // transforms the svg 'scales' element by rotating by computed
     // angle around the pivot point
@@ -425,11 +501,12 @@ function tipScale(trueMeanPixel, pivotPixel, svgElement) {
         direction = -1;
     }
 
-    let tri_angle = 90 - (Math.acos(radius / hypotenuse) * 180 / Math.PI);
+    let tri_angle = 90 - (Math.acos(box_size / hypotenuse) * 180 / Math.PI);
     angle = direction * (Math.min(angle, tri_angle));
 
     svgElement
-        .attr("transform", `translate(0, ${height - groundHeight - radius - beam_height}) rotate(${angle}, ${pivotPixel}, ${0})`);
+        .transition().duration(duration).delay(delay).ease(d3.easeCubicOut)
+        .attr("transform", `translate(0, ${height - groundHeight - box_size - beam_height}) rotate(${angle}, ${pivotPixel}, ${0})`);
 }
 
 
@@ -445,11 +522,3 @@ function rounded_position_index(x) {
     let x0 = Math.round(x / interval) * interval
     return Math.round(x0 / (width / scale_width))
 }
-
-// function unitToPixelPosition(unit, geometry) {
-
-// }
-
-// function pixelPositionToUnit(pixel, geometry) {
-
-// }
