@@ -17,11 +17,17 @@ include-after-body:
 ::: {#chart}
 :::
 
-::: {#controls}
-<button id="showHideLabelsBtn">Show/hide labels</button>
-:::
+<!-- ::: {#controls}
+<button id="showHideLabelsBtn" class="btn btn-outline-primary">Show/hide labels</button>
+::: -->
 
 
-<!-- ## About
+## About
 
-Placeholder text. -->
+The arithmetic mean is one of the most familiar statistics. It is found by summing a set of scores and dividing the sum by the number of scores; $M = \dfrac{\Sigma X}{N}$. The mean is a summary of the data, conveying the 'central tendency'. I find it useful to think about the mean in mechanical terms, as the balance point of a distribution. Each data point deviates to some extent from the mean. The mean is the point at which these deviations are in balance; the (absolute) sum of deviations below the mean will be equal to the sum of deviations above the mean.
+
+Running with the mechanical metaphore, it should be clear that if the mean was any other value, the scales would not be in balance; the deviations above and below the mean would not be equal and the scales would tip. In the visualation above, you can drag the triangle to see the effect of arbitrarly changing the value of the mean.
+
+Changing any data point would also affect the deviations. Try dragging a box around to see how its deviation changes, and how the resulting change to the sum of deviations affects the balance of the scale.
+
+Likewise, adding or removing any data point would change the sum of deviations above or below the mean, knocking them out of balance and tipping the scales. You can click a blank spot to add a new data point, or click an existing point to remove it. The only exception is adding or removing a data point which is exactly equal to the mean. Since the deviation of a point equal to the mean is zero, adding or removing it will have no effect on the sum of deviations, and therefore won't tip the scales off balance.
