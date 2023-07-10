@@ -99,7 +99,7 @@ function addBox(box) {
         .attr("fill", box.color)
         .attr("stroke", "white")
         .attr("stroke-width", 1)
-        .attr("transform", `translate(${xScale(box.x)}, ${-500})`)
+        .attr("transform", `translate(${xScale(box.x)}, ${-300})`)
 
         .transition().duration(500).ease(d3.easeCubicIn)
         .attr("transform", `translate(${xScale(box.x)}, ${-box_size * 0.5 + box.level * -box_size})`)
@@ -461,6 +461,9 @@ function drawDeviations(boxArr, svgElement) {
     let deviations_positive = boxArr.filter(function (d) { return d.dev > 0 })
     deviations_positive = devStartAndEndPositions(deviations_positive);
 
+    let sumOfNegativeDeviations = sum(deviations_negative.map(d => d.dev));
+    let sumOfPositiveDeviations = sum(deviations_positive.map(d => d.dev));
+
     let maxSumOfDeviations = Math.max(deviations_negative[deviations_negative.length - 1].dev_end,
         deviations_positive[deviations_positive.length - 1].dev_end);
 
@@ -468,6 +471,8 @@ function drawDeviations(boxArr, svgElement) {
 
     updateDeviations(deviations_negative, svgElement.negative);
     updateDeviations(deviations_positive, svgElement.positive);
+
+    updateDeviationLabels({negative: sumOfNegativeDeviations, positive: sumOfPositiveDeviations});
 
 }
 
@@ -485,6 +490,17 @@ function updateDeviations(data, svgElement) {
     }
 }
 
+function updateDeviationLabels(sumsObject, padding = 5) {
+
+    d3.selectAll(".devSumLabel").remove()
+
+    svg.deviations.negative.append("text").text(formatDeviationLabels(sumsObject.negative)).attr("class", "devSumLabel")
+        .attr("x", devScale(Math.abs(sumsObject.negative)) + padding)
+        .attr("alignment-baseline", "middle")
+    svg.deviations.positive.append("text").text(formatDeviationLabels(sumsObject.positive)).attr("class", "devSumLabel")
+        .attr("x", devScale(sumsObject.positive) + padding)
+        .attr("alignment-baseline", "middle")
+}
 
 function tipScale(trueMeanPixel, pivotPixel, svgElement, delay = 0, duration = 0) {
 
@@ -521,4 +537,8 @@ function rounded_position_index(x) {
     let interval = width / scale_width
     let x0 = Math.round(x / interval) * interval
     return Math.round(x0 / (width / scale_width))
+}
+
+function sum(array) {
+    return array.reduce((a, b) => a + b);
 }
