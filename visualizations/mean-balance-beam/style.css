@@ -11,3 +11,7 @@
     font-family: Comic Mono;
     font-size: 0.8em;
 }
+
+.hide {
+    visibility: hidden;
+}

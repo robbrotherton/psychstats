@@ -25,6 +25,10 @@ let xScale = d3.scaleLinear()
 let devScale = d3.scaleLinear()
     .range([0, width])
 
+let colorScale = d3.scaleDiverging()
+    .domain([-10, 0, 10])
+    .interpolator(d3.interpolatePuOr)
+
 let meanX, meanPx, pivotX, pivotPx;
 let boxesCreated = nBoxes;
 
@@ -166,6 +170,7 @@ function makeSvg(element, attributes) {
 
     // for debugging: numeric labels along balance beam
     beam_and_boxes.selectAll("text").data(d3.range(scale_width)).enter().append("text")
+        .attr("class", "beamLabels")
         .attr("x", (d, i) => box_size * 0.5 + i * box_size)
         .attr("y", attributes.beam_height - 2)
         .text(d => d)
@@ -380,6 +385,7 @@ function drawPivot(meanPx, svgElement) {
 
     // for debugging
     svgElement.label.text(f(pivotX))
+        .attr("class", "meanLabel")
         .attr("transform", `translate(${meanPx}, ${height - groundHeight - HALF_BOXSIZE})`);
 }
 
@@ -401,6 +407,7 @@ function drawBoxes(boxArr, svgGroup) {
         .attr("points", boxPath)
         .attr("transform", d => `translate(${xScale(d.x)}, ${-box_size * 0.5 + d.level * -box_size})`)
         .attr("fill", d => d.color)
+        // .attr("fill", d => colorScale(d.dev))
         .attr("stroke", "white")
         .attr("stroke-width", 1)
 
@@ -474,6 +481,7 @@ function drawDeviations(boxArr, svgElement) {
 
     updateDeviationLabels({negative: sumOfNegativeDeviations, positive: sumOfPositiveDeviations});
 
+    console.log(devScale.domain());
 }
 
 function updateDeviations(data, svgElement) {
@@ -492,6 +500,10 @@ function updateDeviations(data, svgElement) {
 
 function updateDeviationLabels(sumsObject, padding = 5) {
 
+    // let scaleMaximum = devScale.domain()[1];
+
+    // if (scaleMaximum > scale_width) 
+
     d3.selectAll(".devSumLabel").remove()
 
     svg.deviations.negative.append("text").text(formatDeviationLabels(sumsObject.negative)).attr("class", "devSumLabel")
@@ -500,6 +512,15 @@ function updateDeviationLabels(sumsObject, padding = 5) {
     svg.deviations.positive.append("text").text(formatDeviationLabels(sumsObject.positive)).attr("class", "devSumLabel")
         .attr("x", devScale(sumsObject.positive) + padding)
         .attr("alignment-baseline", "middle")
+}
+
+d3.select("#showHideLabelsBtn").on("click", showHideLabels);
+
+function showHideLabels() {
+
+    let currentState = d3.select(".meanLabel").classed("hide");
+    
+    d3.selectAll(".box-label, .devSumLabel, .beamLabels, .meanLabel").classed("hide", !currentState)
 }
 
 function tipScale(trueMeanPixel, pivotPixel, svgElement, delay = 0, duration = 0) {

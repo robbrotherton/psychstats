@@ -18,7 +18,7 @@ include-after-body:
 :::
 
 ::: {#controls}
-<button id="show-labels">Show</button>
+<button id="showHideLabelsBtn">Show/hide labels</button>
 :::
 
 
