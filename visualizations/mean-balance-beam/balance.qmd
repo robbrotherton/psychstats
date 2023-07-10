@@ -24,7 +24,7 @@ include-after-body:
 
 ## About
 
-The arithmetic mean is one of the most familiar statistics. It is found by summing a set of scores and dividing the sum by the number of scores; $M = \dfrac{\Sigma X}{N}$. The mean is a summary of the data, conveying the 'central tendency'. I find it useful to think about the mean in mechanical terms, as the balance point of a distribution. Each data point deviates to some extent from the mean. The mean is the point at which these deviations are in balance; the (absolute) sum of deviations below the mean will be equal to the sum of deviations above the mean.
+The arithmetic mean is one of the most familiar statistics. It is found by summing a set of scores and dividing the sum by the number of scores.^[$M = \dfrac{\Sigma X}{N}$] The mean is a summary of the data, conveying the 'central tendency'. I find it useful to think about the mean in mechanical terms, as the balance point of a distribution. Each data point deviates to some extent from the mean. The mean is the point at which these deviations are in balance; the (absolute) sum of deviations below the mean will be equal to the sum of deviations above the mean.
 
 Running with the mechanical metaphore, it should be clear that if the mean was any other value, the scales would not be in balance; the deviations above and below the mean would not be equal and the scales would tip. In the visualation above, you can drag the triangle to see the effect of arbitrarly changing the value of the mean.
 
