@@ -37,5 +37,8 @@
   },
   "games/guess-the-correlation.qmd": {
     "guess-the-correlation.html": "e29ba50d"
+  },
+  "visualizations/mean-balance-beam/balance.qmd": {
+    "balance.html": "65bfab3a"
   }
 }

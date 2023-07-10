@@ -1,0 +1,17 @@
+.box-label {
+    font-family: Comic Mono;
+    font-size: 0.8em;
+    fill: white;
+    text-anchor: middle;
+    text-align: center;
+    pointer-events: none;
+}
+
+.devSumLabel {
+    font-family: Comic Mono;
+    font-size: 0.8em;
+}
+
+.hide {
+    visibility: hidden;
+}

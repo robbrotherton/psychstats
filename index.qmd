@@ -15,7 +15,7 @@ toc: false
 
 [Interactive visualizations of fundamental statistical concepts.]{.lead}
 
-[Central Tendency and the Mean](visualizations/mean-balance-beam.qmd)
+[Central Tendency and the Mean](visualizations/mean-balance-beam/balance.qmd)
 
 [Sampling](visualizations/sampling/sampling.qmd)
 
