@@ -1,0 +1,207 @@
+---
+title: Correlation
+subtitle: The consistency of deviations
+---
+
+
+::: {#container style="text-align: center; margin: 1em;"}
+:::
+
+<label for="target-r" class="form-label">Strength of correlation</label>
+<input id="target-r" type="range" class="form-range" min=-1 max = 1 step = 0.01>
+
+<!-- ## About
+
+Correlation is about the consistency of deviations. -->
+
+
+```{ojs}
+//| echo: false
+jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
+
+chart = {
+
+const width = 500
+const height = 400
+
+const xScale = d3.scaleLinear()
+  .domain([-0.1, 1.1])
+  .range([0, width])
+let yScale = d3.scaleLinear()
+  .domain([0, 1])
+  .range([height, 0])
+
+
+  
+const svg = d3.select("#container").append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  
+const meanLines = svg.append("g")
+const axisLines = svg.append("g")
+
+axisLines.append("line")
+  .attr("class", "axis-line")
+  .attr("x1", 1).attr("x2", width)
+  .attr("y1", height - 1).attr("y2", height - 1)
+  .style("stroke", "black")
+axisLines.append("line")
+  .attr("class", "axis-line")
+  .attr("x1", 1).attr("x2", 1)
+  .attr("y1", height - 1).attr("y2", 1)
+  .style("stroke", "black")
+
+const rInput = d3.select("#target-r");
+
+rInput.on("input", () => updateChart(rInput.property("value")))
+
+let data = makeInitialData(100);
+  
+
+
+function makeInitialData(n) {
+    let arr = [];
+    for (var i = 0; i < n; i++) {
+        var A = Math.random();
+        var B = Math.random();
+        arr.push({xVal: A, y0: B});
+    }
+
+    let xMin = Math.min(...arr.map(obj => obj.xVal));
+    let xMax = Math.max(...arr.map(obj => obj.xVal));
+    
+    // Normalize the x-values to the range 0 to 1.
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].xVal = (arr[i].xVal - xMin) / (xMax - xMin);
+    }
+    
+    let meanX = jStat.mean(arr.map(obj => obj.xVal));
+    
+    // Adjust x-values to have a mean of 0.5.
+    const desiredMeanX = 0.5;
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].xVal = arr[i].xVal - meanX + desiredMeanX;
+    }
+
+    return arr;
+}
+
+function computeYValue(x, y, r) {
+ return x * r + y * Math.pow(1 - Math.pow(r, 2), 0.5);
+}
+
+
+function updateChart(targetR) {
+  
+  let newData = [];
+  
+  for (let i = 0; i < data.length; i++) {
+    newData.push({
+      xVal: data[i].xVal,
+      yVal: computeYValue(data[i].xVal, data[i].y0, targetR)
+    });
+  }
+  
+  let yLimits = [
+    -0.1, 1.1
+  ];
+
+  let yMin = Math.min(...newData.map(obj => obj.yVal));
+  let yMax = Math.max(...newData.map(obj => obj.yVal));
+  
+  // Normalize the y-values to the range 0 to 1.
+  for (let i = 0; i < newData.length; i++) {
+    newData[i].yVal = (newData[i].yVal - yMin) / (yMax - yMin);
+  }
+  
+  let meanY_ = jStat.mean(newData.map(obj => obj.yVal));
+  
+  // Adjust y-values to have a mean of 0.5.
+  const desiredMeanY = 0.5;
+  for (let i = 0; i < newData.length; i++) {
+    newData[i].yVal = newData[i].yVal - meanY_ + desiredMeanY;
+    <!-- newData[i].yVal = Math.max(0, Math.min(1, newData[i].yVal)); -->
+  }
+  
+  
+  yScale.domain(yLimits);
+  <!-- yScale.domain(yLimits); -->
+  
+  svg.selectAll("circle").remove()
+  svg.selectAll("circle").data(newData).enter().append("circle")
+    .attr("cx", d => xScale(d.xVal))
+    .attr("r", 2)
+    .attr("cy", d => yScale(d.yVal));
+    
+  let xArr = newData.map(obj => obj.xVal);
+  let yArr = newData.map(obj => obj.yVal);
+  
+  let meanX = jStat.mean(xArr);
+  let meanY = jStat.mean(yArr);
+  
+  meanLines.selectAll("line").remove()
+  meanLines.append("line")
+    .attr("x1", xScale(0)).attr("x2", xScale(1))
+    .attr("y1", yScale(meanY)).attr("y2", yScale(meanY))
+    .attr("stroke", "black")
+    .attr("stroke-dasharray", [5,5])
+  meanLines.append("line")
+    .attr("x1", xScale(meanX)).attr("x2", xScale(meanX))
+    .attr("y1", yScale(yLimits[0] + 0.1)).attr("y2", yScale(yLimits[1] - 0.1))
+    .attr("stroke", "black")
+    .attr("stroke-dasharray", [5,5])
+    
+  drawDeviationPolygons(meanX, meanY, yLimits);
+  
+  let actualR = jStat.corrcoeff(xArr, yArr);
+  console.log("target r: " + targetR);
+  console.log("actual r: " + actualR);
+  
+}
+
+function drawDeviationPolygons(meanX, meanY, yLimits) {
+  
+  meanLines.selectAll("polygon").remove()
+  
+  // positive x & y
+  meanLines.append("polygon")
+    .attr("points", [[xScale(meanX), yScale(yLimits[1] - 0.1)],
+                     [xScale(1), yScale(yLimits[1] - 0.1)],
+                     [xScale(1), yScale(meanY)],
+                     [xScale(meanX), yScale(meanY)]])
+    .attr("fill", "green")
+    .attr("opacity", 0.2)
+  // negative x & y
+  meanLines.append("polygon")
+    .attr("points", [[xScale(0), yScale(meanY)],
+                     [xScale(meanX), yScale(meanY)],
+                     [xScale(meanX), yScale(yLimits[0] + 0.1)],
+                     [xScale(0), yScale(yLimits[0] + 0.1)]])
+    .attr("fill", "green")
+    .attr("opacity", 0.2)
+    
+  // negative x, positive y
+  meanLines.append("polygon")
+    .attr("points", [[xScale(meanX), yScale(yLimits[1] - 0.1)],
+                     [xScale(meanX), yScale(meanY)],
+                     [xScale(0), yScale(meanY)],
+                     [xScale(0), yScale(yLimits[1] - 0.1)]])
+    .attr("fill", "red")
+    .attr("opacity", 0.2)
+  // positive x, negative y
+  meanLines.append("polygon")
+    .attr("points", [[xScale(meanX), yScale(meanY)],
+                     [xScale(1), yScale(meanY)],
+                     [xScale(1), yScale(yLimits[0] + 0.1)],
+                     [xScale(meanX), yScale(yLimits[0] + 0.1)]])
+    .attr("fill", "red")
+    .attr("opacity", 0.2)
+}
+
+updateChart(rInput.property("value"));
+
+
+}
+
+
+```

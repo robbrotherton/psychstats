@@ -40,5 +40,8 @@
   },
   "visualizations/mean-balance-beam/balance.qmd": {
     "balance.html": "65bfab3a"
+  },
+  "visualizations/correlation.qmd": {
+    "correlation.html": "9d276972"
   }
 }
