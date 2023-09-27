@@ -172,6 +172,6 @@ changable_chart = {
 </style>
 
 
-### About
+<!-- ### About -->
 
-Explanation goes here.
+<!-- Explanation goes here. -->

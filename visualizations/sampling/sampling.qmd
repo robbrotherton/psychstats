@@ -28,9 +28,9 @@ Distribution:
 <button class="btn btn-warning" id="clearSamplesBtn">clear</button>
 </div>
 
-## About
+<!-- ## About -->
 
-Text description goes here.
+<!-- Text description goes here. -->
 
 
 ```{ojs}
