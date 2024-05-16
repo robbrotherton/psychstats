@@ -1,0 +1,23 @@
+---
+title: Bees
+subtitle: Demonstrating variability using a swarm of bees
+page-layout: full
+include-in-header: 
+    text: |
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+include-after-body: 
+    text: <script src="sketch.js"></script>
+---
+
+::: {cavas}
+:::
+
+<style>
+canvas {
+    display: block;
+}
+</style>
+
+Something
+
