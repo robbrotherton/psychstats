@@ -219,8 +219,9 @@ let sigs = 0;
 
 function setup() {
   // import * as jStat from 'jstat';
-  createCanvas(640, 520);
-
+  let canvas = createCanvas(640, 520);
+  canvas.parent('sketch-holder');
+  
   xArray = jStat.seq(0, width, 301);
   pause = false;
   button = createButton("stop");

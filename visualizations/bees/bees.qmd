@@ -10,14 +10,14 @@ include-after-body:
     text: <script src="sketch.js"></script>
 ---
 
-::: {cavas}
-:::
+<div id="sketch-holder"></div>
+
+# About
+
+
 
 <style>
 canvas {
     display: block;
 }
 </style>
-
-Something
-
