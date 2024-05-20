@@ -219,9 +219,9 @@ let sigs = 0;
 
 function setup() {
   // import * as jStat from 'jstat';
-  let canvas = createCanvas(640, 520);
+  let canvas = createCanvas(840, 520);
   canvas.parent('sketch-holder');
-  
+
   xArray = jStat.seq(0, width, 301);
   pause = false;
   button = createButton("stop");
@@ -230,13 +230,18 @@ function setup() {
   attractionSlider = createSlider(0.5, 3, 2, 0.1);
   differenceSlider = createSlider(0, 200, 0);
   numberSlider = createSlider(10, 200, 50);
+
+  let controls = [button, attractionSlider, differenceSlider, numberSlider];
+  for ( let c of controls ) {
+    c.parent('controls-holder');
+  };
   
   swarm = new Swarm(numberSlider.value(), "#643C0B");
   swarm2 = new Swarm(numberSlider.value(), "#f9c901");
 }
 
 function draw() {
-  background("#aab574");
+  background(255); // #aab574
   
   if (pause == false) {
     handleSwarms();

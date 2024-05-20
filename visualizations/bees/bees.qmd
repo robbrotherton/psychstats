@@ -10,14 +10,28 @@ include-after-body:
     text: <script src="sketch.js"></script>
 ---
 
+::: {#stuff}
+
 <div id="sketch-holder"></div>
+<div id="controls-holder"></div>
 
-# About
+:::
 
+::: {.about}
+## About
+
+How do you like these bees? 
+
+:::
 
 
 <style>
 canvas {
     display: block;
+    margin: auto;
+}
+#controls-holder {
+    max-width: 600px;
+    margin: auto;
 }
 </style>
