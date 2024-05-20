@@ -34,4 +34,7 @@ canvas {
     max-width: 600px;
     margin: auto;
 }
+#stuff {
+    margin-bottom: 2em;
+}
 </style>
