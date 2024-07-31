@@ -10,26 +10,6 @@ class Bee {
     this.maxSpeed = 5; // Maximum speed
   }
 
-  align(bees) {
-    let perceptionRadius = 50;
-    let steering = createVector();
-    let total = 0;
-    for (let other of bees) {
-      let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-      if (other != this && d < perceptionRadius) {
-        steering.add(other.velocity);
-        total++;
-      }
-    }
-    if (total > 0) {
-      steering.div(total);
-      steering.setMag(this.maxSpeed);
-      steering.sub(this.velocity);
-      steering.limit(this.maxForce);
-    }
-    return steering;
-  }
-
   cohesion(bees) {
     let perceptionRadius = 10;
     let steering = createVector();
@@ -93,14 +73,11 @@ class Bee {
 
   // Modify flock method to include attraction
   flock(bees, attractor) {
-    // let alignment = this.align(bees).mult(0);
     // let cohesion = this.cohesion(bees).mult(0);
     let separation = this.separation(bees);
     let attraction = this.attract(attractor);
     let randomForce = p5.Vector.random2D().mult(2); // Add some random movement
 
-
-    // this.applyForce(alignment);
     // this.applyForce(cohesion);
     this.applyForce(separation);
     this.applyForce(attraction); // Apply the attraction force
