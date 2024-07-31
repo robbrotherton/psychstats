@@ -44,6 +44,7 @@ let sigs = 0;
 
 function setup() {
   // import * as jStat from 'jstat';
+  // frameRate(30);
   let canvas = createCanvas(840, 520);
   canvas.parent('swarm-container');
 
@@ -63,6 +64,8 @@ function setup() {
   
   swarm = new Swarm(numberSlider.value(), "#643C0B");
   swarm2 = new Swarm(numberSlider.value(), "#f9c901");
+
+  makeHistoryChart('#history-container');
 }
 
 function draw() {
@@ -85,8 +88,12 @@ function draw() {
   swarm2.showDistribution(sd / sqrt(numberSlider.value()));
   
   let diff = abs(swarm.average - swarm2.average);
-  let p = jStat.ttest( 0, diff, sdTrue, numberSlider.value(), 2 );
-  
+  // let p = jStat.ttest( 0, diff, sdTrue, numberSlider.value(), 2 );
+  let z = (swarm.average - swarm2.average) / (sdTrue / sqrt(numberSlider.value()));
+  let p = jStat.ztest(z);
+
+  updateHistoryChart([swarm, swarm2]);
+
   strokeWeight(20);
   stroke(p < 0.05 ? 'red' : 'green');
   point(20, height - 20);
