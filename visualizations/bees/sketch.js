@@ -10,13 +10,6 @@ class Bee {
     this.maxSpeed = 5; // Maximum speed
   }
 
-  edges() {
-    if (this.position.x > width) this.position.x = 0;
-    if (this.position.x < 0) this.position.x = width;
-    if (this.position.y > height) this.position.y = 0;
-    if (this.position.y < 0) this.position.y = height;
-  }
-
   align(bees) {
     let perceptionRadius = 50;
     let steering = createVector();
@@ -139,7 +132,6 @@ class Swarm {
     for (let bee of this.bees) {
       bee.flock(this.bees, this.attractor);
       bee.update();
-      // bee.edges();
     }
   }
   
@@ -252,7 +244,9 @@ function draw() {
   swarm.display();
   swarm2.display();
   
-  let sdTrue = jStat.stdev(swarm.bees.map(bee => bee.position.x));
+  let sdA = jStat.stdev(swarm.bees.map(bee => bee.position.x));
+  let sdB = jStat.stdev(swarm2.bees.map(bee => bee.position.x));
+  let sdTrue = (sdA + sdB) / 2;
   let sd = attractionSlider.value()*25;
   swarm.showDistribution(sd / sqrt(numberSlider.value()));
   swarm2.showDistribution(sd / sqrt(numberSlider.value()));
