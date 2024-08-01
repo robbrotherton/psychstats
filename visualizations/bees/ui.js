@@ -1,12 +1,33 @@
-function makeHistoryChart(divId) {
+const w = 100;
+const h = 400;
+
+const maxLen = 300;
+
+let historyArray = [];
+
+const x = d3.scaleTime()
+  .domain([0, 1])
+  .range([0, w]);
+
+const y = d3.scaleLinear()
+  .domain([maxLen, 0])
+  .nice()
+  .range([h, 0]);
+
+const line = d3.line()
+  .x(d => x(d.percentile))
+  .y((d, i) => y(maxLen - i));
+
+
+  function makeHistoryChart(divId) {
     let div = d3.select(divId);
     // div.style('background', 'red');
-    div.style('width', '100px');
+    div.style('width', w + 'px');
     div.style('height', '100px');
 
     svg = div.append('svg')
                 .attr('id', 'historyChart');
-    svg.attr("viewBox", "0 0 " + 100 + " " + 100)
+    svg.attr("viewBox", "0 0 " + w + " " + h)
     
     svg.append("rect")
         .attr("width", "100%")
@@ -42,6 +63,8 @@ function makeHistoryChart(divId) {
 
 }
 
+
+
 function updateHistoryChart(swarmsArray) {
 
   let sdA = jStat.stdev(swarmsArray[0].bees.map(bee => bee.position.x));
@@ -53,8 +76,24 @@ function updateHistoryChart(swarmsArray) {
   let scaledDiff = diff / (sd / sqrt(n));
   let percentile = jStat.studentt.cdf(scaledDiff, n - 1);
   console.log(percentile);
-  
+
+  historyArray.push({percentile: percentile, value: historyArray.length + 1});
+
+  if (historyArray.length > maxLen) {
+    historyArray.splice(0, 1);
+  }
+
+  console.log(historyArray);
+
   let point = d3.select(currentDiff);
     point.attr('fill', 'blue')
-    point.attr('cx', percentile * 100 + '%');
+    point.attr('cx', x(percentile));
+
+svg.selectAll('path').remove();
+svg.append('path')
+  .datum(historyArray)
+  .attr('fill', 'none')
+  .attr('stroke', 'steelblue')
+  .attr('stroke-width', 1.5)
+  .attr('d', line);
 }

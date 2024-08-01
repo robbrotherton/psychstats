@@ -16,8 +16,10 @@ include-after-body:
 
 ::: {#stuff}
 
+<div id="container">
 <div id="swarm-container"></div>
 <div id="history-container"></div>
+</div>
 <div id="controls-container"></div>
 
 :::
@@ -31,11 +33,30 @@ How do you like these bees?
 
 
 <style>
+#container {
+  display: flex;
+}
+
+#swarm-container, #history-container {
+  flex: 1;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 canvas {
     display: block;
     margin: auto;
 }
-#controls-holder {
+
+#swarm-container {
+    width: 80%;
+}
+
+#history-container {
+    width: 20%;
+}
+
+#controls-container {
     max-width: 600px;
     margin: auto;
 }
