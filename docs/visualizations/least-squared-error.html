@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,8 +80,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
@@ -91,6 +93,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -98,9 +127,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
@@ -111,36 +140,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/rob_brotherton" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/rob_brotherton"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats">
  <span class="dropdown-text">Source Code</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats/issues/new" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats/issues/new">
  <span class="dropdown-text">Report a Bug</span></a>
   </li>  
     </ul>
   </li>
 </ul>
-            <div class="quarto-navbar-tools">
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -167,7 +196,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <section id="regression-the-least-squared-error-solution" class="level1">
 <h1>Regression: The Least Squared Error Solution</h1>
@@ -344,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\nchangable_chart = {\n\n  const w = 600;\n  const h = 500;\n  \n  const margin = {top: 20, right: 20, left: 110, bottom: 75}\n\n  const x_values = [4,5,7,8,11]\n  const y_values = [5,8,8,10,9]\n  const yhat_values = [0,0,0,0,0]\n  \n  const data = [{xVal: 4, yVal: 5},\n                {xVal: 5, yVal: 8},\n                {xVal: 7, yVal: 8},\n                {xVal: 8, yVal: 10},\n                {xVal: 11, yVal: 9}]\n                \n  const aInput = d3.select(\"#a-control\")\n  const bInput = d3.select(\"#b-control\")\n  \n  aInput.on(\"input\", drawFitLine);\n  bInput.on(\"input\", drawFitLine);\n  \n  const x = d3.scaleLinear()\n    .range([margin.left, w - margin.right])\n    .domain([0, 12])\n  const y = d3.scaleLinear()\n    .range([h - margin.bottom, margin.top])\n    .domain([0, 10])\n  \n  const xAxis = d3.axisBottom(x);\n  const yAxis = d3.axisLeft(y);\n  \n  \n  const svg = d3.select(\"#error-plot-container\").append(\"svg\")\n    .attr(\"width\", w)\n    .attr(\"height\", h)\n    \n  const axes = svg.append(\"g\")\n  const axisFontSize = \"0.7em\"\n  axes.append(\"g\").attr(\"transform\", `translate(0, ${h - margin.bottom})`).call(xAxis).style(\"font-size\", axisFontSize).attr(\"font-family\", \"Times New Roman\");\n  axes.append(\"g\").attr(\"transform\", `translate(${margin.left}, 0)`).call(yAxis).style(\"font-size\", axisFontSize).attr(\"font-family\", \"Times New Roman\");\n  \n  const axisTitles = svg.append(\"g\")\n    .style(\"font-size\", \"0.8em\")\n    .style(\"font-family\", \"Times New Roman\")\n    .style(\"fill\", \"var(--text-color)\")\n  \n  axisTitles.append(\"text\")\n    .attr(\"transform\", `translate(${margin.left + (w - margin.left - margin.right) / 2}, ${h - 10})`).text(\"Sleep duration\")\n    .attr(\"text-anchor\", \"middle\");\n  \n  axisTitles.append(\"text\")\n    .attr(\"transform\", `translate(0, ${margin.top + (h - margin.top - margin.bottom) / 2})`)\n    .text(\"Score\")\n    \n  \n  const residuals = svg.append(\"g\")\n  residuals.selectAll(\"line\").data(data).enter()\n      .append(\"line\")\n        .attr(\"x1\", d => x(d.xVal))\n        .attr(\"x2\", d => x(d.xVal))\n        .attr(\"y1\", d => y(d.yVal))\n        <!-- .attr(\"y2\", d => y(d.yVal)) -->\n        .style(\"stroke\", \"red\")\n        .style(\"stroke-width\", 2)\n        .attr(\"stroke-dasharray\", [5, 3])\n        \n  const fitLine = svg.append(\"line\")\n    .style(\"stroke\", \"dodgerblue\")\n    .style(\"stroke-width\", 3)\n    \n  const dots = svg.append(\"g\")\n  const squares = svg.append(\"g\")\n  const ssResidualSquare = svg.append(\"g\").append(\"polygon\")\n    .style(\"fill\", \"plum\")\n    .style(\"opacity\", 0.5)\n    \n  dots.selectAll(\"circle\").data(data).enter().append(\"circle\")\n    .attr(\"cx\", d => x(d.xVal))\n    .attr(\"cy\", d => y(d.yVal))\n    .attr(\"r\", 5)\n    .style(\"fill\", \"var(--text-color)\")\n    \n  squares.selectAll(\"polygon\").data(data).enter()\n    .append(\"polygon\")\n    .style(\"fill\", \"plum\")\n    .style(\"opacity\", 0.5)\n    \n  function drawFitLine() {\n    var a = Number(aInput.property(\"value\"));\n    d3.select(\"#a-output\").text(a);\n    var b = Number(bInput.property(\"value\"));\n    d3.select(\"#b-output\").text(b);\n    \n    var yhat1 = a\n    var yhat2 = b * 12 + a\n    \n    fitLine\n      .attr(\"x1\", x(0))\n      .attr(\"x2\", x(12))\n      .attr(\"y1\", y(yhat1))\n      .attr(\"y2\", y(yhat2))\n      \n    var ssResidual = 0;\n    \n    for(var i = 0; i < data.length; i++) {\n      var yHat = b * data[i].xVal + a;\n      var residual = data[i].yVal - yHat\n      data[i].yHat = yHat;\n      data[i].res = residual;\n      \n      ssResidual += Math.pow(residual, 2);\n    }\n    \n    residuals.selectAll(\"line\")\n        .attr(\"y2\", d => y(d.yHat))\n        \n    squares.selectAll(\"polygon\")\n      .attr(\"points\", d => [[x(d.xVal), y(d.yVal)],\n                            [x(d.xVal), y(d.yHat)],\n                            [x(d.xVal + Math.abs(d.res)), y(d.yHat)],\n                            [x(d.xVal + Math.abs(d.res)), y(d.yVal)]])\n                            \n    ssResidualSquare\n    .attr(\"points\", [[x(9), y(3)],\n                     [x(9), y(3 - Math.sqrt(ssResidual))],\n                     [x(9 + Math.sqrt(ssResidual)), y(3 - Math.sqrt(ssResidual))],\n                     [x(9 + Math.sqrt(ssResidual)), y(3)]])\n  }\n  \n  drawFitLine();\n  \n  svg.append(\"polygon\")\n    .attr(\"points\", [[x(9), y(3)],\n                     [x(9), y(3 - Math.sqrt(6.5))],\n                     [x(9 + Math.sqrt(6.5)), y(3 - Math.sqrt(6.5))],\n                     [x(9 + Math.sqrt(6.5)), y(3)]])\n    .style(\"fill\", \"none\")\n    .style(\"stroke\", \"black\")\n    .style(\"stroke-dasharray\", [5, 3])\n    \n\n  \n\n}\n"}]}
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuY2hhbmdhYmxlX2NoYXJ0ID0ge1xuXG4gIGNvbnN0IHcgPSA2MDA7XG4gIGNvbnN0IGggPSA1MDA7XG4gIFxuICBjb25zdCBtYXJnaW4gPSB7dG9wOiAyMCwgcmlnaHQ6IDIwLCBsZWZ0OiAxMTAsIGJvdHRvbTogNzV9XG5cbiAgY29uc3QgeF92YWx1ZXMgPSBbNCw1LDcsOCwxMV1cbiAgY29uc3QgeV92YWx1ZXMgPSBbNSw4LDgsMTAsOV1cbiAgY29uc3QgeWhhdF92YWx1ZXMgPSBbMCwwLDAsMCwwXVxuICBcbiAgY29uc3QgZGF0YSA9IFt7eFZhbDogNCwgeVZhbDogNX0sXG4gICAgICAgICAgICAgICAge3hWYWw6IDUsIHlWYWw6IDh9LFxuICAgICAgICAgICAgICAgIHt4VmFsOiA3LCB5VmFsOiA4fSxcbiAgICAgICAgICAgICAgICB7eFZhbDogOCwgeVZhbDogMTB9LFxuICAgICAgICAgICAgICAgIHt4VmFsOiAxMSwgeVZhbDogOX1dXG4gICAgICAgICAgICAgICAgXG4gIGNvbnN0IGFJbnB1dCA9IGQzLnNlbGVjdChcIiNhLWNvbnRyb2xcIilcbiAgY29uc3QgYklucHV0ID0gZDMuc2VsZWN0KFwiI2ItY29udHJvbFwiKVxuICBcbiAgYUlucHV0Lm9uKFwiaW5wdXRcIiwgZHJhd0ZpdExpbmUpO1xuICBiSW5wdXQub24oXCJpbnB1dFwiLCBkcmF3Rml0TGluZSk7XG4gIFxuICBjb25zdCB4ID0gZDMuc2NhbGVMaW5lYXIoKVxuICAgIC5yYW5nZShbbWFyZ2luLmxlZnQsIHcgLSBtYXJnaW4ucmlnaHRdKVxuICAgIC5kb21haW4oWzAsIDEyXSlcbiAgY29uc3QgeSA9IGQzLnNjYWxlTGluZWFyKClcbiAgICAucmFuZ2UoW2ggLSBtYXJnaW4uYm90dG9tLCBtYXJnaW4udG9wXSlcbiAgICAuZG9tYWluKFswLCAxMF0pXG4gIFxuICBjb25zdCB4QXhpcyA9IGQzLmF4aXNCb3R0b20oeCk7XG4gIGNvbnN0IHlBeGlzID0gZDMuYXhpc0xlZnQoeSk7XG4gIFxuICBcbiAgY29uc3Qgc3ZnID0gZDMuc2VsZWN0KFwiI2Vycm9yLXBsb3QtY29udGFpbmVyXCIpLmFwcGVuZChcInN2Z1wiKVxuICAgIC5hdHRyKFwid2lkdGhcIiwgdylcbiAgICAuYXR0cihcImhlaWdodFwiLCBoKVxuICAgIFxuICBjb25zdCBheGVzID0gc3ZnLmFwcGVuZChcImdcIilcbiAgY29uc3QgYXhpc0ZvbnRTaXplID0gXCIwLjdlbVwiXG4gIGF4ZXMuYXBwZW5kKFwiZ1wiKS5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoMCwgJHtoIC0gbWFyZ2luLmJvdHRvbX0pYCkuY2FsbCh4QXhpcykuc3R5bGUoXCJmb250LXNpemVcIiwgYXhpc0ZvbnRTaXplKS5hdHRyKFwiZm9udC1mYW1pbHlcIiwgXCJUaW1lcyBOZXcgUm9tYW5cIik7XG4gIGF4ZXMuYXBwZW5kKFwiZ1wiKS5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoJHttYXJnaW4ubGVmdH0sIDApYCkuY2FsbCh5QXhpcykuc3R5bGUoXCJmb250LXNpemVcIiwgYXhpc0ZvbnRTaXplKS5hdHRyKFwiZm9udC1mYW1pbHlcIiwgXCJUaW1lcyBOZXcgUm9tYW5cIik7XG4gIFxuICBjb25zdCBheGlzVGl0bGVzID0gc3ZnLmFwcGVuZChcImdcIilcbiAgICAuc3R5bGUoXCJmb250LXNpemVcIiwgXCIwLjhlbVwiKVxuICAgIC5zdHlsZShcImZvbnQtZmFtaWx5XCIsIFwiVGltZXMgTmV3IFJvbWFuXCIpXG4gICAgLnN0eWxlKFwiZmlsbFwiLCBcInZhcigtLXRleHQtY29sb3IpXCIpXG4gIFxuICBheGlzVGl0bGVzLmFwcGVuZChcInRleHRcIilcbiAgICAuYXR0cihcInRyYW5zZm9ybVwiLCBgdHJhbnNsYXRlKCR7bWFyZ2luLmxlZnQgKyAodyAtIG1hcmdpbi5sZWZ0IC0gbWFyZ2luLnJpZ2h0KSAvIDJ9LCAke2ggLSAxMH0pYCkudGV4dChcIlNsZWVwIGR1cmF0aW9uXCIpXG4gICAgLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKTtcbiAgXG4gIGF4aXNUaXRsZXMuYXBwZW5kKFwidGV4dFwiKVxuICAgIC5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoMCwgJHttYXJnaW4udG9wICsgKGggLSBtYXJnaW4udG9wIC0gbWFyZ2luLmJvdHRvbSkgLyAyfSlgKVxuICAgIC50ZXh0KFwiU2NvcmVcIilcbiAgICBcbiAgXG4gIGNvbnN0IHJlc2lkdWFscyA9IHN2Zy5hcHBlbmQoXCJnXCIpXG4gIHJlc2lkdWFscy5zZWxlY3RBbGwoXCJsaW5lXCIpLmRhdGEoZGF0YSkuZW50ZXIoKVxuICAgICAgLmFwcGVuZChcImxpbmVcIilcbiAgICAgICAgLmF0dHIoXCJ4MVwiLCBkID0+IHgoZC54VmFsKSlcbiAgICAgICAgLmF0dHIoXCJ4MlwiLCBkID0+IHgoZC54VmFsKSlcbiAgICAgICAgLmF0dHIoXCJ5MVwiLCBkID0+IHkoZC55VmFsKSlcbiAgICAgICAgPCEtLSAuYXR0cihcInkyXCIsIGQgPT4geShkLnlWYWwpKSAtLT5cbiAgICAgICAgLnN0eWxlKFwic3Ryb2tlXCIsIFwicmVkXCIpXG4gICAgICAgIC5zdHlsZShcInN0cm9rZS13aWR0aFwiLCAyKVxuICAgICAgICAuYXR0cihcInN0cm9rZS1kYXNoYXJyYXlcIiwgWzUsIDNdKVxuICAgICAgICBcbiAgY29uc3QgZml0TGluZSA9IHN2Zy5hcHBlbmQoXCJsaW5lXCIpXG4gICAgLnN0eWxlKFwic3Ryb2tlXCIsIFwiZG9kZ2VyYmx1ZVwiKVxuICAgIC5zdHlsZShcInN0cm9rZS13aWR0aFwiLCAzKVxuICAgIFxuICBjb25zdCBkb3RzID0gc3ZnLmFwcGVuZChcImdcIilcbiAgY29uc3Qgc3F1YXJlcyA9IHN2Zy5hcHBlbmQoXCJnXCIpXG4gIGNvbnN0IHNzUmVzaWR1YWxTcXVhcmUgPSBzdmcuYXBwZW5kKFwiZ1wiKS5hcHBlbmQoXCJwb2x5Z29uXCIpXG4gICAgLnN0eWxlKFwiZmlsbFwiLCBcInBsdW1cIilcbiAgICAuc3R5bGUoXCJvcGFjaXR5XCIsIDAuNSlcbiAgICBcbiAgZG90cy5zZWxlY3RBbGwoXCJjaXJjbGVcIikuZGF0YShkYXRhKS5lbnRlcigpLmFwcGVuZChcImNpcmNsZVwiKVxuICAgIC5hdHRyKFwiY3hcIiwgZCA9PiB4KGQueFZhbCkpXG4gICAgLmF0dHIoXCJjeVwiLCBkID0+IHkoZC55VmFsKSlcbiAgICAuYXR0cihcInJcIiwgNSlcbiAgICAuc3R5bGUoXCJmaWxsXCIsIFwidmFyKC0tdGV4dC1jb2xvcilcIilcbiAgICBcbiAgc3F1YXJlcy5zZWxlY3RBbGwoXCJwb2x5Z29uXCIpLmRhdGEoZGF0YSkuZW50ZXIoKVxuICAgIC5hcHBlbmQoXCJwb2x5Z29uXCIpXG4gICAgLnN0eWxlKFwiZmlsbFwiLCBcInBsdW1cIilcbiAgICAuc3R5bGUoXCJvcGFjaXR5XCIsIDAuNSlcbiAgICBcbiAgZnVuY3Rpb24gZHJhd0ZpdExpbmUoKSB7XG4gICAgdmFyIGEgPSBOdW1iZXIoYUlucHV0LnByb3BlcnR5KFwidmFsdWVcIikpO1xuICAgIGQzLnNlbGVjdChcIiNhLW91dHB1dFwiKS50ZXh0KGEpO1xuICAgIHZhciBiID0gTnVtYmVyKGJJbnB1dC5wcm9wZXJ0eShcInZhbHVlXCIpKTtcbiAgICBkMy5zZWxlY3QoXCIjYi1vdXRwdXRcIikudGV4dChiKTtcbiAgICBcbiAgICB2YXIgeWhhdDEgPSBhXG4gICAgdmFyIHloYXQyID0gYiAqIDEyICsgYVxuICAgIFxuICAgIGZpdExpbmVcbiAgICAgIC5hdHRyKFwieDFcIiwgeCgwKSlcbiAgICAgIC5hdHRyKFwieDJcIiwgeCgxMikpXG4gICAgICAuYXR0cihcInkxXCIsIHkoeWhhdDEpKVxuICAgICAgLmF0dHIoXCJ5MlwiLCB5KHloYXQyKSlcbiAgICAgIFxuICAgIHZhciBzc1Jlc2lkdWFsID0gMDtcbiAgICBcbiAgICBmb3IodmFyIGkgPSAwOyBpIDwgZGF0YS5sZW5ndGg7IGkrKykge1xuICAgICAgdmFyIHlIYXQgPSBiICogZGF0YVtpXS54VmFsICsgYTtcbiAgICAgIHZhciByZXNpZHVhbCA9IGRhdGFbaV0ueVZhbCAtIHlIYXRcbiAgICAgIGRhdGFbaV0ueUhhdCA9IHlIYXQ7XG4gICAgICBkYXRhW2ldLnJlcyA9IHJlc2lkdWFsO1xuICAgICAgXG4gICAgICBzc1Jlc2lkdWFsICs9IE1hdGgucG93KHJlc2lkdWFsLCAyKTtcbiAgICB9XG4gICAgXG4gICAgcmVzaWR1YWxzLnNlbGVjdEFsbChcImxpbmVcIilcbiAgICAgICAgLmF0dHIoXCJ5MlwiLCBkID0+IHkoZC55SGF0KSlcbiAgICAgICAgXG4gICAgc3F1YXJlcy5zZWxlY3RBbGwoXCJwb2x5Z29uXCIpXG4gICAgICAuYXR0cihcInBvaW50c1wiLCBkID0+IFtbeChkLnhWYWwpLCB5KGQueVZhbCldLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIFt4KGQueFZhbCksIHkoZC55SGF0KV0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgW3goZC54VmFsICsgTWF0aC5hYnMoZC5yZXMpKSwgeShkLnlIYXQpXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBbeChkLnhWYWwgKyBNYXRoLmFicyhkLnJlcykpLCB5KGQueVZhbCldXSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICBzc1Jlc2lkdWFsU3F1YXJlXG4gICAgLmF0dHIoXCJwb2ludHNcIiwgW1t4KDkpLCB5KDMpXSxcbiAgICAgICAgICAgICAgICAgICAgIFt4KDkpLCB5KDMgLSBNYXRoLnNxcnQoc3NSZXNpZHVhbCkpXSxcbiAgICAgICAgICAgICAgICAgICAgIFt4KDkgKyBNYXRoLnNxcnQoc3NSZXNpZHVhbCkpLCB5KDMgLSBNYXRoLnNxcnQoc3NSZXNpZHVhbCkpXSxcbiAgICAgICAgICAgICAgICAgICAgIFt4KDkgKyBNYXRoLnNxcnQoc3NSZXNpZHVhbCkpLCB5KDMpXV0pXG4gIH1cbiAgXG4gIGRyYXdGaXRMaW5lKCk7XG4gIFxuICBzdmcuYXBwZW5kKFwicG9seWdvblwiKVxuICAgIC5hdHRyKFwicG9pbnRzXCIsIFtbeCg5KSwgeSgzKV0sXG4gICAgICAgICAgICAgICAgICAgICBbeCg5KSwgeSgzIC0gTWF0aC5zcXJ0KDYuNSkpXSxcbiAgICAgICAgICAgICAgICAgICAgIFt4KDkgKyBNYXRoLnNxcnQoNi41KSksIHkoMyAtIE1hdGguc3FydCg2LjUpKV0sXG4gICAgICAgICAgICAgICAgICAgICBbeCg5ICsgTWF0aC5zcXJ0KDYuNSkpLCB5KDMpXV0pXG4gICAgLnN0eWxlKFwiZmlsbFwiLCBcIm5vbmVcIilcbiAgICAuc3R5bGUoXCJzdHJva2VcIiwgXCJibGFja1wiKVxuICAgIC5zdHlsZShcInN0cm9rZS1kYXNoYXJyYXlcIiwgWzUsIDNdKVxuICAgIFxuXG4gIFxuXG59XG4ifV19
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -395,6 +426,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -463,13 +521,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -548,10 +608,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -561,8 +638,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -574,7 +660,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -618,6 +827,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -643,6 +853,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -703,6 +939,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

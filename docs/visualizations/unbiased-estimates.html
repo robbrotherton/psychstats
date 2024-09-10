@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,8 +80,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
@@ -97,6 +99,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -104,9 +133,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
@@ -117,36 +146,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/rob_brotherton" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/rob_brotherton"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats">
  <span class="dropdown-text">Source Code</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats/issues/new" rel="" target="">
+    <a class="dropdown-item" href="https://github.com/robbrotherton/psychstats/issues/new">
  <span class="dropdown-text">Report a Bug</span></a>
   </li>  
     </ul>
   </li>
 </ul>
-            <div class="quarto-navbar-tools">
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -165,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -173,7 +202,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div id="controls">
 <div id="controls-container">
@@ -1331,9 +1362,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </main> <!-- /main -->
-
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"jStat = require(\"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js\")\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"w = 800\nh = 400\n\nmaxWidth = 900;\nmaxHeight = 550;\n\ntimeseriesVertical = false;\n\npanelSpacing = 5;\n\npopulationPanelWidth = maxWidth * 0.6;\npopulationPanelHeight = maxHeight;\n\npopulationSubPanelProportion = 0.4;\nsampleSubPanelProportion = 0.05;\n\nestimatesSubPanelProportion = 0.55;\n\nestimatesPanelWidth = maxWidth - populationPanelWidth;\nestimatesPanelHeight = populationPanelHeight;\n\ntimeSeriesPanelWidth = maxWidth - populationPanelWidth;\n\n\n\nradius = 4; //1.4\nsampleSize = 5;\n\n    \nxScalePopulation = d3.scaleLinear()\n    .domain([-4, 4])\n    .range([0 + radius, (populationPanelWidth) - radius])\nyScalePopulation = d3.scaleLinear()\n    .domain([0, 300])\n    .range([populationPanelHeight * populationSubPanelProportion, 0])\n\nxScaleEstimates = d3.scaleLinear()\n    .domain([-1.25, 1.25])\n    .range([0, estimatesPanelWidth])\n    \nyScaleEstimates = d3.scaleLinear()\n    .domain([20, 0])\n    .range([maxHeight - 30, maxHeight * (1 - estimatesSubPanelProportion) + 30])\n\nxAxisEstimatesValues = [-2, -1, 0, 1, 2];\nxAxisEstimates = d3.axisBottom(xScalePopulation)\n  .tickValues(xAxisEstimatesValues)\n  .tickFormat(d => d)\n  .tickSize(-maxHeight * (1 - estimatesSubPanelProportion) - 10)\n  \n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"update_svg = {\n\n  var sample = [];\n  var sampleData = [];\n  var sample_estimates = [];\n  var running_averages = [{param: \"population\", value: [0], id: [0]},\n                          {param: \"sample\",     value: [0], id: [0]},\n                          {param: \"mean\",       value: [0], id: [0]}];\n  \n  var nSamplesDrawn = 0;\n  \n  var legendSelected = [\"sample\", \"population\"]\n  \n  var timeX, timeY, biasLine, timeXAxis, timeYAxis;\n  var timeSvg, \n  timeScaleBias, \n  timeScaleId, \n  timeBiasAxis, \n  timeIdAxis, \n  timeseriesDataLayer,\n  timeseriesBiasAxisLayer,\n  timeseriesIdAxisLayer;\n\n  let isLargeScreen;\n\n  function newSample() {\n    \n    nSamplesDrawn++\n    \n    // pick random observations from the population by their index\n    for (var i = 0; i < sampleSize; i++) {\n      let randomIndex = Math.floor(Math.random() * popData.length);\n      sample[i] = xScalePopulation.invert(popData[randomIndex].cx);\n      sampleData[i] = popData[randomIndex];\n    }\n    \n    var estimates = getSampleEstimates(sample)\n    estimates.map(d => d.id = nSamplesDrawn);\n    sample_estimates.push(estimates)\n    \n    updateRunningAverages(estimates);\n    updateBiasChart();\n    updateSampleCircles();\n    animateEstimates(sampleData, estimates);\n    updatePath();\n    updateVisibility();\n  }\n  \n  function updateBiasChart() {\n      yScaleEstimates.domain([nSamplesDrawn-20, nSamplesDrawn])\n      \n      biasDots.selectAll(\"path\").remove()\n      biasDots.selectAll(\"path\")\n          .data(sample_estimates.flat())\n          .enter()\n          .append(\"path\")\n            .attr(\"id\", d => d.param + \"-estimate\")\n            .attr(\"d\", d3.symbol().type(d3.symbolSquare).size(radius * radius * 2))\n            .attr(\"transform\", d => `translate(${xScalePopulation(d.value)}, ${yScaleEstimates(d.id + 1)}) rotate(45)`)\n            .attr(\"opacity\", d => (d.id === nSamplesDrawn ? 0 : 1))\n            .transition()\n            .attr(\"transform\", d => `translate(${xScalePopulation(d.value)}, ${yScaleEstimates(d.id)}) rotate(45)`)\n            \n  }\n  \n\n  \n  function updateSampleCircles() {\n  \n  let durationMultiplier = 5;\n  if (playing) durationMultiplier = 1;\n  \n    sampleCircles.selectAll('circle').remove()\n    sampleCircles.selectAll('circle')\n      .data(sampleData)\n      .enter().append(\"circle\")\n      .attr(\"class\", \"sample\")\n      .attr(\"r\", radius)\n      .attr(\"cx\", d => d.cx)\n      .attr(\"cy\", d => yScalePopulation(d.cy))\n      .attr(\"fill\", d => d.fill)\n      .transition()\n      .duration(d => d.cy * durationMultiplier)\n      .ease(d3.easeBounceOut)\n      .attr(\"cy\", populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius)\n  }\n  \n  \n  \n  function animateEstimates(sampleData, estimates) {\n  \n    sampleEstimatesTemp.selectAll(\"path\").remove()\n    \n    var wait = Math.max(...sampleData.map(z => z.cy));\n    \n    for (let i = 0; i < estimates.length; i++) {\n\n    var p = estimates[i].param;\n    var endPosition = estimates[i].value;\n    var dur = (playing ? 0 : 1000);\n    var convergeWait = (playing ? 0 : wait * 5);\n    var moveDownWait = (playing ? 250 : 0);\n    \n    sampleData.forEach((s) => {\n    \n    // first, place estimate symbols where each sample dot lands\n      sampleEstimatesTemp\n      .append(\"path\")\n      .attr(\"id\", p + \"-estimate\")\n      .attr(\"d\", d3.symbol().type(d3.symbolSquare).size(radius * radius * 2))\n        .attr(\"transform\", d => `translate(${s.cx}, ${populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius}) rotate(45)`)\n        .attr(\"opacity\", 0)\n        \n    // then move them all to the estimate\n        .transition().duration(dur * 0.67).delay(convergeWait)\n        .attr(\"opacity\", 1)\n        .attr(\"transform\", d => `translate(${xScalePopulation(endPosition)}, ${populationPanelHeight * (populationSubPanelProportion + sampleSubPanelProportion) - radius}) rotate(45)`)\n        \n    // then move them down to the estimates tracker\n    .transition().duration((playing ? 250 : (dur * 0.33))).delay(0)\n      .ease(d3.easeCubicOut)\n        .attr(\"opacity\", 1)\n        .attr(\"transform\", `translate(${xScalePopulation(endPosition)}, ${yScaleEstimates(nSamplesDrawn)}) rotate(45)`)\n    })\n\n    }\n  }\n  \n  const sleep = (milliseconds) => {\n    return new Promise(resolve => setTimeout(resolve, milliseconds))\n  }\n  var playing = false;\n  function playButtonClicked() {\n    \n    playing = !playing; \n  \n  play_button.text(function(){\n    if(playing) {\n      play_button.attr(\"class\", \"btn btn-danger\")\n      return \"◼\"\n  } else {\n    play_button.attr(\"class\", \"btn btn-outline-success\")\n    return \"▶\"\n  }\n  })\n  \n  if (playing) {\n    continuouslyDrawSamples();\n  }\n  }\n  \n  function continuouslyDrawSamples() {\n    if (playing) {\n      newSample();\n      sleep(200).then(continuouslyDrawSamples);\n    }\n  }\n  \n    \n  var popData = [];\n  const color = d3.scaleOrdinal(d3.schemeCategory10);\n  for (let i = 0; i < population.length; ++i) {\n    const cx = xScalePopulation(population[i]);\n    const cy = 10 + (dodge(cx) - radius - 1);\n    <!-- const cy = yScalePopulation(dodge(cx)); -->\n    const fill = color(i % 10);\n    popData.push({cx, cy, fill})\n  }\n  \n  \n  \n  const populationLabels = [{label: \"Population\", top: 0},\n                            {label: \"Sample\",     top: (panelSpacing /  maxHeight + populationSubPanelProportion) * 100},\n                            {label: \"Under/over-</br>estimation of</br>parameter\",     top: (panelSpacing /  maxHeight + populationSubPanelProportion + sampleSubPanelProportion) * 100}]\n  \n  const populationContainer = d3.select(\"#population-container\")\n    .style(\"position\", \"relative\")\n    <!-- .style(\"height\", maxHeight) -->\n    \n    // panel labels\n  populationContainer.selectAll(\"text\").data(populationLabels).enter()\n    .append(\"text\")\n    .style(\"position\", \"absolute\")\n    .html(d => d.label)\n    .attr(\"class\", \"panel-label\")\n    .style(\"top\", d => d.top + \"%\")\n    .style(\"line-height\", \"1em\")\n\n  const populationAndSampleSvg = d3.select(\"#population-container\")\n    .append(\"svg\").attr(\"id\", \"populationAndSample-svg\")\n    .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n    .attr(\"viewBox\", \"0 0 \" + (populationPanelWidth) + \" \" + populationPanelHeight)\n    \n    // panel backgrounds\n  populationAndSampleSvg.append(\"rect\")\n    .attr(\"width\", populationPanelWidth)\n    .attr(\"height\", populationPanelHeight * populationSubPanelProportion)\n    .attr(\"fill\", \"var(--population-panel-background)\")\n    .attr(\"rx\", 5)\n  populationAndSampleSvg.append(\"rect\")\n    .attr(\"width\", populationPanelWidth)\n    .attr(\"y\", panelSpacing + populationPanelHeight * populationSubPanelProportion)\n    .attr(\"height\", populationPanelHeight * sampleSubPanelProportion - panelSpacing)\n    .attr(\"fill\", \"var(--sample-panel-background)\")\n    .attr(\"rx\", 5)\n  populationAndSampleSvg.append(\"rect\")\n    .attr(\"width\", populationPanelWidth)\n    .attr(\"y\", panelSpacing + populationPanelHeight * (1 - estimatesSubPanelProportion))\n    .attr(\"height\", populationPanelHeight * estimatesSubPanelProportion - panelSpacing)\n    .attr(\"fill\", \"var(--estimates-panel-background)\")\n    .attr(\"rx\", 5)\n    \n\n    \n  const pop = populationAndSampleSvg.append(\"g\")\n  const parameters = populationAndSampleSvg.append(\"g\")\n  const sampleEstimates = populationAndSampleSvg.append(\"g\")\n  const sampleEstimatesTemp = populationAndSampleSvg.append(\"g\")\n  const sampleCircles = populationAndSampleSvg.append(\"g\")\n\n  const biasDots  = sampleEstimates.append(\"g\")\n  \n  pop.selectAll(\"circle\")\n      .data(popData)\n      .enter()\n      .append(\"circle\")\n        .attr(\"class\", \"pop\")\n        .attr(\"cx\", d => d.cx)\n        .attr(\"cy\", d => yScalePopulation(d.cy))\n        .attr(\"r\", radius)\n        .attr(\"fill\", d => d.fill)\n        \n    // estimates axis\n    \n  const estimatesAxis = sampleEstimates.append(\"g\")\n    .attr(\"transform\", `translate(0, ${yScaleEstimates(21)})`)\n  \n  estimatesAxis.append(\"rect\")\n    .attr(\"width\", populationPanelWidth)\n    .attr(\"height\", populationPanelHeight - yScaleEstimates(21))\n    .attr(\"fill\", \"var(--estimates-panel-background)\")\n    .attr(\"rx\", 5)\n  estimatesAxis.call(xAxisEstimates)\n  estimatesAxis.select(\".domain\").remove()\n  \n\n\n  \n  formatAxes(estimatesAxis.selectAll(\"line\"));\n  \n    \n  var legendStatus = [{param: \"mean\",       hide: true},\n                      {param: \"population\", hide: false},\n                      {param: \"sample\",     hide: false}]\n                      \n  \n  function updateLegendStatus(param) {\n    var index;\n    if (param===\"mean\") {index = 0;}\n    if (param===\"population\") {index = 1;}\n    if (param===\"sample\") {index = 2;}\n    legendStatus[index].hide = !legendStatus[index].hide\n\n    var classes = \"#\" + param + \"-estimate\"\n    \n    populationAndSampleSvg.selectAll(classes).classed(\"hide\", legendStatus[index].hide)\n    timeSvg.selectAll(\"#\" + param + \"-path\").classed(\"hide\", legendStatus[index].hide)\n    legend.classed(\"unselected\", d => d.hide)\n  }\n  \n    const legend = d3.selectAll(\".selector\")\n    legend\n      .data(legendStatus)\n      .classed(\"unselected\", d => d.hide)\n      .on(\"click\", function(event, d){updateLegendStatus(d.param);})\n  \n\n\n  \n  // buttons\n  const controls = d3.select(\"#controls-container\")\n  \n  const reset_button = controls.append(\"button\")\n    .attr(\"class\", \"btn btn-outline-primary\")\n    // .attr(\"type\", \"button\")\n    .text(\"Reset\")\n    .on(\"click\", clearData)\n  \n  const button = controls.append(\"button\")\n    .attr(\"class\", \"btn btn-outline-primary\")\n    .text(\"Take one sample\")\n    .on(\"click\", newSample)\n    \n  const play_button = controls.append(\"button\")\n    .attr(\"id\", \"play-button\")\n    .attr(\"class\", \"btn btn-outline-success\")\n    // .attr(\"class\", \"button invertable\")\n    .attr(\"x\", 50)\n    .attr(\"y\", h - 50)\n    .text(\"▶\")\n    .on(\"click\", playButtonClicked)\n    \n\n\n// make timeseries chart\nconst timeChart = {\n    width: timeSeriesPanelWidth,\n    height: maxHeight,\n    margin: {left: 30, right: 30, top: 50, bottom: 60}\n}\n\nconst timeChartHorizontal = {\n    width: populationPanelWidth,\n    height: 300,\n    margin: {left: 30, right: 30, top: 50, bottom: 60}\n}\n\n  const timeseriesContainer = d3.select(\"#timeline-container\");\n  timeseriesContainer.style(\"position\", \"relative\")\n\n  updateTimeseriesDimensions(window.innerWidth);\n\n  // Re-render the chart whenever the window size changes\n  window.addEventListener(\"resize\", () => updateTimeseriesDimensions(window.innerWidth));\n\n\n\n  function updateTimeseriesDimensions(winWidth) {\n\n    const largeScreen = winWidth > 600;\n    if (largeScreen === isLargeScreen) return;\n    // Update the screen state\n    isLargeScreen = largeScreen;\n    \n  var params;\n  var orientation = (winWidth > 600) ? \"vertical\" : \"horizontal;\"\n\n  console.log(orientation);\n\n  // first, set up chart dimensions and axes\n  if (winWidth > 600) {\n\n    params = timeChart;\n\n    timeScaleBias = d3.scaleLinear()\n      .domain([-0.5, 0.5])\n      .range([params.margin.left, params.width - params.margin.right])\n    timeScaleId = d3.scaleLinear()\n      .domain([0, 200])\n      .range([params.margin.top, params.height - params.margin.bottom])\n    biasLine = function(x, y){\n        return d3.line()\n        .x(function(d,i) { return timeScaleBias(x[i]); })\n        .y(function(d,i) { return timeScaleId(y[i]); })\n        (Array(x.length));\n    }\n    timeBiasAxis = d3.axisTop(timeScaleBias)\n      .ticks(5)\n      .tickSize(-(params.height - params.margin.top - params.margin.bottom)) // 440\n    timeIdAxis = d3.axisRight(timeScaleId).tickSize(0)\n  } else {\n\n      params = timeChartHorizontal;\n\n      timeScaleBias = d3.scaleLinear()\n        .domain([-0.5, 0.5])\n        .range([params.height - params.margin.bottom, params.margin.top])\n        \n      timeScaleId = d3.scaleLinear()\n        .domain([0, 200])\n        .range([params.margin.left, params.width - params.margin.right])\n      biasLine = function(x, y){\n          return d3.line()\n          .x(function(d,i) { return timeScaleId(y[i]); })\n          .y(function(d,i) { return timeScaleBias(x[i]); })\n          (Array(x.length));\n      }\n    timeIdAxis = d3.axisBottom(timeScaleId)\n      .tickSize(0)\n    timeBiasAxis = d3.axisLeft(timeScaleBias)\n      .ticks(5).tickSize(-params.width - params.margin.left - params.margin.right)\n  }\n\n  // then instantiate the chart svg itself\n  d3.select(\"#timeline-container\").select(\"svg\").remove();\n  d3.select(\"#timeline-container\").selectAll(\"text\").remove();\n  timeSvg = makeTimeseriesChart(params);\n  timeseriesDataLayer = timeSvg.append(\"g\");\n  timeseriesBiasAxisLayer = timeSvg.append(\"g\").attr(\"class\", \"timeseries\");\n  timeseriesIdAxisLayer = timeSvg.append(\"g\").attr(\"class\", \"timeseries\");\n\n  // then place the axes\n  positionTimeAxes(orientation, params);\n\n  // then draw the current data\n  updatePath();\n}\n  \n\n  \n  function makeTimeseriesChart(params) {\n    \n    // text labels\n    timeseriesContainer.append(\"text\")\n    .style(\"position\", \"absolute\")\n    .style(\"left\", 0)\n    .attr(\"class\", \"panel-label timeseries\")\n    .text(\"Average under/over-estimation\")\n  \n  timeseriesContainer.append(\"text\")\n    .style(\"position\", \"absolute\")\n    .style(\"line-height\", \"1em\")\n    .style(\"bottom\", 0)\n    .style(\"right\", 0)\n    .style(\"text-align\", \"right\")\n    .attr(\"class\", \"timeseries\")\n    .html(\"Total<br>samples\")\n    \n    const svg = d3.select(\"#timeline-container\")\n    .append(\"svg\").attr(\"id\", \"timeline-svg\")\n    .attr(\"preserveAspectRatio\", \"xMinYMin meet\")\n    .attr(\"viewBox\", \"0 0 \" + params.width + \" \" + params.height)\n    \n    // background panel\n  svg.append(\"rect\")\n    .attr(\"width\", params.width)\n    .attr(\"height\", params.height)\n    .attr(\"rx\", 5)\n    .attr(\"fill\", \"var(--timeseries-panel-background)\")\n    \n    return svg;\n    \n  }\n  \n  \n  function positionTimeAxes(orientation, params) {\n    if (orientation === \"vertical\") {\n      timeseriesBiasAxisLayer.attr(\"transform\", `translate(0, ${params.margin.top})`)\n\n      timeseriesBiasAxisLayer.append(\"rect\")\n        .attr(\"width\", params.width)\n        .attr(\"y\", -params.margin.top)\n        .attr(\"height\", params.margin.top)\n        .attr(\"rx\", 5)\n        .attr(\"fill\", \"var(--timeseries-panel-background)\")\n\n        timeseriesIdAxisLayer.attr(\"transform\", `translate(${params.width - params.margin.right}, 0)`)\n  \n    } else {\n      timeseriesIdAxisLayer.attr(\"transform\", `translate(0, ${params.height - params.margin.bottom})`)\n\n      // todo: this isn't positioned correctly\n      timeseriesBiasAxisLayer.append(\"rect\")\n        .attr(\"x\", -params.margin.left)\n        .attr(\"width\", params.margin.left)\n        .attr(\"height\", params.height)\n        .attr(\"rx\", 5)\n        .attr(\"fill\", \"var(--timeseries-panel-background)\")\n      \n      timeseriesBiasAxisLayer.attr(\"transform\", `translate(${params.margin.left}, 0)`)\n        \n      \n    }\n    timeseriesIdAxisLayer.call(timeIdAxis)\n    timeseriesBiasAxisLayer.call(timeBiasAxis);\n    timeseriesBiasAxisLayer.select(\".domain\").remove();\n    timeseriesIdAxisLayer.select(\".domain\").remove();\n    \n    formatAxes(timeSvg.selectAll(\"line\"));\n    \n    timeSvg.selectAll(\"line\").classed(\"dark\", true)\n  }\n  \n  \n  function updatePath() {\n      timeseriesDataLayer.selectAll(\"g\").remove()\n      \n      if (nSamplesDrawn > 201) {\n        timeScaleId.domain([nSamplesDrawn - 200, nSamplesDrawn]);\n        // timeIdAxis = d3.axisRight(timeScaleId).tickSize(0);\n        timeseriesIdAxisLayer.call(timeIdAxis);\n        timeseriesIdAxisLayer.select(\".domain\").remove();\n      }\n      \n      timeseriesDataLayer.selectAll(\"g\")\n        .data(running_averages)\n        .enter()\n        .append(\"g\")\n        .attr(\"class\", \"bias-paths\")\n        .append(\"path\")\n          .attr(\"d\", d => biasLine(d.value.slice(1), d.id.slice(1)))\n          .attr(\"id\", d => d.param + \"-path\")\n\n  }\n  \n\n\nfunction clearData() {\n    sample = [];\n    sample_estimates = [];\n    running_averages = [{param: \"population\",   value: [0], id: [0]},\n                          {param: \"sample\",     value: [0], id: [0]},\n                          {param: \"mean\",       value: [0], id: [0]}];\n    nSamplesDrawn = 0;\n    \n    timeScaleId.domain([0, 200]);\n    timeseriesIdAxisLayer.call(timeIdAxis);\n    timeseriesIdAxisLayer.select(\".domain\").remove();\n    \n    sampleCircles.selectAll('circle').remove()\n    sampleEstimates.selectAll(\"path\").remove()\n    sampleEstimatesTemp.selectAll(\"path\").remove()\n    timeseriesDataLayer.selectAll(\"path\").remove()\n  }\n  \n  function updateRunningAverages(estimates) {\n  \n      var cur_n = nSamplesDrawn\n      var prev_n = cur_n - 1\n      \n      var old = running_averages[0].value[prev_n]\n      var new_pop = ((old * prev_n) + estimates[0].value)/cur_n\n      running_averages[0].value.push(new_pop)\n      \n      var old = running_averages[1].value[prev_n]\n      var new_sam = ((old * prev_n) + estimates[1].value)/cur_n\n      running_averages[1].value.push(new_sam)\n      \n      var old = running_averages[2].value[prev_n]\n      var new_mea = ((old * prev_n) + estimates[2].value)/cur_n\n      running_averages[2].value.push(new_mea)\n    \n      running_averages[0].id.push(cur_n)\n      running_averages[1].id.push(cur_n)\n      running_averages[2].id.push(cur_n)\n\n}\n\n  function updateVisibility() {\n  \n    var params = [\"mean\", \"population\", \"sample\"]\n    \n    for (var i = 0; i < 3; i++) {\n      var param = params[i]\n      var elementIds = \"#\" + param + \"-estimate, #\" + param + \"-line\"\n      \n      populationAndSampleSvg.selectAll(elementIds).classed(\"hide\", legendStatus[i].hide)\n      <!-- populationAndSampleSvg.selectAll(\"#\" + param + \"-estimate\").classed(\"hide\", legendStatus[i].hide) -->\n      timeSvg.selectAll(\"#\" + param + \"-path\").classed(\"hide\", legendStatus[i].hide)\n    }\n  }\n  \n}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"\ndodger = radius => {\n  const radius2 = radius ** 1.9;\n  const bisect = d3.bisector(d => d.x);\n  const circles = [];\n  return x => {\n    const l = bisect.left(circles, x - radius);\n    const r = bisect.right(circles, x + radius, l);\n    let y = 0;\n    for (let i = l; i < r; ++i) {\n      const { x: xi, y: yi } = circles[i];\n      const x2 = (xi - x) ** 2;\n      const y2 = (yi - y) ** 2;\n      if (radius2 > x2 + y2) {\n        y = yi + Math.sqrt(radius2 - x2) + 1e-6;\n        i = l - 1;\n        continue;\n      }\n    }\n    circles.splice(bisect.left(circles, x, l, r), 0, { x, y });\n    <!-- populationPanelHeight * 0.7 - d.cy + (radius * 2) -->\n    return y;\n  };\n}\n\ndodge = dodger(radius * 2 + 0.75);\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"\nfunction mean(array) {\n    return array.reduce((a, b) => a + b) / array.length;\n}\n\nfunction sample_variance(array) {\n    const n = array.length\n    const m = mean(array)\n    return array.map(x => Math.pow(x - m, 2)).reduce((a, b) => a + b) / (n - 1);\n}\n\nfunction population_variance(array) {\n    const n = array.length\n    const m = mean(array)\n    return array.map(x => Math.pow(x - m, 2)).reduce((a, b) => a + b) / n;\n}\n\nfunction get_descriptives (array) {\n    return {mean: mean(array),\n            sample_variance: sample_variance(array) - 1, \n            population_variance: population_variance(array) - 1}\n}\n\nfunction getNewData (array) {\n    \n    return {sample_estimates: getSampleEstimates(array)\n            <!-- running_averages: getRunningAverages(array) -->\n            }\n}\n\nfunction getSampleEstimates(array) {\n    return [{param: \"population\", value: population_variance(array) - 1},\n            {param: \"sample\",     value: sample_variance(array) - 1},\n            {param: \"mean\",       value: mean(array)}]\n}\n\n\nfunction formatAxes(elements) {\n  elements._groups[0].forEach((l) => {\n    if (l.__data__ === 0) {\n      l.classList = \"axis-major\";\n    } else {\n      l.classList = \"axis-minor\";\n    }\n  })\n}\n\n"}]}
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImpTdGF0ID0gcmVxdWlyZShcImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vanN0YXRAbGF0ZXN0L2Rpc3QvanN0YXQubWluLmpzXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ3ID0gODAwXG5oID0gNDAwXG5cbm1heFdpZHRoID0gOTAwO1xubWF4SGVpZ2h0ID0gNTUwO1xuXG50aW1lc2VyaWVzVmVydGljYWwgPSBmYWxzZTtcblxucGFuZWxTcGFjaW5nID0gNTtcblxucG9wdWxhdGlvblBhbmVsV2lkdGggPSBtYXhXaWR0aCAqIDAuNjtcbnBvcHVsYXRpb25QYW5lbEhlaWdodCA9IG1heEhlaWdodDtcblxucG9wdWxhdGlvblN1YlBhbmVsUHJvcG9ydGlvbiA9IDAuNDtcbnNhbXBsZVN1YlBhbmVsUHJvcG9ydGlvbiA9IDAuMDU7XG5cbmVzdGltYXRlc1N1YlBhbmVsUHJvcG9ydGlvbiA9IDAuNTU7XG5cbmVzdGltYXRlc1BhbmVsV2lkdGggPSBtYXhXaWR0aCAtIHBvcHVsYXRpb25QYW5lbFdpZHRoO1xuZXN0aW1hdGVzUGFuZWxIZWlnaHQgPSBwb3B1bGF0aW9uUGFuZWxIZWlnaHQ7XG5cbnRpbWVTZXJpZXNQYW5lbFdpZHRoID0gbWF4V2lkdGggLSBwb3B1bGF0aW9uUGFuZWxXaWR0aDtcblxuXG5cbnJhZGl1cyA9IDQ7IC8vMS40XG5zYW1wbGVTaXplID0gNTtcblxuICAgIFxueFNjYWxlUG9wdWxhdGlvbiA9IGQzLnNjYWxlTGluZWFyKClcbiAgICAuZG9tYWluKFstNCwgNF0pXG4gICAgLnJhbmdlKFswICsgcmFkaXVzLCAocG9wdWxhdGlvblBhbmVsV2lkdGgpIC0gcmFkaXVzXSlcbnlTY2FsZVBvcHVsYXRpb24gPSBkMy5zY2FsZUxpbmVhcigpXG4gICAgLmRvbWFpbihbMCwgMzAwXSlcbiAgICAucmFuZ2UoW3BvcHVsYXRpb25QYW5lbEhlaWdodCAqIHBvcHVsYXRpb25TdWJQYW5lbFByb3BvcnRpb24sIDBdKVxuXG54U2NhbGVFc3RpbWF0ZXMgPSBkMy5zY2FsZUxpbmVhcigpXG4gICAgLmRvbWFpbihbLTEuMjUsIDEuMjVdKVxuICAgIC5yYW5nZShbMCwgZXN0aW1hdGVzUGFuZWxXaWR0aF0pXG4gICAgXG55U2NhbGVFc3RpbWF0ZXMgPSBkMy5zY2FsZUxpbmVhcigpXG4gICAgLmRvbWFpbihbMjAsIDBdKVxuICAgIC5yYW5nZShbbWF4SGVpZ2h0IC0gMzAsIG1heEhlaWdodCAqICgxIC0gZXN0aW1hdGVzU3ViUGFuZWxQcm9wb3J0aW9uKSArIDMwXSlcblxueEF4aXNFc3RpbWF0ZXNWYWx1ZXMgPSBbLTIsIC0xLCAwLCAxLCAyXTtcbnhBeGlzRXN0aW1hdGVzID0gZDMuYXhpc0JvdHRvbSh4U2NhbGVQb3B1bGF0aW9uKVxuICAudGlja1ZhbHVlcyh4QXhpc0VzdGltYXRlc1ZhbHVlcylcbiAgLnRpY2tGb3JtYXQoZCA9PiBkKVxuICAudGlja1NpemUoLW1heEhlaWdodCAqICgxIC0gZXN0aW1hdGVzU3ViUGFuZWxQcm9wb3J0aW9uKSAtIDEwKVxuICBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InVwZGF0ZV9zdmcgPSB7XG5cbiAgdmFyIHNhbXBsZSA9IFtdO1xuICB2YXIgc2FtcGxlRGF0YSA9IFtdO1xuICB2YXIgc2FtcGxlX2VzdGltYXRlcyA9IFtdO1xuICB2YXIgcnVubmluZ19hdmVyYWdlcyA9IFt7cGFyYW06IFwicG9wdWxhdGlvblwiLCB2YWx1ZTogWzBdLCBpZDogWzBdfSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAge3BhcmFtOiBcInNhbXBsZVwiLCAgICAgdmFsdWU6IFswXSwgaWQ6IFswXX0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgIHtwYXJhbTogXCJtZWFuXCIsICAgICAgIHZhbHVlOiBbMF0sIGlkOiBbMF19XTtcbiAgXG4gIHZhciBuU2FtcGxlc0RyYXduID0gMDtcbiAgXG4gIHZhciBsZWdlbmRTZWxlY3RlZCA9IFtcInNhbXBsZVwiLCBcInBvcHVsYXRpb25cIl1cbiAgXG4gIHZhciB0aW1lWCwgdGltZVksIGJpYXNMaW5lLCB0aW1lWEF4aXMsIHRpbWVZQXhpcztcbiAgdmFyIHRpbWVTdmcsIFxuICB0aW1lU2NhbGVCaWFzLCBcbiAgdGltZVNjYWxlSWQsIFxuICB0aW1lQmlhc0F4aXMsIFxuICB0aW1lSWRBeGlzLCBcbiAgdGltZXNlcmllc0RhdGFMYXllcixcbiAgdGltZXNlcmllc0JpYXNBeGlzTGF5ZXIsXG4gIHRpbWVzZXJpZXNJZEF4aXNMYXllcjtcblxuICBsZXQgaXNMYXJnZVNjcmVlbjtcblxuICBmdW5jdGlvbiBuZXdTYW1wbGUoKSB7XG4gICAgXG4gICAgblNhbXBsZXNEcmF3bisrXG4gICAgXG4gICAgLy8gcGljayByYW5kb20gb2JzZXJ2YXRpb25zIGZyb20gdGhlIHBvcHVsYXRpb24gYnkgdGhlaXIgaW5kZXhcbiAgICBmb3IgKHZhciBpID0gMDsgaSA8IHNhbXBsZVNpemU7IGkrKykge1xuICAgICAgbGV0IHJhbmRvbUluZGV4ID0gTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpICogcG9wRGF0YS5sZW5ndGgpO1xuICAgICAgc2FtcGxlW2ldID0geFNjYWxlUG9wdWxhdGlvbi5pbnZlcnQocG9wRGF0YVtyYW5kb21JbmRleF0uY3gpO1xuICAgICAgc2FtcGxlRGF0YVtpXSA9IHBvcERhdGFbcmFuZG9tSW5kZXhdO1xuICAgIH1cbiAgICBcbiAgICB2YXIgZXN0aW1hdGVzID0gZ2V0U2FtcGxlRXN0aW1hdGVzKHNhbXBsZSlcbiAgICBlc3RpbWF0ZXMubWFwKGQgPT4gZC5pZCA9IG5TYW1wbGVzRHJhd24pO1xuICAgIHNhbXBsZV9lc3RpbWF0ZXMucHVzaChlc3RpbWF0ZXMpXG4gICAgXG4gICAgdXBkYXRlUnVubmluZ0F2ZXJhZ2VzKGVzdGltYXRlcyk7XG4gICAgdXBkYXRlQmlhc0NoYXJ0KCk7XG4gICAgdXBkYXRlU2FtcGxlQ2lyY2xlcygpO1xuICAgIGFuaW1hdGVFc3RpbWF0ZXMoc2FtcGxlRGF0YSwgZXN0aW1hdGVzKTtcbiAgICB1cGRhdGVQYXRoKCk7XG4gICAgdXBkYXRlVmlzaWJpbGl0eSgpO1xuICB9XG4gIFxuICBmdW5jdGlvbiB1cGRhdGVCaWFzQ2hhcnQoKSB7XG4gICAgICB5U2NhbGVFc3RpbWF0ZXMuZG9tYWluKFtuU2FtcGxlc0RyYXduLTIwLCBuU2FtcGxlc0RyYXduXSlcbiAgICAgIFxuICAgICAgYmlhc0RvdHMuc2VsZWN0QWxsKFwicGF0aFwiKS5yZW1vdmUoKVxuICAgICAgYmlhc0RvdHMuc2VsZWN0QWxsKFwicGF0aFwiKVxuICAgICAgICAgIC5kYXRhKHNhbXBsZV9lc3RpbWF0ZXMuZmxhdCgpKVxuICAgICAgICAgIC5lbnRlcigpXG4gICAgICAgICAgLmFwcGVuZChcInBhdGhcIilcbiAgICAgICAgICAgIC5hdHRyKFwiaWRcIiwgZCA9PiBkLnBhcmFtICsgXCItZXN0aW1hdGVcIilcbiAgICAgICAgICAgIC5hdHRyKFwiZFwiLCBkMy5zeW1ib2woKS50eXBlKGQzLnN5bWJvbFNxdWFyZSkuc2l6ZShyYWRpdXMgKiByYWRpdXMgKiAyKSlcbiAgICAgICAgICAgIC5hdHRyKFwidHJhbnNmb3JtXCIsIGQgPT4gYHRyYW5zbGF0ZSgke3hTY2FsZVBvcHVsYXRpb24oZC52YWx1ZSl9LCAke3lTY2FsZUVzdGltYXRlcyhkLmlkICsgMSl9KSByb3RhdGUoNDUpYClcbiAgICAgICAgICAgIC5hdHRyKFwib3BhY2l0eVwiLCBkID0+IChkLmlkID09PSBuU2FtcGxlc0RyYXduID8gMCA6IDEpKVxuICAgICAgICAgICAgLnRyYW5zaXRpb24oKVxuICAgICAgICAgICAgLmF0dHIoXCJ0cmFuc2Zvcm1cIiwgZCA9PiBgdHJhbnNsYXRlKCR7eFNjYWxlUG9wdWxhdGlvbihkLnZhbHVlKX0sICR7eVNjYWxlRXN0aW1hdGVzKGQuaWQpfSkgcm90YXRlKDQ1KWApXG4gICAgICAgICAgICBcbiAgfVxuICBcblxuICBcbiAgZnVuY3Rpb24gdXBkYXRlU2FtcGxlQ2lyY2xlcygpIHtcbiAgXG4gIGxldCBkdXJhdGlvbk11bHRpcGxpZXIgPSA1O1xuICBpZiAocGxheWluZykgZHVyYXRpb25NdWx0aXBsaWVyID0gMTtcbiAgXG4gICAgc2FtcGxlQ2lyY2xlcy5zZWxlY3RBbGwoJ2NpcmNsZScpLnJlbW92ZSgpXG4gICAgc2FtcGxlQ2lyY2xlcy5zZWxlY3RBbGwoJ2NpcmNsZScpXG4gICAgICAuZGF0YShzYW1wbGVEYXRhKVxuICAgICAgLmVudGVyKCkuYXBwZW5kKFwiY2lyY2xlXCIpXG4gICAgICAuYXR0cihcImNsYXNzXCIsIFwic2FtcGxlXCIpXG4gICAgICAuYXR0cihcInJcIiwgcmFkaXVzKVxuICAgICAgLmF0dHIoXCJjeFwiLCBkID0+IGQuY3gpXG4gICAgICAuYXR0cihcImN5XCIsIGQgPT4geVNjYWxlUG9wdWxhdGlvbihkLmN5KSlcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBkID0+IGQuZmlsbClcbiAgICAgIC50cmFuc2l0aW9uKClcbiAgICAgIC5kdXJhdGlvbihkID0+IGQuY3kgKiBkdXJhdGlvbk11bHRpcGxpZXIpXG4gICAgICAuZWFzZShkMy5lYXNlQm91bmNlT3V0KVxuICAgICAgLmF0dHIoXCJjeVwiLCBwb3B1bGF0aW9uUGFuZWxIZWlnaHQgKiAocG9wdWxhdGlvblN1YlBhbmVsUHJvcG9ydGlvbiArIHNhbXBsZVN1YlBhbmVsUHJvcG9ydGlvbikgLSByYWRpdXMpXG4gIH1cbiAgXG4gIFxuICBcbiAgZnVuY3Rpb24gYW5pbWF0ZUVzdGltYXRlcyhzYW1wbGVEYXRhLCBlc3RpbWF0ZXMpIHtcbiAgXG4gICAgc2FtcGxlRXN0aW1hdGVzVGVtcC5zZWxlY3RBbGwoXCJwYXRoXCIpLnJlbW92ZSgpXG4gICAgXG4gICAgdmFyIHdhaXQgPSBNYXRoLm1heCguLi5zYW1wbGVEYXRhLm1hcCh6ID0+IHouY3kpKTtcbiAgICBcbiAgICBmb3IgKGxldCBpID0gMDsgaSA8IGVzdGltYXRlcy5sZW5ndGg7IGkrKykge1xuXG4gICAgdmFyIHAgPSBlc3RpbWF0ZXNbaV0ucGFyYW07XG4gICAgdmFyIGVuZFBvc2l0aW9uID0gZXN0aW1hdGVzW2ldLnZhbHVlO1xuICAgIHZhciBkdXIgPSAocGxheWluZyA/IDAgOiAxMDAwKTtcbiAgICB2YXIgY29udmVyZ2VXYWl0ID0gKHBsYXlpbmcgPyAwIDogd2FpdCAqIDUpO1xuICAgIHZhciBtb3ZlRG93bldhaXQgPSAocGxheWluZyA/IDI1MCA6IDApO1xuICAgIFxuICAgIHNhbXBsZURhdGEuZm9yRWFjaCgocykgPT4ge1xuICAgIFxuICAgIC8vIGZpcnN0LCBwbGFjZSBlc3RpbWF0ZSBzeW1ib2xzIHdoZXJlIGVhY2ggc2FtcGxlIGRvdCBsYW5kc1xuICAgICAgc2FtcGxlRXN0aW1hdGVzVGVtcFxuICAgICAgLmFwcGVuZChcInBhdGhcIilcbiAgICAgIC5hdHRyKFwiaWRcIiwgcCArIFwiLWVzdGltYXRlXCIpXG4gICAgICAuYXR0cihcImRcIiwgZDMuc3ltYm9sKCkudHlwZShkMy5zeW1ib2xTcXVhcmUpLnNpemUocmFkaXVzICogcmFkaXVzICogMikpXG4gICAgICAgIC5hdHRyKFwidHJhbnNmb3JtXCIsIGQgPT4gYHRyYW5zbGF0ZSgke3MuY3h9LCAke3BvcHVsYXRpb25QYW5lbEhlaWdodCAqIChwb3B1bGF0aW9uU3ViUGFuZWxQcm9wb3J0aW9uICsgc2FtcGxlU3ViUGFuZWxQcm9wb3J0aW9uKSAtIHJhZGl1c30pIHJvdGF0ZSg0NSlgKVxuICAgICAgICAuYXR0cihcIm9wYWNpdHlcIiwgMClcbiAgICAgICAgXG4gICAgLy8gdGhlbiBtb3ZlIHRoZW0gYWxsIHRvIHRoZSBlc3RpbWF0ZVxuICAgICAgICAudHJhbnNpdGlvbigpLmR1cmF0aW9uKGR1ciAqIDAuNjcpLmRlbGF5KGNvbnZlcmdlV2FpdClcbiAgICAgICAgLmF0dHIoXCJvcGFjaXR5XCIsIDEpXG4gICAgICAgIC5hdHRyKFwidHJhbnNmb3JtXCIsIGQgPT4gYHRyYW5zbGF0ZSgke3hTY2FsZVBvcHVsYXRpb24oZW5kUG9zaXRpb24pfSwgJHtwb3B1bGF0aW9uUGFuZWxIZWlnaHQgKiAocG9wdWxhdGlvblN1YlBhbmVsUHJvcG9ydGlvbiArIHNhbXBsZVN1YlBhbmVsUHJvcG9ydGlvbikgLSByYWRpdXN9KSByb3RhdGUoNDUpYClcbiAgICAgICAgXG4gICAgLy8gdGhlbiBtb3ZlIHRoZW0gZG93biB0byB0aGUgZXN0aW1hdGVzIHRyYWNrZXJcbiAgICAudHJhbnNpdGlvbigpLmR1cmF0aW9uKChwbGF5aW5nID8gMjUwIDogKGR1ciAqIDAuMzMpKSkuZGVsYXkoMClcbiAgICAgIC5lYXNlKGQzLmVhc2VDdWJpY091dClcbiAgICAgICAgLmF0dHIoXCJvcGFjaXR5XCIsIDEpXG4gICAgICAgIC5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoJHt4U2NhbGVQb3B1bGF0aW9uKGVuZFBvc2l0aW9uKX0sICR7eVNjYWxlRXN0aW1hdGVzKG5TYW1wbGVzRHJhd24pfSkgcm90YXRlKDQ1KWApXG4gICAgfSlcblxuICAgIH1cbiAgfVxuICBcbiAgY29uc3Qgc2xlZXAgPSAobWlsbGlzZWNvbmRzKSA9PiB7XG4gICAgcmV0dXJuIG5ldyBQcm9taXNlKHJlc29sdmUgPT4gc2V0VGltZW91dChyZXNvbHZlLCBtaWxsaXNlY29uZHMpKVxuICB9XG4gIHZhciBwbGF5aW5nID0gZmFsc2U7XG4gIGZ1bmN0aW9uIHBsYXlCdXR0b25DbGlja2VkKCkge1xuICAgIFxuICAgIHBsYXlpbmcgPSAhcGxheWluZzsgXG4gIFxuICBwbGF5X2J1dHRvbi50ZXh0KGZ1bmN0aW9uKCl7XG4gICAgaWYocGxheWluZykge1xuICAgICAgcGxheV9idXR0b24uYXR0cihcImNsYXNzXCIsIFwiYnRuIGJ0bi1kYW5nZXJcIilcbiAgICAgIHJldHVybiBcIuKXvFwiXG4gIH0gZWxzZSB7XG4gICAgcGxheV9idXR0b24uYXR0cihcImNsYXNzXCIsIFwiYnRuIGJ0bi1vdXRsaW5lLXN1Y2Nlc3NcIilcbiAgICByZXR1cm4gXCLilrZcIlxuICB9XG4gIH0pXG4gIFxuICBpZiAocGxheWluZykge1xuICAgIGNvbnRpbnVvdXNseURyYXdTYW1wbGVzKCk7XG4gIH1cbiAgfVxuICBcbiAgZnVuY3Rpb24gY29udGludW91c2x5RHJhd1NhbXBsZXMoKSB7XG4gICAgaWYgKHBsYXlpbmcpIHtcbiAgICAgIG5ld1NhbXBsZSgpO1xuICAgICAgc2xlZXAoMjAwKS50aGVuKGNvbnRpbnVvdXNseURyYXdTYW1wbGVzKTtcbiAgICB9XG4gIH1cbiAgXG4gICAgXG4gIHZhciBwb3BEYXRhID0gW107XG4gIGNvbnN0IGNvbG9yID0gZDMuc2NhbGVPcmRpbmFsKGQzLnNjaGVtZUNhdGVnb3J5MTApO1xuICBmb3IgKGxldCBpID0gMDsgaSA8IHBvcHVsYXRpb24ubGVuZ3RoOyArK2kpIHtcbiAgICBjb25zdCBjeCA9IHhTY2FsZVBvcHVsYXRpb24ocG9wdWxhdGlvbltpXSk7XG4gICAgY29uc3QgY3kgPSAxMCArIChkb2RnZShjeCkgLSByYWRpdXMgLSAxKTtcbiAgICA8IS0tIGNvbnN0IGN5ID0geVNjYWxlUG9wdWxhdGlvbihkb2RnZShjeCkpOyAtLT5cbiAgICBjb25zdCBmaWxsID0gY29sb3IoaSAlIDEwKTtcbiAgICBwb3BEYXRhLnB1c2goe2N4LCBjeSwgZmlsbH0pXG4gIH1cbiAgXG4gIFxuICBcbiAgY29uc3QgcG9wdWxhdGlvbkxhYmVscyA9IFt7bGFiZWw6IFwiUG9wdWxhdGlvblwiLCB0b3A6IDB9LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtsYWJlbDogXCJTYW1wbGVcIiwgICAgIHRvcDogKHBhbmVsU3BhY2luZyAvICBtYXhIZWlnaHQgKyBwb3B1bGF0aW9uU3ViUGFuZWxQcm9wb3J0aW9uKSAqIDEwMH0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAge2xhYmVsOiBcIlVuZGVyL292ZXItPC9icj5lc3RpbWF0aW9uIG9mPC9icj5wYXJhbWV0ZXJcIiwgICAgIHRvcDogKHBhbmVsU3BhY2luZyAvICBtYXhIZWlnaHQgKyBwb3B1bGF0aW9uU3ViUGFuZWxQcm9wb3J0aW9uICsgc2FtcGxlU3ViUGFuZWxQcm9wb3J0aW9uKSAqIDEwMH1dXG4gIFxuICBjb25zdCBwb3B1bGF0aW9uQ29udGFpbmVyID0gZDMuc2VsZWN0KFwiI3BvcHVsYXRpb24tY29udGFpbmVyXCIpXG4gICAgLnN0eWxlKFwicG9zaXRpb25cIiwgXCJyZWxhdGl2ZVwiKVxuICAgIDwhLS0gLnN0eWxlKFwiaGVpZ2h0XCIsIG1heEhlaWdodCkgLS0+XG4gICAgXG4gICAgLy8gcGFuZWwgbGFiZWxzXG4gIHBvcHVsYXRpb25Db250YWluZXIuc2VsZWN0QWxsKFwidGV4dFwiKS5kYXRhKHBvcHVsYXRpb25MYWJlbHMpLmVudGVyKClcbiAgICAuYXBwZW5kKFwidGV4dFwiKVxuICAgIC5zdHlsZShcInBvc2l0aW9uXCIsIFwiYWJzb2x1dGVcIilcbiAgICAuaHRtbChkID0+IGQubGFiZWwpXG4gICAgLmF0dHIoXCJjbGFzc1wiLCBcInBhbmVsLWxhYmVsXCIpXG4gICAgLnN0eWxlKFwidG9wXCIsIGQgPT4gZC50b3AgKyBcIiVcIilcbiAgICAuc3R5bGUoXCJsaW5lLWhlaWdodFwiLCBcIjFlbVwiKVxuXG4gIGNvbnN0IHBvcHVsYXRpb25BbmRTYW1wbGVTdmcgPSBkMy5zZWxlY3QoXCIjcG9wdWxhdGlvbi1jb250YWluZXJcIilcbiAgICAuYXBwZW5kKFwic3ZnXCIpLmF0dHIoXCJpZFwiLCBcInBvcHVsYXRpb25BbmRTYW1wbGUtc3ZnXCIpXG4gICAgLmF0dHIoXCJwcmVzZXJ2ZUFzcGVjdFJhdGlvXCIsIFwieE1pbllNaW4gbWVldFwiKVxuICAgIC5hdHRyKFwidmlld0JveFwiLCBcIjAgMCBcIiArIChwb3B1bGF0aW9uUGFuZWxXaWR0aCkgKyBcIiBcIiArIHBvcHVsYXRpb25QYW5lbEhlaWdodClcbiAgICBcbiAgICAvLyBwYW5lbCBiYWNrZ3JvdW5kc1xuICBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLmFwcGVuZChcInJlY3RcIilcbiAgICAuYXR0cihcIndpZHRoXCIsIHBvcHVsYXRpb25QYW5lbFdpZHRoKVxuICAgIC5hdHRyKFwiaGVpZ2h0XCIsIHBvcHVsYXRpb25QYW5lbEhlaWdodCAqIHBvcHVsYXRpb25TdWJQYW5lbFByb3BvcnRpb24pXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwidmFyKC0tcG9wdWxhdGlvbi1wYW5lbC1iYWNrZ3JvdW5kKVwiKVxuICAgIC5hdHRyKFwicnhcIiwgNSlcbiAgcG9wdWxhdGlvbkFuZFNhbXBsZVN2Zy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ3aWR0aFwiLCBwb3B1bGF0aW9uUGFuZWxXaWR0aClcbiAgICAuYXR0cihcInlcIiwgcGFuZWxTcGFjaW5nICsgcG9wdWxhdGlvblBhbmVsSGVpZ2h0ICogcG9wdWxhdGlvblN1YlBhbmVsUHJvcG9ydGlvbilcbiAgICAuYXR0cihcImhlaWdodFwiLCBwb3B1bGF0aW9uUGFuZWxIZWlnaHQgKiBzYW1wbGVTdWJQYW5lbFByb3BvcnRpb24gLSBwYW5lbFNwYWNpbmcpXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwidmFyKC0tc2FtcGxlLXBhbmVsLWJhY2tncm91bmQpXCIpXG4gICAgLmF0dHIoXCJyeFwiLCA1KVxuICBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLmFwcGVuZChcInJlY3RcIilcbiAgICAuYXR0cihcIndpZHRoXCIsIHBvcHVsYXRpb25QYW5lbFdpZHRoKVxuICAgIC5hdHRyKFwieVwiLCBwYW5lbFNwYWNpbmcgKyBwb3B1bGF0aW9uUGFuZWxIZWlnaHQgKiAoMSAtIGVzdGltYXRlc1N1YlBhbmVsUHJvcG9ydGlvbikpXG4gICAgLmF0dHIoXCJoZWlnaHRcIiwgcG9wdWxhdGlvblBhbmVsSGVpZ2h0ICogZXN0aW1hdGVzU3ViUGFuZWxQcm9wb3J0aW9uIC0gcGFuZWxTcGFjaW5nKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcInZhcigtLWVzdGltYXRlcy1wYW5lbC1iYWNrZ3JvdW5kKVwiKVxuICAgIC5hdHRyKFwicnhcIiwgNSlcbiAgICBcblxuICAgIFxuICBjb25zdCBwb3AgPSBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLmFwcGVuZChcImdcIilcbiAgY29uc3QgcGFyYW1ldGVycyA9IHBvcHVsYXRpb25BbmRTYW1wbGVTdmcuYXBwZW5kKFwiZ1wiKVxuICBjb25zdCBzYW1wbGVFc3RpbWF0ZXMgPSBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLmFwcGVuZChcImdcIilcbiAgY29uc3Qgc2FtcGxlRXN0aW1hdGVzVGVtcCA9IHBvcHVsYXRpb25BbmRTYW1wbGVTdmcuYXBwZW5kKFwiZ1wiKVxuICBjb25zdCBzYW1wbGVDaXJjbGVzID0gcG9wdWxhdGlvbkFuZFNhbXBsZVN2Zy5hcHBlbmQoXCJnXCIpXG5cbiAgY29uc3QgYmlhc0RvdHMgID0gc2FtcGxlRXN0aW1hdGVzLmFwcGVuZChcImdcIilcbiAgXG4gIHBvcC5zZWxlY3RBbGwoXCJjaXJjbGVcIilcbiAgICAgIC5kYXRhKHBvcERhdGEpXG4gICAgICAuZW50ZXIoKVxuICAgICAgLmFwcGVuZChcImNpcmNsZVwiKVxuICAgICAgICAuYXR0cihcImNsYXNzXCIsIFwicG9wXCIpXG4gICAgICAgIC5hdHRyKFwiY3hcIiwgZCA9PiBkLmN4KVxuICAgICAgICAuYXR0cihcImN5XCIsIGQgPT4geVNjYWxlUG9wdWxhdGlvbihkLmN5KSlcbiAgICAgICAgLmF0dHIoXCJyXCIsIHJhZGl1cylcbiAgICAgICAgLmF0dHIoXCJmaWxsXCIsIGQgPT4gZC5maWxsKVxuICAgICAgICBcbiAgICAvLyBlc3RpbWF0ZXMgYXhpc1xuICAgIFxuICBjb25zdCBlc3RpbWF0ZXNBeGlzID0gc2FtcGxlRXN0aW1hdGVzLmFwcGVuZChcImdcIilcbiAgICAuYXR0cihcInRyYW5zZm9ybVwiLCBgdHJhbnNsYXRlKDAsICR7eVNjYWxlRXN0aW1hdGVzKDIxKX0pYClcbiAgXG4gIGVzdGltYXRlc0F4aXMuYXBwZW5kKFwicmVjdFwiKVxuICAgIC5hdHRyKFwid2lkdGhcIiwgcG9wdWxhdGlvblBhbmVsV2lkdGgpXG4gICAgLmF0dHIoXCJoZWlnaHRcIiwgcG9wdWxhdGlvblBhbmVsSGVpZ2h0IC0geVNjYWxlRXN0aW1hdGVzKDIxKSlcbiAgICAuYXR0cihcImZpbGxcIiwgXCJ2YXIoLS1lc3RpbWF0ZXMtcGFuZWwtYmFja2dyb3VuZClcIilcbiAgICAuYXR0cihcInJ4XCIsIDUpXG4gIGVzdGltYXRlc0F4aXMuY2FsbCh4QXhpc0VzdGltYXRlcylcbiAgZXN0aW1hdGVzQXhpcy5zZWxlY3QoXCIuZG9tYWluXCIpLnJlbW92ZSgpXG4gIFxuXG5cbiAgXG4gIGZvcm1hdEF4ZXMoZXN0aW1hdGVzQXhpcy5zZWxlY3RBbGwoXCJsaW5lXCIpKTtcbiAgXG4gICAgXG4gIHZhciBsZWdlbmRTdGF0dXMgPSBbe3BhcmFtOiBcIm1lYW5cIiwgICAgICAgaGlkZTogdHJ1ZX0sXG4gICAgICAgICAgICAgICAgICAgICAge3BhcmFtOiBcInBvcHVsYXRpb25cIiwgaGlkZTogZmFsc2V9LFxuICAgICAgICAgICAgICAgICAgICAgIHtwYXJhbTogXCJzYW1wbGVcIiwgICAgIGhpZGU6IGZhbHNlfV1cbiAgICAgICAgICAgICAgICAgICAgICBcbiAgXG4gIGZ1bmN0aW9uIHVwZGF0ZUxlZ2VuZFN0YXR1cyhwYXJhbSkge1xuICAgIHZhciBpbmRleDtcbiAgICBpZiAocGFyYW09PT1cIm1lYW5cIikge2luZGV4ID0gMDt9XG4gICAgaWYgKHBhcmFtPT09XCJwb3B1bGF0aW9uXCIpIHtpbmRleCA9IDE7fVxuICAgIGlmIChwYXJhbT09PVwic2FtcGxlXCIpIHtpbmRleCA9IDI7fVxuICAgIGxlZ2VuZFN0YXR1c1tpbmRleF0uaGlkZSA9ICFsZWdlbmRTdGF0dXNbaW5kZXhdLmhpZGVcblxuICAgIHZhciBjbGFzc2VzID0gXCIjXCIgKyBwYXJhbSArIFwiLWVzdGltYXRlXCJcbiAgICBcbiAgICBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLnNlbGVjdEFsbChjbGFzc2VzKS5jbGFzc2VkKFwiaGlkZVwiLCBsZWdlbmRTdGF0dXNbaW5kZXhdLmhpZGUpXG4gICAgdGltZVN2Zy5zZWxlY3RBbGwoXCIjXCIgKyBwYXJhbSArIFwiLXBhdGhcIikuY2xhc3NlZChcImhpZGVcIiwgbGVnZW5kU3RhdHVzW2luZGV4XS5oaWRlKVxuICAgIGxlZ2VuZC5jbGFzc2VkKFwidW5zZWxlY3RlZFwiLCBkID0+IGQuaGlkZSlcbiAgfVxuICBcbiAgICBjb25zdCBsZWdlbmQgPSBkMy5zZWxlY3RBbGwoXCIuc2VsZWN0b3JcIilcbiAgICBsZWdlbmRcbiAgICAgIC5kYXRhKGxlZ2VuZFN0YXR1cylcbiAgICAgIC5jbGFzc2VkKFwidW5zZWxlY3RlZFwiLCBkID0+IGQuaGlkZSlcbiAgICAgIC5vbihcImNsaWNrXCIsIGZ1bmN0aW9uKGV2ZW50LCBkKXt1cGRhdGVMZWdlbmRTdGF0dXMoZC5wYXJhbSk7fSlcbiAgXG5cblxuICBcbiAgLy8gYnV0dG9uc1xuICBjb25zdCBjb250cm9scyA9IGQzLnNlbGVjdChcIiNjb250cm9scy1jb250YWluZXJcIilcbiAgXG4gIGNvbnN0IHJlc2V0X2J1dHRvbiA9IGNvbnRyb2xzLmFwcGVuZChcImJ1dHRvblwiKVxuICAgIC5hdHRyKFwiY2xhc3NcIiwgXCJidG4gYnRuLW91dGxpbmUtcHJpbWFyeVwiKVxuICAgIC8vIC5hdHRyKFwidHlwZVwiLCBcImJ1dHRvblwiKVxuICAgIC50ZXh0KFwiUmVzZXRcIilcbiAgICAub24oXCJjbGlja1wiLCBjbGVhckRhdGEpXG4gIFxuICBjb25zdCBidXR0b24gPSBjb250cm9scy5hcHBlbmQoXCJidXR0b25cIilcbiAgICAuYXR0cihcImNsYXNzXCIsIFwiYnRuIGJ0bi1vdXRsaW5lLXByaW1hcnlcIilcbiAgICAudGV4dChcIlRha2Ugb25lIHNhbXBsZVwiKVxuICAgIC5vbihcImNsaWNrXCIsIG5ld1NhbXBsZSlcbiAgICBcbiAgY29uc3QgcGxheV9idXR0b24gPSBjb250cm9scy5hcHBlbmQoXCJidXR0b25cIilcbiAgICAuYXR0cihcImlkXCIsIFwicGxheS1idXR0b25cIilcbiAgICAuYXR0cihcImNsYXNzXCIsIFwiYnRuIGJ0bi1vdXRsaW5lLXN1Y2Nlc3NcIilcbiAgICAvLyAuYXR0cihcImNsYXNzXCIsIFwiYnV0dG9uIGludmVydGFibGVcIilcbiAgICAuYXR0cihcInhcIiwgNTApXG4gICAgLmF0dHIoXCJ5XCIsIGggLSA1MClcbiAgICAudGV4dChcIuKWtlwiKVxuICAgIC5vbihcImNsaWNrXCIsIHBsYXlCdXR0b25DbGlja2VkKVxuICAgIFxuXG5cbi8vIG1ha2UgdGltZXNlcmllcyBjaGFydFxuY29uc3QgdGltZUNoYXJ0ID0ge1xuICAgIHdpZHRoOiB0aW1lU2VyaWVzUGFuZWxXaWR0aCxcbiAgICBoZWlnaHQ6IG1heEhlaWdodCxcbiAgICBtYXJnaW46IHtsZWZ0OiAzMCwgcmlnaHQ6IDMwLCB0b3A6IDUwLCBib3R0b206IDYwfVxufVxuXG5jb25zdCB0aW1lQ2hhcnRIb3Jpem9udGFsID0ge1xuICAgIHdpZHRoOiBwb3B1bGF0aW9uUGFuZWxXaWR0aCxcbiAgICBoZWlnaHQ6IDMwMCxcbiAgICBtYXJnaW46IHtsZWZ0OiAzMCwgcmlnaHQ6IDMwLCB0b3A6IDUwLCBib3R0b206IDYwfVxufVxuXG4gIGNvbnN0IHRpbWVzZXJpZXNDb250YWluZXIgPSBkMy5zZWxlY3QoXCIjdGltZWxpbmUtY29udGFpbmVyXCIpO1xuICB0aW1lc2VyaWVzQ29udGFpbmVyLnN0eWxlKFwicG9zaXRpb25cIiwgXCJyZWxhdGl2ZVwiKVxuXG4gIHVwZGF0ZVRpbWVzZXJpZXNEaW1lbnNpb25zKHdpbmRvdy5pbm5lcldpZHRoKTtcblxuICAvLyBSZS1yZW5kZXIgdGhlIGNoYXJ0IHdoZW5ldmVyIHRoZSB3aW5kb3cgc2l6ZSBjaGFuZ2VzXG4gIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKFwicmVzaXplXCIsICgpID0+IHVwZGF0ZVRpbWVzZXJpZXNEaW1lbnNpb25zKHdpbmRvdy5pbm5lcldpZHRoKSk7XG5cblxuXG4gIGZ1bmN0aW9uIHVwZGF0ZVRpbWVzZXJpZXNEaW1lbnNpb25zKHdpbldpZHRoKSB7XG5cbiAgICBjb25zdCBsYXJnZVNjcmVlbiA9IHdpbldpZHRoID4gNjAwO1xuICAgIGlmIChsYXJnZVNjcmVlbiA9PT0gaXNMYXJnZVNjcmVlbikgcmV0dXJuO1xuICAgIC8vIFVwZGF0ZSB0aGUgc2NyZWVuIHN0YXRlXG4gICAgaXNMYXJnZVNjcmVlbiA9IGxhcmdlU2NyZWVuO1xuICAgIFxuICB2YXIgcGFyYW1zO1xuICB2YXIgb3JpZW50YXRpb24gPSAod2luV2lkdGggPiA2MDApID8gXCJ2ZXJ0aWNhbFwiIDogXCJob3Jpem9udGFsO1wiXG5cbiAgY29uc29sZS5sb2cob3JpZW50YXRpb24pO1xuXG4gIC8vIGZpcnN0LCBzZXQgdXAgY2hhcnQgZGltZW5zaW9ucyBhbmQgYXhlc1xuICBpZiAod2luV2lkdGggPiA2MDApIHtcblxuICAgIHBhcmFtcyA9IHRpbWVDaGFydDtcblxuICAgIHRpbWVTY2FsZUJpYXMgPSBkMy5zY2FsZUxpbmVhcigpXG4gICAgICAuZG9tYWluKFstMC41LCAwLjVdKVxuICAgICAgLnJhbmdlKFtwYXJhbXMubWFyZ2luLmxlZnQsIHBhcmFtcy53aWR0aCAtIHBhcmFtcy5tYXJnaW4ucmlnaHRdKVxuICAgIHRpbWVTY2FsZUlkID0gZDMuc2NhbGVMaW5lYXIoKVxuICAgICAgLmRvbWFpbihbMCwgMjAwXSlcbiAgICAgIC5yYW5nZShbcGFyYW1zLm1hcmdpbi50b3AsIHBhcmFtcy5oZWlnaHQgLSBwYXJhbXMubWFyZ2luLmJvdHRvbV0pXG4gICAgYmlhc0xpbmUgPSBmdW5jdGlvbih4LCB5KXtcbiAgICAgICAgcmV0dXJuIGQzLmxpbmUoKVxuICAgICAgICAueChmdW5jdGlvbihkLGkpIHsgcmV0dXJuIHRpbWVTY2FsZUJpYXMoeFtpXSk7IH0pXG4gICAgICAgIC55KGZ1bmN0aW9uKGQsaSkgeyByZXR1cm4gdGltZVNjYWxlSWQoeVtpXSk7IH0pXG4gICAgICAgIChBcnJheSh4Lmxlbmd0aCkpO1xuICAgIH1cbiAgICB0aW1lQmlhc0F4aXMgPSBkMy5heGlzVG9wKHRpbWVTY2FsZUJpYXMpXG4gICAgICAudGlja3MoNSlcbiAgICAgIC50aWNrU2l6ZSgtKHBhcmFtcy5oZWlnaHQgLSBwYXJhbXMubWFyZ2luLnRvcCAtIHBhcmFtcy5tYXJnaW4uYm90dG9tKSkgLy8gNDQwXG4gICAgdGltZUlkQXhpcyA9IGQzLmF4aXNSaWdodCh0aW1lU2NhbGVJZCkudGlja1NpemUoMClcbiAgfSBlbHNlIHtcblxuICAgICAgcGFyYW1zID0gdGltZUNoYXJ0SG9yaXpvbnRhbDtcblxuICAgICAgdGltZVNjYWxlQmlhcyA9IGQzLnNjYWxlTGluZWFyKClcbiAgICAgICAgLmRvbWFpbihbLTAuNSwgMC41XSlcbiAgICAgICAgLnJhbmdlKFtwYXJhbXMuaGVpZ2h0IC0gcGFyYW1zLm1hcmdpbi5ib3R0b20sIHBhcmFtcy5tYXJnaW4udG9wXSlcbiAgICAgICAgXG4gICAgICB0aW1lU2NhbGVJZCA9IGQzLnNjYWxlTGluZWFyKClcbiAgICAgICAgLmRvbWFpbihbMCwgMjAwXSlcbiAgICAgICAgLnJhbmdlKFtwYXJhbXMubWFyZ2luLmxlZnQsIHBhcmFtcy53aWR0aCAtIHBhcmFtcy5tYXJnaW4ucmlnaHRdKVxuICAgICAgYmlhc0xpbmUgPSBmdW5jdGlvbih4LCB5KXtcbiAgICAgICAgICByZXR1cm4gZDMubGluZSgpXG4gICAgICAgICAgLngoZnVuY3Rpb24oZCxpKSB7IHJldHVybiB0aW1lU2NhbGVJZCh5W2ldKTsgfSlcbiAgICAgICAgICAueShmdW5jdGlvbihkLGkpIHsgcmV0dXJuIHRpbWVTY2FsZUJpYXMoeFtpXSk7IH0pXG4gICAgICAgICAgKEFycmF5KHgubGVuZ3RoKSk7XG4gICAgICB9XG4gICAgdGltZUlkQXhpcyA9IGQzLmF4aXNCb3R0b20odGltZVNjYWxlSWQpXG4gICAgICAudGlja1NpemUoMClcbiAgICB0aW1lQmlhc0F4aXMgPSBkMy5heGlzTGVmdCh0aW1lU2NhbGVCaWFzKVxuICAgICAgLnRpY2tzKDUpLnRpY2tTaXplKC1wYXJhbXMud2lkdGggLSBwYXJhbXMubWFyZ2luLmxlZnQgLSBwYXJhbXMubWFyZ2luLnJpZ2h0KVxuICB9XG5cbiAgLy8gdGhlbiBpbnN0YW50aWF0ZSB0aGUgY2hhcnQgc3ZnIGl0c2VsZlxuICBkMy5zZWxlY3QoXCIjdGltZWxpbmUtY29udGFpbmVyXCIpLnNlbGVjdChcInN2Z1wiKS5yZW1vdmUoKTtcbiAgZDMuc2VsZWN0KFwiI3RpbWVsaW5lLWNvbnRhaW5lclwiKS5zZWxlY3RBbGwoXCJ0ZXh0XCIpLnJlbW92ZSgpO1xuICB0aW1lU3ZnID0gbWFrZVRpbWVzZXJpZXNDaGFydChwYXJhbXMpO1xuICB0aW1lc2VyaWVzRGF0YUxheWVyID0gdGltZVN2Zy5hcHBlbmQoXCJnXCIpO1xuICB0aW1lc2VyaWVzQmlhc0F4aXNMYXllciA9IHRpbWVTdmcuYXBwZW5kKFwiZ1wiKS5hdHRyKFwiY2xhc3NcIiwgXCJ0aW1lc2VyaWVzXCIpO1xuICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIgPSB0aW1lU3ZnLmFwcGVuZChcImdcIikuYXR0cihcImNsYXNzXCIsIFwidGltZXNlcmllc1wiKTtcblxuICAvLyB0aGVuIHBsYWNlIHRoZSBheGVzXG4gIHBvc2l0aW9uVGltZUF4ZXMob3JpZW50YXRpb24sIHBhcmFtcyk7XG5cbiAgLy8gdGhlbiBkcmF3IHRoZSBjdXJyZW50IGRhdGFcbiAgdXBkYXRlUGF0aCgpO1xufVxuICBcblxuICBcbiAgZnVuY3Rpb24gbWFrZVRpbWVzZXJpZXNDaGFydChwYXJhbXMpIHtcbiAgICBcbiAgICAvLyB0ZXh0IGxhYmVsc1xuICAgIHRpbWVzZXJpZXNDb250YWluZXIuYXBwZW5kKFwidGV4dFwiKVxuICAgIC5zdHlsZShcInBvc2l0aW9uXCIsIFwiYWJzb2x1dGVcIilcbiAgICAuc3R5bGUoXCJsZWZ0XCIsIDApXG4gICAgLmF0dHIoXCJjbGFzc1wiLCBcInBhbmVsLWxhYmVsIHRpbWVzZXJpZXNcIilcbiAgICAudGV4dChcIkF2ZXJhZ2UgdW5kZXIvb3Zlci1lc3RpbWF0aW9uXCIpXG4gIFxuICB0aW1lc2VyaWVzQ29udGFpbmVyLmFwcGVuZChcInRleHRcIilcbiAgICAuc3R5bGUoXCJwb3NpdGlvblwiLCBcImFic29sdXRlXCIpXG4gICAgLnN0eWxlKFwibGluZS1oZWlnaHRcIiwgXCIxZW1cIilcbiAgICAuc3R5bGUoXCJib3R0b21cIiwgMClcbiAgICAuc3R5bGUoXCJyaWdodFwiLCAwKVxuICAgIC5zdHlsZShcInRleHQtYWxpZ25cIiwgXCJyaWdodFwiKVxuICAgIC5hdHRyKFwiY2xhc3NcIiwgXCJ0aW1lc2VyaWVzXCIpXG4gICAgLmh0bWwoXCJUb3RhbDxicj5zYW1wbGVzXCIpXG4gICAgXG4gICAgY29uc3Qgc3ZnID0gZDMuc2VsZWN0KFwiI3RpbWVsaW5lLWNvbnRhaW5lclwiKVxuICAgIC5hcHBlbmQoXCJzdmdcIikuYXR0cihcImlkXCIsIFwidGltZWxpbmUtc3ZnXCIpXG4gICAgLmF0dHIoXCJwcmVzZXJ2ZUFzcGVjdFJhdGlvXCIsIFwieE1pbllNaW4gbWVldFwiKVxuICAgIC5hdHRyKFwidmlld0JveFwiLCBcIjAgMCBcIiArIHBhcmFtcy53aWR0aCArIFwiIFwiICsgcGFyYW1zLmhlaWdodClcbiAgICBcbiAgICAvLyBiYWNrZ3JvdW5kIHBhbmVsXG4gIHN2Zy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ3aWR0aFwiLCBwYXJhbXMud2lkdGgpXG4gICAgLmF0dHIoXCJoZWlnaHRcIiwgcGFyYW1zLmhlaWdodClcbiAgICAuYXR0cihcInJ4XCIsIDUpXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwidmFyKC0tdGltZXNlcmllcy1wYW5lbC1iYWNrZ3JvdW5kKVwiKVxuICAgIFxuICAgIHJldHVybiBzdmc7XG4gICAgXG4gIH1cbiAgXG4gIFxuICBmdW5jdGlvbiBwb3NpdGlvblRpbWVBeGVzKG9yaWVudGF0aW9uLCBwYXJhbXMpIHtcbiAgICBpZiAob3JpZW50YXRpb24gPT09IFwidmVydGljYWxcIikge1xuICAgICAgdGltZXNlcmllc0JpYXNBeGlzTGF5ZXIuYXR0cihcInRyYW5zZm9ybVwiLCBgdHJhbnNsYXRlKDAsICR7cGFyYW1zLm1hcmdpbi50b3B9KWApXG5cbiAgICAgIHRpbWVzZXJpZXNCaWFzQXhpc0xheWVyLmFwcGVuZChcInJlY3RcIilcbiAgICAgICAgLmF0dHIoXCJ3aWR0aFwiLCBwYXJhbXMud2lkdGgpXG4gICAgICAgIC5hdHRyKFwieVwiLCAtcGFyYW1zLm1hcmdpbi50b3ApXG4gICAgICAgIC5hdHRyKFwiaGVpZ2h0XCIsIHBhcmFtcy5tYXJnaW4udG9wKVxuICAgICAgICAuYXR0cihcInJ4XCIsIDUpXG4gICAgICAgIC5hdHRyKFwiZmlsbFwiLCBcInZhcigtLXRpbWVzZXJpZXMtcGFuZWwtYmFja2dyb3VuZClcIilcblxuICAgICAgICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIuYXR0cihcInRyYW5zZm9ybVwiLCBgdHJhbnNsYXRlKCR7cGFyYW1zLndpZHRoIC0gcGFyYW1zLm1hcmdpbi5yaWdodH0sIDApYClcbiAgXG4gICAgfSBlbHNlIHtcbiAgICAgIHRpbWVzZXJpZXNJZEF4aXNMYXllci5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoMCwgJHtwYXJhbXMuaGVpZ2h0IC0gcGFyYW1zLm1hcmdpbi5ib3R0b219KWApXG5cbiAgICAgIC8vIHRvZG86IHRoaXMgaXNuJ3QgcG9zaXRpb25lZCBjb3JyZWN0bHlcbiAgICAgIHRpbWVzZXJpZXNCaWFzQXhpc0xheWVyLmFwcGVuZChcInJlY3RcIilcbiAgICAgICAgLmF0dHIoXCJ4XCIsIC1wYXJhbXMubWFyZ2luLmxlZnQpXG4gICAgICAgIC5hdHRyKFwid2lkdGhcIiwgcGFyYW1zLm1hcmdpbi5sZWZ0KVxuICAgICAgICAuYXR0cihcImhlaWdodFwiLCBwYXJhbXMuaGVpZ2h0KVxuICAgICAgICAuYXR0cihcInJ4XCIsIDUpXG4gICAgICAgIC5hdHRyKFwiZmlsbFwiLCBcInZhcigtLXRpbWVzZXJpZXMtcGFuZWwtYmFja2dyb3VuZClcIilcbiAgICAgIFxuICAgICAgdGltZXNlcmllc0JpYXNBeGlzTGF5ZXIuYXR0cihcInRyYW5zZm9ybVwiLCBgdHJhbnNsYXRlKCR7cGFyYW1zLm1hcmdpbi5sZWZ0fSwgMClgKVxuICAgICAgICBcbiAgICAgIFxuICAgIH1cbiAgICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIuY2FsbCh0aW1lSWRBeGlzKVxuICAgIHRpbWVzZXJpZXNCaWFzQXhpc0xheWVyLmNhbGwodGltZUJpYXNBeGlzKTtcbiAgICB0aW1lc2VyaWVzQmlhc0F4aXNMYXllci5zZWxlY3QoXCIuZG9tYWluXCIpLnJlbW92ZSgpO1xuICAgIHRpbWVzZXJpZXNJZEF4aXNMYXllci5zZWxlY3QoXCIuZG9tYWluXCIpLnJlbW92ZSgpO1xuICAgIFxuICAgIGZvcm1hdEF4ZXModGltZVN2Zy5zZWxlY3RBbGwoXCJsaW5lXCIpKTtcbiAgICBcbiAgICB0aW1lU3ZnLnNlbGVjdEFsbChcImxpbmVcIikuY2xhc3NlZChcImRhcmtcIiwgdHJ1ZSlcbiAgfVxuICBcbiAgXG4gIGZ1bmN0aW9uIHVwZGF0ZVBhdGgoKSB7XG4gICAgICB0aW1lc2VyaWVzRGF0YUxheWVyLnNlbGVjdEFsbChcImdcIikucmVtb3ZlKClcbiAgICAgIFxuICAgICAgaWYgKG5TYW1wbGVzRHJhd24gPiAyMDEpIHtcbiAgICAgICAgdGltZVNjYWxlSWQuZG9tYWluKFtuU2FtcGxlc0RyYXduIC0gMjAwLCBuU2FtcGxlc0RyYXduXSk7XG4gICAgICAgIC8vIHRpbWVJZEF4aXMgPSBkMy5heGlzUmlnaHQodGltZVNjYWxlSWQpLnRpY2tTaXplKDApO1xuICAgICAgICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIuY2FsbCh0aW1lSWRBeGlzKTtcbiAgICAgICAgdGltZXNlcmllc0lkQXhpc0xheWVyLnNlbGVjdChcIi5kb21haW5cIikucmVtb3ZlKCk7XG4gICAgICB9XG4gICAgICBcbiAgICAgIHRpbWVzZXJpZXNEYXRhTGF5ZXIuc2VsZWN0QWxsKFwiZ1wiKVxuICAgICAgICAuZGF0YShydW5uaW5nX2F2ZXJhZ2VzKVxuICAgICAgICAuZW50ZXIoKVxuICAgICAgICAuYXBwZW5kKFwiZ1wiKVxuICAgICAgICAuYXR0cihcImNsYXNzXCIsIFwiYmlhcy1wYXRoc1wiKVxuICAgICAgICAuYXBwZW5kKFwicGF0aFwiKVxuICAgICAgICAgIC5hdHRyKFwiZFwiLCBkID0+IGJpYXNMaW5lKGQudmFsdWUuc2xpY2UoMSksIGQuaWQuc2xpY2UoMSkpKVxuICAgICAgICAgIC5hdHRyKFwiaWRcIiwgZCA9PiBkLnBhcmFtICsgXCItcGF0aFwiKVxuXG4gIH1cbiAgXG5cblxuZnVuY3Rpb24gY2xlYXJEYXRhKCkge1xuICAgIHNhbXBsZSA9IFtdO1xuICAgIHNhbXBsZV9lc3RpbWF0ZXMgPSBbXTtcbiAgICBydW5uaW5nX2F2ZXJhZ2VzID0gW3twYXJhbTogXCJwb3B1bGF0aW9uXCIsICAgdmFsdWU6IFswXSwgaWQ6IFswXX0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgIHtwYXJhbTogXCJzYW1wbGVcIiwgICAgIHZhbHVlOiBbMF0sIGlkOiBbMF19LFxuICAgICAgICAgICAgICAgICAgICAgICAgICB7cGFyYW06IFwibWVhblwiLCAgICAgICB2YWx1ZTogWzBdLCBpZDogWzBdfV07XG4gICAgblNhbXBsZXNEcmF3biA9IDA7XG4gICAgXG4gICAgdGltZVNjYWxlSWQuZG9tYWluKFswLCAyMDBdKTtcbiAgICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIuY2FsbCh0aW1lSWRBeGlzKTtcbiAgICB0aW1lc2VyaWVzSWRBeGlzTGF5ZXIuc2VsZWN0KFwiLmRvbWFpblwiKS5yZW1vdmUoKTtcbiAgICBcbiAgICBzYW1wbGVDaXJjbGVzLnNlbGVjdEFsbCgnY2lyY2xlJykucmVtb3ZlKClcbiAgICBzYW1wbGVFc3RpbWF0ZXMuc2VsZWN0QWxsKFwicGF0aFwiKS5yZW1vdmUoKVxuICAgIHNhbXBsZUVzdGltYXRlc1RlbXAuc2VsZWN0QWxsKFwicGF0aFwiKS5yZW1vdmUoKVxuICAgIHRpbWVzZXJpZXNEYXRhTGF5ZXIuc2VsZWN0QWxsKFwicGF0aFwiKS5yZW1vdmUoKVxuICB9XG4gIFxuICBmdW5jdGlvbiB1cGRhdGVSdW5uaW5nQXZlcmFnZXMoZXN0aW1hdGVzKSB7XG4gIFxuICAgICAgdmFyIGN1cl9uID0gblNhbXBsZXNEcmF3blxuICAgICAgdmFyIHByZXZfbiA9IGN1cl9uIC0gMVxuICAgICAgXG4gICAgICB2YXIgb2xkID0gcnVubmluZ19hdmVyYWdlc1swXS52YWx1ZVtwcmV2X25dXG4gICAgICB2YXIgbmV3X3BvcCA9ICgob2xkICogcHJldl9uKSArIGVzdGltYXRlc1swXS52YWx1ZSkvY3VyX25cbiAgICAgIHJ1bm5pbmdfYXZlcmFnZXNbMF0udmFsdWUucHVzaChuZXdfcG9wKVxuICAgICAgXG4gICAgICB2YXIgb2xkID0gcnVubmluZ19hdmVyYWdlc1sxXS52YWx1ZVtwcmV2X25dXG4gICAgICB2YXIgbmV3X3NhbSA9ICgob2xkICogcHJldl9uKSArIGVzdGltYXRlc1sxXS52YWx1ZSkvY3VyX25cbiAgICAgIHJ1bm5pbmdfYXZlcmFnZXNbMV0udmFsdWUucHVzaChuZXdfc2FtKVxuICAgICAgXG4gICAgICB2YXIgb2xkID0gcnVubmluZ19hdmVyYWdlc1syXS52YWx1ZVtwcmV2X25dXG4gICAgICB2YXIgbmV3X21lYSA9ICgob2xkICogcHJldl9uKSArIGVzdGltYXRlc1syXS52YWx1ZSkvY3VyX25cbiAgICAgIHJ1bm5pbmdfYXZlcmFnZXNbMl0udmFsdWUucHVzaChuZXdfbWVhKVxuICAgIFxuICAgICAgcnVubmluZ19hdmVyYWdlc1swXS5pZC5wdXNoKGN1cl9uKVxuICAgICAgcnVubmluZ19hdmVyYWdlc1sxXS5pZC5wdXNoKGN1cl9uKVxuICAgICAgcnVubmluZ19hdmVyYWdlc1syXS5pZC5wdXNoKGN1cl9uKVxuXG59XG5cbiAgZnVuY3Rpb24gdXBkYXRlVmlzaWJpbGl0eSgpIHtcbiAgXG4gICAgdmFyIHBhcmFtcyA9IFtcIm1lYW5cIiwgXCJwb3B1bGF0aW9uXCIsIFwic2FtcGxlXCJdXG4gICAgXG4gICAgZm9yICh2YXIgaSA9IDA7IGkgPCAzOyBpKyspIHtcbiAgICAgIHZhciBwYXJhbSA9IHBhcmFtc1tpXVxuICAgICAgdmFyIGVsZW1lbnRJZHMgPSBcIiNcIiArIHBhcmFtICsgXCItZXN0aW1hdGUsICNcIiArIHBhcmFtICsgXCItbGluZVwiXG4gICAgICBcbiAgICAgIHBvcHVsYXRpb25BbmRTYW1wbGVTdmcuc2VsZWN0QWxsKGVsZW1lbnRJZHMpLmNsYXNzZWQoXCJoaWRlXCIsIGxlZ2VuZFN0YXR1c1tpXS5oaWRlKVxuICAgICAgPCEtLSBwb3B1bGF0aW9uQW5kU2FtcGxlU3ZnLnNlbGVjdEFsbChcIiNcIiArIHBhcmFtICsgXCItZXN0aW1hdGVcIikuY2xhc3NlZChcImhpZGVcIiwgbGVnZW5kU3RhdHVzW2ldLmhpZGUpIC0tPlxuICAgICAgdGltZVN2Zy5zZWxlY3RBbGwoXCIjXCIgKyBwYXJhbSArIFwiLXBhdGhcIikuY2xhc3NlZChcImhpZGVcIiwgbGVnZW5kU3RhdHVzW2ldLmhpZGUpXG4gICAgfVxuICB9XG4gIFxufVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcbmRvZGdlciA9IHJhZGl1cyA9PiB7XG4gIGNvbnN0IHJhZGl1czIgPSByYWRpdXMgKiogMS45O1xuICBjb25zdCBiaXNlY3QgPSBkMy5iaXNlY3RvcihkID0+IGQueCk7XG4gIGNvbnN0IGNpcmNsZXMgPSBbXTtcbiAgcmV0dXJuIHggPT4ge1xuICAgIGNvbnN0IGwgPSBiaXNlY3QubGVmdChjaXJjbGVzLCB4IC0gcmFkaXVzKTtcbiAgICBjb25zdCByID0gYmlzZWN0LnJpZ2h0KGNpcmNsZXMsIHggKyByYWRpdXMsIGwpO1xuICAgIGxldCB5ID0gMDtcbiAgICBmb3IgKGxldCBpID0gbDsgaSA8IHI7ICsraSkge1xuICAgICAgY29uc3QgeyB4OiB4aSwgeTogeWkgfSA9IGNpcmNsZXNbaV07XG4gICAgICBjb25zdCB4MiA9ICh4aSAtIHgpICoqIDI7XG4gICAgICBjb25zdCB5MiA9ICh5aSAtIHkpICoqIDI7XG4gICAgICBpZiAocmFkaXVzMiA+IHgyICsgeTIpIHtcbiAgICAgICAgeSA9IHlpICsgTWF0aC5zcXJ0KHJhZGl1czIgLSB4MikgKyAxZS02O1xuICAgICAgICBpID0gbCAtIDE7XG4gICAgICAgIGNvbnRpbnVlO1xuICAgICAgfVxuICAgIH1cbiAgICBjaXJjbGVzLnNwbGljZShiaXNlY3QubGVmdChjaXJjbGVzLCB4LCBsLCByKSwgMCwgeyB4LCB5IH0pO1xuICAgIDwhLS0gcG9wdWxhdGlvblBhbmVsSGVpZ2h0ICogMC43IC0gZC5jeSArIChyYWRpdXMgKiAyKSAtLT5cbiAgICByZXR1cm4geTtcbiAgfTtcbn1cblxuZG9kZ2UgPSBkb2RnZXIocmFkaXVzICogMiArIDAuNzUpO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG5mdW5jdGlvbiBtZWFuKGFycmF5KSB7XG4gICAgcmV0dXJuIGFycmF5LnJlZHVjZSgoYSwgYikgPT4gYSArIGIpIC8gYXJyYXkubGVuZ3RoO1xufVxuXG5mdW5jdGlvbiBzYW1wbGVfdmFyaWFuY2UoYXJyYXkpIHtcbiAgICBjb25zdCBuID0gYXJyYXkubGVuZ3RoXG4gICAgY29uc3QgbSA9IG1lYW4oYXJyYXkpXG4gICAgcmV0dXJuIGFycmF5Lm1hcCh4ID0+IE1hdGgucG93KHggLSBtLCAyKSkucmVkdWNlKChhLCBiKSA9PiBhICsgYikgLyAobiAtIDEpO1xufVxuXG5mdW5jdGlvbiBwb3B1bGF0aW9uX3ZhcmlhbmNlKGFycmF5KSB7XG4gICAgY29uc3QgbiA9IGFycmF5Lmxlbmd0aFxuICAgIGNvbnN0IG0gPSBtZWFuKGFycmF5KVxuICAgIHJldHVybiBhcnJheS5tYXAoeCA9PiBNYXRoLnBvdyh4IC0gbSwgMikpLnJlZHVjZSgoYSwgYikgPT4gYSArIGIpIC8gbjtcbn1cblxuZnVuY3Rpb24gZ2V0X2Rlc2NyaXB0aXZlcyAoYXJyYXkpIHtcbiAgICByZXR1cm4ge21lYW46IG1lYW4oYXJyYXkpLFxuICAgICAgICAgICAgc2FtcGxlX3ZhcmlhbmNlOiBzYW1wbGVfdmFyaWFuY2UoYXJyYXkpIC0gMSwgXG4gICAgICAgICAgICBwb3B1bGF0aW9uX3ZhcmlhbmNlOiBwb3B1bGF0aW9uX3ZhcmlhbmNlKGFycmF5KSAtIDF9XG59XG5cbmZ1bmN0aW9uIGdldE5ld0RhdGEgKGFycmF5KSB7XG4gICAgXG4gICAgcmV0dXJuIHtzYW1wbGVfZXN0aW1hdGVzOiBnZXRTYW1wbGVFc3RpbWF0ZXMoYXJyYXkpXG4gICAgICAgICAgICA8IS0tIHJ1bm5pbmdfYXZlcmFnZXM6IGdldFJ1bm5pbmdBdmVyYWdlcyhhcnJheSkgLS0+XG4gICAgICAgICAgICB9XG59XG5cbmZ1bmN0aW9uIGdldFNhbXBsZUVzdGltYXRlcyhhcnJheSkge1xuICAgIHJldHVybiBbe3BhcmFtOiBcInBvcHVsYXRpb25cIiwgdmFsdWU6IHBvcHVsYXRpb25fdmFyaWFuY2UoYXJyYXkpIC0gMX0sXG4gICAgICAgICAgICB7cGFyYW06IFwic2FtcGxlXCIsICAgICB2YWx1ZTogc2FtcGxlX3ZhcmlhbmNlKGFycmF5KSAtIDF9LFxuICAgICAgICAgICAge3BhcmFtOiBcIm1lYW5cIiwgICAgICAgdmFsdWU6IG1lYW4oYXJyYXkpfV1cbn1cblxuXG5mdW5jdGlvbiBmb3JtYXRBeGVzKGVsZW1lbnRzKSB7XG4gIGVsZW1lbnRzLl9ncm91cHNbMF0uZm9yRWFjaCgobCkgPT4ge1xuICAgIGlmIChsLl9fZGF0YV9fID09PSAwKSB7XG4gICAgICBsLmNsYXNzTGlzdCA9IFwiYXhpcy1tYWpvclwiO1xuICAgIH0gZWxzZSB7XG4gICAgICBsLmNsYXNzTGlzdCA9IFwiYXhpcy1taW5vclwiO1xuICAgIH1cbiAgfSlcbn1cblxuIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -1384,6 +1414,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -1452,13 +1509,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1537,10 +1596,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1550,8 +1626,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1563,7 +1648,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1607,6 +1815,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1632,6 +1841,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1692,6 +1927,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

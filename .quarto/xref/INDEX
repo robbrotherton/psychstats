@@ -43,5 +43,11 @@
   },
   "visualizations/correlation.qmd": {
     "correlation.html": "9d276972"
+  },
+  "visualizations/bees.qmd": {
+    "bees.html": "28f9e56c"
+  },
+  "visualizations/bees/bees.qmd": {
+    "bees.html": "7ead4c2c"
   }
 }
