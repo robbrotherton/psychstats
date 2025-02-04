@@ -224,6 +224,8 @@ function stopDragPivot(event, d) { svg.pivot.triangle.attr("fill", "red") }
 function draggingPivot(event, d) {
     pivotPx = event.x;
     pivotX = xScale.invert(pivotPx - HALF_BOXSIZE);
+    pivotX = Math.round(pivotX * 10) / 10;
+    pivotPx = xScale(pivotX) + HALF_BOXSIZE;
     drawPivot(pivotPx, svg.pivot);
     tipScale(meanPx, pivotPx, svg.beam_and_boxes);
     drawDeviations(boxArr, svg.deviations);
