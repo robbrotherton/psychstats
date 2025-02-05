@@ -57,7 +57,7 @@ function setupDistributionViz() {
 
 function updateDistribution(stats) {
     const criticalZ = 1.96;
-    const se = stats.sd / Math.sqrt(stats.n);
+    const se = attractionSlider.value();  // Use slider value directly as SE
     const mean = width/2;
     
     // More points for smoother curve
@@ -73,26 +73,31 @@ function updateDistribution(stats) {
     const leftCritical = mean - criticalZ * se;
     const rightCritical = mean + criticalZ * se;
 
-    // Generate smoother tail regions
+    // Generate smoother tail regions with extended bottom
     const leftPoints = points
         .filter(p => p.x <= leftCritical)
         .concat([{x: leftCritical, y: jStat.normal.pdf(leftCritical, mean, se)},
-                {x: leftCritical, y: 0}]);
-    leftPoints.unshift({x: leftPoints[0].x, y: 0});
+                {x: leftCritical, y: -0.002}]);  // Extend slightly below 0
+    leftPoints.unshift({x: leftPoints[0].x, y: -0.002});  // Extend slightly below 0
 
-    const rightPoints = [{x: rightCritical, y: 0},
+    const rightPoints = [{x: rightCritical, y: -0.002},  // Extend slightly below 0
                         {x: rightCritical, y: jStat.normal.pdf(rightCritical, mean, se)}]
         .concat(points.filter(p => p.x >= rightCritical));
-    rightPoints.push({x: rightPoints[rightPoints.length-1].x, y: 0});
+    rightPoints.push({x: rightPoints[rightPoints.length-1].x, y: -0.002});  // Extend slightly below 0
 
     // Update rejection regions
     leftTail.datum(leftPoints).attr("d", lineGenerator);
     rightTail.datum(rightPoints).attr("d", lineGenerator);
 
-    // Update mean line position
+    // Determine if current mean is in rejection region
+    const isSignificant = stats.mean < (mean - criticalZ * se) || 
+                         stats.mean > (mean + criticalZ * se);
+
+    // Update mean line position and color
     meanLine
         .attr("x1", x(stats.mean))
         .attr("x2", x(stats.mean))
         .attr("y1", 0)
-        .attr("y2", height);
+        .attr("y2", height)
+        .attr("stroke", isSignificant ? "#ff0000" : "#0062ff");  // Red if significant, blue if not
 }

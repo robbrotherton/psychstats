@@ -49,7 +49,7 @@ function setup() {
   button = createButton("stop");
   button.mousePressed(pauseButtonClicked);
   
-  attractionSlider = createSlider(0.5, 3, 2, 0.1);
+  attractionSlider = createSlider(1, 5, 2, 0.1);  // Changed range and default
   differenceSlider = createSlider(0, 200, 0);
   numberSlider = createSlider(10, 200, 50);
 
