@@ -1,99 +1,98 @@
-const w = 100;
-const h = 400;
+let svg, path, x, y, lineGenerator;
+let leftTail, rightTail, meanLine;  // Add meanLine variable
+const margin = {top: 20, right: 0, bottom: 30, left: 0};
+const width = 400;
+const height = 200;
 
-const maxLen = 300;
+function setupDistributionViz() {
+    // Create SVG
+    svg = d3.select("#distribution-container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
-let historyArray = [];
+    // Create scales
+    x = d3.scaleLinear()
+        .domain([0, width])
+        .range([0, width]);
 
-const x = d3.scaleTime()
-  .domain([0, 1])
-  .range([0, w]);
+    // Adjust y scale for better visibility
+    y = d3.scaleLinear()
+        .domain([0, 0.12])  // Increased upper bound
+        .range([height, 0]);
 
-const y = d3.scaleLinear()
-  .domain([maxLen, 0])
-  .nice()
-  .range([h, 0]);
+    // Add X axis
+    // svg.append("g")
+    //     .attr("transform", `translate(0,${height})`)
+    //     .call(d3.axisBottom(x));
 
-const line = d3.line()
-  .x(d => x(d.percentile))
-  .y((d, i) => y(maxLen - i));
+    // Create line generator
+    lineGenerator = d3.line()
+        .x(d => x(d.x))
+        .y(d => y(d.y));
 
+    // Add paths for rejection regions (before the line path)
+    leftTail = svg.append("path")
+        .attr("fill", "rgba(255, 0, 0, 0.2)")
+        .attr("stroke", "none");
 
-  function makeHistoryChart(divId) {
-    let div = d3.select(divId);
-    // div.style('background', 'red');
-    div.style('width', w + 'px');
-    div.style('height', '100px');
+    rightTail = svg.append("path")
+        .attr("fill", "rgba(255, 0, 0, 0.2)")
+        .attr("stroke", "none");
 
-    svg = div.append('svg')
-                .attr('id', 'historyChart');
-    svg.attr("viewBox", "0 0 " + w + " " + h)
-    
-    svg.append("rect")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("fill", "red")
-        .attr("opacity", "0.5");
+    // Add vertical line for mean (add this before the path)
+    meanLine = svg.append("line")
+        .attr("stroke", "#0062ff")  // Match the blue square color
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4");  // Make it dashed
 
-    svg.append("rect")
-        .attr("width", "97.5%")
-        .attr("height", "100%")
-        .attr("fill", "white");
-
-    svg.append("rect")
-        .attr("width", "2.5%")
-        .attr("height", "100%")
-        .attr("fill", "red")
-        .attr("opacity", "0.5");
-
-    svg.append('line')
-        .attr('x1', "50%")
-        .attr('y1', "0%")
-        .attr('x2', "50%")
-        .attr('y2', "100%")
-        .style('stroke', 'black')
-        .style('stroke-width', '1px')
-        .style('stroke-dasharray', [5, 5]);
-
-    svg.append('circle').attr('id', 'currentDiff')
-        .attr('cx', '50%')
-        .attr('cy', 3)
-        .attr('r', 3)
-        .attr('fill', 'pink');
-
+    // Add empty path that we'll update
+    path = svg.append("path")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5);
 }
 
+function updateDistribution(stats) {
+    const criticalZ = 1.96;
+    const se = stats.sd / Math.sqrt(stats.n);
+    const mean = width/2;
+    
+    // More points for smoother curve
+    const points = d3.range(0, width, 1).map(x => ({
+        x: x,
+        y: Math.min(0.5, jStat.normal.pdf(x, mean, se))  // Clip extreme values
+    }));
 
+    // Update main distribution line
+    path.datum(points).attr("d", lineGenerator);
 
-function updateHistoryChart(swarmsArray) {
+    // Calculate critical boundaries
+    const leftCritical = mean - criticalZ * se;
+    const rightCritical = mean + criticalZ * se;
 
-  let sdA = jStat.stdev(swarmsArray[0].bees.map(bee => bee.position.x));
-  let sdB = jStat.stdev(swarmsArray[1].bees.map(bee => bee.position.x));
-  let sd = (sdA + sdB) / 2;
+    // Generate smoother tail regions
+    const leftPoints = points
+        .filter(p => p.x <= leftCritical)
+        .concat([{x: leftCritical, y: jStat.normal.pdf(leftCritical, mean, se)},
+                {x: leftCritical, y: 0}]);
+    leftPoints.unshift({x: leftPoints[0].x, y: 0});
 
-  let diff = swarmsArray[0].average - swarmsArray[1].average;
-  let n = swarmsArray[0].bees.length;
-  let scaledDiff = diff / (sd / sqrt(n));
-  let percentile = jStat.studentt.cdf(scaledDiff, n - 1);
-  console.log(percentile);
+    const rightPoints = [{x: rightCritical, y: 0},
+                        {x: rightCritical, y: jStat.normal.pdf(rightCritical, mean, se)}]
+        .concat(points.filter(p => p.x >= rightCritical));
+    rightPoints.push({x: rightPoints[rightPoints.length-1].x, y: 0});
 
-  historyArray.push({percentile: percentile, value: historyArray.length + 1});
+    // Update rejection regions
+    leftTail.datum(leftPoints).attr("d", lineGenerator);
+    rightTail.datum(rightPoints).attr("d", lineGenerator);
 
-  if (historyArray.length > maxLen) {
-    historyArray.splice(0, 1);
-  }
-
-  console.log(historyArray);
-
-  let point = d3.select(currentDiff);
-    point.attr('fill', 'blue')
-    point.attr('cx', x(percentile));
-
-svg.selectAll('path').remove();
-svg.append('path')
-  .datum(historyArray)
-  .attr('fill', 'none')
-  .attr('stroke', 'steelblue')
-  .attr('stroke-width', 1.5)
-  .attr('d', line);
+    // Update mean line position
+    meanLine
+        .attr("x1", x(stats.mean))
+        .attr("x2", x(stats.mean))
+        .attr("y1", 0)
+        .attr("y2", height);
 }

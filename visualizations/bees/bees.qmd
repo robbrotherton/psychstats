@@ -16,11 +16,13 @@ include-after-body:
 
 ::: {#stuff}
 
-<div id="container">
-<div id="swarm-container"></div>
-<div id="history-container"></div>
+<div id="viz-container">
+  <div id="swarm-container"></div>
+  <div id="distribution-container"></div>
+  <div id="controls-container"></div>
 </div>
-<div id="controls-container"></div>
+
+<div id="indicator-container"></div>
 
 :::
 
@@ -33,14 +35,34 @@ How do you like these bees?
 
 
 <style>
-#container {
+#viz-container {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  height: 100vh;  /* Use viewport height */
 }
 
-#swarm-container, #history-container {
-  flex: 1;
-  padding: 10px;
-  box-sizing: border-box;
+#swarm-container {
+    width: 100%;
+    height: 220px;  /* Increased height */
+    flex: 0 0 auto;  /* Don't shrink or grow */
+}
+
+#distribution-container {
+    width: 100%;
+    height: 240px;  /* Increased height */
+    flex: 0 0 auto;  /* Don't shrink or grow */
+    margin: 20px 0;  /* Add vertical margin */
+}
+
+#controls-container {
+    width: 100%;
+    flex: 0 0 auto;  /* Don't shrink or grow */
+    padding: 20px 0;  /* Add padding instead of fixed height */
+    margin: 0 auto;
+    text-align: center;
 }
 
 canvas {
@@ -48,18 +70,6 @@ canvas {
     margin: auto;
 }
 
-#swarm-container {
-    width: 80%;
-}
-
-#history-container {
-    width: 20%;
-}
-
-#controls-container {
-    max-width: 600px;
-    margin: auto;
-}
 #stuff {
     margin-bottom: 2em;
 }

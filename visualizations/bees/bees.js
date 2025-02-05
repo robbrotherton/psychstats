@@ -74,11 +74,24 @@ class Swarm {
     this.col = col;
     this.bees = [];
     this.attractor = createVector(width / 2, height / 2); // Attractor point (x, y)
+    this.hiveWidth = 5;
+
     for (let i = 0; i < num; i++) {
       let x = random(width);
       let y = random(-height);
       this.bees.push(new Bee(x, y));
     }
+  }
+
+  getStats() {
+    let xPositions = this.bees.map(bee => bee.position.x);
+    const currentMean = jStat.mean(xPositions);
+    this.average = currentMean;  // Store the current mean
+    return {
+      mean: currentMean,
+      sd: jStat.stdev(xPositions),
+      n: this.bees.length
+    };
   }
 
   run() {
@@ -89,34 +102,28 @@ class Swarm {
   }
   
   display() {
+    // draw the individual bees
     for (let bee of this.bees) {
       stroke(this.col);
       bee.show();
     }
-  }
-  
-  showDistribution(sd) {
 
-    this.average = jStat.mean(this.bees.map(bee => bee.position.x));
-    
-    // console.log(sd);
-    // strokeWeight(10);
-    // stroke(this.col);
-    // point(average, height - 10);
-    
-    
-    
-    let y;
-    beginShape();
-    for (let p of xArray) {
-      
-      y = jStat.normal.pdf(p, this.average, sd);
-      strokeWeight(0);
-      // stroke(0);
-      fill(concat(this.col, 80));
-      vertex(p, height - y * 1000);
-    }
-    endShape(CLOSE);
-    
+    // draw the TRUE center (the attractor point) of the swarm
+    stroke("#7d2a00");
+    push();
+    translate(this.attractor.x, this.attractor.y);
+    rotate(45);
+    square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth); 
+    pop();
+
+    // draw the NULL HYPOTHESIS center
+    stroke("#000000");
+    point(width/2, height/2); 
+
+    // draw the CURRENT center (average of x positions)
+    stroke("#0062ff");
+    point(this.average, height/2); 
+
   }
+
 }
