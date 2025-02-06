@@ -1,8 +1,10 @@
 let svg, path, x, y, lineGenerator;
 let leftTail, rightTail, meanLine;  // Add meanLine variable
 const margin = {top: 20, right: 0, bottom: 30, left: 0};
-const width = 400;
+const width = 840;
 const height = 200;
+
+let sigCounter = {sigs: 0, obs: 0};
 
 function setupDistributionViz() {
     // Create SVG
@@ -57,11 +59,15 @@ function setupDistributionViz() {
 
 function updateDistribution(stats) {
     const criticalZ = 1.96;
-    const se = attractionSlider.value();  // Use slider value directly as SE
+    const nullMu = width * 0.5;
+
+    const se = stats.sd / Math.sqrt(stats.n)
+    const z = (stats.mean - nullMu) / se;
+    console.log(z); 
     const mean = width/2;
     
     // More points for smoother curve
-    const points = d3.range(0, width, 1).map(x => ({
+    const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
         x: x,
         y: Math.min(0.5, jStat.normal.pdf(x, mean, se))  // Clip extreme values
     }));
@@ -90,8 +96,12 @@ function updateDistribution(stats) {
     rightTail.datum(rightPoints).attr("d", lineGenerator);
 
     // Determine if current mean is in rejection region
-    const isSignificant = stats.mean < (mean - criticalZ * se) || 
-                         stats.mean > (mean + criticalZ * se);
+    const isSignificant = (z < -criticalZ) || 
+                         (z > criticalZ);
+
+    sigCounter.obs++;
+    if (isSignificant) sigCounter.sigs++;
+
 
     // Update mean line position and color
     meanLine

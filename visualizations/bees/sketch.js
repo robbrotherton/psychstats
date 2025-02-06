@@ -36,12 +36,14 @@ let pause;
 let xArray;
 let observations = 0;
 let sigs = 0;
+let canvasWidth = 840;
+let canvasHeight = 520;
 
 function setup() {
 
   angleMode(DEGREES);
 
-  let canvas = createCanvas(840, 520);
+  let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('swarm-container');
 
   xArray = jStat.seq(0, width, 301);
