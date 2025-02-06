@@ -73,7 +73,7 @@ class Swarm {
     this.average;
     this.col = col;
     this.bees = [];
-    this.attractor = createVector(width / 2, height / 2); // Attractor point (x, y)
+    this.attractor; // attractor point (x, y); determined by handleSwarms();
     this.hiveWidth = 5;
 
     for (let i = 0; i < num; i++) {
@@ -99,6 +99,7 @@ class Swarm {
       bee.flock(this.bees, this.attractor);
       bee.update();
     }
+    console.log(this.attractor.y);
   }
   
   display() {
@@ -118,11 +119,11 @@ class Swarm {
 
     // draw the NULL HYPOTHESIS center
     stroke("#000000");
-    point(width/2, height/2); 
+    point(width/2, this.attractor.y); 
 
     // draw the CURRENT center (average of x positions)
     stroke("#0062ff");
-    point(this.average, height/2); 
+    point(this.average, this.attractor.y); 
 
   }
 

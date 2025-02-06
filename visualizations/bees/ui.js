@@ -6,6 +6,9 @@ const height = 200;
 
 let sigCounter = {sigs: 0, obs: 0};
 
+let pieSvg, pieG;
+const pieRadius = 40;
+
 function setupDistributionViz() {
     // Create SVG
     svg = d3.select("#distribution-container")
@@ -55,6 +58,65 @@ function setupDistributionViz() {
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 1.5);
+
+    setupIndicators();  // Add this at the end
+}
+
+function setupIndicators() {
+    pieSvg = d3.select("#indicator-container")
+        .append("svg")
+        .attr("width", pieRadius * 2.5)
+        .attr("height", pieRadius * 2.5);
+    
+    pieG = pieSvg.append("g")
+        .attr("transform", `translate(${pieRadius * 1.25},${pieRadius * 1.25})`);
+        
+    // Add title
+    pieSvg.append("text")
+        .attr("x", pieRadius * 1.25)
+        .attr("y", pieRadius * 2.5)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Proportion Significant");
+}
+
+function updatePieChart() {
+    const sigProp = sigCounter.sigs / sigCounter.obs;
+    const data = [
+        { value: sigProp, color: "#ff0000" },
+        { value: 1 - sigProp, color: "#cccccc" }
+    ];
+
+    const pie = d3.pie()
+        .value(d => d.value)
+        .sort(null);
+
+    const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(pieRadius);
+
+    const paths = pieG.selectAll("path")
+        .data(pie(data));
+
+    paths.enter()
+        .append("path")
+        .merge(paths)
+        .attr("d", arc)
+        .attr("fill", d => d.data.color);
+
+    paths.exit().remove();
+
+    // Add percentage text in center
+    const percentText = pieG.selectAll("text")
+        .data([Math.round(sigProp * 100)]);
+
+    percentText.enter()
+        .append("text")
+        .merge(percentText)
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.3em")
+        .style("font-size", "16px")
+        .text(d => `${d}%`);
 }
 
 function updateDistribution(stats) {
@@ -63,7 +125,7 @@ function updateDistribution(stats) {
 
     const se = stats.sd / Math.sqrt(stats.n)
     const z = (stats.mean - nullMu) / se;
-    console.log(z); 
+    // console.log(z); 
     const mean = width/2;
     
     // More points for smoother curve
@@ -101,7 +163,7 @@ function updateDistribution(stats) {
 
     sigCounter.obs++;
     if (isSignificant) sigCounter.sigs++;
-
+    updatePieChart();  // Update pie chart whenever counts change
 
     // Update mean line position and color
     meanLine

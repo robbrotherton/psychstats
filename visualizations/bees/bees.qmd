@@ -14,17 +14,16 @@ include-after-body:
         <script src="ui.js"></script>
 ---
 
-::: {#stuff}
 
 <div id="viz-container">
   <div id="swarm-container"></div>
   <div id="distribution-container"></div>
+
+  <div id="ui-container">
   <div id="controls-container"></div>
+  <div id="indicator-container"></div>
+  </div>
 </div>
-
-<div id="indicator-container"></div>
-
-:::
 
 ::: {.about}
 ## About
@@ -36,33 +35,45 @@ How do you like these bees?
 
 <style>
 #viz-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 840px;
-  margin: 0 auto;
-  height: 100vh;  /* Use viewport height */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    height: 100vh;
 }
 
 #swarm-container {
     width: 100%;
-    height: 220px;  /* Increased height */
-    flex: 0 0 auto;  /* Don't shrink or grow */
+    height: 220px;
+    flex: 0 0 auto;
 }
 
 #distribution-container {
     width: 100%;
-    height: 240px;  /* Increased height */
-    flex: 0 0 auto;  /* Don't shrink or grow */
-    margin: 20px 0;  /* Add vertical margin */
+    height: 240px;
+    flex: 0 0 auto;
+    margin: 20px 0;
+}
+
+#ui-container {
+    display: flex;
+    width: 100%;
+    flex: 0 0 auto;
 }
 
 #controls-container {
-    width: 100%;
-    flex: 0 0 auto;  /* Don't shrink or grow */
-    padding: 20px 0;  /* Add padding instead of fixed height */
-    margin: 0 auto;
-    text-align: center;
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+#indicator-container {
+    width: 50%;
+    padding: 20px;
 }
 
 canvas {

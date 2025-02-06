@@ -1,4 +1,10 @@
-// import jStat;
+let swarm;
+let pause;
+let xArray;
+let observations = 0;
+let sigs = 0;
+let canvasWidth = 840;
+let canvasHeight = 400;
 
 
 function pauseButtonClicked() {
@@ -11,7 +17,7 @@ function pauseButtonClicked() {
 }
 
 function handleSwarms() {
-  swarm.attractor = createVector(width / 2 - differenceSlider.value(), height / 2);
+  swarm.attractor = createVector(width / 2 - differenceSlider.value(), canvasHeight * 0.5);
   
   if (swarm.bees.length < numberSlider.value()) {
     for (let i = 0; i <= numberSlider.value() - swarm.bees.length; i++) {
@@ -26,18 +32,11 @@ function handleSwarms() {
 }
 
 function mouseReleased() {
-  observations = 0;
-  sigs = 0;
+  sigCounter = {sigs: 0, obs: 0};
 }
 
 
-let swarm;
-let pause;
-let xArray;
-let observations = 0;
-let sigs = 0;
-let canvasWidth = 840;
-let canvasHeight = 520;
+
 
 function setup() {
 
