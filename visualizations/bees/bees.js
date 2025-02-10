@@ -73,43 +73,59 @@ class Swarm {
     this.average;
     this.col = col;
     this.bees = [];
-    this.attractor; // attractor point (x, y); determined by handleSwarms();
+    this.attractor = {x: canvasWidth * 0.5, y: canvasHeight * 0.5}; // set externally
     this.hiveWidth = 5;
+    this.currentMean;
+    this.meanHistory = [];
 
     for (let i = 0; i < num; i++) {
-      let x = random(width);
-      let y = random(-height);
-      this.bees.push(new Bee(x, y));
+      // let x = random(this.attractor.x);
+      // let y = random(this.attractor.y);
+      this.bees.push(new Bee(this.attractor.x, this.attractor.y));
     }
   }
 
   getStats() {
     let xPositions = this.bees.map(bee => bee.position.x);
     const currentMean = jStat.mean(xPositions);
-    this.average = currentMean;  // Store the current mean
+    const currentSd = jStat.stdev(xPositions);
+    // this.average = currentMean;
+    this.currentMean = currentMean;
     return {
       mean: currentMean,
-      sd: jStat.stdev(xPositions),
+      sd: currentSd,
       n: this.bees.length
     };
   }
+
+    // helper to compute empirical quantiles from meanHistory
+    getEmpiricalCI(alpha = 0.05) {
+      let sorted = this.meanHistory.slice().sort((a, b) => a - b);
+      let lowerIndex = Math.floor((alpha / 2) * sorted.length);
+      let upperIndex = Math.floor((1 - alpha / 2) * sorted.length);
+      return {
+        lower: sorted[lowerIndex],
+        upper: sorted[upperIndex]
+      };
+    }
 
   run() {
     for (let bee of this.bees) {
       bee.flock(this.bees, this.attractor);
       bee.update();
     }
-    console.log(this.attractor.y);
+    // update history (maintain fixed length, e.g., 500)
+    this.meanHistory.push(this.currentMean);
+    if (this.meanHistory.length > 1000) this.meanHistory.shift();
   }
   
   display() {
-    // draw the individual bees
     for (let bee of this.bees) {
       stroke(this.col);
       bee.show();
     }
 
-    // draw the TRUE center (the attractor point) of the swarm
+    // draw the attractor point
     stroke("#7d2a00");
     push();
     translate(this.attractor.x, this.attractor.y);
@@ -117,14 +133,12 @@ class Swarm {
     square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth); 
     pop();
 
-    // draw the NULL HYPOTHESIS center
+    // draw null hypothesis center
     stroke("#000000");
     point(width/2, this.attractor.y); 
 
-    // draw the CURRENT center (average of x positions)
+    // draw current center (average of x positions)
     stroke("#0062ff");
-    point(this.average, this.attractor.y); 
-
+    point(this.average, this.attractor.y);
   }
-
 }
