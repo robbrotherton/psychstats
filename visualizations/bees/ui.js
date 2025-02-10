@@ -4,7 +4,6 @@ const margin = { top: 20, right: 0, bottom: 30, left: 0 };
 const width = 840;
 const height = 200;
 let sampleFrame = 0;
-
 let sigCounter = { sigs: 0, obs: 0 };
 
 let pieSvg, pieG;
@@ -120,7 +119,115 @@ function updatePieChart() {
     .text(d => `${d}%`);
 }
 
-function updateDistribution(stats) {
+// initialize histogram once, e.g., globally or as part of the swarm
+
+
+function updateDistribution(stats, swarm, histogram) {
+  // add the current sample mean to the histogram
+  // histogram.add(swarm.currentMean);
+  // const se = histogram.getSd();
+  
+  const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
+  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
+  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
+
+  // compute empirical critical values from the histogram
+  // const lowerCrit = histogram.getPercentile(0.025);
+  // const upperCrit = histogram.getPercentile(0.975);
+  
+  // determine significance: current mean falls outside the 95% interval?
+  const isSignificant = (stats.mean < lowerCrit) || (stats.mean > upperCrit);
+  
+  sigCounter.obs++;
+  if (isSignificant) sigCounter.sigs++;
+  updatePieChart();
+  
+  // update mean line position and color based on significance
+  meanLine
+    .attr("x1", x(stats.mean))
+    .attr("x2", x(stats.mean))
+    .attr("y1", 0)
+    .attr("y2", height)
+    .attr("stroke", isSignificant ? "#ff0000" : "#0062ff");
+  
+  // optional: update display of critical boundaries
+  // e.g., draw lines at lowerCrit and upperCrit for visualization
+
+  const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
+    x: x,
+    y: Math.min(0.5, jStat.normal.pdf(x, canvasWidth * 0.5, se))
+  }));
+
+  // // update main distribution curve
+  path.datum(points).attr("d", lineGenerator);
+
+  // build left tail region for rejection area
+  const leftPoints = points.filter(p => p.x <= lowerCrit);
+  leftPoints.push({ x: lowerCrit, y: jStat.normal.pdf(lowerCrit, canvasWidth * 0.5, se) });
+  leftPoints.push({ x: lowerCrit, y: -0.002 });
+  leftPoints.unshift({ x: leftPoints[0].x, y: -0.002 });
+
+  // build right tail region
+  const rightPoints = [{ x: upperCrit, y: -0.002 },
+  { x: upperCrit, y: jStat.studentt.pdf(upperCrit,canvasWidth * 0.5, se) }]
+    .concat(points.filter(p => p.x >= upperCrit));
+  rightPoints.push({ x: rightPoints[rightPoints.length - 1].x, y: -0.002 });
+
+  // update rejection region visuals
+  leftTail.datum(leftPoints).attr("d", lineGenerator);
+  rightTail.datum(rightPoints).attr("d", lineGenerator);
+}
+
+function drawHistogram(histogram) {
+  // set up drawing area for histogram
+  let histX = 10;
+  let histY = height - 150; // place near bottom
+  let histWidth = width - 20;
+  let histHeight = 100;
+  
+  // draw background for histogram
+  noStroke();
+  fill(240);
+  rect(histX, histY, histWidth, histHeight);
+  
+  // get maximum bin count for scaling the bar heights
+  let maxCount = Math.max(...histogram.bins);
+  let binPixelWidth = histWidth / histogram.numBins;
+  
+  // draw histogram bars
+  stroke(0);
+  fill(100, 150, 250, 150);
+  for (let i = 0; i < histogram.numBins; i++) {
+    let count = histogram.bins[i];
+    let barHeight = map(count, 0, maxCount, 0, histHeight);
+    let xPos = histX + i * binPixelWidth;
+    let yPos = histY + histHeight - barHeight;
+    rect(xPos, yPos, binPixelWidth, barHeight);
+  }
+  
+  // optionally, draw empirical critical lines from percentiles
+  let lowerCrit = histogram.getPercentile(0.025);
+  let upperCrit = histogram.getPercentile(0.975);
+  let lowerX = map(lowerCrit, histogram.min, histogram.max, histX, histX + histWidth);
+  let upperX = map(upperCrit, histogram.min, histogram.max, histX, histX + histWidth);
+  
+  // stroke(255, 0, 0);
+  // line(lowerX, histY, lowerX, histY + histHeight);
+  // line(upperX, histY, upperX, histY + histHeight);
+  
+  
+  // draw a label for context
+  noStroke();
+  fill(0);
+  textSize(12);
+  textAlign(LEFT, TOP);
+  text("histogram of sample means", histX, histY - 20);
+
+
+}
+
+
+function _updateDistribution(stats) {
 
   const ci = swarm.getEmpiricalCI();
   const isSignificant = (stats.mean < ci.lower) || (stats.mean > ci.upper);
@@ -129,10 +236,11 @@ function updateDistribution(stats) {
   if (isSignificant) sigCounter.sigs++;
   updatePieChart();
 
-  // const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
-  //   x: x,
-  //   y: Math.min(0.5, jStat.studentt.pdf((x - mean) / se, df) / se)
-  // }));
+  const se = 50;
+  const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
+    x: x,
+    y: Math.min(0.5, jStat.studentt.pdf((x - stats.mean) / se, df) / se)
+  }));
 
   // // update main distribution curve
   // path.datum(points).attr("d", lineGenerator);

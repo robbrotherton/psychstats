@@ -1,4 +1,4 @@
-let swarm;
+let swarm, meanHistogram;
 let pause;
 let xArray;
 let observations = 0;
@@ -33,6 +33,8 @@ function handleSwarms() {
 
 function mouseReleased() {
   sigCounter = { sigs: 0, obs: 0 };
+  console.log((attractionSlider.value() * 19.5) / Math.sqrt(50));
+  // meanHistogram = new Histogram(0, canvasWidth, canvasWidth);
 }
 
 
@@ -60,6 +62,7 @@ function setup() {
   };
 
   swarm = new Swarm(numberSlider.value(), "#f9c901");
+  meanHistogram = new Histogram(0, canvasWidth, canvasWidth);
   // swarm2 = new Swarm(numberSlider.value(), "#643C0B");
 
   // makeHistoryChart('#history-container');
@@ -76,7 +79,9 @@ function draw() {
 
     // Update distribution visualization
     let stats = swarm.getStats();
-    updateDistribution(stats);
+    updateDistribution(stats, swarm, meanHistogram);
+    drawHistogram(meanHistogram);
+    console.log(meanHistogram.getSd());
   }
 
   swarm.display();

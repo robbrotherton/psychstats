@@ -142,3 +142,56 @@ class Swarm {
     point(this.average, this.attractor.y);
   }
 }
+
+// histogram class to bin sample means
+class Histogram {
+  constructor(min, max, numBins) {
+    this.min = min;
+    this.max = max;
+    this.numBins = numBins;
+    this.binWidth = (max - min) / numBins;
+    this.bins = new Array(numBins).fill(0);
+    this.total = 0;
+  }
+  
+  add(value) {
+    if (value < this.min || value > this.max) return;
+    let index = Math.floor((value - this.min) / this.binWidth);
+    if (index >= this.numBins) index = this.numBins - 1;
+    this.bins[index]++;
+    this.total++;
+  }
+
+    // new method to compute standard deviation of the distribution
+    getSd() {
+      if (this.total === 0) return 0;
+      let mean = 0;
+      for (let i = 0; i < this.numBins; i++) {
+        let mid = this.min + (i + 0.5) * this.binWidth;
+        mean += mid * this.bins[i];
+      }
+      mean /= this.total;
+      
+      let variance = 0;
+      for (let i = 0; i < this.numBins; i++) {
+        let mid = this.min + (i + 0.5) * this.binWidth;
+        variance += this.bins[i] * Math.pow(mid - mean, 2);
+      }
+      variance /= this.total;
+      return Math.sqrt(variance);
+    }
+  
+  // compute the pth percentile (p between 0 and 1)
+  getPercentile(p) {
+    let target = p * this.total;
+    let cum = 0;
+    for (let i = 0; i < this.numBins; i++) {
+      cum += this.bins[i];
+      if (cum >= target) {
+        // return the midpoint of this bin
+        return this.min + (i + 0.5) * this.binWidth;
+      }
+    }
+    return this.max;
+  }
+}
