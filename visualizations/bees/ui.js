@@ -108,7 +108,7 @@ function updatePieChart() {
 
   // Add percentage text in center
   const percentText = pieG.selectAll("text")
-    .data([Math.round(sigProp * 100)]);
+    .data([sigProp.toFixed(2)]);
 
   percentText.enter()
     .append("text")
@@ -116,17 +116,18 @@ function updatePieChart() {
     .attr("text-anchor", "middle")
     .attr("dy", "0.3em")
     .style("font-size", "16px")
-    .text(d => `${d}%`);
+    .text(d => `${d}`);
 }
 
 // initialize histogram once, e.g., globally or as part of the swarm
 
 
 function updateDistribution(stats, swarm, histogram) {
-  // add the current sample mean to the histogram
-  // histogram.add(swarm.currentMean);
-  // const se = histogram.getSd();
   
+  // add the current sample mean to the histogram
+  histogram.add(swarm.currentMean);
+  
+  // const se = histogram.getSd();
   const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
   const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
   const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);

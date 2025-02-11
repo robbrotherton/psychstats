@@ -41,11 +41,11 @@ class Bee {
   applyForce(force) {
     this.acceleration.add(force);
   }
-  
+
   // Add attraction method
   attract(attractor) {
     let force = p5.Vector.sub(attractor, this.position);
-    force.setMag(1/attractionSlider.value()); // Control the strength of attraction
+    force.setMag(1 / attractionSlider.value()); // Control the strength of attraction
     return force;
   }
 
@@ -73,15 +73,15 @@ class Swarm {
     this.average;
     this.col = col;
     this.bees = [];
-    this.attractor = {x: canvasWidth * 0.5, y: canvasHeight * 0.5}; // set externally
+    this.attractor = { x: canvasWidth * 0.5, y: canvasHeight * 0.5 }; // set externally
     this.hiveWidth = 5;
     this.currentMean;
     this.meanHistory = [];
 
     for (let i = 0; i < num; i++) {
-      // let x = random(this.attractor.x);
-      // let y = random(this.attractor.y);
-      this.bees.push(new Bee(this.attractor.x, this.attractor.y));
+      let x = randomGaussian(this.attractor.x, attractionSlider.value() * 19.5);
+      let y = randomGaussian(this.attractor.y, attractionSlider.value() * 19.5);
+      this.bees.push(new Bee(x, y));
     }
   }
 
@@ -89,7 +89,7 @@ class Swarm {
     let xPositions = this.bees.map(bee => bee.position.x);
     const currentMean = jStat.mean(xPositions);
     const currentSd = jStat.stdev(xPositions);
-    // this.average = currentMean;
+    this.average = currentMean;
     this.currentMean = currentMean;
     return {
       mean: currentMean,
@@ -98,16 +98,16 @@ class Swarm {
     };
   }
 
-    // helper to compute empirical quantiles from meanHistory
-    getEmpiricalCI(alpha = 0.05) {
-      let sorted = this.meanHistory.slice().sort((a, b) => a - b);
-      let lowerIndex = Math.floor((alpha / 2) * sorted.length);
-      let upperIndex = Math.floor((1 - alpha / 2) * sorted.length);
-      return {
-        lower: sorted[lowerIndex],
-        upper: sorted[upperIndex]
-      };
-    }
+  // helper to compute empirical quantiles from meanHistory
+  getEmpiricalCI(alpha = 0.05) {
+    let sorted = this.meanHistory.slice().sort((a, b) => a - b);
+    let lowerIndex = Math.floor((alpha / 2) * sorted.length);
+    let upperIndex = Math.floor((1 - alpha / 2) * sorted.length);
+    return {
+      lower: sorted[lowerIndex],
+      upper: sorted[upperIndex]
+    };
+  }
 
   run() {
     for (let bee of this.bees) {
@@ -115,10 +115,10 @@ class Swarm {
       bee.update();
     }
     // update history (maintain fixed length, e.g., 500)
-    this.meanHistory.push(this.currentMean);
-    if (this.meanHistory.length > 1000) this.meanHistory.shift();
+    // this.meanHistory.push(this.currentMean);
+    // if (this.meanHistory.length > 1000) this.meanHistory.shift();
   }
-  
+
   display() {
     for (let bee of this.bees) {
       stroke(this.col);
@@ -130,12 +130,12 @@ class Swarm {
     push();
     translate(this.attractor.x, this.attractor.y);
     rotate(45);
-    square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth); 
+    square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
     pop();
 
     // draw null hypothesis center
     stroke("#000000");
-    point(width/2, this.attractor.y); 
+    point(width / 2, this.attractor.y);
 
     // draw current center (average of x positions)
     stroke("#0062ff");
@@ -153,7 +153,7 @@ class Histogram {
     this.bins = new Array(numBins).fill(0);
     this.total = 0;
   }
-  
+
   add(value) {
     if (value < this.min || value > this.max) return;
     let index = Math.floor((value - this.min) / this.binWidth);
@@ -162,25 +162,25 @@ class Histogram {
     this.total++;
   }
 
-    // new method to compute standard deviation of the distribution
-    getSd() {
-      if (this.total === 0) return 0;
-      let mean = 0;
-      for (let i = 0; i < this.numBins; i++) {
-        let mid = this.min + (i + 0.5) * this.binWidth;
-        mean += mid * this.bins[i];
-      }
-      mean /= this.total;
-      
-      let variance = 0;
-      for (let i = 0; i < this.numBins; i++) {
-        let mid = this.min + (i + 0.5) * this.binWidth;
-        variance += this.bins[i] * Math.pow(mid - mean, 2);
-      }
-      variance /= this.total;
-      return Math.sqrt(variance);
+  // new method to compute standard deviation of the distribution
+  getSd() {
+    if (this.total < 1000) return attractionSlider.value() * 19.5 / Math.sqrt(numberSlider.value());
+    let mean = 0;
+    for (let i = 0; i < this.numBins; i++) {
+      let mid = this.min + (i + 0.5) * this.binWidth;
+      mean += mid * this.bins[i];
     }
-  
+    mean /= this.total;
+
+    let variance = 0;
+    for (let i = 0; i < this.numBins; i++) {
+      let mid = this.min + (i + 0.5) * this.binWidth;
+      variance += this.bins[i] * Math.pow(mid - mean, 2);
+    }
+    variance /= this.total;
+    return Math.sqrt(variance);
+  }
+
   // compute the pth percentile (p between 0 and 1)
   getPercentile(p) {
     let target = p * this.total;
