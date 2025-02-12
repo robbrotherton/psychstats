@@ -58,6 +58,16 @@ function setupDistributionViz() {
     .attr("stroke", palette.null)
     .attr("stroke-width", 1.5);
 
+  bars = svg.append("g")
+  .attr("fill", "purple")
+  .selectAll()
+  .data(meanHistogram.bins)
+  .join("rect")
+    .attr("x", (d, i) => x(i))
+    .attr("width", 1)
+    .attr("y", (d) => y(d))
+    .attr("height", (d) => y(0) - y(d));
+
   setupIndicators();  // Add this at the end
 }
 
@@ -123,7 +133,7 @@ function updateDistribution(stats, swarm, histogram) {
   
   // add the current sample mean to the histogram
   histogram.add(swarm.currentMean);
-  
+  bars.data(meanHistogram.bins);
   const se = histogram.getSd();
   // const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
   const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);

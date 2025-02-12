@@ -56,6 +56,8 @@ function setup() {
   pause = false;
 
 
+ 
+
   // Create container divs for each slider-label pair
   let attractionContainer = createDiv('');
   let differenceContainer = createDiv('');
@@ -103,9 +105,12 @@ function setup() {
   button.mousePressed(pauseButtonClicked);
   button.parent('controls-container');
 
+
   swarm = new Swarm(numberSlider.value(), "#f9c901");
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 
+
+  
   setupDistributionViz();
 }
 
