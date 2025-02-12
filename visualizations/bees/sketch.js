@@ -49,31 +49,57 @@ function setup() {
 
   xArray = jStat.seq(0, width, 301);
   pause = false;
-  button = createButton("stop");
-  button.mousePressed(pauseButtonClicked);
 
-  attractionSlider = createSlider(1, 5, 2, 0.1);  // Changed range and default
+
+  // Create container divs for each slider-label pair
+  let attractionContainer = createDiv('');
+  let differenceContainer = createDiv('');
+  let numberContainer = createDiv('');
+  
+  attractionContainer.parent('controls-container');
+  differenceContainer.parent('controls-container');
+  numberContainer.parent('controls-container');
+  
+  // Style the containers
+  [attractionContainer, differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
+
+  // Create and setup controls with their containers
+  attractionSlider = createSlider(1, 5, 2, 0.1);
   differenceSlider = createSlider(0, 200, 0);
   numberSlider = createSlider(10, 200, 50);
 
-  // Create labels with current values
-  attractionLabel = createSpan('Attraction: ' + attractionSlider.value());
+  attractionLabel = createSpan('Variability: ' + attractionSlider.value());
   differenceLabel = createSpan('Difference: ' + differenceSlider.value());
   numberLabel = createSpan('Number of Bees: ' + numberSlider.value());
 
-  let controls = [button, attractionLabel, attractionSlider, differenceLabel, differenceSlider, numberLabel, numberSlider];
-  for (let c of controls) {
-    c.parent('controls-container');
-    if (c !== button) {
-      c.style('margin', '0 10px');
-    }
-  };
+  // Style the labels
+  [attractionLabel, differenceLabel, numberLabel].forEach(label => {
+    label.style('margin-right', '10px');
+    label.style('min-width', '120px');
+    label.style('text-align', 'right');
+  });
+
+  // Add controls to their containers
+  attractionLabel.parent(attractionContainer);
+  attractionSlider.parent(attractionContainer);
+  
+  differenceLabel.parent(differenceContainer);
+  differenceSlider.parent(differenceContainer);
+  
+  numberLabel.parent(numberContainer);
+  numberSlider.parent(numberContainer);
+
+
+  button = createButton("stop");
+  button.mousePressed(pauseButtonClicked);
+  button.parent('controls-container');
 
   swarm = new Swarm(numberSlider.value(), "#f9c901");
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
-  // swarm2 = new Swarm(numberSlider.value(), "#643C0B");
-
-  // makeHistoryChart('#history-container');
 
   setupDistributionViz();
 }
@@ -94,7 +120,7 @@ function draw() {
 
   // Update slider labels
   attractionLabel.html('Variability: ' + attractionSlider.value());
-  differenceLabel.html('Difference: ' + differenceSlider.value());
+  differenceLabel.html('Actual difference: ' + differenceSlider.value());
   numberLabel.html('Number of Bees: ' + numberSlider.value());
 
   swarm.display();
