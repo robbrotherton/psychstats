@@ -40,23 +40,22 @@ function setupDistributionViz() {
 
   // Add paths for rejection regions (before the line path)
   leftTail = svg.append("path")
-    .attr("fill", "rgba(255, 0, 0, 0.2)")
+    .attr("fill", "rgba(255, 0, 0, 0.4)")
     .attr("stroke", "none");
 
   rightTail = svg.append("path")
-    .attr("fill", "rgba(255, 0, 0, 0.2)")
+    .attr("fill", "rgba(255, 0, 0, 0.4)")
     .attr("stroke", "none");
 
   // Add vertical line for mean (add this before the path)
   meanLine = svg.append("line")
-    .attr("stroke", "#0062ff")  // Match the blue square color
     .attr("stroke-width", 2)
     .attr("stroke-dasharray", "4,4");  // Make it dashed
 
   // Add empty path that we'll update
   path = svg.append("path")
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", palette.null)
     .attr("stroke-width", 1.5);
 
   setupIndicators();  // Add this at the end
@@ -119,8 +118,6 @@ function updatePieChart() {
     .text(d => `${d}`);
 }
 
-// initialize histogram once, e.g., globally or as part of the swarm
-
 
 function updateDistribution(stats, swarm, histogram) {
   
@@ -149,7 +146,7 @@ function updateDistribution(stats, swarm, histogram) {
     .attr("x2", x(stats.mean))
     .attr("y1", 0)
     .attr("y2", height)
-    .attr("stroke", isSignificant ? "#ff0000" : "#0062ff");
+    .attr("stroke", isSignificant ? "#ff0000" : palette.hive);
   
   // optional: update display of critical boundaries
   // e.g., draw lines at lowerCrit and upperCrit for visualization

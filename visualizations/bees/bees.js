@@ -126,7 +126,7 @@ class Swarm {
     }
 
     // draw the attractor point
-    stroke("#7d2a00");
+    stroke(palette.hive);
     push();
     translate(this.attractor.x, this.attractor.y);
     rotate(45);
@@ -134,12 +134,12 @@ class Swarm {
     pop();
 
     // draw null hypothesis center
-    stroke("#000000");
+    stroke(palette.null);
     point(width / 2, this.attractor.y);
 
     // draw current center (average of x positions)
-    stroke("#0062ff");
-    point(this.average, this.attractor.y);
+    // stroke("#0062ff");
+    // point(this.average, this.attractor.y);
   }
 }
 

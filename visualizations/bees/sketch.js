@@ -6,6 +6,11 @@ let sigs = 0;
 let canvasWidth = 840;
 let canvasHeight = 400;
 let attractionLabel, differenceLabel, numberLabel;
+let palette = {
+  null: "steelblue",
+  bees: "yellow",
+  hive: "#926900"
+}
 
 function pauseButtonClicked() {
   pause = !pause;
