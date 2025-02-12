@@ -1,8 +1,8 @@
 let svg, path, x, y, lineGenerator;
 let leftTail, rightTail, meanLine;  // Add meanLine variable
 const margin = { top: 20, right: 0, bottom: 30, left: 0 };
-const width = 840;
-const height = 200;
+const width = canvasWidth;
+const height = canvasHeight;
 let sampleFrame = 0;
 let sigCounter = { sigs: 0, obs: 0 };
 
@@ -13,10 +13,10 @@ function setupDistributionViz() {
   // Create SVG
   svg = d3.select("#distribution-container")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width)
+    .attr("height", height)
     .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    // .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Create scales
   x = d3.scaleLinear()
@@ -26,7 +26,7 @@ function setupDistributionViz() {
   // Adjust y scale for better visibility
   y = d3.scaleLinear()
     .domain([0, 0.12])  // Increased upper bound
-    .range([height, 0]);
+    .range([height - margin.bottom, height * 0.5]);
 
   // Add X axis
   // svg.append("g")

@@ -18,11 +18,10 @@ include-after-body:
 <div id="viz-container">
   <div id="swarm-container"></div>
   <div id="distribution-container"></div>
-
-  <div id="ui-container">
+</div>
+<div id="ui-container">
   <div id="controls-container"></div>
   <div id="indicator-container"></div>
-  </div>
 </div>
 
 ::: {.about}
@@ -35,25 +34,24 @@ How do you like these bees?
 
 <style>
 #viz-container {
-    display: flex;
-    flex-direction: column;
+    position: relative;
     width: 100%;
     max-width: 840px;
     margin: 0 auto;
-    height: 100vh;
+    height: 400px;
 }
 
 #swarm-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 220px;
-    flex: 0 0 auto;
 }
 
 #distribution-container {
-    width: 100%;
-    height: 240px;
-    flex: 0 0 auto;
-    margin: 20px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #ui-container {
