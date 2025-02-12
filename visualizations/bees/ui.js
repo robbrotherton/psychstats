@@ -127,8 +127,8 @@ function updateDistribution(stats, swarm, histogram) {
   // add the current sample mean to the histogram
   histogram.add(swarm.currentMean);
   
-  // const se = histogram.getSd();
-  const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
+  const se = histogram.getSd();
+  // const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
   const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
   const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
 
