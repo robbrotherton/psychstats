@@ -59,14 +59,10 @@ function setupDistributionViz() {
     .attr("stroke-width", 1.5);
 
   bars = svg.append("g")
-  .attr("fill", "purple")
-  .selectAll()
-  .data(meanHistogram.bins)
-  .join("rect")
-    .attr("x", (d, i) => x(i))
-    .attr("width", 1)
-    .attr("y", (d) => y(d))
-    .attr("height", (d) => y(0) - y(d));
+  .attr("fill", palette.bees)
+  .attr("opacity", 0.5)
+  // .attr("stroke", palette.bees)
+  // .attr("stroke-width", 0.1)
 
   setupIndicators();  // Add this at the end
 }
@@ -133,9 +129,42 @@ function updateDistribution(stats, swarm, histogram) {
   
   // add the current sample mean to the histogram
   histogram.add(swarm.currentMean);
-  bars.data(meanHistogram.bins);
+
   const se = histogram.getSd();
   // const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
+  const nullPeak = jStat.normal.pdf(nullMu, nullMu, se);
+  // console.log(nullPeak);
+  const nullPeakPx = y(nullPeak);
+  // console.log(nullPeakPx);
+  // Convert sparse histogram data to array for D3
+  const histogramData = Object.keys(histogram.bins.counts).map(x => ({
+    x: Number(x),
+    count: histogram.bins.counts[x]  / histogram.total
+  }));
+  
+  // Update the bars
+  const maxCount = Math.max(...histogramData.map(d => d.count));
+
+  const barScale = d3.scaleLinear()
+    .domain([0, 0.12])
+    .range([0, canvasHeight * 0.5]); // Scale max height to match null distribution peak
+
+  const bars = svg.select("g").selectAll("rect")
+    .data(histogramData, d => d.x);
+
+  // Enter new bars
+  bars.enter()
+    .append("rect")
+    .merge(bars)
+    .attr("x", d => d.x)
+    .attr("y", d => height - barScale(d.count) - 30)
+    .attr("width", 1) // 1 pixel wide by default
+    .attr("height", d => barScale(d.count));
+
+  // Remove old bars
+  bars.exit().remove();
+
+
   const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
   const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
 
@@ -168,7 +197,6 @@ function updateDistribution(stats, swarm, histogram) {
 
   // // update main distribution curve
   path.datum(points).attr("d", lineGenerator);
-
   // build left tail region for rejection area
   const leftPoints = points.filter(p => p.x <= lowerCrit);
   leftPoints.push({ x: lowerCrit, y: jStat.normal.pdf(lowerCrit, canvasWidth * 0.5, se) });

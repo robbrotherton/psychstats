@@ -1,14 +1,15 @@
-let swarm, meanHistogram;
+let swarm, meanHistogram, estimatedSe;
 let pause;
 let xArray;
 let observations = 0;
 let sigs = 0;
 let canvasWidth = 840;
 let canvasHeight = 400;
+let nullMu = canvasWidth * 0.5;
 let attractionLabel, differenceLabel, numberLabel;
 let palette = {
   null: "steelblue",
-  bees: "yellow",
+  bees: "#f9c901",
   hive: "#926900"
 }
 
@@ -106,12 +107,13 @@ function setup() {
   button.parent('controls-container');
 
 
-  swarm = new Swarm(numberSlider.value(), "#f9c901");
+  swarm = new Swarm(numberSlider.value(), palette.bees);
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 
-
-  
   setupDistributionViz();
+  
+  // estimatedSe = simulateSwarmOffline(swarm, 1000);
+  // estimatedSe = 5.6;
 }
 
 function draw() {
@@ -134,6 +136,8 @@ function draw() {
   numberLabel.html('Number of Bees: ' + numberSlider.value());
 
   swarm.display();
+
+  console.log(getEstimatedSe());
 
 }
 
