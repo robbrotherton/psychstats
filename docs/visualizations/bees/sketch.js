@@ -1,5 +1,16 @@
-// import jStat;
-
+let swarm, meanHistogram;
+let pause;
+let xArray;
+let observations = 0;
+let sigs = 0;
+let canvasWidth = 840;
+let canvasHeight = 400;
+let attractionLabel, differenceLabel, numberLabel;
+let palette = {
+  null: "steelblue",
+  bees: "yellow",
+  hive: "#926900"
+}
 
 function pauseButtonClicked() {
   pause = !pause;
@@ -11,99 +22,130 @@ function pauseButtonClicked() {
 }
 
 function handleSwarms() {
-  swarm.attractor = createVector(width / 2 - differenceSlider.value(), height / 2);
-  
-  swarm2.attractor = createVector(width / 2 + differenceSlider.value(), height / 2);
-  
-  
+  // the swarm's x attractor distance, in pixels, from the center of the canvas
+  swarm.attractor = createVector(canvasWidth * 0.5 + differenceSlider.value(), canvasHeight * 0.5);
+
   if (swarm.bees.length < numberSlider.value()) {
     for (let i = 0; i <= numberSlider.value() - swarm.bees.length; i++) {
       swarm.bees.push(new Bee(random(width), random(-height)));
-      swarm2.bees.push(new Bee(random(width), random(-height)));
     }
   }
-  
+
   if (swarm.bees.length > numberSlider.value()) {
     swarm.bees.splice(numberSlider.value(), swarm.bees.length);
-    swarm2.bees.splice(numberSlider.value(), swarm2.bees.length);
   }
-    
+
 }
 
 function mouseReleased() {
-  observations = 0;
-  sigs = 0;
+  sigCounter = { sigs: 0, obs: 0 };
+  meanHistogram = new Histogram()
+  console.log((attractionSlider.value() * 19.5) / Math.sqrt(50));
+  console.log(meanHistogram.getSd());
+  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
-
-let swarm;
-let pause;
-let xArray;
-let observations = 0;
-let sigs = 0;
-
 function setup() {
-  // import * as jStat from 'jstat';
-  // frameRate(30);
-  let canvas = createCanvas(840, 520);
+
+  angleMode(DEGREES);
+
+  let canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent('swarm-container');
 
   xArray = jStat.seq(0, width, 301);
   pause = false;
-  button = createButton("stop");
-  button.mousePressed(pauseButtonClicked);
+
+
+ 
+
+  // Create container divs for each slider-label pair
+  let attractionContainer = createDiv('');
+  let differenceContainer = createDiv('');
+  let numberContainer = createDiv('');
   
-  attractionSlider = createSlider(0.5, 3, 2, 0.1);
+  attractionContainer.parent('controls-container');
+  differenceContainer.parent('controls-container');
+  numberContainer.parent('controls-container');
+  
+  // Style the containers
+  [attractionContainer, differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
+
+  // Create and setup controls with their containers
+  attractionSlider = createSlider(1, 5, 2, 0.1);
   differenceSlider = createSlider(0, 200, 0);
   numberSlider = createSlider(10, 200, 50);
 
-  let controls = [button, attractionSlider, differenceSlider, numberSlider];
-  for ( let c of controls ) {
-    c.parent('controls-container');
-  };
-  
-  swarm = new Swarm(numberSlider.value(), "#643C0B");
-  swarm2 = new Swarm(numberSlider.value(), "#f9c901");
+  attractionLabel = createSpan('Variability: ' + attractionSlider.value());
+  differenceLabel = createSpan('Difference: ' + differenceSlider.value());
+  numberLabel = createSpan('Number of Bees: ' + numberSlider.value());
 
-  makeHistoryChart('#history-container');
+  // Style the labels
+  [attractionLabel, differenceLabel, numberLabel].forEach(label => {
+    label.style('margin-right', '10px');
+    label.style('min-width', '120px');
+    label.style('text-align', 'right');
+  });
+
+  // Add controls to their containers
+  attractionLabel.parent(attractionContainer);
+  attractionSlider.parent(attractionContainer);
+  
+  differenceLabel.parent(differenceContainer);
+  differenceSlider.parent(differenceContainer);
+  
+  numberLabel.parent(numberContainer);
+  numberSlider.parent(numberContainer);
+
+
+  button = createButton("stop");
+  button.mousePressed(pauseButtonClicked);
+  button.parent('controls-container');
+
+
+  swarm = new Swarm(numberSlider.value(), "#f9c901");
+  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+
+
+  
+  setupDistributionViz();
 }
 
 function draw() {
   background(255); // #aab574
-  
+
   if (pause == false) {
     handleSwarms();
     swarm.run();
-    swarm2.run();
+
+    // Update distribution visualization
+    let stats = swarm.getStats();
+    updateDistribution(stats, swarm, meanHistogram);
+    // drawHistogram(meanHistogram);
+
   }
-  
+
+  // Update slider labels
+  attractionLabel.html('Variability: ' + attractionSlider.value());
+  differenceLabel.html('Actual difference: ' + differenceSlider.value());
+  numberLabel.html('Number of Bees: ' + numberSlider.value());
+
   swarm.display();
-  swarm2.display();
-  
-  let sdA = jStat.stdev(swarm.bees.map(bee => bee.position.x));
-  let sdB = jStat.stdev(swarm2.bees.map(bee => bee.position.x));
-  let sdTrue = (sdA + sdB) / 2;
-  let sd = attractionSlider.value()*25;
-  swarm.showDistribution(sd / sqrt(numberSlider.value()));
-  swarm2.showDistribution(sd / sqrt(numberSlider.value()));
-  
-  let diff = abs(swarm.average - swarm2.average);
-  // let p = jStat.ttest( 0, diff, sdTrue, numberSlider.value(), 2 );
-  let z = (swarm.average - swarm2.average) / (sdTrue / sqrt(numberSlider.value()));
-  let p = jStat.ztest(z);
 
-  updateHistoryChart([swarm, swarm2]);
+}
 
-  strokeWeight(20);
-  stroke(p < 0.05 ? 'red' : 'green');
-  point(20, height - 20);
+
+// simulate the swarm offline for numIterations frames and update histogram
+function simulateSwarmOffline(swarm, numIterations) {
   
-  observations ++;
-  if ( p < 0.05) sigs ++;
-  
-  // console.log(sigs / observations);
-  noFill();
-  strokeWeight(1);
-  stroke(0);
-  text(round(sigs / observations, 2), 20, height - 20);
+  let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  for (let i = 0; i < numIterations; i++) {
+    swarm.run();
+    let stats = swarm.getStats();
+    hist.add(stats.mean);
+  }
+  return hist.getSd();
 }

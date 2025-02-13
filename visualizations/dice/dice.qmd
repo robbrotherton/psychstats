@@ -24,9 +24,9 @@ include-in-header:
 <canvas id="canvas"></canvas>
 <div id="overlay"></div>
 <!-- border: 2px solid #D77; border-radius: 5px;  -->
-<div class="score" style="position: absolute; width: 100%; bottom: 4%; text-align: center;"><span
+<div class="score" style="position: absolute; width: 100%; bottom: 4%; text-align: center; pointer-events: none;"><span
 				id="score-result"></span></div>
-<div id="chart-container" style="margin-top: -5px;"></div>
+<div id="chart-container" style="margin-top: -15px;"></div>
 <div class="throws" style="width: 100%; text-align: left;">
 <span>Throws: <span id="throw-counter"></span></span>
 <button class="btn btn-outline-primary" id="reset-chart" style="float: right;">Reset</button>

@@ -139,16 +139,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="stuff">
-<div id="container">
+<div id="viz-container">
 <div id="swarm-container">
 
 </div>
-<div id="history-container">
+<div id="distribution-container">
 
 </div>
 </div>
+<div id="ui-container">
 <div id="controls-container">
+
+</div>
+<div id="indicator-container">
 
 </div>
 </div>
@@ -157,14 +160,45 @@ ul.task-list li input[type="checkbox"] {
 <p>How do you like these bees?</p>
 </section>
 <style>
-#container {
-  display: flex;
+#viz-container {
+    position: relative;
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    height: 400px;
 }
 
-#swarm-container, #history-container {
-  flex: 1;
-  padding: 10px;
-  box-sizing: border-box;
+#swarm-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#distribution-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#ui-container {
+    display: flex;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+#controls-container {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+#indicator-container {
+    width: 50%;
+    padding: 20px;
 }
 
 canvas {
@@ -172,18 +206,6 @@ canvas {
     margin: auto;
 }
 
-#swarm-container {
-    width: 80%;
-}
-
-#history-container {
-    width: 20%;
-}
-
-#controls-container {
-    max-width: 600px;
-    margin: auto;
-}
 #stuff {
     margin-bottom: 2em;
 }
