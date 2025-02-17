@@ -77,6 +77,11 @@ class Swarm {
     this.hiveWidth = 5;
     this.currentMean;
     this.meanHistory = [];
+    this.sdHistory = {
+      sd: {},      // Will store x positions as keys
+      count: {}  // Will store counts for corresponding x positions
+    };
+    this.total = 0;
 
     for (let i = 0; i < num; i++) {
       let x = randomGaussian(this.attractor.x, attractionSlider.value() * 19.5);
@@ -114,9 +119,6 @@ class Swarm {
       bee.flock(this.bees, this.attractor);
       bee.update();
     }
-    // update history (maintain fixed length, e.g., 500)
-    // this.meanHistory.push(this.currentMean);
-    // if (this.meanHistory.length > 1000) this.meanHistory.shift();
   }
 
   display() {
@@ -170,8 +172,8 @@ class Histogram {
 
   getSd() {
     // if (this.total < 1000) return attractionSlider.value() * 19 / Math.sqrt(numberSlider.value());
-    return getEstimatedSe();
-    if (this.total < 1000) return getEstimatedSe();
+    // return getEstimatedSe().se;
+    // if (this.total < 5000) return estimatedParams.se;
     
     let mean = 0;
     Object.keys(this.bins.counts).forEach(x => {
@@ -200,15 +202,4 @@ class Histogram {
     }
     return this.max;
   }
-}
-
-function getEstimatedSe() {
-  const n = attractionSlider.value();
-  const a = -0.2;
-  const b = 2.88;
-  const c = 0.83;
-
-  const se = a*(n*n) + b*n + c;
-
-  return se;
 }

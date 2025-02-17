@@ -113,7 +113,7 @@ function updatePieChart() {
 
   // Add percentage text in center
   const percentText = pieG.selectAll("text")
-    .data([sigProp.toFixed(2)]);
+    .data([sigProp.toFixed(3)]);
 
   percentText.enter()
     .append("text")
@@ -130,7 +130,9 @@ function updateDistribution(stats, swarm, histogram) {
   // add the current sample mean to the histogram
   histogram.add(swarm.currentMean);
 
-  const se = histogram.getSd();
+  // const se = histogram.getSd();
+  const se = estimatedParams.se;
+  // console.log(se);
   // const se = (attractionSlider.value() * 19.5) / Math.sqrt(50);
   const nullPeak = jStat.normal.pdf(nullMu, nullMu, se);
   // console.log(nullPeak);
@@ -147,7 +149,8 @@ function updateDistribution(stats, swarm, histogram) {
 
   const barScale = d3.scaleLinear()
     .domain([0, 0.12])
-    .range([0, canvasHeight * 0.5]); // Scale max height to match null distribution peak
+    .range([canvasHeight - margin.bottom, canvasHeight * 0.5]); // match the null dist scale
+    // .range([0, canvasHeight * 0.5]); // Scale max height to match null distribution peak
 
   const bars = svg.select("g").selectAll("rect")
     .data(histogramData, d => d.x);
@@ -157,9 +160,9 @@ function updateDistribution(stats, swarm, histogram) {
     .append("rect")
     .merge(bars)
     .attr("x", d => d.x)
-    .attr("y", d => height - barScale(d.count) - 30)
+    .attr("height", d => height - margin.bottom - barScale(d.count))
     .attr("width", 1) // 1 pixel wide by default
-    .attr("height", d => barScale(d.count));
+    .attr("y", d => barScale(d.count));
 
   // Remove old bars
   bars.exit().remove();

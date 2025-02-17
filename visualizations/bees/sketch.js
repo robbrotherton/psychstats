@@ -1,4 +1,4 @@
-let swarm, meanHistogram, estimatedSe;
+let swarm, meanHistogram, estimatedParams;
 let pause;
 let xArray;
 let observations = 0;
@@ -12,6 +12,7 @@ let palette = {
   bees: "#f9c901",
   hive: "#926900"
 }
+
 
 function pauseButtonClicked() {
   pause = !pause;
@@ -41,8 +42,8 @@ function handleSwarms() {
 function mouseReleased() {
   sigCounter = { sigs: 0, obs: 0 };
   meanHistogram = new Histogram()
-  console.log((attractionSlider.value() * 19.5) / Math.sqrt(50));
-  console.log(meanHistogram.getSd());
+  // console.log((attractionSlider.value() * 19.5) / Math.sqrt(50));
+  // console.log(meanHistogram.getSd());
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
@@ -77,8 +78,16 @@ function setup() {
 
   // Create and setup controls with their containers
   attractionSlider = createSlider(1, 5, 2, 0.1);
+  attractionSlider.input(() => {
+    estimatedParams = getEstimatedParams();
+  });
+  
   differenceSlider = createSlider(0, 200, 0);
+
   numberSlider = createSlider(10, 200, 50);
+  numberSlider.input(() => {
+    estimatedParams = getEstimatedParams();
+  });
 
   attractionLabel = createSpan('Variability: ' + attractionSlider.value());
   differenceLabel = createSpan('Difference: ' + differenceSlider.value());
@@ -109,7 +118,8 @@ function setup() {
 
   swarm = new Swarm(numberSlider.value(), palette.bees);
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
-
+  estimatedParams = getEstimatedParams();  // Initialize estimated parameters
+  
   setupDistributionViz();
   
   // estimatedSe = simulateSwarmOffline(swarm, 1000);
@@ -137,7 +147,7 @@ function draw() {
 
   swarm.display();
 
-  console.log(getEstimatedSe());
+  // console.log(getEstimatedSe());
 
 }
 
@@ -145,11 +155,60 @@ function draw() {
 // simulate the swarm offline for numIterations frames and update histogram
 function simulateSwarmOffline(swarm, numIterations) {
   
-  let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  let sdSum = 0;
+  let total = 0;
+
+  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, estimatedParams.se);
+  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, estimatedParams.se);
+
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
-    let stats = swarm.getStats();
-    hist.add(stats.mean);
+    meanHistogram.add(swarm.currentMean);
+
+    // determine significance: current mean falls outside the 95% interval?
+    const isSignificant = (swarm.currentMean < lowerCrit) || (swarm.currentMean > upperCrit);
+    
+    sigCounter.obs++;
+    if (isSignificant) sigCounter.sigs++;
+
+    let currentSd = round(swarm.getStats().sd, 3);
+    sdSum += currentSd;
+    total++;
   }
-  return hist.getSd();
+  // return sdSum / total;
+  const estSd = sdSum / total;
+  const estSe = meanHistogram.getSd();
+  const calcSe = estSd / Math.sqrt(numberSlider.value());
+
+  return {estSd, estSe, calcSe, useSe: estimatedParams.se};
 }
+
+function getEstimatedParams() {
+
+  // if (attractionSlider.value() == 2.0 && numberSlider.value() == 50) {
+  //   return { se: 5.5, sd: 5.5 * Math.sqrt(50)};
+  // }
+
+  const iv1 = attractionSlider.value();
+  const n = numberSlider.value();
+
+  const coef = {
+    iv1sq: 0.0185,
+    iv1: 2.2205,
+    intercept: 0.92  
+  }
+
+  let se = coef.iv1 * iv1 + coef.iv1sq * (iv1 * iv1) + coef.intercept;
+
+  const sd = se * Math.sqrt(50);
+
+  if ( n != 50.0 ) {
+    console.log("adjusting for n");
+    se = sd / Math.sqrt(n);
+  }
+
+  console.log(se);
+  return { se, sd };
+}
+
