@@ -45,7 +45,7 @@ class Bee {
   // Add attraction method
   attract(attractor) {
     let force = p5.Vector.sub(attractor, this.position);
-    force.setMag(1 / attractionSlider.value()); // Control the strength of attraction
+    force.setMag(1 / params.attractorStrength); // Control the strength of attraction
     return force;
   }
 
@@ -77,10 +77,15 @@ class Swarm {
     this.hiveWidth = 5;
     this.currentMean;
     this.meanHistory = [];
+    this.sdHistory = {
+      sd: {},      // Will store x positions as keys
+      count: {}  // Will store counts for corresponding x positions
+    };
+    this.total = 0;
 
     for (let i = 0; i < num; i++) {
-      let x = randomGaussian(this.attractor.x, attractionSlider.value() * 19.5);
-      let y = randomGaussian(this.attractor.y, attractionSlider.value() * 19.5);
+      let x = randomGaussian(this.attractor.x, 50);
+      let y = randomGaussian(this.attractor.y, 50);
       this.bees.push(new Bee(x, y));
     }
   }
@@ -114,9 +119,6 @@ class Swarm {
       bee.flock(this.bees, this.attractor);
       bee.update();
     }
-    // update history (maintain fixed length, e.g., 500)
-    // this.meanHistory.push(this.currentMean);
-    // if (this.meanHistory.length > 1000) this.meanHistory.shift();
   }
 
   display() {
@@ -146,50 +148,56 @@ class Swarm {
 // histogram class to bin sample means
 class Histogram {
   constructor(min, max, numBins) {
+    // this.estimatedSe;
     this.min = min;
     this.max = max;
     this.numBins = numBins;
-    this.binWidth = (max - min) / numBins;
-    this.bins = new Array(numBins).fill(0);
+    this.bins = {
+      x: {},      // Will store x positions as keys
+      counts: {}  // Will store counts for corresponding x positions
+    };
     this.total = 0;
   }
 
   add(value) {
     if (value < this.min || value > this.max) return;
-    let index = Math.floor((value - this.min) / this.binWidth);
-    if (index >= this.numBins) index = this.numBins - 1;
-    this.bins[index]++;
+    const x = Math.floor(value);
+    if (!this.bins.counts[x]) {
+      this.bins.x[x] = x;
+      this.bins.counts[x] = 0;
+    }
+    this.bins.counts[x]++;
     this.total++;
   }
 
-  // new method to compute standard deviation of the distribution
   getSd() {
-    if (this.total < 1000) return attractionSlider.value() * 19.5 / Math.sqrt(numberSlider.value());
+    // if (this.total < 1000) return attractionSlider.value() * 19 / Math.sqrt(numberSlider.value());
+    // return getEstimatedSe().se;
+    // if (this.total < 5000) return estimatedParams.se;
+    
     let mean = 0;
-    for (let i = 0; i < this.numBins; i++) {
-      let mid = this.min + (i + 0.5) * this.binWidth;
-      mean += mid * this.bins[i];
-    }
+    Object.keys(this.bins.counts).forEach(x => {
+      mean += Number(x) * this.bins.counts[x];
+    });
     mean /= this.total;
 
     let variance = 0;
-    for (let i = 0; i < this.numBins; i++) {
-      let mid = this.min + (i + 0.5) * this.binWidth;
-      variance += this.bins[i] * Math.pow(mid - mean, 2);
-    }
+    Object.keys(this.bins.counts).forEach(x => {
+      variance += this.bins.counts[x] * Math.pow(Number(x) - mean, 2);
+    });
     variance /= this.total;
     return Math.sqrt(variance);
   }
 
-  // compute the pth percentile (p between 0 and 1)
   getPercentile(p) {
     let target = p * this.total;
     let cum = 0;
-    for (let i = 0; i < this.numBins; i++) {
-      cum += this.bins[i];
+    const sortedX = Object.keys(this.bins.counts).sort((a, b) => Number(a) - Number(b));
+    
+    for (let x of sortedX) {
+      cum += this.bins.counts[x];
       if (cum >= target) {
-        // return the midpoint of this bin
-        return this.min + (i + 0.5) * this.binWidth;
+        return Number(x);
       }
     }
     return this.max;

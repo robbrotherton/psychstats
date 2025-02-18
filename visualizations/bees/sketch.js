@@ -7,10 +7,28 @@ let canvasWidth = 840;
 let canvasHeight = 400;
 let nullMu = canvasWidth * 0.5;
 let attractionLabel, differenceLabel, numberLabel;
+
 let palette = {
   null: "steelblue",
   bees: "#f9c901",
   hive: "#926900"
+}
+
+// a 2d array of standard error values that work for different input combos
+// the numbers were derived by advancing the simulation at least 100,000 clicks
+// and determining the variability of the sample means
+// this might differ depending on processor speed etc?
+let seValues = [
+  // nBees = [15, 50, 100]
+  [5.14, 3.206, 2.396], // attractorStrength = 1
+  [9.1, 5.49, 4.21], // attractorStrength = 2
+  [17.761, 10.098, 7.075], // attractorStrength = 4
+]
+
+let params = {
+  attractorStrength: 2,
+  nBees: 50,
+  se: 5.49
 }
 
 
@@ -27,14 +45,14 @@ function handleSwarms() {
   // the swarm's x attractor distance, in pixels, from the center of the canvas
   swarm.attractor = createVector(canvasWidth * 0.5 + differenceSlider.value(), canvasHeight * 0.5);
 
-  if (swarm.bees.length < numberSlider.value()) {
-    for (let i = 0; i <= numberSlider.value() - swarm.bees.length; i++) {
+  if (swarm.bees.length < params.nBees) {
+    for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
       swarm.bees.push(new Bee(random(width), random(-height)));
     }
   }
 
-  if (swarm.bees.length > numberSlider.value()) {
-    swarm.bees.splice(numberSlider.value(), swarm.bees.length);
+  if (swarm.bees.length > params.nBees) {
+    swarm.bees.splice(params.nBees, swarm.bees.length);
   }
 
 }
@@ -42,8 +60,6 @@ function handleSwarms() {
 function mouseReleased() {
   sigCounter = { sigs: 0, obs: 0 };
   meanHistogram = new Histogram()
-  // console.log((attractionSlider.value() * 19.5) / Math.sqrt(50));
-  // console.log(meanHistogram.getSd());
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
@@ -56,9 +72,6 @@ function setup() {
 
   xArray = jStat.seq(0, width, 301);
   pause = false;
-
-
- 
 
   // Create container divs for each slider-label pair
   let attractionContainer = createDiv('');
@@ -77,21 +90,77 @@ function setup() {
   });
 
   // Create and setup controls with their containers
-  attractionSlider = createSlider(1, 5, 2, 0.1);
+  attractionSlider = createSlider(0, 2, 1);
   attractionSlider.input(() => {
-    estimatedParams = getEstimatedParams();
+    
+    const newValue = parseInt(attractionSlider.value());
+
+    switch (newValue) {
+      case 0:
+        params.attractorStrength = 1;
+        attractionLabel.html('Variability: low');
+        break;
+
+      case 1:
+        params.attractorStrength = 2;
+        attractionLabel.html('Variability: medium');
+        break;
+
+      case 2:
+        params.attractorStrength = 4;
+        attractionLabel.html('Variability: high');
+        break;
+    }
+
+    params.se = seValues[newValue][numberSlider.value()];
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html('Difference: ' + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
+
   });
   
   differenceSlider = createSlider(0, 200, 0);
-
-  numberSlider = createSlider(10, 200, 50);
-  numberSlider.input(() => {
-    estimatedParams = getEstimatedParams();
+  differenceSlider.input(() => {
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html('Difference: ' + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
   });
 
-  attractionLabel = createSpan('Variability: ' + attractionSlider.value());
+  numberSlider = createSlider(0, 2, 1);
+  numberSlider.input(() => {
+
+    const newValue = parseInt(numberSlider.value());
+
+    switch (newValue) {
+      case 0:
+        params.nBees = 15;
+        numberLabel.html('Number of bees: 15');
+        break;
+
+      case 1:
+        params.nBees = 50;
+        numberLabel.html('Number of bees: 50');
+        break;
+
+      case 2:
+        params.nBees = 100;
+        numberLabel.html('Number of bees: 100');
+        break;
+    }
+
+    params.se = seValues[attractionSlider.value()][numberSlider.value()];
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html('Difference: ' + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
+
+  });
+
+  attractionLabel = createSpan('Variability: medium');
   differenceLabel = createSpan('Difference: ' + differenceSlider.value());
-  numberLabel = createSpan('Number of Bees: ' + numberSlider.value());
+  numberLabel = createSpan('Number of Bees: ' + params.nBees);
 
   // Style the labels
   [attractionLabel, differenceLabel, numberLabel].forEach(label => {
@@ -116,14 +185,11 @@ function setup() {
   button.parent('controls-container');
 
 
-  swarm = new Swarm(numberSlider.value(), palette.bees);
+  swarm = new Swarm(params.nBees, palette.bees);
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
-  estimatedParams = getEstimatedParams();  // Initialize estimated parameters
   
   setupDistributionViz();
-  
-  // estimatedSe = simulateSwarmOffline(swarm, 1000);
-  // estimatedSe = 5.6;
+
 }
 
 function draw() {
@@ -132,22 +198,14 @@ function draw() {
   if (pause == false) {
     handleSwarms();
     swarm.run();
+    let stats = swarm.getStats(); // currently necessary to update swarm's this.currentMean
 
     // Update distribution visualization
-    let stats = swarm.getStats();
-    updateDistribution(stats, swarm, meanHistogram);
-    // drawHistogram(meanHistogram);
+    updateDistribution(swarm, meanHistogram);
 
   }
 
-  // Update slider labels
-  attractionLabel.html('Variability: ' + attractionSlider.value());
-  differenceLabel.html('Actual difference: ' + differenceSlider.value());
-  numberLabel.html('Number of Bees: ' + numberSlider.value());
-
   swarm.display();
-
-  // console.log(getEstimatedSe());
 
 }
 
@@ -159,8 +217,8 @@ function simulateSwarmOffline(swarm, numIterations) {
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, estimatedParams.se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, estimatedParams.se);
+  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
@@ -179,9 +237,41 @@ function simulateSwarmOffline(swarm, numIterations) {
   // return sdSum / total;
   const estSd = sdSum / total;
   const estSe = meanHistogram.getSd();
-  const calcSe = estSd / Math.sqrt(numberSlider.value());
+  const calcSe = estSd / Math.sqrt(params.nBees);
 
-  return {estSd, estSe, calcSe, useSe: estimatedParams.se};
+  return {estSd, estSe, calcSe, useSe: params.se};
+}
+
+function advanceSwarmOffline(swarm, numIterations) {
+  
+  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  let sdSum = 0;
+  let total = 0;
+
+  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+
+  for (let i = 0; i < numIterations; i++) {
+    swarm.run();
+    swarm.getStats();
+    meanHistogram.add(swarm.currentMean);
+
+    // determine significance: current mean falls outside the 95% interval?
+    const isSignificant = (swarm.currentMean < lowerCrit) || (swarm.currentMean > upperCrit);
+    
+    sigCounter.obs++;
+    if (isSignificant) sigCounter.sigs++;
+
+    // let currentSd = round(swarm.getStats().sd, 3);
+    // sdSum += currentSd;
+    // total++;
+  }
+  // return sdSum / total;
+  // const estSd = sdSum / total;
+  const estSe = meanHistogram.getSd();
+  // const calcSe = estSd / Math.sqrt(params.nBees);
+
+  return { params, clicks: meanHistogram.total, empiricalSe: estSe };
 }
 
 function getEstimatedParams() {
@@ -190,8 +280,8 @@ function getEstimatedParams() {
   //   return { se: 5.5, sd: 5.5 * Math.sqrt(50)};
   // }
 
-  const iv1 = attractionSlider.value();
-  const n = numberSlider.value();
+  const iv1 = params.attractorStrength;
+  const n = params.nBees;
 
   const coef = {
     iv1sq: 0.0185,

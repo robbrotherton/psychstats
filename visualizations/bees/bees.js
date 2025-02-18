@@ -45,7 +45,7 @@ class Bee {
   // Add attraction method
   attract(attractor) {
     let force = p5.Vector.sub(attractor, this.position);
-    force.setMag(1 / attractionSlider.value()); // Control the strength of attraction
+    force.setMag(1 / params.attractorStrength); // Control the strength of attraction
     return force;
   }
 
@@ -84,8 +84,8 @@ class Swarm {
     this.total = 0;
 
     for (let i = 0; i < num; i++) {
-      let x = randomGaussian(this.attractor.x, attractionSlider.value() * 19.5);
-      let y = randomGaussian(this.attractor.y, attractionSlider.value() * 19.5);
+      let x = randomGaussian(this.attractor.x, 50);
+      let y = randomGaussian(this.attractor.y, 50);
       this.bees.push(new Bee(x, y));
     }
   }
