@@ -28,6 +28,8 @@ let seValues = [
 let params = {
   attractorStrength: 2,
   nBees: 50,
+  nBeesIndex: 1,
+  nBeesValues: [15, 50, 100],
   se: 5.49
 }
 
@@ -104,11 +106,12 @@ function setup() {
   
   [lowButton, medButton, highButton].forEach(btn => {
     btn.parent(attractionButtonsContainer);
+    btn.class("btn btn-outline-primary")
     btn.style('padding', '5px 10px');
   });
 
   // Set initial active state
-  medButton.class('active');
+  medButton.class('btn btn-success');
   
   // Button click handlers
   lowButton.mousePressed(() => updateVariability(0, lowButton, [medButton, highButton]));
@@ -130,45 +133,47 @@ function setup() {
 
   // Create and setup controls with their containers
   differenceSlider = createSlider(0, 200, 0);
+  differenceSlider.class("form-range");
   differenceSlider.input(() => {
+    resetButtonClicked();
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
     differenceLabel.html('Difference: ' + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
   });
 
-  numberSlider = createSlider(0, 2, 1);
-  numberSlider.input(() => {
+  // Create number buttons container
+  numberLabel = createSpan('Number of Bees');
+  numberLabel.parent(numberContainer);
+  let numberButtonsContainer = createDiv('');
+  numberButtonsContainer.parent(numberContainer);
+  numberButtonsContainer.style('display', 'flex');
+  numberButtonsContainer.style('gap', '5px');
 
-    const newValue = parseInt(numberSlider.value());
-
-    switch (newValue) {
-      case 0:
-        params.nBees = 15;
-        numberLabel.html('Number of bees: 15');
-        break;
-
-      case 1:
-        params.nBees = 50;
-        numberLabel.html('Number of bees: 50');
-        break;
-
-      case 2:
-        params.nBees = 100;
-        numberLabel.html('Number of bees: 100');
-        break;
-    }
-
-    params.se = seValues[attractionSlider.value()][numberSlider.value()];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-
+  // Create number buttons
+  let smallButtonN = createButton('15');
+  let medButtonN = createButton('50');
+  let largeButtonN = createButton('100');
+  
+  [smallButtonN, medButtonN, largeButtonN].forEach(btn => {
+    btn.parent(numberButtonsContainer);
+    btn.class("btn btn-outline-primary")
+    btn.style('padding', '5px 10px');
   });
+
+  // Set initial active state
+  medButtonN.class('btn btn-info');
+  
+  // Button click handlers
+  smallButtonN.mousePressed(() => updateNumber(0, smallButtonN, [medButtonN, largeButtonN]));
+  medButtonN.mousePressed(() => updateNumber(1, medButtonN, [smallButtonN, largeButtonN]));
+  largeButtonN.mousePressed(() => updateNumber(2, largeButtonN, [smallButtonN, medButtonN]));
+
+  numberLabel.style('margin-right', '10px');
+  numberLabel.style('min-width', '120px');
+  numberLabel.style('text-align', 'right');
 
   differenceLabel = createSpan('Difference: ' + differenceSlider.value());
-  numberLabel = createSpan('Number of Bees: ' + params.nBees);
 
   // Style the labels
   [differenceLabel, numberLabel].forEach(label => {
@@ -181,9 +186,6 @@ function setup() {
   differenceLabel.parent(differenceContainer);
   differenceSlider.parent(differenceContainer);
   
-  numberLabel.parent(numberContainer);
-  numberSlider.parent(numberContainer);
-
 
   setupDistributionViz();
   pauseButton = createButton("pause");
@@ -202,9 +204,10 @@ function setup() {
 }
 
 function updateVariability(value, activeButton, inactiveButtons) {
+  resetButtonClicked();
   // Update button states
-  activeButton.class('active');
-  inactiveButtons.forEach(btn => btn.removeClass('active'));
+  activeButton.class('btn btn-success');
+  inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
   
   // Update parameters
   switch (value) {
@@ -219,7 +222,34 @@ function updateVariability(value, activeButton, inactiveButtons) {
       break;
   }
 
-  params.se = seValues[value][numberSlider.value()];
+  params.se = seValues[value][params.nBeesIndex];
+  params.sd = params.se * Math.sqrt(params.nBees);
+  params.d = differenceSlider.value() / params.sd;
+  differenceLabel.html('Difference: ' + round(params.d, 2));
+  console.log("Cohen's d: " + params.d);
+}
+
+function updateNumber(value, activeButton, inactiveButtons) {
+  resetButtonClicked();
+  // Update button states
+  activeButton.class('btn btn-info');
+  inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+  params.nBeesIndex = value;
+  params.nBees = params.nBeesValues[value];
+  // Update parameters
+  // switch (value) {
+  //   case 0:
+  //     params.nBees = 15;
+  //     break;
+  //   case 1:
+  //     params.nBees = 50;
+  //     break;
+  //   case 2:
+  //     params.nBees = 100;
+  //     break;
+  // }
+
+  params.se = seValues[params.attractorStrength - 1][value];
   params.sd = params.se * Math.sqrt(params.nBees);
   params.d = differenceSlider.value() / params.sd;
   differenceLabel.html('Difference: ' + round(params.d, 2));
