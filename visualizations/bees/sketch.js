@@ -35,10 +35,16 @@ let params = {
 function pauseButtonClicked() {
   pause = !pause;
   if (pause) {
-    button.html("go");
+    pauseButton.html("play");
   } else {
-    button.html("stop");
+    pauseButton.html("pause");
   }
+}
+
+function resetButtonClicked() {
+  sigCounter = { sigs: 0, obs: 0 };
+  meanHistogram = new Histogram()
+  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
 function handleSwarms() {
@@ -55,12 +61,6 @@ function handleSwarms() {
     swarm.bees.splice(params.nBees, swarm.bees.length);
   }
 
-}
-
-function mouseReleased() {
-  sigCounter = { sigs: 0, obs: 0 };
-  meanHistogram = new Histogram()
-  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
 function setup() {
@@ -185,15 +185,19 @@ function setup() {
   numberSlider.parent(numberContainer);
 
 
-  button = createButton("stop");
-  button.mousePressed(pauseButtonClicked);
-  button.parent('controls-container');
+  setupDistributionViz();
+  pauseButton = createButton("pause");
+  pauseButton.mousePressed(pauseButtonClicked);
+  pauseButton.parent('indicator-container');
 
-
+  resetButton = createButton("reset");
+  resetButton.mousePressed(resetButtonClicked);
+  resetButton.parent('indicator-container');
+  
+  
   swarm = new Swarm(params.nBees, palette.bees);
   meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
   
-  setupDistributionViz();
 
 }
 
