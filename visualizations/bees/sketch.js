@@ -37,9 +37,11 @@ let params = {
 function pauseButtonClicked() {
   pause = !pause;
   if (pause) {
+    pauseButton.class("btn btn-warning")
     pauseButton.html("play");
   } else {
     pauseButton.html("pause");
+    pauseButton.class("btn btn-outline-warning")
   }
 }
 
@@ -188,11 +190,15 @@ function setup() {
   
 
   setupDistributionViz();
+
+  // create the pause and reset buttons, add them to the indicator container
   pauseButton = createButton("pause");
+  pauseButton.class("btn btn-outline-warning")
   pauseButton.mousePressed(pauseButtonClicked);
   pauseButton.parent('indicator-container');
 
   resetButton = createButton("reset");
+  resetButton.class("btn btn-outline-danger")
   resetButton.mousePressed(resetButtonClicked);
   resetButton.parent('indicator-container');
   
