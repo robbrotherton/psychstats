@@ -70,19 +70,23 @@ function setupDistributionViz() {
 function setupIndicators() {
   pieSvg = d3.select("#indicator-container")
     .append("svg")
-    .attr("width", pieRadius * 2.5)
-    .attr("height", pieRadius * 2.5);
+    .attr("width", pieRadius * 2)
+    .attr("height", pieRadius * 2);
 
   pieG = pieSvg.append("g")
-    .attr("transform", `translate(${pieRadius * 1.25},${pieRadius * 1.25})`);
+    .attr("transform", `translate(${pieRadius},${pieRadius})`);
 
+    d3.select("#indicator-container")
+      .append("div")
+      .append("text")
+      .html("Proportion Significant")
   // Add title
-  pieSvg.append("text")
-    .attr("x", pieRadius * 1.25)
-    .attr("y", pieRadius * 2.5)
-    .attr("text-anchor", "middle")
-    .style("font-size", "14px")
-    .text("Proportion Significant");
+  // pieSvg.append("text")
+  //   .attr("x", pieRadius * 1.25)
+  //   .attr("y", pieRadius * 2.5)
+  //   .attr("text-anchor", "middle")
+  //   .style("font-size", "14px")
+  //   .text("Proportion Significant");
 }
 
 function updatePieChart() {
