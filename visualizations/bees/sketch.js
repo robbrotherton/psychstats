@@ -73,14 +73,14 @@ function setup() {
   xArray = jStat.seq(0, width, 301);
   pause = false;
 
-  // Create container divs for each slider-label pair
+  // Create container divs for each control group
   let attractionContainer = createDiv('');
-  let differenceContainer = createDiv('');
   let numberContainer = createDiv('');
+  let differenceContainer = createDiv('');
   
   attractionContainer.parent('controls-container');
-  differenceContainer.parent('controls-container');
   numberContainer.parent('controls-container');
+  differenceContainer.parent('controls-container');
   
   // Style the containers
   [attractionContainer, differenceContainer, numberContainer].forEach(container => {
@@ -89,37 +89,46 @@ function setup() {
     container.style('margin', '5px 0');
   });
 
-  // Create and setup controls with their containers
-  attractionSlider = createSlider(0, 2, 1);
-  attractionSlider.input(() => {
-    
-    const newValue = parseInt(attractionSlider.value());
+  // Create attraction buttons container
+  attractionLabel = createSpan('Variability');
+  attractionLabel.parent(attractionContainer);
+  let attractionButtonsContainer = createDiv('');
+  attractionButtonsContainer.parent(attractionContainer);
+  attractionButtonsContainer.style('display', 'flex');
+  attractionButtonsContainer.style('gap', '5px');
 
-    switch (newValue) {
-      case 0:
-        params.attractorStrength = 1;
-        attractionLabel.html('Variability: low');
-        break;
-
-      case 1:
-        params.attractorStrength = 2;
-        attractionLabel.html('Variability: medium');
-        break;
-
-      case 2:
-        params.attractorStrength = 4;
-        attractionLabel.html('Variability: high');
-        break;
-    }
-
-    params.se = seValues[newValue][numberSlider.value()];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-
-  });
+  // Create variability buttons
+  let lowButton = createButton('Low');
+  let medButton = createButton('Medium');
+  let highButton = createButton('High');
   
+  [lowButton, medButton, highButton].forEach(btn => {
+    btn.parent(attractionButtonsContainer);
+    btn.style('padding', '5px 10px');
+  });
+
+  // Set initial active state
+  medButton.class('active');
+  
+  // Button click handlers
+  lowButton.mousePressed(() => updateVariability(0, lowButton, [medButton, highButton]));
+  medButton.mousePressed(() => updateVariability(1, medButton, [lowButton, highButton]));
+  highButton.mousePressed(() => updateVariability(2, highButton, [lowButton, medButton]));
+
+
+  attractionLabel.style('margin-right', '10px');
+  attractionLabel.style('min-width', '120px');
+  attractionLabel.style('text-align', 'right');
+
+  
+  // Style the containers
+  [differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
+
+  // Create and setup controls with their containers
   differenceSlider = createSlider(0, 200, 0);
   differenceSlider.input(() => {
     params.sd = params.se * Math.sqrt(params.nBees);
@@ -158,21 +167,17 @@ function setup() {
 
   });
 
-  attractionLabel = createSpan('Variability: medium');
   differenceLabel = createSpan('Difference: ' + differenceSlider.value());
   numberLabel = createSpan('Number of Bees: ' + params.nBees);
 
   // Style the labels
-  [attractionLabel, differenceLabel, numberLabel].forEach(label => {
+  [differenceLabel, numberLabel].forEach(label => {
     label.style('margin-right', '10px');
     label.style('min-width', '120px');
     label.style('text-align', 'right');
   });
 
   // Add controls to their containers
-  attractionLabel.parent(attractionContainer);
-  attractionSlider.parent(attractionContainer);
-  
   differenceLabel.parent(differenceContainer);
   differenceSlider.parent(differenceContainer);
   
@@ -190,6 +195,31 @@ function setup() {
   
   setupDistributionViz();
 
+}
+
+function updateVariability(value, activeButton, inactiveButtons) {
+  // Update button states
+  activeButton.class('active');
+  inactiveButtons.forEach(btn => btn.removeClass('active'));
+  
+  // Update parameters
+  switch (value) {
+    case 0:
+      params.attractorStrength = 1;
+      break;
+    case 1:
+      params.attractorStrength = 2;
+      break;
+    case 2:
+      params.attractorStrength = 4;
+      break;
+  }
+
+  params.se = seValues[value][numberSlider.value()];
+  params.sd = params.se * Math.sqrt(params.nBees);
+  params.d = differenceSlider.value() / params.sd;
+  differenceLabel.html('Difference: ' + round(params.d, 2));
+  console.log("Cohen's d: " + params.d);
 }
 
 function draw() {
