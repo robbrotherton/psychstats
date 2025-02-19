@@ -16,7 +16,7 @@ function setupDistributionViz() {
     .attr("width", width)
     .attr("height", height)
     .append("g")
-    // .attr("transform", `translate(${margin.left},${margin.top})`);
+  // .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Create scales
   x = d3.scaleLinear()
@@ -59,8 +59,8 @@ function setupDistributionViz() {
     .attr("stroke-width", 1.5);
 
   bars = svg.append("g")
-  .attr("fill", palette.bees)
-  .attr("opacity", 0.5)
+    .attr("fill", palette.bees)
+    .attr("opacity", 0.5)
   // .attr("stroke", palette.bees)
   // .attr("stroke-width", 0.1)
 
@@ -76,17 +76,21 @@ function setupIndicators() {
   pieG = pieSvg.append("g")
     .attr("transform", `translate(${pieRadius},${pieRadius})`);
 
-    d3.select("#indicator-container")
-      .append("div")
-      .append("text")
-      .html("Proportion Significant")
-  // Add title
-  // pieSvg.append("text")
-  //   .attr("x", pieRadius * 1.25)
-  //   .attr("y", pieRadius * 2.5)
-  //   .attr("text-anchor", "middle")
-  //   .style("font-size", "14px")
-  //   .text("Proportion Significant");
+  d3.select("#indicator-container")
+    .append("div")
+    .append("text")
+    .html("Proportion Significant")
+
+  d3.select("#indicator-container")
+    .append("div")
+    .append("text")
+    .html("Proportion Significant")
+
+  d3.select("#indicator-container")
+    .append("div")
+    .append("text")
+    .html("Proportion Significant")
+
 }
 
 function updatePieChart() {
@@ -130,7 +134,7 @@ function updatePieChart() {
 
 
 function updateDistribution(swarm, histogram) {
-  
+
   // add the current sample mean to the histogram
   const currentMean = swarm.currentMean;
 
@@ -138,12 +142,12 @@ function updateDistribution(swarm, histogram) {
 
   // const se = histogram.getSd();
   const se = params.se;
-  
+
   const histogramData = Object.keys(histogram.bins.counts).map(x => ({
     x: Number(x),
-    count: histogram.bins.counts[x]  / histogram.total
+    count: histogram.bins.counts[x] / histogram.total
   }));
-  
+
   // Update the bars
   // const barScale = d3.scaleLinear()
   //   .domain([0, 0.12])
@@ -168,14 +172,14 @@ function updateDistribution(swarm, histogram) {
   const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
   const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
 
-  
+
   // determine significance: current mean falls outside the 95% interval?
   const isSignificant = (currentMean < lowerCrit) || (currentMean > upperCrit);
-  
+
   sigCounter.obs++;
   if (isSignificant) sigCounter.sigs++;
   updatePieChart();
-  
+
   // update mean line position and color based on significance
   meanLine
     .attr("x1", x(currentMean))
@@ -183,7 +187,7 @@ function updateDistribution(swarm, histogram) {
     .attr("y1", 0)
     .attr("y2", height)
     .attr("stroke", isSignificant ? "#ff0000" : palette.hive);
-  
+
 
   // shade regions at lowerCrit and upperCrit 
   const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
@@ -201,7 +205,7 @@ function updateDistribution(swarm, histogram) {
 
   // build right tail region
   const rightPoints = [{ x: upperCrit, y: -0.002 },
-  { x: upperCrit, y: jStat.studentt.pdf(upperCrit,canvasWidth * 0.5, se) }]
+  { x: upperCrit, y: jStat.studentt.pdf(upperCrit, canvasWidth * 0.5, se) }]
     .concat(points.filter(p => p.x >= upperCrit));
   rightPoints.push({ x: rightPoints[rightPoints.length - 1].x, y: -0.002 });
 

@@ -7,6 +7,19 @@ class Bee {
     this.acceleration = createVector();
     this.maxForce = 0.9; // Maximum steering force
     this.maxSpeed = 5; // Maximum speed
+
+    // Create DOM element for the bee
+    this.element = createDiv()
+      .addClass('bee')
+      .style('position', 'absolute')
+      .style('width', '8px')
+      .style('height', '8px')
+      .style('border-radius', '50%')
+      .style('background-color', palette.bees)
+      .style('transform-origin', 'top left') // Add this line
+      .style('top', '0')  // Add this line
+      .style('left', '0') // Add this line
+      .parent('swarm-container');
   }
 
   separation(bees) {
@@ -61,9 +74,16 @@ class Bee {
   }
 
   show() {
-    strokeWeight(8);
-    // stroke(this.col);
-    point(this.position.x, this.position.y);
+    // Adjust for the container's position
+    // const containerRect = document.getElementById('swarm-container').getBoundingClientRect();
+    const x = this.position.x;
+    const y = this.position.y;
+    this.element.style('transform', `translate3d(${x}px, ${y}px, 0)`);
+  }
+
+  // Add method to clean up DOM element
+  remove() {
+    this.element.remove();
   }
 }
 
@@ -123,7 +143,6 @@ class Swarm {
 
   display() {
     for (let bee of this.bees) {
-      stroke(this.col);
       bee.show();
     }
 
@@ -142,6 +161,28 @@ class Swarm {
     // draw current center (average of x positions)
     // stroke("#0062ff");
     // point(this.average, this.attractor.y);
+  }
+
+  // Modify the part where bees are removed to clean up DOM elements
+  handleSwarms() {
+    // ...existing code...
+    if (swarm.bees.length > params.nBees) {
+      // Remove excess bees and their DOM elements
+      const removedBees = swarm.bees.splice(params.nBees, swarm.bees.length);
+      removedBees.forEach(bee => bee.remove());
+    }
+  }
+
+  // Add this method to properly cleanup bees
+  removeBees(count) {
+    const removedBees = this.bees.splice(0, count);
+    removedBees.forEach(bee => bee.remove());
+  }
+
+  // Optional: Add a cleanup method for complete removal
+  cleanup() {
+    this.bees.forEach(bee => bee.remove());
+    this.bees = [];
   }
 }
 

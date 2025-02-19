@@ -27,6 +27,8 @@ let seValues = [
 
 let params = {
   attractorStrength: 2,
+  attractorStrengthIndex: 1,
+  attractorStrengthValues: [1, 2, 4],
   nBees: 50,
   nBeesIndex: 1,
   nBeesValues: [15, 50, 100],
@@ -62,7 +64,9 @@ function handleSwarms() {
   }
 
   if (swarm.bees.length > params.nBees) {
-    swarm.bees.splice(params.nBees, swarm.bees.length);
+    // Remove excess bees and their DOM elements
+    const removedBees = swarm.bees.splice(params.nBees);
+    removedBees.forEach(bee => bee.remove());
   }
 
 }
@@ -214,19 +218,22 @@ function updateVariability(value, activeButton, inactiveButtons) {
   // Update button states
   activeButton.class('btn btn-success');
   inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+
+  params.attractorStrengthIndex = value;
+  params.attractorStrength = params.attractorStrengthValues[value];
   
   // Update parameters
-  switch (value) {
-    case 0:
-      params.attractorStrength = 1;
-      break;
-    case 1:
-      params.attractorStrength = 2;
-      break;
-    case 2:
-      params.attractorStrength = 4;
-      break;
-  }
+  // switch (value) {
+  //   case 0:
+  //     params.attractorStrength = 1;
+  //     break;
+  //   case 1:
+  //     params.attractorStrength = 2;
+  //     break;
+  //   case 2:
+  //     params.attractorStrength = 4;
+  //     break;
+  // }
 
   params.se = seValues[value][params.nBeesIndex];
   params.sd = params.se * Math.sqrt(params.nBees);
@@ -255,7 +262,7 @@ function updateNumber(value, activeButton, inactiveButtons) {
   //     break;
   // }
 
-  params.se = seValues[params.attractorStrength - 1][value];
+  params.se = seValues[params.attractorStrengthIndex][value];
   params.sd = params.se * Math.sqrt(params.nBees);
   params.d = differenceSlider.value() / params.sd;
   differenceLabel.html('Difference: ' + round(params.d, 2));
