@@ -81,16 +81,6 @@ function setupIndicators() {
     .append("text")
     .html("Proportion Significant")
 
-  d3.select("#indicator-container")
-    .append("div")
-    .append("text")
-    .html("Proportion Significant")
-
-  d3.select("#indicator-container")
-    .append("div")
-    .append("text")
-    .html("Proportion Significant")
-
 }
 
 function updatePieChart() {

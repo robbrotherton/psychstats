@@ -59,7 +59,7 @@ function handleSwarms() {
 
   if (swarm.bees.length < params.nBees) {
     for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
-      swarm.bees.push(new Bee(random(width), random(-height)));
+      swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
     }
   }
 
@@ -144,7 +144,7 @@ function setup() {
     resetButtonClicked();
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
+    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
   });
 
@@ -179,7 +179,7 @@ function setup() {
   numberLabel.style('min-width', '120px');
   numberLabel.style('text-align', 'right');
 
-  differenceLabel = createSpan('Difference: ' + differenceSlider.value());
+  differenceLabel = createSpan("Hive position (Cohen's d): " + differenceSlider.value());
 
   // Style the labels
   [differenceLabel, numberLabel].forEach(label => {
@@ -238,7 +238,7 @@ function updateVariability(value, activeButton, inactiveButtons) {
   params.se = seValues[value][params.nBeesIndex];
   params.sd = params.se * Math.sqrt(params.nBees);
   params.d = differenceSlider.value() / params.sd;
-  differenceLabel.html('Difference: ' + round(params.d, 2));
+  differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
   console.log("Cohen's d: " + params.d);
 }
 
