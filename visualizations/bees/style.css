@@ -1,0 +1,56 @@
+#viz-container {
+    position: relative;
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    height: 400px;
+}
+
+#swarm-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#distribution-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#ui-container {
+    display: flex;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+#controls-container {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+#indicator-container {
+    width: 50%;
+    padding: 20px;
+    align-content: center;
+    text-align: center;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+}
+
+#stuff {
+    margin-bottom: 2em;
+}
+
+button.active {
+  background-color: #666;
+  color: white;
+}
