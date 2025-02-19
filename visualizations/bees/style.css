@@ -31,7 +31,20 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-items: flex-start;
+    align-items: center; /* Changed from flex-start to center */
+}
+
+#controls-container > div {
+    width: 100%;
+    justify-content: center;
+}
+
+#controls-container span {
+    flex: 0 0 120px; /* Fixed width for labels */
+}
+
+#controls-container input[type="range"] {
+    width: 200px; /* Fixed width for slider */
 }
 
 #indicator-container {
