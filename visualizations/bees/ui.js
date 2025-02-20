@@ -10,13 +10,14 @@ let pieSvg, pieG;
 const pieRadius = 40;
 
 function setupDistributionViz() {
-  // Create SVG
+  // Create SVG with viewBox and preserveAspectRatio for proper scaling
   svg = d3.select("#distribution-container")
     .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-  // .attr("transform", `translate(${margin.left},${margin.top})`);
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", "100%")
+    .style("height", "100%")
+    .append("g");
 
   // Create scales
   x = d3.scaleLinear()
@@ -70,8 +71,10 @@ function setupDistributionViz() {
 function setupIndicators() {
   pieSvg = d3.select("#indicator-container")
     .append("svg")
-    .attr("width", pieRadius * 2)
-    .attr("height", pieRadius * 2);
+    .attr("viewBox", `0 0 ${pieRadius * 2} ${pieRadius * 2}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", pieRadius * 2 + "px")
+    .style("height", pieRadius * 2 + "px");
 
   pieG = pieSvg.append("g")
     .attr("transform", `translate(${pieRadius},${pieRadius})`);

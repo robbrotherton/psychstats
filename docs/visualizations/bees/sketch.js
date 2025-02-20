@@ -1,81 +1,102 @@
+const CANVAS_WIDTH = 840;
+const CANVAS_HEIGHT = 400;
+const ASPECT_RATIO = CANVAS_WIDTH / CANVAS_HEIGHT;
+const canvasWidth = CANVAS_WIDTH;
+const canvasHeight = CANVAS_HEIGHT;
+
 let swarm, meanHistogram, estimatedParams;
 let pause;
 let xArray;
 let observations = 0;
 let sigs = 0;
-let canvasWidth = 840;
-let canvasHeight = 400;
-let nullMu = canvasWidth * 0.5;
+let nullMu = CANVAS_WIDTH * 0.5;
 let attractionLabel, differenceLabel, numberLabel;
+
 let palette = {
   null: "steelblue",
   bees: "#f9c901",
   hive: "#926900"
 }
 
+// a 2d array of standard error values that work for different input combos
+// the numbers were derived by advancing the simulation at least 100,000 clicks
+// and determining the variability of the sample means
+// this might differ depending on processor speed etc?
 let seValues = [
   // nBees = [15, 50, 100]
-  [5.0341, 3.206, 2.396], // attractorStrength = 1
-  [9.29, 5.51, 4.21], // attractorStrength = 2
+  [5.14, 3.206, 2.396], // attractorStrength = 1
+  [9.1, 5.49, 4.21], // attractorStrength = 2
   [17.761, 10.098, 7.075], // attractorStrength = 4
 ]
 
 let params = {
   attractorStrength: 2,
+  attractorStrengthIndex: 1,
+  attractorStrengthValues: [1, 2, 4],
   nBees: 50,
-  se: 5.51
+  nBeesIndex: 1,
+  nBeesValues: [15, 50, 100],
+  se: 5.49
 }
 
 
 function pauseButtonClicked() {
   pause = !pause;
   if (pause) {
-    button.html("go");
+    pauseButton.class("btn btn-warning")
+    pauseButton.html("play");
   } else {
-    button.html("stop");
+    pauseButton.html("pause");
+    pauseButton.class("btn btn-outline-warning")
   }
+}
+
+function resetButtonClicked() {
+  sigCounter = { sigs: 0, obs: 0 };
+  meanHistogram = new Histogram()
+  meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
 }
 
 function handleSwarms() {
   // the swarm's x attractor distance, in pixels, from the center of the canvas
-  swarm.attractor = createVector(canvasWidth * 0.5 + differenceSlider.value(), canvasHeight * 0.5);
+  swarm.attractor = createVector(CANVAS_WIDTH * 0.5 + differenceSlider.value(), CANVAS_HEIGHT * 0.5);
 
   if (swarm.bees.length < params.nBees) {
     for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
-      swarm.bees.push(new Bee(random(width), random(-height)));
+      swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
     }
   }
 
   if (swarm.bees.length > params.nBees) {
-    swarm.bees.splice(params.nBees, swarm.bees.length);
+    // Remove excess bees and their DOM elements
+    const removedBees = swarm.bees.splice(params.nBees);
+    removedBees.forEach(bee => bee.remove());
   }
 
-}
-
-function mouseReleased() {
-  sigCounter = { sigs: 0, obs: 0 };
-  meanHistogram = new Histogram()
-  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
 }
 
 function setup() {
 
   angleMode(DEGREES);
 
-  let canvas = createCanvas(canvasWidth, canvasHeight);
+  // Create canvas with fixed internal dimensions
+  let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   canvas.parent('swarm-container');
+  
+  // Add resize handler
+  windowResized();
 
   xArray = jStat.seq(0, width, 301);
   pause = false;
 
-  // Create container divs for each slider-label pair
+  // Create container divs for each control group
   let attractionContainer = createDiv('');
-  let differenceContainer = createDiv('');
   let numberContainer = createDiv('');
+  let differenceContainer = createDiv('');
   
   attractionContainer.parent('controls-container');
-  differenceContainer.parent('controls-container');
   numberContainer.parent('controls-container');
+  differenceContainer.parent('controls-container');
   
   // Style the containers
   [attractionContainer, differenceContainer, numberContainer].forEach(container => {
@@ -84,107 +105,205 @@ function setup() {
     container.style('margin', '5px 0');
   });
 
-  // Create and setup controls with their containers
-  attractionSlider = createSlider(0, 2, 1);
-  attractionSlider.input(() => {
-    
-    const newValue = parseInt(attractionSlider.value());
+  // Create attraction buttons container
+  attractionLabel = createSpan('Variability');
+  attractionLabel.parent(attractionContainer);
+  let attractionButtonsContainer = createDiv('');
+  attractionButtonsContainer.parent(attractionContainer);
+  attractionButtonsContainer.style('display', 'flex');
+  attractionButtonsContainer.style('gap', '5px');
 
-    switch (newValue) {
-      case 0:
-        params.attractorStrength = 1;
-        attractionLabel.html('Variability: low');
-        break;
-
-      case 1:
-        params.attractorStrength = 2;
-        attractionLabel.html('Variability: medium');
-        break;
-
-      case 2:
-        params.attractorStrength = 4;
-        attractionLabel.html('Variability: high');
-        break;
-    }
-
-    params.se = seValues[newValue][numberSlider.value()];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-
-  });
+  // Create variability buttons
+  let lowButton = createButton('Low');
+  let medButton = createButton('Medium');
+  let highButton = createButton('High');
   
-  differenceSlider = createSlider(0, 200, 0);
+  [lowButton, medButton, highButton].forEach(btn => {
+    btn.parent(attractionButtonsContainer);
+    btn.class("btn btn-outline-primary")
+    btn.style('padding', '5px 10px');
+  });
+
+  // Set initial active state
+  medButton.class('btn btn-success');
+  
+  // Button click handlers
+  lowButton.mousePressed(() => updateVariability(0, lowButton, [medButton, highButton]));
+  medButton.mousePressed(() => updateVariability(1, medButton, [lowButton, highButton]));
+  highButton.mousePressed(() => updateVariability(2, highButton, [lowButton, medButton]));
+
+
+  attractionLabel.style('margin-right', '10px');
+  // attractionLabel.style('min-width', '120px');
+  // attractionLabel.style('text-align', 'right');
+
+  
+  // Style the containers
+  [differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
+
+  // Create and setup controls with their containers
+  differenceSlider = createSlider(0, 100, 0);
+  differenceSlider.class("form-range");
   differenceSlider.input(() => {
+    resetButtonClicked();
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
+    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
   });
 
-  numberSlider = createSlider(0, 2, 1);
-  numberSlider.input(() => {
+  // Create number buttons container
+  numberLabel = createSpan('Number of Bees');
+  numberLabel.parent(numberContainer);
+  let numberButtonsContainer = createDiv('');
+  numberButtonsContainer.parent(numberContainer);
+  numberButtonsContainer.style('display', 'flex');
+  numberButtonsContainer.style('gap', '5px');
 
-    const newValue = parseInt(numberSlider.value());
-
-    switch (newValue) {
-      case 0:
-        params.nBees = 15;
-        numberLabel.html('Number of bees: 15');
-        break;
-
-      case 1:
-        params.nBees = 50;
-        numberLabel.html('Number of bees: 50');
-        break;
-
-      case 2:
-        params.nBees = 100;
-        numberLabel.html('Number of bees: 100');
-        break;
-    }
-
-    params.se = seValues[attractionSlider.value()][numberSlider.value()];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-
+  // Create number buttons
+  let smallButtonN = createButton('15');
+  let medButtonN = createButton('50');
+  let largeButtonN = createButton('100');
+  
+  [smallButtonN, medButtonN, largeButtonN].forEach(btn => {
+    btn.parent(numberButtonsContainer);
+    btn.class("btn btn-outline-primary")
+    btn.style('padding', '5px 10px');
   });
 
-  attractionLabel = createSpan('Variability: medium');
-  differenceLabel = createSpan('Difference: ' + differenceSlider.value());
-  numberLabel = createSpan('Number of Bees: ' + params.nBees);
+  // Set initial active state
+  medButtonN.class('btn btn-success');
+  
+  // Button click handlers
+  smallButtonN.mousePressed(() => updateNumber(0, smallButtonN, [medButtonN, largeButtonN]));
+  medButtonN.mousePressed(() => updateNumber(1, medButtonN, [smallButtonN, largeButtonN]));
+  largeButtonN.mousePressed(() => updateNumber(2, largeButtonN, [smallButtonN, medButtonN]));
+
+  numberLabel.style('margin-right', '10px');
+  // numberLabel.style('min-width', '120px');
+  // numberLabel.style('text-align', 'right');
+
+  differenceLabel = createSpan("Hive position (Cohen's d): " + differenceSlider.value());
 
   // Style the labels
-  [attractionLabel, differenceLabel, numberLabel].forEach(label => {
+  [differenceLabel, numberLabel].forEach(label => {
     label.style('margin-right', '10px');
-    label.style('min-width', '120px');
-    label.style('text-align', 'right');
+    // label.style('min-width', '120px');
+    label.style('text-align', 'left');
   });
 
   // Add controls to their containers
-  attractionLabel.parent(attractionContainer);
-  attractionSlider.parent(attractionContainer);
-  
   differenceLabel.parent(differenceContainer);
   differenceSlider.parent(differenceContainer);
   
-  numberLabel.parent(numberContainer);
-  numberSlider.parent(numberContainer);
 
-
-  button = createButton("stop");
-  button.mousePressed(pauseButtonClicked);
-  button.parent('controls-container');
-
-
-  swarm = new Swarm(params.nBees, palette.bees);
-  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
-  
   setupDistributionViz();
 
+  // create the pause and reset buttons, add them to the indicator container
+  pauseButton = createButton("pause");
+  pauseButton.class("btn btn-outline-warning")
+  pauseButton.mousePressed(pauseButtonClicked);
+  pauseButton.parent('indicator-container');
+
+  resetButton = createButton("reset");
+  resetButton.class("btn btn-outline-danger")
+  resetButton.mousePressed(resetButtonClicked);
+  resetButton.parent('indicator-container');
+  
+  
+  swarm = new Swarm(params.nBees, palette.bees);
+  meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
+  
+
+}
+
+function windowResized() {
+  // Get container width
+  let container = select('#swarm-container');
+  let containerWidth = container.width;
+  
+  // Calculate height based on aspect ratio
+  let containerHeight = containerWidth / ASPECT_RATIO;
+  
+  // Resize canvas display size while maintaining internal dimensions
+  resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, true);
+  
+  // Fix: properly access and style the canvas element
+  let canvasElement = document.querySelector('#defaultCanvas0');
+  canvasElement.style.width = containerWidth + 'px';
+  canvasElement.style.height = containerHeight + 'px';
+}
+
+// Add this helper to convert mouse coordinates
+function getCanvasCoordinates(x, y) {
+  let canvas = select('canvas').elt;
+  let rect = canvas.getBoundingClientRect();
+  let scaleX = CANVAS_WIDTH / rect.width;
+  let scaleY = CANVAS_HEIGHT / rect.height;
+  return {
+      x: (x - rect.left) * scaleX,
+      y: (y - rect.top) * scaleY
+  };
+}
+
+function updateVariability(value, activeButton, inactiveButtons) {
+  resetButtonClicked();
+  // Update button states
+  activeButton.class('btn btn-success');
+  inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+
+  params.attractorStrengthIndex = value;
+  params.attractorStrength = params.attractorStrengthValues[value];
+  
+  // Update parameters
+  // switch (value) {
+  //   case 0:
+  //     params.attractorStrength = 1;
+  //     break;
+  //   case 1:
+  //     params.attractorStrength = 2;
+  //     break;
+  //   case 2:
+  //     params.attractorStrength = 4;
+  //     break;
+  // }
+
+  params.se = seValues[value][params.nBeesIndex];
+  params.sd = params.se * Math.sqrt(params.nBees);
+  params.d = differenceSlider.value() / params.sd;
+  differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
+  console.log("Cohen's d: " + params.d);
+}
+
+function updateNumber(value, activeButton, inactiveButtons) {
+  resetButtonClicked();
+  // Update button states
+  activeButton.class('btn btn-success');
+  inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+  params.nBeesIndex = value;
+  params.nBees = params.nBeesValues[value];
+  // Update parameters
+  // switch (value) {
+  //   case 0:
+  //     params.nBees = 15;
+  //     break;
+  //   case 1:
+  //     params.nBees = 50;
+  //     break;
+  //   case 2:
+  //     params.nBees = 100;
+  //     break;
+  // }
+
+  params.se = seValues[params.attractorStrengthIndex][value];
+  params.sd = params.se * Math.sqrt(params.nBees);
+  params.d = differenceSlider.value() / params.sd;
+  differenceLabel.html('Difference: ' + round(params.d, 2));
+  console.log("Cohen's d: " + params.d);
 }
 
 function draw() {
@@ -208,12 +327,12 @@ function draw() {
 // simulate the swarm offline for numIterations frames and update histogram
 function simulateSwarmOffline(swarm, numIterations) {
   
-  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
@@ -239,12 +358,12 @@ function simulateSwarmOffline(swarm, numIterations) {
 
 function advanceSwarmOffline(swarm, numIterations) {
   
-  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();

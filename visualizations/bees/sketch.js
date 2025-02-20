@@ -1,11 +1,15 @@
+const CANVAS_WIDTH = 840;
+const CANVAS_HEIGHT = 400;
+const ASPECT_RATIO = CANVAS_WIDTH / CANVAS_HEIGHT;
+const canvasWidth = CANVAS_WIDTH;
+const canvasHeight = CANVAS_HEIGHT;
+
 let swarm, meanHistogram, estimatedParams;
 let pause;
 let xArray;
 let observations = 0;
 let sigs = 0;
-let canvasWidth = 840;
-let canvasHeight = 400;
-let nullMu = canvasWidth * 0.5;
+let nullMu = CANVAS_WIDTH * 0.5;
 let attractionLabel, differenceLabel, numberLabel;
 
 let palette = {
@@ -50,12 +54,12 @@ function pauseButtonClicked() {
 function resetButtonClicked() {
   sigCounter = { sigs: 0, obs: 0 };
   meanHistogram = new Histogram()
-  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
 }
 
 function handleSwarms() {
   // the swarm's x attractor distance, in pixels, from the center of the canvas
-  swarm.attractor = createVector(canvasWidth * 0.5 + differenceSlider.value(), canvasHeight * 0.5);
+  swarm.attractor = createVector(CANVAS_WIDTH * 0.5 + differenceSlider.value(), CANVAS_HEIGHT * 0.5);
 
   if (swarm.bees.length < params.nBees) {
     for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
@@ -75,8 +79,12 @@ function setup() {
 
   angleMode(DEGREES);
 
-  let canvas = createCanvas(canvasWidth, canvasHeight);
+  // Create canvas with fixed internal dimensions
+  let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   canvas.parent('swarm-container');
+  
+  // Add resize handler
+  windowResized();
 
   xArray = jStat.seq(0, width, 301);
   pause = false;
@@ -208,9 +216,38 @@ function setup() {
   
   
   swarm = new Swarm(params.nBees, palette.bees);
-  meanHistogram = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   
 
+}
+
+function windowResized() {
+  // Get container width
+  let container = select('#swarm-container');
+  let containerWidth = container.width;
+  
+  // Calculate height based on aspect ratio
+  let containerHeight = containerWidth / ASPECT_RATIO;
+  
+  // Resize canvas display size while maintaining internal dimensions
+  resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, true);
+  
+  // Fix: properly access and style the canvas element
+  let canvasElement = document.querySelector('#defaultCanvas0');
+  canvasElement.style.width = containerWidth + 'px';
+  canvasElement.style.height = containerHeight + 'px';
+}
+
+// Add this helper to convert mouse coordinates
+function getCanvasCoordinates(x, y) {
+  let canvas = select('canvas').elt;
+  let rect = canvas.getBoundingClientRect();
+  let scaleX = CANVAS_WIDTH / rect.width;
+  let scaleY = CANVAS_HEIGHT / rect.height;
+  return {
+      x: (x - rect.left) * scaleX,
+      y: (y - rect.top) * scaleY
+  };
 }
 
 function updateVariability(value, activeButton, inactiveButtons) {
@@ -290,12 +327,12 @@ function draw() {
 // simulate the swarm offline for numIterations frames and update histogram
 function simulateSwarmOffline(swarm, numIterations) {
   
-  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
@@ -321,12 +358,12 @@ function simulateSwarmOffline(swarm, numIterations) {
 
 function advanceSwarmOffline(swarm, numIterations) {
   
-  // let hist = new Histogram(canvasWidth * 0.3, canvasWidth * 0.7, canvasWidth);
+  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
+  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();

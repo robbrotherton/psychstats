@@ -7,6 +7,7 @@ class Bee {
     this.acceleration = createVector();
     this.maxForce = 0.9; // Maximum steering force
     this.maxSpeed = 5; // Maximum speed
+    this.size = 6; // Half of original DOM element size
   }
 
   separation(bees) {
@@ -61,10 +62,16 @@ class Bee {
   }
 
   show() {
-    strokeWeight(8);
-    // stroke(this.col);
-    point(this.position.x, this.position.y);
+    // Draw bee directly on canvas
+    push();
+    noStroke();
+    fill(palette.bees);
+    circle(this.position.x, this.position.y, this.size * 2);
+    pop();
   }
+
+  // Remove DOM-related methods
+  remove() {} // Empty since we don't need DOM cleanup anymore
 }
 
 // Swarm class manages all the bees and the attractor
@@ -74,7 +81,7 @@ class Swarm {
     this.col = col;
     this.bees = [];
     this.attractor = { x: canvasWidth * 0.5, y: canvasHeight * 0.5 }; // set externally
-    this.hiveWidth = 5;
+    this.hiveWidth = 10;
     this.currentMean;
     this.meanHistory = [];
     this.sdHistory = {
@@ -122,26 +129,51 @@ class Swarm {
   }
 
   display() {
-    for (let bee of this.bees) {
-      stroke(this.col);
-      bee.show();
-    }
+    // Clear canvas before drawing new frame
+    clear();
+    
+    // Draw bees
+    this.bees.forEach(bee => bee.show());
 
-    // draw the attractor point
+    // Draw attractor and other elements
+    // draw the attractor point (the HIVE!)
     stroke(palette.hive);
+    fill(palette.hive);
     push();
     translate(this.attractor.x, this.attractor.y);
-    rotate(45);
+    // rotate(45);
     square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
     pop();
 
     // draw null hypothesis center
     stroke(palette.null);
-    point(width / 2, this.attractor.y);
+    point(canvasWidth / 2, this.attractor.y);
 
     // draw current center (average of x positions)
     // stroke("#0062ff");
     // point(this.average, this.attractor.y);
+  }
+
+  // Modify the part where bees are removed to clean up DOM elements
+  handleSwarms() {
+    // ...existing code...
+    if (swarm.bees.length > params.nBees) {
+      // Remove excess bees and their DOM elements
+      const removedBees = swarm.bees.splice(params.nBees, swarm.bees.length);
+      removedBees.forEach(bee => bee.remove());
+    }
+  }
+
+  // Add this method to properly cleanup bees
+  removeBees(count) {
+    const removedBees = this.bees.splice(0, count);
+    removedBees.forEach(bee => bee.remove());
+  }
+
+  // Optional: Add a cleanup method for complete removal
+  cleanup() {
+    this.bees.forEach(bee => bee.remove());
+    this.bees = [];
   }
 }
 

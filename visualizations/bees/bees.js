@@ -7,21 +7,7 @@ class Bee {
     this.acceleration = createVector();
     this.maxForce = 0.9; // Maximum steering force
     this.maxSpeed = 5; // Maximum speed
-
-    // Create DOM element for the bee
-    this.element = createDiv()
-      .addClass('bee')
-      .style('position', 'absolute')
-      // .style('width', '8px')
-      // .style('height', '8px')
-      // .style('border-radius', '50%')
-      // .style('border-color', 'black')
-      // .style('border-width', '1px')
-      .style('background-color', palette.bees)
-      .style('transform-origin', 'top left') // Add this line
-      .style('top', '0')  // Add this line
-      .style('left', '0') // Add this line
-      .parent('swarm-container');
+    this.size = 6; // Half of original DOM element size
   }
 
   separation(bees) {
@@ -76,17 +62,16 @@ class Bee {
   }
 
   show() {
-    // Adjust for the container's position
-    // const containerRect = document.getElementById('swarm-container').getBoundingClientRect();
-    const x = this.position.x;
-    const y = this.position.y;
-    this.element.style('transform', `translate3d(${x}px, ${y}px, 0)`);
+    // Draw bee directly on canvas
+    push();
+    noStroke();
+    fill(palette.bees);
+    circle(this.position.x, this.position.y, this.size * 2);
+    pop();
   }
 
-  // Add method to clean up DOM element
-  remove() {
-    this.element.remove();
-  }
+  // Remove DOM-related methods
+  remove() {} // Empty since we don't need DOM cleanup anymore
 }
 
 // Swarm class manages all the bees and the attractor
@@ -144,10 +129,13 @@ class Swarm {
   }
 
   display() {
-    for (let bee of this.bees) {
-      bee.show();
-    }
+    // Clear canvas before drawing new frame
+    clear();
+    
+    // Draw bees
+    this.bees.forEach(bee => bee.show());
 
+    // Draw attractor and other elements
     // draw the attractor point (the HIVE!)
     stroke(palette.hive);
     fill(palette.hive);

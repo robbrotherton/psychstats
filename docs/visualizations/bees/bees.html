@@ -52,6 +52,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -148,8 +149,10 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div id="ui-container">
-<div id="controls-container">
-
+<div id="controls-container" class="card">
+<h4 class="card-title anchored" style="margin-top: 0;">
+Swarm controls
+</h4>
 </div>
 <div id="indicator-container">
 
@@ -159,57 +162,6 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="about">About</h2>
 <p>How do you like these bees?</p>
 </section>
-<style>
-#viz-container {
-    position: relative;
-    width: 100%;
-    max-width: 840px;
-    margin: 0 auto;
-    height: 400px;
-}
-
-#swarm-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-
-#distribution-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#ui-container {
-    display: flex;
-    width: 100%;
-    flex: 0 0 auto;
-}
-
-#controls-container {
-    width: 50%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-}
-
-#indicator-container {
-    width: 50%;
-    padding: 20px;
-}
-
-canvas {
-    display: block;
-    margin: auto;
-}
-
-#stuff {
-    margin-bottom: 2em;
-}
-</style>
 
 
 
