@@ -12,9 +12,11 @@ class Bee {
     this.element = createDiv()
       .addClass('bee')
       .style('position', 'absolute')
-      .style('width', '8px')
-      .style('height', '8px')
-      .style('border-radius', '50%')
+      // .style('width', '8px')
+      // .style('height', '8px')
+      // .style('border-radius', '50%')
+      // .style('border-color', 'black')
+      // .style('border-width', '1px')
       .style('background-color', palette.bees)
       .style('transform-origin', 'top left') // Add this line
       .style('top', '0')  // Add this line
@@ -94,7 +96,7 @@ class Swarm {
     this.col = col;
     this.bees = [];
     this.attractor = { x: canvasWidth * 0.5, y: canvasHeight * 0.5 }; // set externally
-    this.hiveWidth = 5;
+    this.hiveWidth = 10;
     this.currentMean;
     this.meanHistory = [];
     this.sdHistory = {
@@ -146,17 +148,18 @@ class Swarm {
       bee.show();
     }
 
-    // draw the attractor point
+    // draw the attractor point (the HIVE!)
     stroke(palette.hive);
+    fill(palette.hive);
     push();
     translate(this.attractor.x, this.attractor.y);
-    rotate(45);
+    // rotate(45);
     square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
     pop();
 
     // draw null hypothesis center
     stroke(palette.null);
-    point(width / 2, this.attractor.y);
+    point(canvasWidth / 2, this.attractor.y);
 
     // draw current center (average of x positions)
     // stroke("#0062ff");

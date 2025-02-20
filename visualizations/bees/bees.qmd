@@ -21,7 +21,7 @@ include-after-body:
   <div id="distribution-container"></div>
 </div>
 <div id="ui-container">
-  <div id="controls-container"></div>
+  <div id="controls-container" class="card"><h4 class="card-title" style="margin-top: 0;">Swarm controls</h3></div>
   <div id="indicator-container"></div>
 </div>
 

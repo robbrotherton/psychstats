@@ -126,8 +126,8 @@ function setup() {
 
 
   attractionLabel.style('margin-right', '10px');
-  attractionLabel.style('min-width', '120px');
-  attractionLabel.style('text-align', 'right');
+  // attractionLabel.style('min-width', '120px');
+  // attractionLabel.style('text-align', 'right');
 
   
   // Style the containers
@@ -138,7 +138,7 @@ function setup() {
   });
 
   // Create and setup controls with their containers
-  differenceSlider = createSlider(0, 200, 0);
+  differenceSlider = createSlider(0, 100, 0);
   differenceSlider.class("form-range");
   differenceSlider.input(() => {
     resetButtonClicked();
@@ -168,7 +168,7 @@ function setup() {
   });
 
   // Set initial active state
-  medButtonN.class('btn btn-info');
+  medButtonN.class('btn btn-success');
   
   // Button click handlers
   smallButtonN.mousePressed(() => updateNumber(0, smallButtonN, [medButtonN, largeButtonN]));
@@ -176,16 +176,16 @@ function setup() {
   largeButtonN.mousePressed(() => updateNumber(2, largeButtonN, [smallButtonN, medButtonN]));
 
   numberLabel.style('margin-right', '10px');
-  numberLabel.style('min-width', '120px');
-  numberLabel.style('text-align', 'right');
+  // numberLabel.style('min-width', '120px');
+  // numberLabel.style('text-align', 'right');
 
   differenceLabel = createSpan("Hive position (Cohen's d): " + differenceSlider.value());
 
   // Style the labels
   [differenceLabel, numberLabel].forEach(label => {
     label.style('margin-right', '10px');
-    label.style('min-width', '120px');
-    label.style('text-align', 'right');
+    // label.style('min-width', '120px');
+    label.style('text-align', 'left');
   });
 
   // Add controls to their containers
@@ -245,7 +245,7 @@ function updateVariability(value, activeButton, inactiveButtons) {
 function updateNumber(value, activeButton, inactiveButtons) {
   resetButtonClicked();
   // Update button states
-  activeButton.class('btn btn-info');
+  activeButton.class('btn btn-success');
   inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
   params.nBeesIndex = value;
   params.nBees = params.nBeesValues[value];
