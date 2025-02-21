@@ -1,210 +1,198 @@
-let svg, path, x, y, lineGenerator;
-let leftTail, rightTail, meanLine;  // Add meanLine variable
-const margin = { top: 20, right: 0, bottom: 30, left: 0 };
-const width = canvasWidth;
-const height = canvasHeight;
-let sampleFrame = 0;
-let sigCounter = { sigs: 0, obs: 0 };
+function setupUI() {
+    // Create container divs for each control group
+  let attractionContainer = createDiv('');
+  let numberContainer = createDiv('');
+  let differenceContainer = createDiv('');
+  
+  attractionContainer.parent('controls-container');
+  numberContainer.parent('controls-container');
+  differenceContainer.parent('controls-container');
+  
+  // Style the containers
+  [attractionContainer, differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
 
-let pieSvg, pieG;
-const pieRadius = 40;
+  // Create attraction buttons container
+  attractionLabel = createSpan('Variability');
+  attractionLabel.parent(attractionContainer);
+  let attractionButtonsContainer = createDiv('');
+  attractionButtonsContainer.parent(attractionContainer);
+  attractionButtonsContainer.style('display', 'flex');
+  attractionButtonsContainer.style('gap', '5px');
 
-function setupDistributionViz() {
-  // Create SVG with viewBox and preserveAspectRatio for proper scaling
-  svg = d3.select("#distribution-container")
-    .append("svg")
-    // .attr("viewBox", `0 0 ${width} ${height}`)
-    // .attr("preserveAspectRatio", "xMidYMid meet")
-    // .style("width", "100%")
-    // .style("height", "100%")
-    .attr("width", 840)
-    .attr("height", 400)
-    .append("g");
+  // Create variability buttons
+  let lowButton = createButton('Low');
+  let medButton = createButton('Medium');
+  let highButton = createButton('High');
+  
+  [lowButton, medButton, highButton].forEach(btn => {
+    btn.parent(attractionButtonsContainer);
+    btn.class("btn btn-outline-primary")
+    btn.style('padding', '5px 10px');
+  });
 
-  // Create scales
-  x = d3.scaleLinear()
-    .domain([0, width])
-    .range([0, width]);
+  // Set initial active state
+  medButton.class('btn btn-success');
+  
+  // Button click handlers
+  lowButton.mousePressed(() => updateVariability(0, lowButton, [medButton, highButton]));
+  medButton.mousePressed(() => updateVariability(1, medButton, [lowButton, highButton]));
+  highButton.mousePressed(() => updateVariability(2, highButton, [lowButton, medButton]));
 
-  // Adjust y scale for better visibility
-  y = d3.scaleLinear()
-    .domain([0, 0.12])  // Increased upper bound
-    .range([height - margin.bottom, height * 0.5]);
 
-  // Add X axis
-  // svg.append("g")
-  //     .attr("transform", `translate(0,${height})`)
-  //     .call(d3.axisBottom(x));
+  attractionLabel.style('margin-right', '10px');
+  // attractionLabel.style('min-width', '120px');
+  // attractionLabel.style('text-align', 'right');
 
-  // Create line generator
-  lineGenerator = d3.line()
-    .x(d => x(d.x))
-    .y(d => y(d.y));
+  
+  // Style the containers
+  [differenceContainer, numberContainer].forEach(container => {
+    container.style('display', 'flex');
+    container.style('align-items', 'center');
+    container.style('margin', '5px 0');
+  });
 
-  // Add paths for rejection regions (before the line path)
-  leftTail = svg.append("path")
-    .attr("fill", "rgba(255, 0, 0, 0.4)")
-    .attr("stroke", "none");
+  // Create and setup controls with their containers
+  differenceSlider = createSlider(0, 100, 0);
+  differenceSlider.class("form-range");
+  differenceSlider.input(() => {
+    resetButtonClicked();
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
+  });
 
-  rightTail = svg.append("path")
-    .attr("fill", "rgba(255, 0, 0, 0.4)")
-    .attr("stroke", "none");
+  // Create number buttons container
+  numberLabel = createSpan('Number of Bees');
+  numberLabel.parent(numberContainer);
+  let numberButtonsContainer = createDiv('');
+  numberButtonsContainer.parent(numberContainer);
+  numberButtonsContainer.style('display', 'flex');
+  numberButtonsContainer.style('gap', '5px');
 
-  // Add vertical line for mean (add this before the path)
-  meanLine = svg.append("line")
-    .attr("stroke-width", 2)
-    .attr("stroke-dasharray", "4,4");  // Make it dashed
+  // Create number buttons
+  let smallButtonN = createButton('15');
+  let medButtonN = createButton('50');
+  let largeButtonN = createButton('100');
+  
+  [smallButtonN, medButtonN, largeButtonN].forEach(btn => {
+    btn.parent(numberButtonsContainer);
+    btn.class("btn btn-outline-primary")
+    btn.style('padding', '5px 10px');
+  });
 
-  // Add empty path that we'll update
-  path = svg.append("path")
-    .attr("fill", "none")
-    .attr("stroke", palette.null)
-    .attr("stroke-width", 1.5);
+  // Set initial active state
+  medButtonN.class('btn btn-success');
+  
+  // Button click handlers
+  smallButtonN.mousePressed(() => updateNumber(0, smallButtonN, [medButtonN, largeButtonN]));
+  medButtonN.mousePressed(() => updateNumber(1, medButtonN, [smallButtonN, largeButtonN]));
+  largeButtonN.mousePressed(() => updateNumber(2, largeButtonN, [smallButtonN, medButtonN]));
 
-  bars = svg.append("g")
-    .attr("fill", palette.bees)
-    .attr("opacity", 0.5)
-  // .attr("stroke", palette.bees)
-  // .attr("stroke-width", 0.1)
+  numberLabel.style('margin-right', '10px');
+  // numberLabel.style('min-width', '120px');
+  // numberLabel.style('text-align', 'right');
 
-  setupIndicators();  // Add this at the end
+  differenceLabel = createSpan("Hive position (Cohen's d): " + differenceSlider.value());
+
+  // Style the labels
+  [differenceLabel, numberLabel].forEach(label => {
+    label.style('margin-right', '10px');
+    // label.style('min-width', '120px');
+    label.style('text-align', 'left');
+  });
+
+  // Add controls to their containers
+  differenceLabel.parent(differenceContainer);
+  differenceSlider.parent(differenceContainer);
+
+
+  // create the pause and reset buttons, add them to the indicator container
+  pauseButton = createButton("pause");
+  pauseButton.class("btn btn-outline-warning")
+  pauseButton.mousePressed(pauseButtonClicked);
+  pauseButton.parent('indicator-container');
+
+  resetButton = createButton("reset");
+  resetButton.class("btn btn-outline-danger")
+  resetButton.mousePressed(resetButtonClicked);
+  resetButton.parent('indicator-container');
+
 }
 
-function setupIndicators() {
-  pieSvg = d3.select("#indicator-container")
-    .append("svg")
-    .attr("viewBox", `0 0 ${pieRadius * 2} ${pieRadius * 2}`)
-    .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width", pieRadius * 2 + "px")
-    .style("height", pieRadius * 2 + "px");
-
-  pieG = pieSvg.append("g")
-    .attr("transform", `translate(${pieRadius},${pieRadius})`);
-
-  d3.select("#indicator-container")
-    .append("div")
-    .append("text")
-    .html("Proportion Significant")
-
-}
-
-function updatePieChart() {
-  const sigProp = sigCounter.sigs / sigCounter.obs;
-  const data = [
-    { value: sigProp, color: "#ff0000" },
-    { value: 1 - sigProp, color: "#cccccc" }
-  ];
-
-  const pie = d3.pie()
-    .value(d => d.value)
-    .sort(null);
-
-  const arc = d3.arc()
-    .innerRadius(0)
-    .outerRadius(pieRadius);
-
-  const paths = pieG.selectAll("path")
-    .data(pie(data));
-
-  paths.enter()
-    .append("path")
-    .merge(paths)
-    .attr("d", arc)
-    .attr("fill", d => d.data.color);
-
-  paths.exit().remove();
-
-  // Add percentage text in center
-  const percentText = pieG.selectAll("text")
-    .data([sigProp.toFixed(3)]);
-
-  percentText.enter()
-    .append("text")
-    .merge(percentText)
-    .attr("text-anchor", "middle")
-    .attr("dy", "0.3em")
-    .style("font-size", "16px")
-    .text(d => `${d}`);
-}
-
-
-function updateDistribution(swarm, histogram) {
-
-  // add the current sample mean to the histogram
-  const currentMean = swarm.currentMean + 420;
-
-  histogram.add(currentMean);
-
-  // const se = histogram.getSd();
-  const se = params.se;
-
-  const histogramData = Object.keys(histogram.bins.counts).map(x => ({
-    x: Number(x),
-    count: histogram.bins.counts[x] / histogram.total
-  }));
-
-  // Update the bars
-  // const barScale = d3.scaleLinear()
-  //   .domain([0, 0.12])
-  //   .range([canvasHeight - margin.bottom, canvasHeight * 0.5]); // match the null dist scale
-
-  const bars = svg.select("g").selectAll("rect")
-    .data(histogramData, d => d.x);
-
-  // Enter new bars
-  bars.enter()
-    .append("rect")
-    .merge(bars)
-    .attr("x", d => d.x)
-    .attr("height", d => height - margin.bottom - y(d.count))
-    .attr("width", 1) // 1 pixel wide by default
-    .attr("y", d => y(d.count));
-
-  // Remove old bars
-  bars.exit().remove();
-
-
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
-
-
-  // determine significance: current mean falls outside the 95% interval?
-  const isSignificant = (currentMean < lowerCrit) || (currentMean > upperCrit);
-
-  sigCounter.obs++;
-  if (isSignificant) sigCounter.sigs++;
-  updatePieChart();
-
-  // update mean line position and color based on significance
-  meanLine
-    .attr("x1", x(currentMean))
-    .attr("x2", x(currentMean))
-    .attr("y1", 0)
-    .attr("y2", height)
-    .attr("stroke", isSignificant ? "#ff0000" : palette.hive);
-
-
-  // shade regions at lowerCrit and upperCrit 
-  const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
-    x: x,
-    y: Math.min(0.5, jStat.normal.pdf(x, canvasWidth * 0.5, se))
-  }));
-
-  // // update main distribution curve
-  path.datum(points).attr("d", lineGenerator);
-  // build left tail region for rejection area
-  const leftPoints = points.filter(p => p.x <= lowerCrit);
-  leftPoints.push({ x: lowerCrit, y: jStat.normal.pdf(lowerCrit, canvasWidth * 0.5, se) });
-  leftPoints.push({ x: lowerCrit, y: -0.002 });
-  leftPoints.unshift({ x: leftPoints[0].x, y: -0.002 });
-
-  // build right tail region
-  const rightPoints = [{ x: upperCrit, y: -0.002 },
-  { x: upperCrit, y: jStat.studentt.pdf(upperCrit, canvasWidth * 0.5, se) }]
-    .concat(points.filter(p => p.x >= upperCrit));
-  rightPoints.push({ x: rightPoints[rightPoints.length - 1].x, y: -0.002 });
-
-  // update rejection region visuals
-  leftTail.datum(leftPoints).attr("d", lineGenerator);
-  rightTail.datum(rightPoints).attr("d", lineGenerator);
-}
+function pauseButtonClicked() {
+    pause = !pause;
+    if (pause) {
+      pauseButton.class("btn btn-warning")
+      pauseButton.html("play");
+    } else {
+      pauseButton.html("pause");
+      pauseButton.class("btn btn-outline-warning")
+    }
+  }
+  
+  function resetButtonClicked() {
+    sigCounter = { sigs: 0, obs: 0 };
+    meanHistogram = new Histogram()
+    meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
+  }
+  
+  function updateVariability(value, activeButton, inactiveButtons) {
+    resetButtonClicked();
+    // Update button states
+    activeButton.class('btn btn-success');
+    inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+  
+    params.attractorStrengthIndex = value;
+    params.attractorStrength = params.attractorStrengthValues[value];
+    
+    // Update parameters
+    // switch (value) {
+    //   case 0:
+    //     params.attractorStrength = 1;
+    //     break;
+    //   case 1:
+    //     params.attractorStrength = 2;
+    //     break;
+    //   case 2:
+    //     params.attractorStrength = 4;
+    //     break;
+    // }
+  
+    params.se = seValues[value][params.nBeesIndex];
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
+  }
+  
+  function updateNumber(value, activeButton, inactiveButtons) {
+    resetButtonClicked();
+    // Update button states
+    activeButton.class('btn btn-success');
+    inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
+    params.nBeesIndex = value;
+    params.nBees = params.nBeesValues[value];
+    // Update parameters
+    // switch (value) {
+    //   case 0:
+    //     params.nBees = 15;
+    //     break;
+    //   case 1:
+    //     params.nBees = 50;
+    //     break;
+    //   case 2:
+    //     params.nBees = 100;
+    //     break;
+    // }
+  
+    params.se = seValues[params.attractorStrengthIndex][value];
+    params.sd = params.se * Math.sqrt(params.nBees);
+    params.d = differenceSlider.value() / params.sd;
+    differenceLabel.html('Difference: ' + round(params.d, 2));
+    console.log("Cohen's d: " + params.d);
+  }
