@@ -7,7 +7,7 @@ class Bee {
     this.acceleration = createVector();
     this.maxForce = 0.9; // Maximum steering force
     this.maxSpeed = 5; // Maximum speed
-    this.size = 6; // Half of original DOM element size
+    this.size = 6; // Half of  al DOM element size
   }
 
   separation(bees) {
@@ -34,6 +34,13 @@ class Bee {
 
   update() {
     this.position.add(this.velocity);
+    
+    // Allow bees to wrap around screen edges
+    // if (this.position.x < -VIZ_OFFSET_X) this.position.x = windowWidth * CANVAS_SCALE + VIZ_OFFSET_X;
+    // if (this.position.x > windowWidth * CANVAS_SCALE + VIZ_OFFSET_X) this.position.x = -VIZ_OFFSET_X;
+    // if (this.position.y < -VIZ_OFFSET_Y) this.position.y = windowHeight * CANVAS_SCALE + VIZ_OFFSET_Y;
+    // if (this.position.y > windowHeight * CANVAS_SCALE + VIZ_OFFSET_Y) this.position.y = -VIZ_OFFSET_Y;
+    
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.maxSpeed);
     this.acceleration.mult(0);
@@ -80,7 +87,7 @@ class Swarm {
     this.average;
     this.col = col;
     this.bees = [];
-    this.attractor = { x: canvasWidth * 0.5, y: canvasHeight * 0.5 }; // set externally
+    this.attractor = { x: 0, y: 0 }; // set externally
     this.hiveWidth = 10;
     this.currentMean;
     this.meanHistory = [];
@@ -137,17 +144,17 @@ class Swarm {
 
     // Draw attractor and other elements
     // draw the attractor point (the HIVE!)
-    stroke(palette.hive);
-    fill(palette.hive);
-    push();
-    translate(this.attractor.x, this.attractor.y);
+    // stroke(palette.hive);
+    // fill(palette.hive);
+    // push();
+    // translate(this.attractor.x, this.attractor.y);
     // rotate(45);
-    square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
-    pop();
+    // square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
+    // pop();
 
     // draw null hypothesis center
-    stroke(palette.null);
-    point(canvasWidth / 2, this.attractor.y);
+    // stroke(palette.null);
+    // point(0, 0);
 
     // draw current center (average of x positions)
     // stroke("#0062ff");

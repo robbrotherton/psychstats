@@ -1,47 +1,66 @@
+#quarto-content {
+    overflow: hidden;
+}
+
 #viz-container {
     position: relative;
-    width: 100%;
-    max-width: 840px;
-    margin: 0 auto;
-    height: auto !important;
+    height: 400px;
+    overflow: visible;
 }
 
 #swarm-container {
-    position: relative;
-    width: 100%;
-    height: auto !important;
-}
-
-canvas {
-    display: block;
-    width: 100% !important;
-    height: auto !important; /* Change from 100% to auto */
-}
-
-#distribution-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: auto !important;
-    overflow: visible; /* Allow SVG to maintain aspect ratio */
+    height: 100%;
+}
+
+.hidden-element {
+    visibility: hidden;
+}
+
+canvas {
+    display: block;
+    pointer-events: none; /* Allow clicking through canvas */
+    z-index: 1000; /* Keep canvas on top */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* overflow: visible; */
+}
+
+#distribution-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #distribution-container svg {
     display: block;
-    width: 100%;
-    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #ui-container {
     display: flex;
-    width: 100%;
+    width: 80%;
     flex: 0 0 auto;
     flex-direction: row;
+    margin-bottom: 1em;
+    margin: 0 auto;
 }
 
 #controls-container {
     width: 50%;
+    min-width: 300px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -55,6 +74,7 @@ canvas {
 }
 
 #controls-container input[type="range"] {
+    width: 100%;
 }
 
 #indicator-container {
@@ -67,6 +87,7 @@ canvas {
 #stuff {
     margin-bottom: 2em;
 }
+
 
 @media screen and (max-width: 600px) {
     /* Only UI layout changes needed now */

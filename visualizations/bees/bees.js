@@ -144,17 +144,17 @@ class Swarm {
 
     // Draw attractor and other elements
     // draw the attractor point (the HIVE!)
-    stroke(palette.hive);
-    fill(palette.hive);
-    push();
-    translate(this.attractor.x, this.attractor.y);
-    rotate(45);
-    square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
-    pop();
+    // stroke(palette.hive);
+    // fill(palette.hive);
+    // push();
+    // translate(this.attractor.x, this.attractor.y);
+    // rotate(45);
+    // square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
+    // pop();
 
     // draw null hypothesis center
-    stroke(palette.null);
-    point(canvasWidth / 2, this.attractor.y);
+    // stroke(palette.null);
+    // point(0, 0);
 
     // draw current center (average of x positions)
     // stroke("#0062ff");

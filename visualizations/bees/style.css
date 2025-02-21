@@ -16,6 +16,9 @@
     height: 100%;
 }
 
+.hidden-element {
+    visibility: hidden;
+}
 
 canvas {
     display: block;

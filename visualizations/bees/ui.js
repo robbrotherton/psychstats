@@ -4,9 +4,9 @@ function setupUI() {
   let numberContainer = createDiv('');
   let differenceContainer = createDiv('');
   
-  attractionContainer.parent('controls-container');
-  numberContainer.parent('controls-container');
-  differenceContainer.parent('controls-container');
+  attractionContainer.parent('parameters');
+  numberContainer.parent('parameters');
+  differenceContainer.parent('parameters');
   
   // Style the containers
   [attractionContainer, differenceContainer, numberContainer].forEach(container => {
@@ -122,6 +122,31 @@ function setupUI() {
   resetButton.mousePressed(resetButtonClicked);
   resetButton.parent('indicator-container');
 
+  createToggle("toggles", "hive", "Hive");
+  createToggle("toggles", "mean-line", "Swarm average");
+  createToggle("toggles", "distribution", "Null distribution");
+  createToggle("toggles", "swarm-histogram", "Swarm distribution");
+}
+
+function createToggle(parent, target, label) {
+  const newToggle = createDiv('<div class="form-check form-switch">' + 
+    '<label class="form-check-label" for="' + target + 'Toggle">' + label + '</label>' +
+    '<input class="form-check-input" type="checkbox" id="' + target + 'Toggle" checked></div>'
+  )
+  newToggle.parent(parent);
+
+  const t = document.getElementById(target + 'Toggle');
+  const e = document.getElementsByClassName(target);
+  
+  
+  t.addEventListener('change', () => {
+    const isHidden = e[0].classList.contains("hidden-element");
+    if (isHidden) {
+      e.forEach(elm => elm.classList.remove('hidden-element'));
+    } else {
+      e.forEach(elm => elm.classList.add('hidden-element'));
+    }
+  });
 }
 
 function pauseButtonClicked() {
@@ -137,8 +162,8 @@ function pauseButtonClicked() {
   
   function resetButtonClicked() {
     sigCounter = { sigs: 0, obs: 0 };
-    meanHistogram = new Histogram()
-    meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
+    // meanHistogram = new Histogram()
+    meanHistogram = new Histogram(0, 840, 840);
   }
   
   function updateVariability(value, activeButton, inactiveButtons) {
@@ -193,6 +218,6 @@ function pauseButtonClicked() {
     params.se = seValues[params.attractorStrengthIndex][value];
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html('Difference: ' + round(params.d, 2));
+    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
   }
