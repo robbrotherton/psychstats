@@ -57,6 +57,7 @@ canvas {
 
 #controls-container {
     width: 50%;
+    min-width: 300px;
     padding: 20px;
     display: flex;
     flex-direction: column;
