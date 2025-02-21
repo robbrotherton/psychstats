@@ -1,6 +1,11 @@
+#quarto-content {
+    overflow: hidden;
+}
+
 #viz-container {
     position: relative;
-    height: 400px
+    height: 400px;
+    overflow: visible;
 }
 
 #swarm-container {
@@ -20,7 +25,7 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    overflow: hidden;
+    /* overflow: visible; */
 }
 
 #distribution-container {
@@ -28,22 +33,26 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 840px;
-    height: 400px;
-    overflow: hidden; /* Allow SVG to maintain aspect ratio */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #distribution-container svg {
     display: block;
-    width: 100%;
-    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #ui-container {
     display: flex;
-    width: 100%;
+    width: 80%;
     flex: 0 0 auto;
     flex-direction: row;
+    margin-bottom: 1em;
+    margin: 0 auto;
 }
 
 #controls-container {
@@ -61,6 +70,7 @@ canvas {
 }
 
 #controls-container input[type="range"] {
+    width: 100%;
 }
 
 #indicator-container {

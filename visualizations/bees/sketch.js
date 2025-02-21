@@ -1,4 +1,4 @@
-const CANVAS_WIDTH = 840;
+let CANVAS_WIDTH = 840;
 const CANVAS_HEIGHT = 400;
 const CANVAS_SCALE = 2; // Canvas is 2x the size of viz area
 const canvasWidth = CANVAS_WIDTH;
@@ -80,7 +80,7 @@ function setup() {
   angleMode(DEGREES);
 
   // Create canvas twice the size of viz area
-  let canvas = createCanvas(CANVAS_WIDTH * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE);
+  let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT * CANVAS_SCALE);
   canvas.parent('swarm-container');
   // canvas.position(-CANVAS_WIDTH * 0.5, -CANVAS_HEIGHT * 0.5);
   
@@ -216,19 +216,21 @@ function setup() {
   swarm = new Swarm(params.nBees, palette.bees);
   meanHistogram = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   
+  windowResized();
 
 }
 
 function windowResized() {
   // Keep canvas size constant relative to viz area
   if (window.innerWidth < 840) {
-    console.log(window.innerWidth);
-    const scaleFactor = window.innerWidth / 840;
-    console.log(scaleFactor);
-    let canvas = select('canvas');
-    const newWidth = CANVAS_WIDTH * CANVAS_SCALE * scaleFactor;
-    const newHeight = CANVAS_HEIGHT * CANVAS_SCALE * scaleFactor;
-    // resizeCanvas(newWidth, newHeight);
+    // console.log(window.innerWidth);
+    // const scaleFactor = window.innerWidth / 840;
+    // console.log(scaleFactor);
+    // let canvas = select('canvas');
+    // const newWidth = CANVAS_WIDTH * CANVAS_SCALE * scaleFactor;
+    // const newHeight = CANVAS_HEIGHT * CANVAS_SCALE * scaleFactor;
+    CANVAS_WIDTH = window.innerWidth;
+    resizeCanvas(CANVAS_WIDTH, canvasHeight * CANVAS_SCALE);
     // canvas.position(-newWidth * 0.5, -newHeight * 0.5);
     // scale(scaleFactor);
     // canvas.style("scale", 0.5);
@@ -320,7 +322,7 @@ function draw() {
 
   }
   push();
-  translate(CANVAS_WIDTH, CANVAS_HEIGHT);
+  translate(CANVAS_WIDTH * 0.5, CANVAS_HEIGHT);
   swarm.display();
   pop();
 }

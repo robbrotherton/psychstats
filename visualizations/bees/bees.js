@@ -148,7 +148,7 @@ class Swarm {
     fill(palette.hive);
     push();
     translate(this.attractor.x, this.attractor.y);
-    // rotate(45);
+    rotate(45);
     square(-this.hiveWidth * 0.5, -this.hiveWidth * 0.5, this.hiveWidth);
     pop();
 

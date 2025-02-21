@@ -13,10 +13,12 @@ function setupDistributionViz() {
   // Create SVG with viewBox and preserveAspectRatio for proper scaling
   svg = d3.select("#distribution-container")
     .append("svg")
-    .attr("viewBox", `0 0 ${width} ${height}`)
-    .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width", "100%")
-    .style("height", "100%")
+    // .attr("viewBox", `0 0 ${width} ${height}`)
+    // .attr("preserveAspectRatio", "xMidYMid meet")
+    // .style("width", "100%")
+    // .style("height", "100%")
+    .attr("width", 840)
+    .attr("height", 400)
     .append("g");
 
   // Create scales
@@ -129,7 +131,7 @@ function updatePieChart() {
 function updateDistribution(swarm, histogram) {
 
   // add the current sample mean to the histogram
-  const currentMean = swarm.currentMean;
+  const currentMean = swarm.currentMean + 420;
 
   histogram.add(currentMean);
 
@@ -167,7 +169,7 @@ function updateDistribution(swarm, histogram) {
 
 
   // determine significance: current mean falls outside the 95% interval?
-  const isSignificant = (currentMean + 420 < lowerCrit) || (currentMean + 420 > upperCrit);
+  const isSignificant = (currentMean < lowerCrit) || (currentMean > upperCrit);
 
   sigCounter.obs++;
   if (isSignificant) sigCounter.sigs++;
@@ -175,8 +177,8 @@ function updateDistribution(swarm, histogram) {
 
   // update mean line position and color based on significance
   meanLine
-    .attr("x1", x(currentMean + 420))
-    .attr("x2", x(currentMean + 420))
+    .attr("x1", x(currentMean))
+    .attr("x2", x(currentMean))
     .attr("y1", 0)
     .attr("y2", height)
     .attr("stroke", isSignificant ? "#ff0000" : palette.hive);
