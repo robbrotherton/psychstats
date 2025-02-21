@@ -167,7 +167,7 @@ function updateDistribution(swarm, histogram) {
 
 
   // determine significance: current mean falls outside the 95% interval?
-  const isSignificant = (currentMean < lowerCrit) || (currentMean > upperCrit);
+  const isSignificant = (currentMean + 420 < lowerCrit) || (currentMean + 420 > upperCrit);
 
   sigCounter.obs++;
   if (isSignificant) sigCounter.sigs++;
@@ -175,8 +175,8 @@ function updateDistribution(swarm, histogram) {
 
   // update mean line position and color based on significance
   meanLine
-    .attr("x1", x(currentMean))
-    .attr("x2", x(currentMean))
+    .attr("x1", x(currentMean + 420))
+    .attr("x2", x(currentMean + 420))
     .attr("y1", 0)
     .attr("y2", height)
     .attr("stroke", isSignificant ? "#ff0000" : palette.hive);

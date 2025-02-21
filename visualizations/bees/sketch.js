@@ -1,6 +1,6 @@
 const CANVAS_WIDTH = 840;
 const CANVAS_HEIGHT = 400;
-const ASPECT_RATIO = CANVAS_WIDTH / CANVAS_HEIGHT;
+const CANVAS_SCALE = 2; // Canvas is 2x the size of viz area
 const canvasWidth = CANVAS_WIDTH;
 const canvasHeight = CANVAS_HEIGHT;
 
@@ -59,7 +59,7 @@ function resetButtonClicked() {
 
 function handleSwarms() {
   // the swarm's x attractor distance, in pixels, from the center of the canvas
-  swarm.attractor = createVector(CANVAS_WIDTH * 0.5 + differenceSlider.value(), CANVAS_HEIGHT * 0.5);
+  swarm.attractor = createVector(differenceSlider.value());
 
   if (swarm.bees.length < params.nBees) {
     for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
@@ -79,13 +79,11 @@ function setup() {
 
   angleMode(DEGREES);
 
-  // Create canvas with fixed internal dimensions
-  let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  // Create canvas twice the size of viz area
+  let canvas = createCanvas(CANVAS_WIDTH * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE);
   canvas.parent('swarm-container');
+  // canvas.position(-CANVAS_WIDTH * 0.5, -CANVAS_HEIGHT * 0.5);
   
-  // Add resize handler
-  windowResized();
-
   xArray = jStat.seq(0, width, 301);
   pause = false;
 
@@ -222,20 +220,20 @@ function setup() {
 }
 
 function windowResized() {
-  // Get container width
-  let container = select('#swarm-container');
-  let containerWidth = container.width;
-  
-  // Calculate height based on aspect ratio
-  let containerHeight = containerWidth / ASPECT_RATIO;
-  
-  // Resize canvas display size while maintaining internal dimensions
-  resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, true);
-  
-  // Fix: properly access and style the canvas element
-  let canvasElement = document.querySelector('#defaultCanvas0');
-  canvasElement.style.width = containerWidth + 'px';
-  canvasElement.style.height = containerHeight + 'px';
+  // Keep canvas size constant relative to viz area
+  if (window.innerWidth < 840) {
+    console.log(window.innerWidth);
+    const scaleFactor = window.innerWidth / 840;
+    console.log(scaleFactor);
+    let canvas = select('canvas');
+    const newWidth = CANVAS_WIDTH * CANVAS_SCALE * scaleFactor;
+    const newHeight = CANVAS_HEIGHT * CANVAS_SCALE * scaleFactor;
+    // resizeCanvas(newWidth, newHeight);
+    // canvas.position(-newWidth * 0.5, -newHeight * 0.5);
+    // scale(scaleFactor);
+    // canvas.style("scale", 0.5);
+  }
+  // resizeCanvas(CANVAS_WIDTH * CANVAS_SCALE, CANVAS_HEIGHT * CANVAS_SCALE);
 }
 
 // Add this helper to convert mouse coordinates
@@ -307,8 +305,11 @@ function updateNumber(value, activeButton, inactiveButtons) {
 }
 
 function draw() {
-  background(255); // #aab574
-
+  clear(); // Use clear instead of background to keep canvas transparent
+  
+  // Center the viz area in the canvas
+  
+  
   if (pause == false) {
     handleSwarms();
     swarm.run();
@@ -318,9 +319,10 @@ function draw() {
     updateDistribution(swarm, meanHistogram);
 
   }
-
+  push();
+  translate(CANVAS_WIDTH, CANVAS_HEIGHT);
   swarm.display();
-
+  pop();
 }
 
 
