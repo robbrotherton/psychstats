@@ -81,14 +81,8 @@ class Swarm {
     this.col = col;
     this.bees = [];
     this.attractor = { x: 0, y: 0 }; // will be updated externally by slider
-    // this.hiveWidth = 10;
     this.currentMean;
     this.meanHistory = [];
-    // this.sdHistory = {
-    //   sd: {},      // Will store x positions as keys
-    //   count: {}  // Will store counts for corresponding x positions
-    // };
-    // this.total = 0;
 
     for (let i = 0; i < num; i++) {
       // let x = randomGaussian(this.attractor.x, 50);
@@ -96,30 +90,6 @@ class Swarm {
       this.bees.push(new Bee(0, 0));
     }
   }
-
-  // getStats() {
-  //   let xPositions = this.bees.map(bee => bee.position.x);
-  //   const currentMean = jStat.mean(xPositions);
-  //   const currentSd = jStat.stdev(xPositions);
-  //   this.average = currentMean;
-  //   this.currentMean = currentMean;
-  //   return {
-  //     mean: currentMean,
-  //     sd: currentSd,
-  //     n: this.bees.length
-  //   };
-  // }
-
-  // helper to compute empirical quantiles from meanHistory
-  // getEmpiricalCI(alpha = 0.05) {
-  //   let sorted = this.meanHistory.slice().sort((a, b) => a - b);
-  //   let lowerIndex = Math.floor((alpha / 2) * sorted.length);
-  //   let upperIndex = Math.floor((1 - alpha / 2) * sorted.length);
-  //   return {
-  //     lower: sorted[lowerIndex],
-  //     upper: sorted[upperIndex]
-  //   };
-  // }
 
   run() {
     for (let bee of this.bees) {
