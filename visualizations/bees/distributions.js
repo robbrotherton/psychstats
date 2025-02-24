@@ -72,6 +72,8 @@ function setupDistributionViz() {
     .attr("width", 16)
     .attr("height", 16)
     .attr("fill", palette.hive)
+    .attr("transform", "translate(" + (canvasWidth * 0.5) + " " + canvasHeight * 0.5 + ")rotate(45)");
+
     // .attr("x", swarm.attractor.x + canvasWidth * 0.5)
     // .attr("y", canvasHeight * 0.5);
 
@@ -156,13 +158,9 @@ function updatePieChart() {
 
 function updateDistribution(swarm, histogram) {
 
-  hive.attr("transform", "translate(" + (canvasWidth * 0.5 + differenceSlider.value()) + " " + canvasHeight * 0.5 + ")rotate(45)");
-    
   // add the current sample mean to the histogram
   const currentMean = swarm.currentMean + (canvasWidth * 0.5);
   histogram.add(currentMean);
-
-  const se = params.se;
 
   const histogramData = Object.keys(histogram.bins.counts).map(x => ({
     x: Number(x),
