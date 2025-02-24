@@ -80,7 +80,7 @@ class Swarm {
     // this.average;
     this.col = col;
     this.bees = [];
-    this.attractor = { x: 0, y: 0 }; // will be updated externally by slider
+    this.attractor = createVector(0, 0); // will be updated externally by slider
     this.currentMean;
     this.meanHistory = [];
 
