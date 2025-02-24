@@ -24,9 +24,9 @@ let palette = {
 // this might differ depending on processor speed etc?
 let seValues = [
   // nBees = [15, 50, 100]
-  [5.14, 3.206, 2.396], // attractorStrength = 1
-  [9.1, 5.49, 4.21], // attractorStrength = 2
-  [17.761, 10.098, 7.075], // attractorStrength = 4
+  [5.14, 3.22, 2.396], // attractorStrength = 1
+  [9.12, 5.5, 4.21], // attractorStrength = 2
+  [17.16, 10.098, 7.075], // attractorStrength = 4
 ]
 
 let params = {
@@ -36,33 +36,34 @@ let params = {
   nBees: 50,
   nBeesIndex: 1,
   nBeesValues: [15, 50, 100],
-  se: 5.49,
-  lowerCrit: jStat.normal.inv(0.025, canvasWidth * 0.5, 5.49),
-  upperCrit: jStat.normal.inv(0.975, canvasWidth * 0.5, 5.49)
+  se: seValues[1][1],
+  lowerCrit: jStat.normal.inv(0.025, canvasWidth * 0.5, seValues[1][1]),
+  upperCrit: jStat.normal.inv(0.975, canvasWidth * 0.5, seValues[1][1])
 }
 
 
 
 function handleSwarms() {
   // the swarm's x attractor distance, in pixels, from the center of the canvas
-  swarm.attractor = createVector(differenceSlider.value());
+  // swarm.attractor = createVector(differenceSlider.value());
 
-  if (swarm.bees.length < params.nBees) {
-    for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
-      swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
-    }
-  }
+  // if (swarm.bees.length < params.nBees) {
+  //   for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
+  //     swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
+  //   }
+  // }
 
-  if (swarm.bees.length > params.nBees) {
-    // Remove excess bees and their DOM elements
-    const removedBees = swarm.bees.splice(params.nBees);
-    // removedBees.forEach(bee => bee.remove());
-  }
+  // if (swarm.bees.length > params.nBees) {
+  //   // Remove excess bees and their DOM elements
+  //   const removedBees = swarm.bees.splice(params.nBees);
+  //   // removedBees.forEach(bee => bee.remove());
+  // }
 
 }
 
 function setup() {
 
+  frameRate(60);
   angleMode(DEGREES);
 
   // Create canvas twice the size of viz area
@@ -96,16 +97,16 @@ function windowResized() {
 }
 
 // Add this helper to convert mouse coordinates
-function getCanvasCoordinates(x, y) {
-  let canvas = select('canvas').elt;
-  let rect = canvas.getBoundingClientRect();
-  let scaleX = CANVAS_WIDTH / rect.width;
-  let scaleY = CANVAS_HEIGHT / rect.height;
-  return {
-      x: (x - rect.left) * scaleX,
-      y: (y - rect.top) * scaleY
-  };
-}
+// function getCanvasCoordinates(x, y) {
+//   let canvas = select('canvas').elt;
+//   let rect = canvas.getBoundingClientRect();
+//   let scaleX = CANVAS_WIDTH / rect.width;
+//   let scaleY = CANVAS_HEIGHT / rect.height;
+//   return {
+//       x: (x - rect.left) * scaleX,
+//       y: (y - rect.top) * scaleY
+//   };
+// }
 
 
 
@@ -116,9 +117,8 @@ function draw() {
   
   
   if (pause == false) {
-    handleSwarms();
+    // Update the swarm
     swarm.run();
-    // let stats = swarm.getStats(); // currently necessary to update swarm's this.currentMean
 
     // Update distribution visualization
     updateDistribution(swarm, meanHistogram);
@@ -131,54 +131,23 @@ function draw() {
 }
 
 
-// simulate the swarm offline for numIterations frames and update histogram
-function simulateSwarmOffline(swarm, numIterations) {
-  
-  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
-  let sdSum = 0;
-  let total = 0;
-
-  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
-
-  for (let i = 0; i < numIterations; i++) {
-    swarm.run();
-    meanHistogram.add(swarm.currentMean);
-
-    // determine significance: current mean falls outside the 95% interval?
-    const isSignificant = (swarm.currentMean < lowerCrit) || (swarm.currentMean > upperCrit);
-    
-    sigCounter.obs++;
-    if (isSignificant) sigCounter.sigs++;
-
-    let currentSd = round(swarm.getStats().sd, 3);
-    sdSum += currentSd;
-    total++;
-  }
-  // return sdSum / total;
-  const estSd = sdSum / total;
-  const estSe = meanHistogram.getSd();
-  const calcSe = estSd / Math.sqrt(params.nBees);
-
-  return {estSd, estSe, calcSe, useSe: params.se};
-}
-
 function advanceSwarmOffline(swarm, numIterations) {
   
   // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
   let sdSum = 0;
   let total = 0;
 
-  const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
-  const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
+  // const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
+  // const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
 
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
-    swarm.getStats();
-    meanHistogram.add(swarm.currentMean);
+    // swarm.getStats();
+    const currentMean = swarm.currentMean + canvasWidth * 0.5;
+    meanHistogram.add(currentMean);
 
     // determine significance: current mean falls outside the 95% interval?
-    const isSignificant = (swarm.currentMean < lowerCrit) || (swarm.currentMean > upperCrit);
+    const isSignificant = (currentMean < params.lowerCrit) || (currentMean > params.upperCrit);
     
     sigCounter.obs++;
     if (isSignificant) sigCounter.sigs++;
