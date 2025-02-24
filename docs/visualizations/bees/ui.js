@@ -59,6 +59,9 @@ function setupUI() {
   differenceSlider = createSlider(0, 100, 0);
   differenceSlider.class("form-range");
   differenceSlider.input(() => {
+    swarm.attractor = createVector(differenceSlider.value());
+    hive.attr("transform", "translate(" + (canvasWidth * 0.5 + differenceSlider.value()) + " " + canvasHeight * 0.5 + ")rotate(45)");
+
     resetButtonClicked();
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
@@ -174,50 +177,47 @@ function pauseButtonClicked() {
   
     params.attractorStrengthIndex = value;
     params.attractorStrength = params.attractorStrengthValues[value];
-    
-    // Update parameters
-    // switch (value) {
-    //   case 0:
-    //     params.attractorStrength = 1;
-    //     break;
-    //   case 1:
-    //     params.attractorStrength = 2;
-    //     break;
-    //   case 2:
-    //     params.attractorStrength = 4;
-    //     break;
-    // }
   
     params.se = seValues[value][params.nBeesIndex];
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
     differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
+
+    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+
+    drawNullDistribution(params);
   }
   
   function updateNumber(value, activeButton, inactiveButtons) {
-    resetButtonClicked();
+
     // Update button states
     activeButton.class('btn btn-success');
     inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
     params.nBeesIndex = value;
     params.nBees = params.nBeesValues[value];
-    // Update parameters
-    // switch (value) {
-    //   case 0:
-    //     params.nBees = 15;
-    //     break;
-    //   case 1:
-    //     params.nBees = 50;
-    //     break;
-    //   case 2:
-    //     params.nBees = 100;
-    //     break;
-    // }
+
+    if (swarm.bees.length < params.nBees) {
+      for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
+        swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
+      }
+    }
   
+    if (swarm.bees.length > params.nBees) {
+      // Remove excess bees
+      swarm.bees.splice(params.nBees);
+    }
+    
     params.se = seValues[params.attractorStrengthIndex][value];
     params.sd = params.se * Math.sqrt(params.nBees);
     params.d = differenceSlider.value() / params.sd;
     differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
+    
+    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+    
+    drawNullDistribution(params);
+    resetButtonClicked();
   }

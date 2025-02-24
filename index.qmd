@@ -21,6 +21,8 @@ toc: false
 
 [(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)
 
+[Bees](visualizations/bees/bees.qmd)
+
 <!-- [Regression: The Least Squared Error Method](visualizations/least-squared-error.qmd) -->
 
 [Confidence Intervals](visualizations/confidence-intervals.qmd)

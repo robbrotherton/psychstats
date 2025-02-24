@@ -72,6 +72,8 @@ function setupDistributionViz() {
     .attr("width", 16)
     .attr("height", 16)
     .attr("fill", palette.hive)
+    .attr("transform", "translate(" + (canvasWidth * 0.5) + " " + canvasHeight * 0.5 + ")rotate(45)");
+
     // .attr("x", swarm.attractor.x + canvasWidth * 0.5)
     // .attr("y", canvasHeight * 0.5);
 
@@ -156,14 +158,9 @@ function updatePieChart() {
 
 function updateDistribution(swarm, histogram) {
 
-  hive.attr("transform", "translate(" + (canvasWidth * 0.5 + differenceSlider.value()) + " " + canvasHeight * 0.5 + ")rotate(45)");
-    
   // add the current sample mean to the histogram
   const currentMean = swarm.currentMean + (canvasWidth * 0.5);
-  // console.log('abstract mean: ' + swarm.currentMean + '; pxMean: ' + currentMean);
   histogram.add(currentMean);
-
-  const se = params.se;
 
   const histogramData = Object.keys(histogram.bins.counts).map(x => ({
     x: Number(x),
@@ -171,10 +168,6 @@ function updateDistribution(swarm, histogram) {
   }));
 
   // Update the bars
-  // const barScale = d3.scaleLinear()
-  //   .domain([0, 0.12])
-  //   .range([canvasHeight - margin.bottom, canvasHeight * 0.5]); // match the null dist scale
-
   const bars = svg.select("g").selectAll("rect")
     .data(histogramData, d => d.x);
 
@@ -190,13 +183,8 @@ function updateDistribution(swarm, histogram) {
   // Remove old bars
   bars.exit().remove();
 
-
-  const lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, se);
-  const upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, se);
-
-
   // determine significance: current mean falls outside the 95% interval?
-  const isSignificant = (currentMean < lowerCrit) || (currentMean > upperCrit);
+  const isSignificant = (currentMean < params.lowerCrit) || (currentMean > params.upperCrit);
 
   sigCounter.obs++;
   if (isSignificant) sigCounter.sigs++;
@@ -210,28 +198,31 @@ function updateDistribution(swarm, histogram) {
     .attr("y2", height)
     .attr("stroke", isSignificant ? "#ff0000" : palette.hive);
 
+}
 
-  // shade regions at lowerCrit and upperCrit 
-  const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
-    x: x,
-    y: Math.min(0.5, jStat.normal.pdf(x, canvasWidth * 0.5, se))
-  }));
 
-  // // update main distribution curve
-  path.datum(points).attr("d", lineGenerator);
-  // build left tail region for rejection area
-  const leftPoints = points.filter(p => p.x <= lowerCrit);
-  leftPoints.push({ x: lowerCrit, y: jStat.normal.pdf(lowerCrit, canvasWidth * 0.5, se) });
-  leftPoints.push({ x: lowerCrit, y: -0.002 });
-  leftPoints.unshift({ x: leftPoints[0].x, y: -0.002 });
-
-  // build right tail region
-  const rightPoints = [{ x: upperCrit, y: -0.002 },
-  { x: upperCrit, y: jStat.studentt.pdf(upperCrit, canvasWidth * 0.5, se) }]
-    .concat(points.filter(p => p.x >= upperCrit));
-  rightPoints.push({ x: rightPoints[rightPoints.length - 1].x, y: -0.002 });
-
-  // update rejection region visuals
-  leftTail.datum(leftPoints).attr("d", lineGenerator);
-  rightTail.datum(rightPoints).attr("d", lineGenerator);
+function drawNullDistribution(params) {
+    // shade regions at lowerCrit and upperCrit 
+    const points = d3.range(width * 0.25, width * 0.75, 1).map(x => ({
+      x: x,
+      y: Math.min(0.5, jStat.normal.pdf(x, canvasWidth * 0.5, params.se))
+    }));
+  
+    // // update main distribution curve
+    path.datum(points).attr("d", lineGenerator);
+    // build left tail region for rejection area
+    const leftPoints = points.filter(p => p.x <= params.lowerCrit);
+    leftPoints.push({ x: params.lowerCrit, y: jStat.normal.pdf(params.lowerCrit, canvasWidth * 0.5, params.se) });
+    leftPoints.push({ x: params.lowerCrit, y: -0.002 });
+    leftPoints.unshift({ x: leftPoints[0].x, y: -0.002 });
+  
+    // build right tail region
+    const rightPoints = [{ x: params.upperCrit, y: -0.002 },
+    { x: params.upperCrit, y: jStat.studentt.pdf(params.upperCrit, canvasWidth * 0.5, params.se) }]
+      .concat(points.filter(p => p.x >= params.upperCrit));
+    rightPoints.push({ x: rightPoints[rightPoints.length - 1].x, y: -0.002 });
+  
+    // update rejection region visuals
+    leftTail.datum(leftPoints).attr("d", lineGenerator);
+    rightTail.datum(rightPoints).attr("d", lineGenerator);
 }
