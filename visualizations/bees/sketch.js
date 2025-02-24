@@ -36,7 +36,9 @@ let params = {
   nBees: 50,
   nBeesIndex: 1,
   nBeesValues: [15, 50, 100],
-  se: 5.49
+  se: 5.49,
+  lowerCrit: jStat.normal.inv(0.025, canvasWidth * 0.5, 5.49),
+  upperCrit: jStat.normal.inv(0.975, canvasWidth * 0.5, 5.49)
 }
 
 
@@ -54,7 +56,7 @@ function handleSwarms() {
   if (swarm.bees.length > params.nBees) {
     // Remove excess bees and their DOM elements
     const removedBees = swarm.bees.splice(params.nBees);
-    removedBees.forEach(bee => bee.remove());
+    // removedBees.forEach(bee => bee.remove());
   }
 
 }
@@ -78,6 +80,8 @@ function setup() {
   setupUI();
 
   windowResized();
+
+  drawNullDistribution(params);
 
 }
 
@@ -114,7 +118,7 @@ function draw() {
   if (pause == false) {
     handleSwarms();
     swarm.run();
-    let stats = swarm.getStats(); // currently necessary to update swarm's this.currentMean
+    // let stats = swarm.getStats(); // currently necessary to update swarm's this.currentMean
 
     // Update distribution visualization
     updateDistribution(swarm, meanHistogram);

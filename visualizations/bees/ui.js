@@ -193,6 +193,11 @@ function pauseButtonClicked() {
     params.d = differenceSlider.value() / params.sd;
     differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
+
+    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+
+    drawNullDistribution(params);
   }
   
   function updateNumber(value, activeButton, inactiveButtons) {
@@ -220,4 +225,9 @@ function pauseButtonClicked() {
     params.d = differenceSlider.value() / params.sd;
     differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
     console.log("Cohen's d: " + params.d);
+
+    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
+    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
+
+    drawNullDistribution(params);
   }
