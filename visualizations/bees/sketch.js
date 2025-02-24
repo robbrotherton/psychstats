@@ -63,7 +63,7 @@ function handleSwarms() {
 
 function setup() {
 
-  frameRate(60);
+  // frameRate(120);
   angleMode(DEGREES);
 
   // Create canvas twice the size of viz area
