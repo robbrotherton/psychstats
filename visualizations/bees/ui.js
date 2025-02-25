@@ -125,6 +125,11 @@ function setupUI() {
   resetButton.mousePressed(resetButtonClicked);
   resetButton.parent('indicator-container');
 
+  advanceButton = createButton('<i class="bi bi-fast-forward"></i>');
+  advanceButton.class("btn btn-outline-info")
+  advanceButton.mousePressed(advanceTimeButtonClicked);
+  advanceButton.parent('indicator-container');
+
   createToggle("toggles", "hive", "Hive");
   createToggle("toggles", "mean-line", "Swarm average");
   createToggle("toggles", "distribution", "Null distribution");
@@ -167,6 +172,12 @@ function pauseButtonClicked() {
     sigCounter = { sigs: 0, obs: 0 };
     // meanHistogram = new Histogram()
     meanHistogram = new Histogram(0, 840, 840);
+  }
+
+    
+  function advanceTimeButtonClicked() {
+    advanceSwarmOffline(swarm, 3600);
+    // updatePieChart();
   }
   
   function updateVariability(value, activeButton, inactiveButtons) {

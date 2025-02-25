@@ -5,6 +5,7 @@ const width = canvasWidth;
 const height = canvasHeight;
 let sampleFrame = 0;
 let sigCounter = { sigs: 0, obs: 0 };
+let time;
 
 let pieSvg, pieG;
 const pieRadius = 40;
@@ -114,6 +115,16 @@ function setupIndicators() {
     .append("text")
     .html("Proportion Significant")
 
+  d3.select("#indicator-container")
+  .append("div")
+  .attr("id", "timer-label")
+    .append("text")
+    .html("Time: ")
+
+  time = d3.select("#timer-label")
+    .append("span")
+    .attr("id", "timer-value")
+
 }
 
 function updatePieChart() {
@@ -153,6 +164,17 @@ function updatePieChart() {
     .attr("dy", "0.3em")
     .style("font-size", "16px")
     .text(d => `${d}`);
+
+    // const timeFrames = sigCounter.obs;
+    const timeSeconds = floor(sigCounter.obs / 60) % 60;
+    const timeMinutes = floor(sigCounter.obs / (60 * 60));
+
+    if ( timeMinutes < 1 ) {
+      time.html(timeSeconds + 's');
+    } else {
+      time.html(timeMinutes + 'min' + timeSeconds + 's');
+    }
+  
 }
 
 
