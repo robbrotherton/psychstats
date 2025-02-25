@@ -125,6 +125,11 @@ function setupUI() {
   resetButton.mousePressed(resetButtonClicked);
   resetButton.parent('indicator-container');
 
+  advanceButton = createButton('<i class="bi bi-fast-forward"></i>');
+  advanceButton.class("btn btn-outline-info")
+  advanceButton.mousePressed(advanceTimeButtonClicked);
+  advanceButton.parent('indicator-container');
+
   createToggle("toggles", "hive", "Hive");
   createToggle("toggles", "mean-line", "Swarm average");
   createToggle("toggles", "distribution", "Null distribution");
@@ -168,6 +173,12 @@ function pauseButtonClicked() {
     // meanHistogram = new Histogram()
     meanHistogram = new Histogram(0, 840, 840);
   }
+
+    
+  function advanceTimeButtonClicked() {
+    advanceSwarmOffline(swarm, 3600);
+    // updatePieChart();
+  }
   
   function updateVariability(value, activeButton, inactiveButtons) {
     resetButtonClicked();
@@ -192,14 +203,20 @@ function pauseButtonClicked() {
   
   function updateNumber(value, activeButton, inactiveButtons) {
 
+    // console.log('currently at ' + params.nBees);
     // Update button states
     activeButton.class('btn btn-success');
     inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
     params.nBeesIndex = value;
     params.nBees = params.nBeesValues[value];
 
+    // console.log('setting nBees to: ' + params.nBees);
+    const difference = params.nBees - swarm.bees.length;
+    // console.log('difference: ' + difference);
+
     if (swarm.bees.length < params.nBees) {
-      for (let i = 0; i <= params.nBees - swarm.bees.length; i++) {
+      for (let i = 1; i <= difference; i++) {
+        // console.log('adding ' + i);
         swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
       }
     }
@@ -207,7 +224,10 @@ function pauseButtonClicked() {
     if (swarm.bees.length > params.nBees) {
       // Remove excess bees
       swarm.bees.splice(params.nBees);
+    //  console.log('keeping  ' + params.nBees);
     }
+
+    // console.log('new N: ' + swarm.bees.length);
     
     params.se = seValues[params.attractorStrengthIndex][value];
     params.sd = params.se * Math.sqrt(params.nBees);

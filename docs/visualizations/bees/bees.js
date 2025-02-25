@@ -54,7 +54,7 @@ class Bee {
   flock(bees, attractor) {
     let separation = this.separation(bees);
     let attraction = this.attract(attractor);
-    let randomForce = p5.Vector.random2D().mult(2); // Add some random movement
+    let randomForce = p5.Vector.random2D().mult(1.5); // Add some random movement
 
     this.applyForce(separation);
     this.applyForce(attraction); // Apply the attraction force
@@ -64,8 +64,8 @@ class Bee {
   show() {
     // Draw bee on p5js canvas
     push();
-    // noStroke();
-    stroke(palette.hive);
+    noStroke();
+    // stroke(palette.hive);
     fill(palette.bees);
     circle(this.position.x, this.position.y, this.size * 2);
 

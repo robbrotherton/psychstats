@@ -24,9 +24,9 @@ let palette = {
 // this might differ depending on processor speed etc?
 let seValues = [
   // nBees = [15, 50, 100]
-  [5.14, 3.22, 2.396], // attractorStrength = 1
-  [9.12, 5.5, 4.21], // attractorStrength = 2
-  [17.16, 10.098, 7.075], // attractorStrength = 4
+  [4.86, 3, 2.28], // attractorStrength = 1 (variability low)
+  [8.3, 5.18, 3.9], // attractorStrength = 2 (variability medium)
+  [15.83, 9.1, 6.24], // attractorStrength = 4 (variability high)
 ]
 
 let params = {
