@@ -26,7 +26,7 @@ let seValues = [
   // nBees = [15, 50, 100]
   [4.86, 3, 2.28], // attractorStrength = 1 (variability low)
   [8.3, 5.18, 3.9], // attractorStrength = 2 (variability medium)
-  [15.83, 9.1, 6.24], // attractorStrength = 4 (variability high)
+  [15.83, 9.1, 6.3], // attractorStrength = 4 (variability high)
 ]
 
 let params = {
