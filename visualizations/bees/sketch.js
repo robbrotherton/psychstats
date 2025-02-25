@@ -133,33 +133,18 @@ function draw() {
 
 function advanceSwarmOffline(swarm, numIterations) {
   
-  // let hist = new Histogram(CANVAS_WIDTH * 0.3, CANVAS_WIDTH * 0.7, CANVAS_WIDTH);
-  let sdSum = 0;
-  let total = 0;
-
-  // const lowerCrit = jStat.normal.inv(0.025, CANVAS_WIDTH * 0.5, params.se);
-  // const upperCrit = jStat.normal.inv(0.975, CANVAS_WIDTH * 0.5, params.se);
-
   for (let i = 0; i < numIterations; i++) {
     swarm.run();
-    // swarm.getStats();
     const currentMean = swarm.currentMean + canvasWidth * 0.5;
     meanHistogram.add(currentMean);
 
     // determine significance: current mean falls outside the 95% interval?
     const isSignificant = (currentMean < params.lowerCrit) || (currentMean > params.upperCrit);
-    
     sigCounter.obs++;
     if (isSignificant) sigCounter.sigs++;
-
-    // let currentSd = round(swarm.getStats().sd, 3);
-    // sdSum += currentSd;
-    // total++;
   }
-  // return sdSum / total;
-  // const estSd = sdSum / total;
-  const estSe = meanHistogram.getSd();
-  // const calcSe = estSd / Math.sqrt(params.nBees);
 
+  const estSe = meanHistogram.getSd();
+  
   return { params, clicks: meanHistogram.total, empiricalSe: estSe };
 }
