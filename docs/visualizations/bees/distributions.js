@@ -165,6 +165,11 @@ function updatePieChart() {
     .style("font-size", "16px")
     .text(d => `${d}`);
 
+  updateTime();
+  
+}
+
+function updateTime() {
     // const timeFrames = sigCounter.obs;
     const timeSeconds = floor(sigCounter.obs / 60) % 60;
     const timeMinutes = floor(sigCounter.obs / (60 * 60));
@@ -174,7 +179,6 @@ function updatePieChart() {
     } else {
       time.html(timeMinutes + 'min' + timeSeconds + 's');
     }
-  
 }
 
 

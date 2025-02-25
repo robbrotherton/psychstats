@@ -102,6 +102,22 @@ class Swarm {
   display() {
     this.bees.forEach(bee => bee.show());
   }
+
+  getFrame() {
+    return this.bees.map(bee => ({
+      position: bee.position.copy(),
+      velocity: bee.velocity.copy(),
+      acceleration: bee.acceleration.copy()
+    }));
+  }
+
+  setFrame(frame) {
+    frame.forEach((beeState, index) => {
+      this.bees[index].position = beeState.position.copy();
+      this.bees[index].velocity = beeState.velocity.copy();
+      this.bees[index].acceleration = beeState.acceleration.copy();
+    });
+  }
 }
 
 // histogram class to bin sample means

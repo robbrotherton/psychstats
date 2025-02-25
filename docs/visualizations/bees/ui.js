@@ -176,7 +176,7 @@ function pauseButtonClicked() {
 
     
   function advanceTimeButtonClicked() {
-    advanceSwarmOffline(swarm, 3600);
+    advanceSwarmOfflineAsync(swarm, 3600);
     // updatePieChart();
   }
   
