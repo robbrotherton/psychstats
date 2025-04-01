@@ -3,6 +3,8 @@ const state = {
     numGroups: 3,
     individualsPerGroup: 10,
     dataset: [],
+    baseDataset: [], // stores original random values
+    groupEffects: [], // store random effect sizes for each group
     toggles: {
         showArrows: true,
         showSquares: false,
@@ -13,21 +15,44 @@ const state = {
     ssBetween: 0,
     groupStats: [],
     grandMean: 0,
-    updateDataset: function () {
-        // generate dataset with random group means & noise (jStat not needed rn)
-        this.dataset = [];
-        for (let g = 0; g < this.numGroups; g++) {
-            let groupMean = Math.random() * 10;
-            for (let i = 0; i < this.individualsPerGroup; i++) {
-                // using d3 random normal for within-group noise
-                let val = groupMean + d3.randomNormal(0, 10)();
-                this.dataset.push({
-                    group: g,
-                    value: val,
-                    index: i
-                });
+    treatmentEffect: 1,
+    populationVariability: 1,
+    updateDataset: function (regenerate = false) {
+        if (regenerate || this.baseDataset.length === 0) {
+            // generate random effect sizes for each group
+            this.groupEffects = Array(this.numGroups).fill(0)
+                .map(() => (Math.random() - 0.5) * 2); // random effects between -1 and 1
+
+            // generate new random base dataset
+            this.baseDataset = [];
+            for (let g = 0; g < this.numGroups; g++) {
+                let baseGroupMean = Math.random() * 10;
+                for (let i = 0; i < this.individualsPerGroup; i++) {
+                    let baseVal = baseGroupMean + d3.randomNormal(0, 2)();
+                    this.baseDataset.push({
+                        group: g,
+                        value: baseVal,
+                        baseValue: baseVal,  // store original value
+                        index: i
+                    });
+                }
             }
         }
+
+        // transform the base values using stored random group effects
+        this.dataset = this.baseDataset.map(d => {
+            const baseEffect = this.treatmentEffect * 5;
+            const groupEffect = this.groupEffects[d.group] * baseEffect;
+            const baseMean = 5 + groupEffect;
+            const baseGroupMean = d3.mean(this.baseDataset.filter(bd => bd.group === d.group),
+                bd => bd.baseValue);
+            const deviation = (d.baseValue - baseGroupMean) * this.populationVariability;
+            return {
+                ...d,
+                value: baseMean + deviation
+            };
+        });
+
         this.computeSS();
         updateAll();
     },
@@ -367,7 +392,7 @@ function initControlsPanel() {
         .on("input", function () {
             state.numGroups = +this.value;
             d3.select("#groups-value").text(this.value);
-            state.updateDataset();
+            state.updateDataset(true); // regenerate
         });
     container.append("span").attr("id", "groups-value").text(state.numGroups);
 
@@ -383,10 +408,44 @@ function initControlsPanel() {
         .on("input", function () {
             state.individualsPerGroup = +this.value;
             d3.select("#individuals-value").text(this.value);
-            state.updateDataset();
+            state.updateDataset(true); // regenerate
             console.log(state.dataset)
         });
     container.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
+
+    container.append("br");
+
+    // Treatment Effect slider
+    container.append("label").text("treatment effect: ");
+    container.append("input")
+        .attr("type", "range")
+        .attr("min", 0)
+        .attr("max", 3)
+        .attr("step", "0.1")
+        .attr("value", state.treatmentEffect)
+        .on("input", function () {
+            state.treatmentEffect = +this.value;
+            d3.select("#effect-value").text(this.value);
+            state.updateDataset(false);  // don't regenerate
+        });
+    container.append("span").attr("id", "effect-value").text(state.treatmentEffect);
+
+    container.append("br");
+
+    // Population Variability slider
+    container.append("label").text("population variability: ");
+    container.append("input")
+        .attr("type", "range")
+        .attr("min", 0.1)
+        .attr("max", 3)
+        .attr("step", "0.1")
+        .attr("value", state.populationVariability)
+        .on("input", function () {
+            state.populationVariability = +this.value;
+            d3.select("#variability-value").text(this.value);
+            state.updateDataset(false);  // don't regenerate
+        });
+    container.append("span").attr("id", "variability-value").text(state.populationVariability);
 
     container.append("br");
 
@@ -402,13 +461,13 @@ function initControlsPanel() {
     container.append("button")
         .text("reset dataset")
         .on("click", function () {
-            state.updateDataset();
+            state.updateDataset(true);  // regenerate
         });
 }
 
 // initialize all components (components 1:4)
 function init() {
-    state.updateDataset();
+    state.updateDataset(true); // regenerate
     initDataGraph();
     initVarianceBar();
     initFormulaPanel();
