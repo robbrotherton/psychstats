@@ -1,0 +1,51 @@
+---
+title: ANOVA
+
+include-in-header:
+    text: |
+        <link rel="stylesheet" href="./style.css"> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+        <script>
+include-after-body: 
+    text: |
+        <script src="./main.js"></script>
+---
+
+<!-- component 4: controls panel -->
+<div id="controls-panel"></div>
+<!-- component 1: data graph -->
+<div id="data-graph"></div>
+<!-- component 2: variance bar -->
+<div id="variance-bar"></div>
+<!-- component 3: formula panel -->
+<div id="formula-panel">$.$</div>
+
+
+<style>
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+        #controls-panel {
+            margin-bottom: 20px;
+        }
+
+        #data-graph,
+        #variance-bar,
+        #formula-panel {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 5px;
+        }
+
+        input[type="range"] {
+            vertical-align: middle;
+        }
+
+        button {
+            margin-right: 10px;
+        }
+</style>
