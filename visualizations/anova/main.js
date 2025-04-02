@@ -10,6 +10,8 @@ const state = {
         showSquares: false,
         showMeans: true
     },
+    // Add a variability component selector
+    variabilityComponent: "within", // Options: "total", "within", "between"
     ssTotal: 0,
     ssWithin: 0,
     ssBetween: 0,
@@ -281,37 +283,131 @@ function initDataGraph() {
             .text(`Assumption: Homogeneity of variances (σ = ${commonSD.toFixed(2)})`);
     }
 
-    function makeSquare(d, xScale, computeCy) {
-        const groupMean = state.groupStats.find(g => g.group === d.group).mean;
+    function makeSquare(d, x2, y, height) {
         const x1 = xScale(d.value);
-        const x2 = xScale(groupMean);
-        const y = computeCy(d);
-        const width = Math.abs(x2 - x1);
-
         return `M ${x1} ${y} 
-                L ${x1} ${y - width}
-                L ${x2} ${y - width}
+                L ${x1} ${y - height}
+                L ${x2} ${y - height}
                 L ${x2} ${y}
                 Z`;
     }
 
+    function drawTotalSquares(data) {
+        const grandMeanX = xScale(state.grandMean);
+        
+        svg.selectAll("path.variability-square")
+            .data(data, (d, i) => i)
+            .join("path")
+            .attr("class", "variability-square")
+            .transition().duration(200)
+            .attr("fill", "steelblue")
+            .attr("fill-opacity", 0.2)
+            .attr("stroke", "steelblue")
+            .attr("d", d => {
+                const height = Math.abs(xScale(d.value) - grandMeanX);
+                return makeSquare(d, grandMeanX, computeCy(d), height);
+            });
+    }
+    
+    function drawWithinSquares(data) {
+        svg.selectAll("path.variability-square")
+            .data(data, (d, i) => i)
+            .join("path")
+            .attr("class", "variability-square")
+            .transition().duration(200)
+            .attr("fill", "thistle")
+            .attr("fill-opacity", 0.2)
+            .attr("stroke", "thistle")
+            .attr("d", d => {
+                const groupMean = state.groupStats.find(g => g.group === d.group).mean;
+                const groupMeanX = xScale(groupMean);
+                const height = Math.abs(xScale(d.value) - groupMeanX);
+                return makeSquare(d, groupMeanX, computeCy(d), height);
+            });
+    }
+    
+    function drawBetweenSquares() {
+        svg.selectAll("path.variability-square")
+            .data(state.groupStats, (d, i) => i)
+            .join("path")
+            .attr("class", "variability-square")
+            .transition().duration(200)
+            .attr("fill", "lightblue")
+            .attr("fill-opacity", 0.2)
+            .attr("stroke", "lightblue")
+            .attr("d", d => {
+                const groupMeanX = xScale(d.mean);
+                const grandMeanX = xScale(state.grandMean);
+                const y = yScale(d.group) + yScale.bandwidth() / 2;
+                const height = Math.abs(groupMeanX - grandMeanX);
+                return `M ${groupMeanX} ${y} 
+                        L ${groupMeanX} ${y - height}
+                        L ${grandMeanX} ${y - height}
+                        L ${grandMeanX} ${y}
+                        Z`;
+            });
+    }
+    
+    function drawTotalArrows(data) {
+        svg.selectAll("line.variability-arrow")
+            .data(data, (d, i) => i)
+            .join("line")
+            .attr("class", "variability-arrow")
+            .transition().duration(200)
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 1)
+            .attr("x1", d => xScale(d.value))
+            .attr("x2", xScale(state.grandMean))
+            .attr("y1", d => computeCy(d))
+            .attr("y2", d => computeCy(d));
+    }
+    
+    function drawWithinArrows(data) {
+        svg.selectAll("line.variability-arrow")
+            .data(data, (d, i) => i)
+            .join("line")
+            .attr("class", "variability-arrow")
+            .transition().duration(200)
+            .attr("stroke", d => colScale(d.group))
+            .attr("stroke-width", 1)
+            .attr("x1", d => xScale(d.value))
+            .attr("x2", d => {
+                let groupStat = state.groupStats.find(g => g.group == d.group);
+                return xScale(groupStat.mean);
+            })
+            .attr("y1", d => computeCy(d))
+            .attr("y2", d => computeCy(d));
+    }
+    
+    function drawBetweenArrows() {
+        svg.selectAll("line.variability-arrow")
+            .data(state.groupStats, d => d.group)
+            .join("line")
+            .attr("class", "variability-arrow")
+            .transition().duration(200)
+            .attr("stroke", "brown")
+            .attr("stroke-width", 2)
+            .attr("marker-end", "url(#arrow)")
+            .attr("x1", d => xScale(d.mean))
+            .attr("x2", d => xScale(state.grandMean))
+            .attr("y1", d => yScale(d.group) + yScale.bandwidth() / 2)
+            .attr("y2", d => yScale(d.group) + yScale.bandwidth() / 2);
+    }
+
+    function computeCy(d) {
+        const groupDots = state.dataset.filter(item => item.group === d.group);
+        const idx = groupDots.indexOf(d);
+        return yScale(d.group) + ((idx + 1) / (groupDots.length + 1)) * yScale.bandwidth();
+    }
+
     function update() {
-        // update x domain based on dataset values
         const vals = state.dataset.map(d => d.value);
         const xExtent = d3.extent(vals);
         xScale.domain([xExtent[0] - 10, xExtent[1] + 10]);
-        // y domain: unique groups
         const groups = Array.from(new Set(state.dataset.map(d => d.group)));
         yScale.domain(groups);
         colScale.domain(groups);
 
-        function computeCy(d) {
-            const groupDots = state.dataset.filter(item => item.group === d.group);
-            const idx = groupDots.indexOf(d);
-            return yScale(d.group) + ((idx + 1) / (groupDots.length + 1)) * yScale.bandwidth();
-        }
-
-        // join for individual dots
         const circles = svg.selectAll("circle.data-point")
             .data(state.dataset, (d, i) => i);
 
@@ -324,7 +420,6 @@ function initDataGraph() {
             .attr("cy", d => computeCy(d))
             .call(d3.drag()
                 .on("drag", function (event, d) {
-                    // update data point value based on drag position (x axis only)
                     d.value = xScale.invert(event.x);
                     state.computeSS();
                     updateAll();
@@ -337,7 +432,6 @@ function initDataGraph() {
 
         circles.exit().remove();
 
-        // draw group means if toggled on
         if (state.toggles.showMeans) {
             const groupMeans = svg.selectAll("line.group-mean")
                 .data(state.groupStats, d => d.group);
@@ -357,7 +451,6 @@ function initDataGraph() {
 
             groupMeans.exit().remove();
 
-            // draw grand mean line
             const grandMeanLine = svg.selectAll("line.grand-mean")
                 .data([state.grandMean]);
 
@@ -380,76 +473,37 @@ function initDataGraph() {
             svg.selectAll("line.grand-mean").remove();
         }
 
-        // conditionally draw arrows if toggled on
+        svg.selectAll(".variability-arrow").remove();
+        svg.selectAll(".variability-square").remove();
+
         if (state.toggles.showArrows) {
-            // draw within-group arrows: from each data point to its group mean
-            const withinArrows = svg.selectAll("line.within-arrow")
-                .data(state.dataset, (d, i) => i);
-
-            withinArrows.enter()
-                .append("line")
-                .attr("class", "within-arrow")
-                .attr("stroke-width", 1)
-                .merge(withinArrows)
-                .transition().duration(200)
-                .attr("stroke", d => colScale(d.group))
-                .attr("x1", d => xScale(d.value))
-                .attr("x2", d => {
-                    let groupStat = state.groupStats.find(g => g.group == d.group);
-                    return xScale(groupStat.mean);
-                })
-                .attr("y1", d => computeCy(d))
-                .attr("y2", d => computeCy(d))
-
-            withinArrows.exit().remove();
-
-            // draw between-group arrows: from each group mean to the grand mean
-            const betweenArrows = svg.selectAll("line.between-arrow")
-                .data(state.groupStats, d => d.group);
-
-            betweenArrows.enter()
-                .append("line")
-                .attr("class", "between-arrow")
-                .attr("stroke", "brown")
-                .attr("stroke-width", 2)
-                .attr("marker-end", "url(#arrow)")
-                .merge(betweenArrows)
-                .transition().duration(200)
-                .attr("x1", d => xScale(d.mean))
-                .attr("x2", d => xScale(state.grandMean))
-                .attr("y1", d => yScale(d.group) + yScale.bandwidth() / 2)
-                .attr("y2", d => yScale(d.group) + yScale.bandwidth() / 2);
-
-            betweenArrows.exit().remove();
-        } else {
-            // remove arrows when toggled off
-            svg.selectAll("line.within-arrow").remove();
-            svg.selectAll("line.between-arrow").remove();
+            switch (state.variabilityComponent) {
+                case "total":
+                    drawTotalArrows(state.dataset);
+                    break;
+                case "within":
+                    drawWithinArrows(state.dataset);
+                    break;
+                case "between":
+                    drawBetweenArrows();
+                    break;
+            }
         }
-
+        
         if (state.toggles.showSquares) {
-            // draw within-group squares: from each data point to its group mean
-            const withinSquares = svg.selectAll("path.within-square")
-                .data(state.dataset, (d, i) => i);
-
-            withinSquares.enter()
-                .append("path")
-                .attr("class", "within-square")
-                .merge(withinSquares)
-                .transition().duration(200)
-                .attr("fill", "thistle")
-                .attr("fill-opacity", 0.2)
-                .attr("stroke", "thistle")
-                .attr("d", d => makeSquare(d, xScale, computeCy));
-
-            withinSquares.exit().remove();
-
-        } else {
-            // remove arrows when toggled off   
-            svg.selectAll("path.within-square").remove();
+            switch (state.variabilityComponent) {
+                case "total":
+                    drawTotalSquares(state.dataset);
+                    break;
+                case "within":
+                    drawWithinSquares(state.dataset);
+                    break;
+                case "between":
+                    drawBetweenSquares();
+                    break;
+            }
         }
 
-        // Call the population curve drawing function
         makePopulations();
     }
     subscribe(update);
@@ -470,7 +524,6 @@ function initVarianceBar() {
         const between = state.ssBetween;
         const xScale = d3.scaleLinear().domain([0, total]).range([0, width]);
 
-        // within group variance rect
         const withinRect = svg.selectAll("rect.within")
             .data([within]);
 
@@ -487,7 +540,6 @@ function initVarianceBar() {
 
         withinRect.exit().remove();
 
-        // between group variance rect
         const betweenRect = svg.selectAll("rect.between")
             .data([between]);
 
@@ -504,7 +556,6 @@ function initVarianceBar() {
 
         betweenRect.exit().remove();
 
-        // outline representing total variance
         const totalRect = svg.selectAll("rect.total")
             .data([total]);
 
@@ -515,7 +566,6 @@ function initVarianceBar() {
             .attr("stroke-width", 4)
             .attr("fill", "none")
             .attr("stroke-dasharray", "5 5")
-            // .attr("fill", "thistle")
             .merge(totalRect)
             .transition().duration(200)
             .attr("x", 0)
@@ -533,9 +583,8 @@ function initVarianceBar() {
 function initFormulaPanel() {
     const container = d3.select("#formula-panel");
     function update() {
-        container.html(""); // clear previous content
+        container.html("");
 
-        // Use Quarto's built-in support for LaTeX-style math rendering
         container.append("div")
             .html("$$ \\text{SS}_{\\text{total}} = \\sum (X - G)^2 = " + state.ssTotal.toFixed(2) + " $$");
         container.append("div")
@@ -543,7 +592,6 @@ function initFormulaPanel() {
         container.append("div")
             .html("$$ \\text{SS}_{\\text{between}} = \\sum n_{\\text{group}} (M_{\\text{group}} - G)^2 = " + state.ssBetween.toFixed(2) + " $$");
 
-        // Tell MathJax to reprocess the page
         if (window.MathJax) {
             MathJax.typesetPromise();
         }
@@ -557,7 +605,6 @@ function initControlsPanel() {
     const container = d3.select("#controls-panel");
     container.html("");
 
-    // slider: number of groups
     container.append("label").text("groups: ");
     container.append("input")
         .attr("type", "range")
@@ -567,13 +614,12 @@ function initControlsPanel() {
         .on("input", function () {
             state.numGroups = +this.value;
             d3.select("#groups-value").text(this.value);
-            state.updateDataset(true); // regenerate
+            state.updateDataset(true);
         });
     container.append("span").attr("id", "groups-value").text(state.numGroups);
 
     container.append("br");
 
-    // slider: individuals per group
     container.append("label").text("individuals/group: ");
     container.append("input")
         .attr("type", "range")
@@ -583,13 +629,12 @@ function initControlsPanel() {
         .on("input", function () {
             state.individualsPerGroup = +this.value;
             d3.select("#individuals-value").text(this.value);
-            state.updateDataset(false);  // Don't regenerate, just adjust the number of points
+            state.updateDataset(false);
         });
     container.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
 
     container.append("br");
 
-    // Treatment Effect slider
     container.append("label").text("treatment effect: ");
     container.append("input")
         .attr("type", "range")
@@ -600,13 +645,12 @@ function initControlsPanel() {
         .on("input", function () {
             state.treatmentEffect = +this.value;
             d3.select("#effect-value").text(this.value);
-            state.updateDataset(false);  // don't regenerate
+            state.updateDataset(false);
         });
     container.append("span").attr("id", "effect-value").text(state.treatmentEffect);
 
     container.append("br");
 
-    // Population Variability slider
     container.append("label").text("population variability: ");
     container.append("input")
         .attr("type", "range")
@@ -617,13 +661,65 @@ function initControlsPanel() {
         .on("input", function () {
             state.populationVariability = +this.value;
             d3.select("#variability-value").text(this.value);
-            state.updateDataset(false);  // don't regenerate
+            state.updateDataset(false);
         });
     container.append("span").attr("id", "variability-value").text(state.populationVariability);
 
     container.append("br");
+    container.append("hr");
+    container.append("h4").text("Visualization Options:");
 
-    // toggle: arrows (placeholder toggle)
+    const variabilityForm = container.append("form").attr("id", "variability-form");
+    
+    variabilityForm.append("div").text("Variability to Show:").style("font-weight", "bold");
+    
+    const withinDiv = variabilityForm.append("div");
+    withinDiv.append("input")
+        .attr("type", "radio")
+        .attr("id", "within-var")
+        .attr("name", "variability")
+        .attr("value", "within")
+        .attr("checked", state.variabilityComponent === "within")
+        .on("change", function() {
+            state.variabilityComponent = "within";
+            updateAll();
+        });
+    withinDiv.append("label")
+        .attr("for", "within-var")
+        .text(" Within-group Variability");
+    
+    const betweenDiv = variabilityForm.append("div");
+    betweenDiv.append("input")
+        .attr("type", "radio")
+        .attr("id", "between-var")
+        .attr("name", "variability")
+        .attr("value", "between")
+        .attr("checked", state.variabilityComponent === "between")
+        .on("change", function() {
+            state.variabilityComponent = "between";
+            updateAll();
+        });
+    betweenDiv.append("label")
+        .attr("for", "between-var")
+        .text(" Between-group Variability");
+        
+    const totalDiv = variabilityForm.append("div");
+    totalDiv.append("input")
+        .attr("type", "radio")
+        .attr("id", "total-var")
+        .attr("name", "variability")
+        .attr("value", "total")
+        .attr("checked", state.variabilityComponent === "total")
+        .on("change", function() {
+            state.variabilityComponent = "total";
+            updateAll();
+        });
+    totalDiv.append("label")
+        .attr("for", "total-var")
+        .text(" Total Variability");
+
+    container.append("br");
+    
     container.append("button")
         .text("toggle arrows")
         .on("click", function () {
@@ -631,25 +727,25 @@ function initControlsPanel() {
             updateAll();
         });
 
-    // toggle: squares
     container.append("button")
         .text("toggle squares")
+        .style("margin-left", "10px")
         .on("click", function () {
             state.toggles.showSquares = !state.toggles.showSquares;
             updateAll();
         });
 
-    // reset / randomize dataset
     container.append("button")
         .text("reset dataset")
+        .style("margin-left", "10px")
         .on("click", function () {
-            state.updateDataset(true);  // regenerate
+            state.updateDataset(true);
         });
 }
 
 // initialize all components (components 1:4)
 function init() {
-    state.updateDataset(true); // regenerate
+    state.updateDataset(true);
     initDataGraph();
     initVarianceBar();
     initFormulaPanel();
@@ -666,7 +762,6 @@ function waitForMathJax() {
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     resolve();
                 } else {
-                    // If MathJax isn't available, proceed anyway
                     resolve();
                 }
             });
@@ -675,5 +770,3 @@ function waitForMathJax() {
 }
 
 waitForMathJax().then(init);
-
-// note: component 5 (pop-up story panel) can hook into state events later via the same pub/sub system
