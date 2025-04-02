@@ -138,13 +138,13 @@ function initDataGraph() {
         
         // Use a single standard deviation for all groups
         // Based on the population variability parameter that's used in data generation
-        // In the original data generation we use d3.randomNormal(0, 2)() then multiply by populationVariability
         const commonSD = 2 * state.populationVariability;
         
         // Generate curves for each group
         state.groupStats.forEach(group => {
             const mean = group.mean;
             const groupColor = colScale(group.group);
+            const groupNumber = +group.group; // Ensure it's a number
             
             // Generate points for the curve
             const curveData = [];
@@ -166,31 +166,71 @@ function initDataGraph() {
                 curveData.push([scaledX, scaledY]);
             }
             
-            // Draw the shaded area under the curve first (so it's behind the line)
-            svg.append("path")
-                .datum(curveData)
+            // Create a group for all curve elements
+            const curveGroup = svg.append("g")
                 .attr("class", "population-curve")
+                .attr("data-group", groupNumber)
+                .style("cursor", "move"); // Change cursor to indicate draggable
+            
+            // Draw the shaded area under the curve first
+            curveGroup.append("path")
+                .datum(curveData)
+                .attr("class", "curve-area")
                 .attr("d", areaGenerator)
                 .attr("fill", groupColor)
-                .attr("fill-opacity", 0.2); // Transparency for the fill
+                .attr("fill-opacity", 0.2);
             
             // Draw the curve
-            svg.append("path")
+            curveGroup.append("path")
                 .datum(curveData)
-                .attr("class", "population-curve")
+                .attr("class", "curve-line")
                 .attr("d", lineGenerator)
                 .attr("fill", "none")
                 .attr("stroke", groupColor)
                 .attr("stroke-width", 2)
                 .attr("opacity", 0.8);
                 
-            // Add a small circle to mark the mean on the curve
-            // svg.append("circle")
-            //     .attr("class", "population-curve")
-            //     .attr("cx", xScale(mean))
-            //     .attr("cy", margin.top - heightScale)
-            //     .attr("r", 5)
-            //     .attr("fill", groupColor);
+            // Add drag behavior to the curve group
+            curveGroup.call(d3.drag()
+                .on("drag", function(event) {
+                    // Calculate how much the curve has been dragged in data units
+                    const deltaX = xScale.invert(event.x) - xScale.invert(event.x - event.dx);
+                    
+                    // Update all data points for this group
+                    const groupNum = +d3.select(this).attr("data-group");
+                    
+                    // Move all points in this group by deltaX
+                    state.dataset.forEach(d => {
+                        if (d.group === groupNum) {
+                            d.value += deltaX;
+                        }
+                    });
+                    
+                    // Also update the base dataset values to persist changes
+                    // This ensures changes remain when treatment effect or variability changes
+                    state.baseDataset.forEach(d => {
+                        if (d.group === groupNum) {
+                            d.baseValue += deltaX;
+                            d.value = d.baseValue;  // Keep these in sync
+                        }
+                    });
+                    
+                    // Update the group effects array to account for this manual change
+                    // Calculate new mean for this group
+                    const groupData = state.dataset.filter(d => d.group === groupNum);
+                    const newGroupMean = d3.mean(groupData, d => d.value);
+                    const baseEffect = state.treatmentEffect * 5;
+                    
+                    // Only recalculate if treatment effect isn't zero
+                    if (baseEffect !== 0) {
+                        // Update the group effect to maintain the new mean position
+                        state.groupEffects[groupNum] = (newGroupMean - 5) / baseEffect;
+                    }
+                    
+                    // Recalculate statistics
+                    state.computeSS();
+                    updateAll();
+                }));
         });
         
         // Add a label for the homogeneity of variances assumption
