@@ -37,6 +37,43 @@ const state = {
                     });
                 }
             }
+        } else {
+            // Handle changes in number of individuals per group
+            const currentGroups = Array.from(new Set(this.baseDataset.map(d => d.group)));
+            
+            // Process each group separately
+            currentGroups.forEach(g => {
+                const groupData = this.baseDataset.filter(d => d.group === g);
+                const currentCount = groupData.length;
+                
+                // Get the base group mean for this group
+                const baseGroupMean = d3.mean(groupData, d => d.baseValue);
+                
+                if (currentCount < this.individualsPerGroup) {
+                    // We need to add more individuals
+                    const toAdd = this.individualsPerGroup - currentCount;
+                    for (let i = 0; i < toAdd; i++) {
+                        // Get a new base value similar to existing ones
+                        const baseVal = baseGroupMean + d3.randomNormal(0, 2)();
+                        this.baseDataset.push({
+                            group: g,
+                            value: baseVal,
+                            baseValue: baseVal,
+                            index: currentCount + i
+                        });
+                    }
+                } else if (currentCount > this.individualsPerGroup) {
+                    // We need to remove some individuals
+                    // Filter the dataset to keep only the desired number
+                    // Sort by index to keep removing from the end
+                    const sortedData = [...groupData].sort((a, b) => a.index - b.index);
+                    const toKeep = sortedData.slice(0, this.individualsPerGroup);
+                    
+                    // Filter out this group entirely and then add back the ones to keep
+                    this.baseDataset = this.baseDataset.filter(d => d.group !== g);
+                    this.baseDataset = this.baseDataset.concat(toKeep);
+                }
+            });
         }
 
         // transform the base values using stored random group effects
@@ -546,8 +583,7 @@ function initControlsPanel() {
         .on("input", function () {
             state.individualsPerGroup = +this.value;
             d3.select("#individuals-value").text(this.value);
-            state.updateDataset(true); // regenerate
-            console.log(state.dataset)
+            state.updateDataset(false);  // Don't regenerate, just adjust the number of points
         });
     container.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
 
