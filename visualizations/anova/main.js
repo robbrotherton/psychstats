@@ -88,7 +88,7 @@ function updateAll() { subscribers.forEach(cb => cb()); }
 // component 1: data graph
 function initDataGraph() {
     const width = 600, height = 500;
-    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const margin = { top: 150, right: 20, bottom: 30, left: 40 };
     const svg = d3.select("#data-graph")
         .append("svg")
         .attr("width", width)
@@ -112,6 +112,81 @@ function initDataGraph() {
         .append("path")
         .attr("d", "M0,-5L10,0L0,5")
         .attr("fill", "black");
+
+    function makePopulations() {
+        // Normal distribution PDF formula
+        function normalPDF(x, mean, sd) {
+            return (1 / (sd * Math.sqrt(2 * Math.PI))) * 
+                   Math.exp(-0.5 * Math.pow((x - mean) / sd, 2));
+        }
+
+        // Create a line generator for our curves
+        const lineGenerator = d3.line()
+            .x(d => d[0])
+            .y(d => d[1])
+            .curve(d3.curveBasis); // smooth the curve
+        
+        // Remove existing population curves if any
+        svg.selectAll(".population-curve").remove();
+        
+        // Use a single standard deviation for all groups
+        // Based on the population variability parameter that's used in data generation
+        // In the original data generation we use d3.randomNormal(0, 2)() then multiply by populationVariability
+        const commonSD = 2 * state.populationVariability;
+        
+        // Generate curves for each group
+        state.groupStats.forEach(group => {
+            const mean = group.mean;
+            
+            // Generate points for the curve
+            const curveData = [];
+            const domain = xScale.domain();
+            const rangeMin = Math.max(domain[0], mean - commonSD * 3);
+            const rangeMax = Math.min(domain[1], mean + commonSD * 3);
+            const step = (rangeMax - rangeMin) / 50;
+            
+            // Scale factor to make the curves fit nicely in the margin space
+            const heightScale = margin.top * 0.7;
+            
+            for (let x = rangeMin; x <= rangeMax; x += step) {
+                const scaledX = xScale(x);
+                // Compute PDF value and scale it to fit in the margin
+                const pdfValue = normalPDF(x, mean, commonSD);
+                const maxPDFValue = normalPDF(mean, mean, commonSD); // max height at mean
+                const scaledY = margin.top - (pdfValue / maxPDFValue) * heightScale;
+                
+                curveData.push([scaledX, scaledY]);
+            }
+            
+            // Draw the curve
+            svg.append("path")
+                .datum(curveData)
+                .attr("class", "population-curve")
+                .attr("d", lineGenerator)
+                .attr("fill", "none")
+                .attr("stroke", colScale(group.group))
+                .attr("stroke-width", 2)
+                .attr("opacity", 0.8);
+                
+            // Add a small circle to mark the mean on the curve
+            svg.append("circle")
+                .attr("class", "population-curve")
+                .attr("cx", xScale(mean))
+                .attr("cy", margin.top - heightScale)
+                .attr("r", 5)
+                .attr("fill", colScale(group.group));
+        });
+        
+        // Add a label for the homogeneity of variances assumption
+        svg.selectAll(".assumption-label").remove();
+        svg.append("text")
+            .attr("class", "assumption-label")
+            .attr("x", margin.left)
+            .attr("y", 20)
+            .attr("text-anchor", "start")
+            .attr("font-size", "12px")
+            .text(`Assumption: Homogeneity of variances (σ = ${commonSD.toFixed(2)})`);
+    }
 
     function makeSquare(d, xScale, computeCy) {
         const groupMean = state.groupStats.find(g => g.group === d.group).mean;
@@ -281,9 +356,8 @@ function initDataGraph() {
             svg.selectAll("path.within-square").remove();
         }
 
-
-
-
+        // Call the population curve drawing function
+        makePopulations();
     }
     subscribe(update);
     update();
