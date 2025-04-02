@@ -35,6 +35,7 @@ body {
         #variance-bar,
         #formula-panel {
             margin-bottom: 20px;
+            text-align: center;
         }
 
         label {
