@@ -10,8 +10,8 @@ const state = {
         showSquares: false,
         showMeans: true
     },
-    // Add a variability component selector
-    variabilityComponent: "within", // Options: "total", "within", "between"
+    // Update default variability component to "total" to match the initial UI selection
+    variabilityComponent: "total", // Options: "total", "within", "between"
     ssTotal: 0,
     ssWithin: 0,
     ssBetween: 0,
@@ -300,9 +300,9 @@ function initDataGraph() {
             .join("path")
             .attr("class", "variability-square")
             .transition().duration(200)
-            .attr("fill", "steelblue")
+            .attr("fill", "grey")
             .attr("fill-opacity", 0.2)
-            .attr("stroke", "steelblue")
+            .attr("stroke", "grey")
             .attr("d", d => {
                 const height = Math.abs(xScale(d.value) - grandMeanX);
                 return makeSquare(d, grandMeanX, computeCy(d), height);
@@ -327,27 +327,49 @@ function initDataGraph() {
     }
     
     function drawBetweenSquares() {
-        svg.selectAll("path.variability-square")
-            .data(state.groupStats, (d, i) => i)
-            .join("path")
-            .attr("class", "variability-square")
-            .transition().duration(200)
-            .attr("fill", "lightblue")
-            .attr("fill-opacity", 0.2)
-            .attr("stroke", "lightblue")
-            .attr("d", d => {
-                const groupMeanX = xScale(d.mean);
+        // Clear previous squares
+        svg.selectAll("path.variability-square").remove();
+        
+        // Loop through each group first to ensure we correctly position dots within groups
+        const groups = Array.from(new Set(state.dataset.map(d => d.group)));
+        
+        groups.forEach(groupId => {
+            // Get data for this group
+            const groupData = state.dataset.filter(d => d.group === groupId);
+            const groupStat = state.groupStats.find(g => g.group == groupId);
+            
+            // Calculate positions for this group
+            groupData.forEach((d, i) => {
+                // Calculate y-position for this specific data point
+                // This needs to match how points are laid out in computeCy
+                const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
+                
+                const groupMeanX = xScale(groupStat.mean);
                 const grandMeanX = xScale(state.grandMean);
-                const y = yScale(d.group) + yScale.bandwidth() / 2;
                 const height = Math.abs(groupMeanX - grandMeanX);
-                return `M ${groupMeanX} ${y} 
-                        L ${groupMeanX} ${y - height}
-                        L ${grandMeanX} ${y - height}
-                        L ${grandMeanX} ${y}
-                        Z`;
+                
+                // Draw the square for this data point
+                svg.append("path")
+                    .attr("class", "variability-square")
+                    .attr("fill", "lightblue")
+                    .attr("fill-opacity", 0.2)
+                    .attr("stroke", "lightblue")
+                    .attr("d", `M ${groupMeanX} ${y} 
+                              L ${groupMeanX} ${y - height}
+                              L ${grandMeanX} ${y - height}
+                              L ${grandMeanX} ${y}
+                              Z`);
             });
+        });
     }
-    
+
+    // Make sure our computeCy function is consistent with the calculation above
+    function computeCy(d) {
+        const groupDots = state.dataset.filter(item => item.group === d.group);
+        const idx = groupDots.indexOf(d);
+        return yScale(d.group) + ((idx + 1) / (groupDots.length + 1)) * yScale.bandwidth();
+    }
+
     function drawTotalArrows(data) {
         svg.selectAll("line.variability-arrow")
             .data(data, (d, i) => i)
@@ -380,24 +402,36 @@ function initDataGraph() {
     }
     
     function drawBetweenArrows() {
-        svg.selectAll("line.variability-arrow")
-            .data(state.groupStats, d => d.group)
-            .join("line")
-            .attr("class", "variability-arrow")
-            .transition().duration(200)
-            .attr("stroke", "brown")
-            .attr("stroke-width", 2)
-            .attr("marker-end", "url(#arrow)")
-            .attr("x1", d => xScale(d.mean))
-            .attr("x2", d => xScale(state.grandMean))
-            .attr("y1", d => yScale(d.group) + yScale.bandwidth() / 2)
-            .attr("y2", d => yScale(d.group) + yScale.bandwidth() / 2);
-    }
-
-    function computeCy(d) {
-        const groupDots = state.dataset.filter(item => item.group === d.group);
-        const idx = groupDots.indexOf(d);
-        return yScale(d.group) + ((idx + 1) / (groupDots.length + 1)) * yScale.bandwidth();
+        // Clear previous arrows
+        svg.selectAll("line.variability-arrow").remove();
+        
+        // Loop through each group first to ensure we correctly position arrows within groups
+        const groups = Array.from(new Set(state.dataset.map(d => d.group)));
+        
+        groups.forEach(groupId => {
+            // Get data for this group
+            const groupData = state.dataset.filter(d => d.group === groupId);
+            const groupStat = state.groupStats.find(g => g.group == groupId);
+            
+            // Calculate positions for this group
+            groupData.forEach((d, i) => {
+                // Calculate y-position for this specific data point
+                const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
+                const color = colScale(d.group);
+                const groupMeanX = xScale(groupStat.mean);
+                const grandMeanX = xScale(state.grandMean);
+                
+                // Draw the arrow for this data point
+                svg.append("line")
+                    .attr("class", "variability-arrow")
+                    .attr("stroke", color)
+                    .attr("stroke-width", 1)
+                    .attr("x1", groupMeanX)
+                    .attr("x2", grandMeanX)
+                    .attr("y1", y)
+                    .attr("y2", y);
+            });
+        });
     }
 
     function update() {
@@ -451,23 +485,29 @@ function initDataGraph() {
 
             groupMeans.exit().remove();
 
-            const grandMeanLine = svg.selectAll("line.grand-mean")
-                .data([state.grandMean]);
+            // Only show grand mean line when not showing within-group variability
+            if (state.variabilityComponent !== "within") {
+                const grandMeanLine = svg.selectAll("line.grand-mean")
+                    .data([state.grandMean]);
 
-            grandMeanLine.enter()
-                .append("line")
-                .attr("class", "grand-mean")
-                .attr("stroke", "grey")
-                .attr("stroke-dasharray", "20 10")
-                .attr("stroke-width", 4)
-                .merge(grandMeanLine)
-                .transition().duration(200)
-                .attr("x1", d => xScale(d))
-                .attr("x2", d => xScale(d))
-                .attr("y1", margin.top)
-                .attr("y2", height - margin.bottom);
+                grandMeanLine.enter()
+                    .append("line")
+                    .attr("class", "grand-mean")
+                    .attr("stroke", "grey")
+                    .attr("stroke-dasharray", "20 10")
+                    .attr("stroke-width", 4)
+                    .merge(grandMeanLine)
+                    .transition().duration(200)
+                    .attr("x1", d => xScale(d))
+                    .attr("x2", d => xScale(d))
+                    .attr("y1", margin.top)
+                    .attr("y2", height - margin.bottom);
 
-            grandMeanLine.exit().remove();
+                grandMeanLine.exit().remove();
+            } else {
+                // Hide grand mean line when showing within-group variability
+                svg.selectAll("line.grand-mean").remove();
+            }
         } else {
             svg.selectAll("line.group-mean").remove();
             svg.selectAll("line.grand-mean").remove();
