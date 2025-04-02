@@ -126,6 +126,13 @@ function initDataGraph() {
             .y(d => d[1])
             .curve(d3.curveBasis); // smooth the curve
         
+        // Area generator for filling under the curves
+        const areaGenerator = d3.area()
+            .x(d => d[0])
+            .y0(margin.top) // Bottom of area at the top of the data area
+            .y1(d => d[1])
+            .curve(d3.curveBasis);
+        
         // Remove existing population curves if any
         svg.selectAll(".population-curve").remove();
         
@@ -137,6 +144,7 @@ function initDataGraph() {
         // Generate curves for each group
         state.groupStats.forEach(group => {
             const mean = group.mean;
+            const groupColor = colScale(group.group);
             
             // Generate points for the curve
             const curveData = [];
@@ -158,23 +166,31 @@ function initDataGraph() {
                 curveData.push([scaledX, scaledY]);
             }
             
+            // Draw the shaded area under the curve first (so it's behind the line)
+            svg.append("path")
+                .datum(curveData)
+                .attr("class", "population-curve")
+                .attr("d", areaGenerator)
+                .attr("fill", groupColor)
+                .attr("fill-opacity", 0.2); // Transparency for the fill
+            
             // Draw the curve
             svg.append("path")
                 .datum(curveData)
                 .attr("class", "population-curve")
                 .attr("d", lineGenerator)
                 .attr("fill", "none")
-                .attr("stroke", colScale(group.group))
+                .attr("stroke", groupColor)
                 .attr("stroke-width", 2)
                 .attr("opacity", 0.8);
                 
             // Add a small circle to mark the mean on the curve
-            svg.append("circle")
-                .attr("class", "population-curve")
-                .attr("cx", xScale(mean))
-                .attr("cy", margin.top - heightScale)
-                .attr("r", 5)
-                .attr("fill", colScale(group.group));
+            // svg.append("circle")
+            //     .attr("class", "population-curve")
+            //     .attr("cx", xScale(mean))
+            //     .attr("cy", margin.top - heightScale)
+            //     .attr("r", 5)
+            //     .attr("fill", groupColor);
         });
         
         // Add a label for the homogeneity of variances assumption
