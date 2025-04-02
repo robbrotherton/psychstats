@@ -235,22 +235,6 @@ function initDataGraph() {
 
             withinArrows.exit().remove();
 
-            // draw within-group squares: from each data point to its group mean
-            const withinSquares = svg.selectAll("path.within-square")
-                .data(state.dataset, (d, i) => i);
-
-            withinSquares.enter()
-                .append("path")
-                .attr("class", "within-square")
-                .merge(withinSquares)
-                .transition().duration(200)
-                .attr("fill", "thistle")
-                .attr("fill-opacity", 0.2)
-                .attr("stroke", "thistle")
-                .attr("d", d => makeSquare(d, xScale, computeCy));
-
-            withinSquares.exit().remove();
-
             // draw between-group arrows: from each group mean to the grand mean
             const betweenArrows = svg.selectAll("line.between-arrow")
                 .data(state.groupStats, d => d.group);
@@ -273,8 +257,32 @@ function initDataGraph() {
             // remove arrows when toggled off
             svg.selectAll("line.within-arrow").remove();
             svg.selectAll("line.between-arrow").remove();
+        }
+
+        if (state.toggles.showSquares) {
+            // draw within-group squares: from each data point to its group mean
+            const withinSquares = svg.selectAll("path.within-square")
+                .data(state.dataset, (d, i) => i);
+
+            withinSquares.enter()
+                .append("path")
+                .attr("class", "within-square")
+                .merge(withinSquares)
+                .transition().duration(200)
+                .attr("fill", "thistle")
+                .attr("fill-opacity", 0.2)
+                .attr("stroke", "thistle")
+                .attr("d", d => makeSquare(d, xScale, computeCy));
+
+            withinSquares.exit().remove();
+
+        } else {
+            // remove arrows when toggled off   
             svg.selectAll("path.within-square").remove();
         }
+
+
+
 
     }
     subscribe(update);
@@ -454,6 +462,14 @@ function initControlsPanel() {
         .text("toggle arrows")
         .on("click", function () {
             state.toggles.showArrows = !state.toggles.showArrows;
+            updateAll();
+        });
+
+    // toggle: squares
+    container.append("button")
+        .text("toggle squares")
+        .on("click", function () {
+            state.toggles.showSquares = !state.toggles.showSquares;
             updateAll();
         });
 
