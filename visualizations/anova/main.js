@@ -6,16 +6,12 @@ const state = {
     baseDataset: [], // stores original random values
     groupEffects: [], // store random effect sizes for each group
     toggles: {
-        showArrows: true,
+        showArrows: false,
         showSquares: false,
         showMeans: true
     },
-    // Replace single variability component with an object of boolean flags
-    variabilityComponents: {
-        total: true,
-        within: false,
-        between: false
-    },
+    // Make sure this is initialized to "total" which is our default
+    variabilityComponent: "total", 
     ssTotal: 0,
     ssWithin: 0,
     ssBetween: 0,
@@ -277,14 +273,14 @@ function initDataGraph() {
         });
         
         // Add a label for the homogeneity of variances assumption
-        svg.selectAll(".assumption-label").remove();
-        svg.append("text")
-            .attr("class", "assumption-label")
-            .attr("x", margin.left)
-            .attr("y", 20)
-            .attr("text-anchor", "start")
-            .attr("font-size", "12px")
-            .text(`Assumption: Homogeneity of variances (σ = ${commonSD.toFixed(2)})`);
+        // svg.selectAll(".assumption-label").remove();
+        // svg.append("text")
+        //     .attr("class", "assumption-label")
+        //     .attr("x", margin.left)
+        //     .attr("y", 20)
+        //     .attr("text-anchor", "start")
+        //     .attr("font-size", "12px")
+        //     .text(`Assumption: Homogeneity of variances (σ = ${commonSD.toFixed(2)})`);
     }
 
     function makeSquare(d, x2, y, height) {
@@ -489,8 +485,8 @@ function initDataGraph() {
 
             groupMeans.exit().remove();
 
-            // Only show grand mean line when at least one of total or between is active
-            if (state.variabilityComponents.total || state.variabilityComponents.between) {
+            // Only show grand mean line when not showing within-group variability
+            if (state.variabilityComponent !== "within") {
                 const grandMeanLine = svg.selectAll("line.grand-mean")
                     .data([state.grandMean]);
 
@@ -509,7 +505,7 @@ function initDataGraph() {
 
                 grandMeanLine.exit().remove();
             } else {
-                // Hide grand mean line when only within-group variability is shown
+                // Hide grand mean line when showing within-group variability
                 svg.selectAll("line.grand-mean").remove();
             }
         } else {
@@ -521,26 +517,30 @@ function initDataGraph() {
         svg.selectAll(".variability-square").remove();
 
         if (state.toggles.showArrows) {
-            if (state.variabilityComponents.total) {
-                drawTotalArrows(state.dataset);
-            }
-            if (state.variabilityComponents.within) {
-                drawWithinArrows(state.dataset);
-            }
-            if (state.variabilityComponents.between) {
-                drawBetweenArrows();
+            switch (state.variabilityComponent) {
+                case "total":
+                    drawTotalArrows(state.dataset);
+                    break;
+                case "within":
+                    drawWithinArrows(state.dataset);
+                    break;
+                case "between":
+                    drawBetweenArrows();
+                    break;
             }
         }
         
         if (state.toggles.showSquares) {
-            if (state.variabilityComponents.total) {
-                drawTotalSquares(state.dataset);
-            }
-            if (state.variabilityComponents.within) {
-                drawWithinSquares(state.dataset);
-            }
-            if (state.variabilityComponents.between) {
-                drawBetweenSquares();
+            switch (state.variabilityComponent) {
+                case "total":
+                    drawTotalSquares(state.dataset);
+                    break;
+                case "within":
+                    drawWithinSquares(state.dataset);
+                    break;
+                case "between":
+                    drawBetweenSquares();
+                    break;
             }
         }
 
@@ -615,6 +615,22 @@ function initVarianceBar() {
 
         withinRect.exit().remove();
     }
+    const varianceLabels = d3.select("#variance-bar")
+        .append("div")
+        .attr("class", "variance-label");
+
+    varianceLabels.append("span")
+        .attr("class", "variance-label")
+        .style("color", "thistle")
+        .style("float", "left")
+        .text("SS within");
+    
+    varianceLabels.append("span")
+        .attr("class", "variance-label")
+        .style("color", "lightblue")
+        .style("float", "right")
+        .text("SS between");
+
     subscribe(update);
     update();
 }
@@ -626,11 +642,11 @@ function initFormulaPanel() {
         container.html("");
 
         container.append("div")
-            .html("$$ \\text{SS}_{\\text{total}} = \\sum (X - G)^2 = " + state.ssTotal.toFixed(2) + " $$");
+            .html("$$ \\text{SS}_{\\text{total}} = \\sum (X - M_{\\text{grand}})^2 = " + state.ssTotal.toFixed(2) + " $$");
         container.append("div")
             .html("$$ \\text{SS}_{\\text{within}} = \\sum (X - M_{\\text{group}})^2 = " + state.ssWithin.toFixed(2) + " $$");
         container.append("div")
-            .html("$$ \\text{SS}_{\\text{between}} = \\sum n_{\\text{group}} (M_{\\text{group}} - G)^2 = " + state.ssBetween.toFixed(2) + " $$");
+            .html("$$ \\text{SS}_{\\text{between}} = \\sum n_{\\text{group}} (M_{\\text{group}} - M_{\\text{grand}})^2 = " + state.ssBetween.toFixed(2) + " $$");
 
         if (window.MathJax) {
             MathJax.typesetPromise();

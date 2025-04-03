@@ -14,8 +14,13 @@ function initControlsPanel() {
 
     // Groups slider
     const groupsControl = paramControls.append("div");
-    groupsControl.append("label").text("groups: ");
+    groupsControl.append("label")
+        // .attr("class", "form-label")
+        .attr("for", "groups-slider")
+        .text("groups: ");
     groupsControl.append("input")
+        // .attr("class", "form-range")
+        .attr("id", "groups-slider")
         .attr("type", "range")
         .attr("min", 1)
         .attr("max", 10)
@@ -97,78 +102,99 @@ function initControlsPanel() {
         .style("font-weight", "bold")
         .style("margin-bottom", "10px");
     
-    // Total variability option
+    // Total variability option - default checked
     const totalDiv = variabilityForm.append("div")
-        .attr("class", "form-check form-switch");
+        .attr("class", "form-check");
     totalDiv.append("input")
         .attr("class", "form-check-input")
-        .attr("type", "checkbox")
+        .attr("type", "radio")
         .attr("id", "total-var")
         .attr("name", "variability")
         .attr("value", "total")
-        .property("checked", state.variabilityComponents.total)
+        .property("checked", state.variabilityComponent === "total")
         .on("change", function() {
-            state.variabilityComponents.total = this.checked;
+            console.log("Total selected");
+            state.variabilityComponent = "total";
             updateAll();
         });
     totalDiv.append("label")
         .attr("class", "form-check-label")
         .attr("for", "total-var")
-        .text(" Total Variability");
+        .text(" Total");
     
     // Within-group option
     const withinDiv = variabilityForm.append("div")
-        .attr("class", "form-check form-switch");;
+        .attr("class", "form-check");
     withinDiv.append("input")
         .attr("class", "form-check-input")
-        .attr("type", "checkbox")
+        .attr("type", "radio")
         .attr("id", "within-var")
         .attr("name", "variability")
         .attr("value", "within")
-        .property("checked", state.variabilityComponents.within)
+        .property("checked", state.variabilityComponent === "within")
         .on("change", function() {
-            state.variabilityComponents.within = this.checked;
+            console.log("Within selected");
+            state.variabilityComponent = "within";
             updateAll();
         });
     withinDiv.append("label")
         .attr("class", "form-check-label")
         .attr("for", "within-var")
-        .text(" Within-group Variability");
+        .text(" Within-groups");
     
     // Between-group option
     const betweenDiv = variabilityForm.append("div")
-        .attr("class", "form-check form-switch");
+        .attr("class", "form-check");
     betweenDiv.append("input")
         .attr("class", "form-check-input")
-        .attr("type", "checkbox")
+        .attr("type", "radio")
         .attr("id", "between-var")
         .attr("name", "variability")
         .attr("value", "between")
-        .property("checked", state.variabilityComponents.between)
+        .property("checked", state.variabilityComponent === "between")
         .on("change", function() {
-            state.variabilityComponents.between = this.checked;
+            console.log("Between selected");
+            state.variabilityComponent = "between";
             updateAll();
         });
     betweenDiv.append("label")
         .attr("class", "form-check-label")
         .attr("for", "between-var")
-        .text(" Between-group Variability");
+        .text(" Between-groups");
 
     // Toggle buttons
     const togglesDiv = visOptions.append("div")
         .attr("class", "toggle-buttons");
     
-    togglesDiv.append("button")
-        .text("Toggle Arrows")
-        .on("click", function () {
-            state.toggles.showArrows = !state.toggles.showArrows;
+    const devsToggle = togglesDiv.append("div")
+        .attr("class", "form-check form-switch");
+    devsToggle.append("input")
+        .attr("class", "form-check-input")
+        .attr("id", "deviations-toggle")
+        .attr("type", "checkbox")
+        .property("checked", state.toggles.showArrows)
+        .on("change", function() {
+            state.toggles.showArrows = this.checked;
             updateAll();
         });
+    devsToggle.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "deviations-toggle")
+        .text("Deviations");
 
-    togglesDiv.append("button")
-        .text("Toggle Squares")
-        .on("click", function () {
-            state.toggles.showSquares = !state.toggles.showSquares;
+    const squaresToggle = togglesDiv.append("div")
+        .attr("class", "form-check form-switch");
+    squaresToggle.append("input")
+        .attr("class", "form-check-input")
+        .attr("id", "squares-toggle")
+        .attr("type", "checkbox")
+        .property("checked", state.toggles.showSquares)
+        .on("change", function() {
+            state.toggles.showSquares = this.checked;
             updateAll();
         });
+    squaresToggle.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "squares-toggle")
+        .text("Squares");
 }

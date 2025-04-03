@@ -1,8 +1,11 @@
-body {
+/* body {
     font-family: sans-serif;
     margin: 20px;
-}
+} */
 
+#formula-panel {
+    visibility: hidden
+}
 #controls-panel {
     margin-bottom: 20px;
     width: 100%;
@@ -21,7 +24,7 @@ body {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
     box-sizing: border-box;
 }
 
@@ -32,6 +35,8 @@ body {
 }
 
 #data-graph,
+
+
 #variance-bar,
 #formula-panel {
     margin-bottom: 20px;
@@ -50,17 +55,18 @@ input[type="range"] {
     margin-right: 10px;
 }
 
+
 /* #variability-form div {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
 } */
 
-/* #variability-form input[type="checkbox"] {
-    margin-right: 8px;
-    width: auto;
+#variability-form input[type="radio"] {
+    margin-right: 0.5em;
+    width: 1em;
     cursor: pointer;
-} */
+}
 
 #variability-form label {
     width: auto;
@@ -106,3 +112,5 @@ button:hover {
         width: 120px;
     }
 }
+
+
