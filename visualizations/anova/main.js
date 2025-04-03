@@ -10,8 +10,12 @@ const state = {
         showSquares: false,
         showMeans: true
     },
-    // Update default variability component to "total" to match the initial UI selection
-    variabilityComponent: "total", // Options: "total", "within", "between"
+    // Replace single variability component with an object of boolean flags
+    variabilityComponents: {
+        total: true,
+        within: false,
+        between: false
+    },
     ssTotal: 0,
     ssWithin: 0,
     ssBetween: 0,
@@ -299,7 +303,7 @@ function initDataGraph() {
             .data(data, (d, i) => i)
             .join("path")
             .attr("class", "variability-square")
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("fill", "grey")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "grey")
@@ -314,7 +318,7 @@ function initDataGraph() {
             .data(data, (d, i) => i)
             .join("path")
             .attr("class", "variability-square")
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("fill", "thistle")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "thistle")
@@ -375,7 +379,7 @@ function initDataGraph() {
             .data(data, (d, i) => i)
             .join("line")
             .attr("class", "variability-arrow")
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1)
             .attr("x1", d => xScale(d.value))
@@ -389,7 +393,7 @@ function initDataGraph() {
             .data(data, (d, i) => i)
             .join("line")
             .attr("class", "variability-arrow")
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("stroke", d => colScale(d.group))
             .attr("stroke-width", 1)
             .attr("x1", d => xScale(d.value))
@@ -459,7 +463,7 @@ function initDataGraph() {
                     updateAll();
                 }))
             .merge(circles)
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("fill", d => colScale(d.group))
             .attr("cx", d => xScale(d.value))
             .attr("cy", d => computeCy(d))
@@ -477,7 +481,7 @@ function initDataGraph() {
                 .attr("stroke-width", 3)
                 .attr("stroke-dasharray", "8 6")
                 .merge(groupMeans)
-                .transition().duration(200)
+                // .transition().duration(200)
                 .attr("x1", d => xScale(d.mean))
                 .attr("x2", d => xScale(d.mean))
                 .attr("y1", d => yScale(d.group))
@@ -485,8 +489,8 @@ function initDataGraph() {
 
             groupMeans.exit().remove();
 
-            // Only show grand mean line when not showing within-group variability
-            if (state.variabilityComponent !== "within") {
+            // Only show grand mean line when at least one of total or between is active
+            if (state.variabilityComponents.total || state.variabilityComponents.between) {
                 const grandMeanLine = svg.selectAll("line.grand-mean")
                     .data([state.grandMean]);
 
@@ -497,7 +501,7 @@ function initDataGraph() {
                     .attr("stroke-dasharray", "20 10")
                     .attr("stroke-width", 4)
                     .merge(grandMeanLine)
-                    .transition().duration(200)
+                    // .transition().duration(200)
                     .attr("x1", d => xScale(d))
                     .attr("x2", d => xScale(d))
                     .attr("y1", margin.top)
@@ -505,7 +509,7 @@ function initDataGraph() {
 
                 grandMeanLine.exit().remove();
             } else {
-                // Hide grand mean line when showing within-group variability
+                // Hide grand mean line when only within-group variability is shown
                 svg.selectAll("line.grand-mean").remove();
             }
         } else {
@@ -517,30 +521,26 @@ function initDataGraph() {
         svg.selectAll(".variability-square").remove();
 
         if (state.toggles.showArrows) {
-            switch (state.variabilityComponent) {
-                case "total":
-                    drawTotalArrows(state.dataset);
-                    break;
-                case "within":
-                    drawWithinArrows(state.dataset);
-                    break;
-                case "between":
-                    drawBetweenArrows();
-                    break;
+            if (state.variabilityComponents.total) {
+                drawTotalArrows(state.dataset);
+            }
+            if (state.variabilityComponents.within) {
+                drawWithinArrows(state.dataset);
+            }
+            if (state.variabilityComponents.between) {
+                drawBetweenArrows();
             }
         }
         
         if (state.toggles.showSquares) {
-            switch (state.variabilityComponent) {
-                case "total":
-                    drawTotalSquares(state.dataset);
-                    break;
-                case "within":
-                    drawWithinSquares(state.dataset);
-                    break;
-                case "between":
-                    drawBetweenSquares();
-                    break;
+            if (state.variabilityComponents.total) {
+                drawTotalSquares(state.dataset);
+            }
+            if (state.variabilityComponents.within) {
+                drawWithinSquares(state.dataset);
+            }
+            if (state.variabilityComponents.between) {
+                drawBetweenSquares();
             }
         }
 
@@ -572,7 +572,7 @@ function initVarianceBar() {
             .attr("class", "within")
             .attr("fill", "thistle")
             .merge(withinRect)
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", xScale(within))
@@ -588,7 +588,7 @@ function initVarianceBar() {
             .attr("class", "between")
             .attr("fill", "lightblue")
             .merge(betweenRect)
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("x", xScale(within))
             .attr("y", 0)
             .attr("width", xScale(between))
@@ -607,7 +607,7 @@ function initVarianceBar() {
             .attr("fill", "none")
             .attr("stroke-dasharray", "5 5")
             .merge(totalRect)
-            .transition().duration(200)
+            // .transition().duration(200)
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", xScale(total))
@@ -638,149 +638,6 @@ function initFormulaPanel() {
     }
     subscribe(update);
     update();
-}
-
-// component 4: controls panel
-function initControlsPanel() {
-    const container = d3.select("#controls-panel");
-    container.html("");
-
-    container.append("label").text("groups: ");
-    container.append("input")
-        .attr("type", "range")
-        .attr("min", 1)
-        .attr("max", 10)
-        .attr("value", state.numGroups)
-        .on("input", function () {
-            state.numGroups = +this.value;
-            d3.select("#groups-value").text(this.value);
-            state.updateDataset(true);
-        });
-    container.append("span").attr("id", "groups-value").text(state.numGroups);
-
-    container.append("br");
-
-    container.append("label").text("individuals/group: ");
-    container.append("input")
-        .attr("type", "range")
-        .attr("min", 5)
-        .attr("max", 50)
-        .attr("value", state.individualsPerGroup)
-        .on("input", function () {
-            state.individualsPerGroup = +this.value;
-            d3.select("#individuals-value").text(this.value);
-            state.updateDataset(false);
-        });
-    container.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
-
-    container.append("br");
-
-    container.append("label").text("treatment effect: ");
-    container.append("input")
-        .attr("type", "range")
-        .attr("min", 0)
-        .attr("max", 3)
-        .attr("step", "0.1")
-        .attr("value", state.treatmentEffect)
-        .on("input", function () {
-            state.treatmentEffect = +this.value;
-            d3.select("#effect-value").text(this.value);
-            state.updateDataset(false);
-        });
-    container.append("span").attr("id", "effect-value").text(state.treatmentEffect);
-
-    container.append("br");
-
-    container.append("label").text("population variability: ");
-    container.append("input")
-        .attr("type", "range")
-        .attr("min", 0.1)
-        .attr("max", 3)
-        .attr("step", "0.1")
-        .attr("value", state.populationVariability)
-        .on("input", function () {
-            state.populationVariability = +this.value;
-            d3.select("#variability-value").text(this.value);
-            state.updateDataset(false);
-        });
-    container.append("span").attr("id", "variability-value").text(state.populationVariability);
-
-    container.append("br");
-    container.append("hr");
-    container.append("h4").text("Visualization Options:");
-
-    const variabilityForm = container.append("form").attr("id", "variability-form");
-    
-    variabilityForm.append("div").text("Variability to Show:").style("font-weight", "bold");
-    
-    const withinDiv = variabilityForm.append("div");
-    withinDiv.append("input")
-        .attr("type", "radio")
-        .attr("id", "within-var")
-        .attr("name", "variability")
-        .attr("value", "within")
-        .attr("checked", state.variabilityComponent === "within")
-        .on("change", function() {
-            state.variabilityComponent = "within";
-            updateAll();
-        });
-    withinDiv.append("label")
-        .attr("for", "within-var")
-        .text(" Within-group Variability");
-    
-    const betweenDiv = variabilityForm.append("div");
-    betweenDiv.append("input")
-        .attr("type", "radio")
-        .attr("id", "between-var")
-        .attr("name", "variability")
-        .attr("value", "between")
-        .attr("checked", state.variabilityComponent === "between")
-        .on("change", function() {
-            state.variabilityComponent = "between";
-            updateAll();
-        });
-    betweenDiv.append("label")
-        .attr("for", "between-var")
-        .text(" Between-group Variability");
-        
-    const totalDiv = variabilityForm.append("div");
-    totalDiv.append("input")
-        .attr("type", "radio")
-        .attr("id", "total-var")
-        .attr("name", "variability")
-        .attr("value", "total")
-        .attr("checked", state.variabilityComponent === "total")
-        .on("change", function() {
-            state.variabilityComponent = "total";
-            updateAll();
-        });
-    totalDiv.append("label")
-        .attr("for", "total-var")
-        .text(" Total Variability");
-
-    container.append("br");
-    
-    container.append("button")
-        .text("toggle arrows")
-        .on("click", function () {
-            state.toggles.showArrows = !state.toggles.showArrows;
-            updateAll();
-        });
-
-    container.append("button")
-        .text("toggle squares")
-        .style("margin-left", "10px")
-        .on("click", function () {
-            state.toggles.showSquares = !state.toggles.showSquares;
-            updateAll();
-        });
-
-    container.append("button")
-        .text("reset dataset")
-        .style("margin-left", "10px")
-        .on("click", function () {
-            state.updateDataset(true);
-        });
 }
 
 // initialize all components (components 1:4)

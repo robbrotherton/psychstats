@@ -8,6 +8,7 @@ include-in-header:
         <script>
 include-after-body: 
     text: |
+        <script src="./ui.js"></script>
         <script src="./main.js"></script>
 ---
 
@@ -20,33 +21,3 @@ include-after-body:
 <!-- component 3: formula panel -->
 <div id="formula-panel">$.$</div>
 
-
-<style>
-body {
-    font-family: sans-serif;
-    margin: 20px;
-}
-
-        #controls-panel {
-            margin-bottom: 20px;
-        }
-
-        #data-graph,
-        #variance-bar,
-        #formula-panel {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        label {
-            margin-right: 5px;
-        }
-
-        input[type="range"] {
-            vertical-align: middle;
-        }
-
-        button {
-            margin-right: 10px;
-        }
-</style>
