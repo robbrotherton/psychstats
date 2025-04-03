@@ -573,7 +573,7 @@ function initVarianceBar() {
             .attr("fill", "thistle")
             .merge(withinRect)
             // .transition().duration(200)
-            .attr("x", 0)
+            .attr("x", xScale(between))
             .attr("y", 0)
             .attr("width", xScale(within))
             .attr("height", height);
@@ -589,7 +589,7 @@ function initVarianceBar() {
             .attr("fill", "lightblue")
             .merge(betweenRect)
             // .transition().duration(200)
-            .attr("x", xScale(within))
+            .attr("x", 0)
             .attr("y", 0)
             .attr("width", xScale(between))
             .attr("height", height);
@@ -617,18 +617,20 @@ function initVarianceBar() {
     }
     const varianceLabels = d3.select("#variance-bar")
         .append("div")
-        .attr("class", "variance-label");
+        .attr("class", "variance-labels")
+        .style("width", width + "px")
+        .style("margin", "auto");
 
     varianceLabels.append("span")
         .attr("class", "variance-label")
         .style("color", "thistle")
-        .style("float", "left")
+        .style("float", "right")
         .text("SS within");
     
     varianceLabels.append("span")
         .attr("class", "variance-label")
         .style("color", "lightblue")
-        .style("float", "right")
+        .style("float", "left")
         .text("SS between");
 
     subscribe(update);
@@ -647,6 +649,18 @@ function initFormulaPanel() {
             .html("$$ \\text{SS}_{\\text{within}} = \\sum (X - M_{\\text{group}})^2 = " + state.ssWithin.toFixed(2) + " $$");
         container.append("div")
             .html("$$ \\text{SS}_{\\text{between}} = \\sum n_{\\text{group}} (M_{\\text{group}} - M_{\\text{grand}})^2 = " + state.ssBetween.toFixed(2) + " $$");
+
+        const msBetween = state.ssBetween / (state.numGroups - 1);
+        const msWithin = state.ssWithin / (state.individualsPerGroup * state.numGroups - state.numGroups);
+        const fRatio = msBetween / msWithin;
+
+        container.append("div")
+        .html("$$ \\text{MS}_{\\text{within}} = " + msWithin.toFixed(2) + " $$");
+    container.append("div")
+        .html("$$ \\text{MS}_{\\text{between}} = " + msBetween.toFixed(2) + " $$");
+        
+        container.append("div")
+        .html("$$ \\text{F} = " + fRatio.toFixed(2) + " $$");
 
         if (window.MathJax) {
             MathJax.typesetPromise();

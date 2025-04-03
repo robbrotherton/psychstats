@@ -21,3 +21,10 @@ include-after-body:
 <!-- component 3: formula panel -->
 <div id="formula-panel">$.$</div>
 
+::: {.about}
+
+## About
+
+Something something sums of squares something something.
+
+:::

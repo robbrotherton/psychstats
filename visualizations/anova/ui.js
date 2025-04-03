@@ -49,41 +49,53 @@ function initControlsPanel() {
 
     // Treatment effect slider
     const effectControl = paramControls.append("div").style("margin-top", "10px");
-    effectControl.append("label").text("treatment effect: ");
+    effectControl.append("label").text("Effect size: ");
+
+    effectControl.append("span")
+        .attr("id", "effect-value")
+        .attr("class", "slider-value")
+        .text("less");
     effectControl.append("input")
         .attr("type", "range")
         .attr("min", 0)
         .attr("max", 3)
         .attr("step", "0.1")
+        .style("width", "auto")
         .attr("value", state.treatmentEffect)
         .on("input", function () {
             state.treatmentEffect = +this.value;
-            d3.select("#effect-value").text(this.value);
+            // d3.select("#effect-value").text(this.value);
             state.updateDataset(false);
         });
-    effectControl.append("span").attr("id", "effect-value").text(state.treatmentEffect);
+    effectControl.append("span")
+        .attr("id", "effect-value")
+        .attr("class", "slider-value")
+        .text("more");
 
     // Population variability slider
     const varControl = paramControls.append("div").style("margin-top", "10px");
-    varControl.append("label").text("population variability: ");
+    varControl.append("label").text("Variability: ");
+    
+    varControl.append("span").attr("id", "variability-value").text("less");
     varControl.append("input")
         .attr("type", "range")
+        .style("width", "auto")
         .attr("min", 0.1)
         .attr("max", 3)
         .attr("step", "0.1")
         .attr("value", state.populationVariability)
         .on("input", function () {
             state.populationVariability = +this.value;
-            d3.select("#variability-value").text(this.value);
+            // d3.select("#variability-value").text(this.value);
             state.updateDataset(false);
         });
-    varControl.append("span").attr("id", "variability-value").text(state.populationVariability);
+    varControl.append("span").attr("id", "variability-value").text("more");
 
     // Reset button
     const resetDiv = paramControls.append("div").style("margin-top", "15px");
     resetDiv.append("button")
-        .attr("class", "reset-button")
-        .text("Reset Dataset")
+        .attr("class", "reset-button btn btn-danger")
+        .text("New data")
         .on("click", function () {
             state.updateDataset(true);
         });
