@@ -209,4 +209,41 @@ function initControlsPanel() {
         .attr("class", "form-check-label")
         .attr("for", "squares-toggle")
         .text("Squares");
+
+
+
+    // Add an animation button
+    const svg = d3.select("#data-graph")
+    const animationControls = container.append("div")
+        .attr("class", "control-group")
+        .style("margin-top", "20px");
+    
+    animationControls.append("h4")
+        .text("Visualize Sum of Squares");
+    
+    animationControls.append("button")
+        .text("Animate Total SS")
+        .on("click", () => {
+            if (window.animateSquaresToCombined) {
+                window.animateSquaresToCombined("total", svg);
+            }
+        });
+    
+    animationControls.append("button")
+        .text("Animate Within SS")
+        .style("margin-left", "10px")
+        .on("click", () => {
+            if (window.animateSquaresToCombined) {
+                window.animateSquaresToCombined("within");
+            }
+        });
+    
+    animationControls.append("button")
+        .text("Animate Between SS")
+        .style("margin-left", "10px")
+        .on("click", () => {
+            if (window.animateSquaresToCombined) {
+                window.animateSquaresToCombined("between");
+            }
+        });
 }
