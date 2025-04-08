@@ -140,11 +140,6 @@ function initDataGraph() {
     const yScale = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.2);
     const colScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-    // const xAxis = svg.append("g")
-    //     .attr("class", "x-axis")
-    //     .attr("transform", `translate(0, ${height - margin.bottom})`)
-    //     .call(d3.axisBottom(xScale).ticks(10));
-
     // add arrow marker definitions
     const defs = svg.append("defs");
     defs.append("marker")
@@ -297,16 +292,6 @@ function initDataGraph() {
                     updateAll();
                 }));
         });
-
-        // Add a label for the homogeneity of variances assumption
-        // svg.selectAll(".assumption-label").remove();
-        // svg.append("text")
-        //     .attr("class", "assumption-label")
-        //     .attr("x", margin.left)
-        //     .attr("y", 20)
-        //     .attr("text-anchor", "start")
-        //     .attr("font-size", "12px")
-        //     .text(`Assumption: Homogeneity of variances (σ = ${commonSD.toFixed(2)})`);
     }
 
     function makeSquare(d, x2, y, height) {
@@ -319,7 +304,6 @@ function initDataGraph() {
     }
 
     function drawTotalSquares(data) {
-        // svg.selectAll("path.enlarged-variability-square").remove();
         const grandMeanX = xScale(state.grandMean);
 
         svg.selectAll("path.variability-square")
@@ -362,21 +346,10 @@ function initDataGraph() {
     function drawSummarySquares() {
 
         let summaryValues = computeSummaryValues("meansquares");
-        console.log(summaryValues);
+
         // Clear previous squares
         sumSquares.selectAll("rect.summary-square").remove();
         sumSquares.selectAll("text.summary-square").remove();
-
-        const scale = 0.5;
-        // const ssTotalSideLength = scale * Math.sqrt(state.ssTotal);
-        // const ssWithinSideLength = scale * Math.sqrt(state.ssWithin);
-        // const ssBetweenSideLength = scale * Math.sqrt(state.ssBetween);
-
-        // console.log("ssTotalSideLength", ssTotalSideLength);
-        // console.log("ssWithinSideLength", ssWithinSideLength);
-        // console.log("ssBetweenSideLength", ssBetweenSideLength);
-
-
 
         sumSquares.append("rect")
             .attr("class", "summary-square")
@@ -453,7 +426,6 @@ function initDataGraph() {
             });
     }
     function drawBetweenSquares() {
-        // svg.selectAll("path.variability-square").remove()
         const grandMeanX = xScale(state.grandMean);
 
         svg.selectAll("path.variability-square")
@@ -555,47 +527,16 @@ function initDataGraph() {
             .data(state.groupStats, d => d.group)
             .join("line")
             .attr("class", "variability-arrow")
-            // .attr("fill", "lightblue")
-            // .attr("fill-opacity", 0.2)
             .attr("stroke", d => colScale(d.group))
             .attr("x1", d => xScale(d.mean))
             .attr("x2", grandMeanX)
             .attr("y1", d => yScale(d.group) + yScale.bandwidth() / 2)
             .attr("y2", d => yScale(d.group) + yScale.bandwidth() / 2)
 
-        // // Loop through each group first to ensure we correctly position arrows within groups
-        // const groups = Array.from(new Set(state.dataset.map(d => d.group)));
-
-        // groups.forEach(groupId => {
-        //     // Get data for this group
-        //     const groupData = state.dataset.filter(d => d.group === groupId);
-        //     const groupStat = state.groupStats.find(g => g.group == groupId);
-
-        //     // Calculate positions for this group
-        //     groupData.forEach((d, i) => {
-        //         // Calculate y-position for this specific data point
-        //         const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
-        //         const color = colScale(d.group);
-        //         const groupMeanX = xScale(groupStat.mean);
-        //         const grandMeanX = xScale(state.grandMean);
-
-        //         // Draw the arrow for this data point
-        //         svg.append("line")
-        //             .attr("class", "variability-arrow")
-        //             .attr("stroke", color)
-        //             .attr("stroke-width", 1)
-        //             .attr("x1", groupMeanX)
-        //             .attr("x2", grandMeanX)
-        //             .attr("y1", y)
-        //             .attr("y2", y);
-        //     });
-        // });
     }
 
     function update() {
-        // const vals = state.dataset.map(d => d.value);
-        // const xExtent = d3.extent(vals);
-        // xScale.domain([xExtent[0] - 10, xExtent[1] + 10]);
+
         const groups = Array.from(new Set(state.dataset.map(d => d.group)));
         yScale.domain(groups);
         colScale.domain(groups);
@@ -727,103 +668,6 @@ function initDataGraph() {
     update();
 }
 
-// component 2: variance bar
-// function initVarianceBar() {
-//     const width = 600, height = 600;
-//     const svg = d3.select("#variance-bar")
-//         .append("svg")
-//         .attr("width", width)
-//         .attr("height", height);
-
-//     let totalSq = state.ssTotal;
-//     let withinSq = state.ssWithin;
-//     let betweenSq = state.ssBetween;
-//     let total = Math.sqrt(totalSq);
-//     let within = Math.sqrt(withinSq);
-//     let between = Math.sqrt(betweenSq);
-
-//     const xScale = d3.scaleLinear().domain([0, (within + between) * 2]).range([0, width]);
-
-//     function update() {
-//         totalSq = state.ssTotal;
-//         withinSq = state.ssWithin;
-//         betweenSq = state.ssBetween;
-//         total = Math.sqrt(totalSq);
-//         within = Math.sqrt(withinSq);
-//         between = Math.sqrt(betweenSq);
-
-//         const withinRect = svg.selectAll("rect.within")
-//             .data([within]);
-
-//         withinRect.enter()
-//             .append("rect")
-//             .attr("class", "within")
-//             .attr("fill", "thistle")
-//             .merge(withinRect)
-//             // .transition().duration(200)
-//             .attr("x", xScale(between))
-//             .attr("y", 0)
-//             .attr("width", xScale(within))
-//             .attr("height", xScale(within));
-
-//         withinRect.exit().remove();
-
-//         const betweenRect = svg.selectAll("rect.between")
-//             .data([between]);
-
-//         betweenRect.enter()
-//             .append("rect")
-//             .attr("class", "between")
-//             .attr("fill", "lightblue")
-//             .merge(betweenRect)
-//             // .transition().duration(200)
-//             .attr("x", 0)
-//             .attr("y", 0)
-//             .attr("width", xScale(between))
-//             .attr("height", xScale(between));
-
-//         betweenRect.exit().remove();
-
-//         const totalRect = svg.selectAll("rect.total")
-//             .data([total]);
-
-//         totalRect.enter()
-//             .append("rect")
-//             .attr("class", "within")
-//             .attr("stroke", "black")
-//             .attr("stroke-width", 4)
-//             .attr("fill", "none")
-//             .attr("stroke-dasharray", "5 5")
-//             .merge(totalRect)
-//             // .transition().duration(200)
-//             .attr("x", 0)
-//             .attr("y", 0)
-//             .attr("width", xScale(total))
-//             .attr("height", xScale(total));
-
-//         withinRect.exit().remove();
-//     }
-//     const varianceLabels = d3.select("#variance-bar")
-//         .append("div")
-//         .attr("class", "variance-labels")
-//         .style("width", width + "px")
-//         .style("margin", "auto");
-
-//     varianceLabels.append("span")
-//         .attr("class", "variance-label")
-//         .style("color", "thistle")
-//         .style("float", "right")
-//         .text("SS within");
-
-//     varianceLabels.append("span")
-//         .attr("class", "variance-label")
-//         .style("color", "lightblue")
-//         .style("float", "left")
-//         .text("SS between");
-
-//     subscribe(update);
-//     update();
-// }
 
 // component 3: formula panel
 function initFormulaPanel() {

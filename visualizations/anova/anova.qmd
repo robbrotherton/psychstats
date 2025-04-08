@@ -8,7 +8,6 @@ include-in-header:
         <script>
 include-after-body: 
     text: |
-        # <script src="./vizHelpers.js"></script>
         <script src="./ui.js"></script>
         <script src="./main.js"></script>
 ---
