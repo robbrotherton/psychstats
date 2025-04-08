@@ -28,7 +28,7 @@ const state = {
             // generate new random base dataset
             this.baseDataset = [];
             for (let g = 0; g < this.numGroups; g++) {
-                let baseGroupMean = Math.random() * 10;
+                let baseGroupMean = (Math.random() - 0.5) * 10;
                 for (let i = 0; i < this.individualsPerGroup; i++) {
                     let baseVal = baseGroupMean + d3.randomNormal(0, 2)();
                     this.baseDataset.push({
@@ -82,7 +82,7 @@ const state = {
         this.dataset = this.baseDataset.map(d => {
             const baseEffect = this.treatmentEffect * 5;
             const groupEffect = this.groupEffects[d.group] * baseEffect;
-            const baseMean = 5 + groupEffect;
+            const baseMean = groupEffect;
             const baseGroupMean = d3.mean(this.baseDataset.filter(bd => bd.group === d.group),
                 bd => bd.baseValue);
             const deviation = (d.baseValue - baseGroupMean) * this.populationVariability;
@@ -126,17 +126,24 @@ function updateAll() { subscribers.forEach(cb => cb()); }
 
 // component 1: data graph
 function initDataGraph() {
-    const width = 600, height = 800;
-    const margin = { top: 150, right: 20, bottom: 200, left: 40 };
+    const width = 800, height = 800;
+    const margin = { top: 150, right: 220, bottom: 200, left: 220 };
     const svg = d3.select("#data-graph")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
 
     // scales: x for values, y for groups
-    const xScale = d3.scaleLinear().range([margin.left, width - margin.right]);
+    const xScale = d3.scaleLinear()
+        .domain([-10, 10])
+        .range([margin.left, width - margin.right]);
     const yScale = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.2);
     const colScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // const xAxis = svg.append("g")
+    //     .attr("class", "x-axis")
+    //     .attr("transform", `translate(0, ${height - margin.bottom})`)
+    //     .call(d3.axisBottom(xScale).ticks(10));
 
     // add arrow marker definitions
     const defs = svg.append("defs");
@@ -152,9 +159,24 @@ function initDataGraph() {
         .attr("d", "M0,-5L10,0L0,5")
         .attr("fill", "black");
 
+
+    // set up the secondary scale where the sums of squares or 
+    // mean squares will be displayed
     const sumSquares = svg.append("g")
-        .attr("class", "sum-squares")  
-        .attr("transform", `translate(0, 500)`);
+        .attr("class", "sum-squares")
+        .attr("transform", `translate(0, ${height - margin.bottom})`);
+
+    // get px/unit from scale1
+    const pxPerUnit = pixelsPerUnit(xScale);
+    // scale2: full-width range
+    const scale2PixelSpan = width; // [0, width]
+    const scale2DataSpan = scale2PixelSpan / pxPerUnit;
+    // optional: pick data origin — e.g., start at 0
+    const scale2Domain = [0, scale2DataSpan];
+
+    const sumScale = d3.scaleLinear()
+        .domain(scale2Domain)
+        .range([0, width]);
 
     function makePopulations() {
         // Normal distribution PDF formula
@@ -192,8 +214,8 @@ function initDataGraph() {
             // Generate points for the curve
             const curveData = [];
             const domain = xScale.domain();
-            const rangeMin = Math.max(domain[0], mean - commonSD * 3);
-            const rangeMax = Math.min(domain[1], mean + commonSD * 3);
+            const rangeMin = Math.max(domain[0] * 3, mean - commonSD * 3);
+            const rangeMax = Math.min(domain[1] * 3, mean + commonSD * 3);
             const step = (rangeMax - rangeMin) / 50;
 
             // Scale factor to make the curves fit nicely in the margin space
@@ -297,6 +319,7 @@ function initDataGraph() {
     }
 
     function drawTotalSquares(data) {
+        // svg.selectAll("path.enlarged-variability-square").remove();
         const grandMeanX = xScale(state.grandMean);
 
         svg.selectAll("path.variability-square")
@@ -315,33 +338,47 @@ function initDataGraph() {
 
     function computeSummaryValues(which) {
         if (which === "sumsquares") {
-            // something
-        } else if (which === "meansquares") { 
-            // something
+            return {
+                total: state.ssTotal,
+                totalSide: Math.sqrt(state.ssTotal),
+                within: state.ssWithin,
+                withinSide: Math.sqrt(state.ssWithin),
+                between: state.ssBetween,
+                betweenSide: Math.sqrt(state.ssBetween)
+            };
+        } else if (which === "meansquares") {
+            return {
+                total: state.ssTotal / (state.dataset.length - 1),
+                totalSide: Math.sqrt(state.ssTotal / (state.dataset.length - 1)),
+                within: state.ssWithin / (state.dataset.length - state.numGroups),
+                withinSide: Math.sqrt(state.ssWithin / (state.dataset.length - state.numGroups)),
+                between: state.ssBetween / (state.numGroups - 1),
+                betweenSide: Math.sqrt(state.ssBetween / (state.numGroups - 1))
+            };
         }
     }
 
 
-    function drawSummarySquares(summaryValues) {
+    function drawSummarySquares() {
 
+        let summaryValues = computeSummaryValues("meansquares");
+        console.log(summaryValues);
         // Clear previous squares
         sumSquares.selectAll("rect.summary-square").remove();
         sumSquares.selectAll("text.summary-square").remove();
 
-        const scale = 0.1;
-        const ssTotalSideLength = scale * Math.sqrt(state.ssTotal);
-        const ssWithinSideLength = scale * Math.sqrt(state.ssWithin);
-        const ssBetweenSideLength = scale * Math.sqrt(state.ssBetween);
+        const scale = 0.5;
+        // const ssTotalSideLength = scale * Math.sqrt(state.ssTotal);
+        // const ssWithinSideLength = scale * Math.sqrt(state.ssWithin);
+        // const ssBetweenSideLength = scale * Math.sqrt(state.ssBetween);
 
-        console.log("ssTotalSideLength", ssTotalSideLength);
-        console.log("ssWithinSideLength", ssWithinSideLength);
-        console.log("ssBetweenSideLength", ssBetweenSideLength);
+        // console.log("ssTotalSideLength", ssTotalSideLength);
+        // console.log("ssWithinSideLength", ssWithinSideLength);
+        // console.log("ssBetweenSideLength", ssBetweenSideLength);
 
-        const sumScale = d3.scaleLinear()
-            .domain([0, (ssTotalSideLength + ssWithinSideLength + ssBetweenSideLength)])
-            .range([0, width]);
 
-            sumSquares.append("rect")
+
+        sumSquares.append("rect")
             .attr("class", "summary-square")
             .attr("fill", "grey")
             .attr("fill-opacity", 0.2)
@@ -349,56 +386,57 @@ function initDataGraph() {
             .attr("stroke-dasharray", "5 5")
             .attr("x", 0)
             .attr("y", 0)
-            .attr("width", sumScale(ssTotalSideLength))
-            .attr("height", sumScale(ssTotalSideLength));
+            .attr("width", sumScale(summaryValues.totalSide))
+            .attr("height", sumScale(summaryValues.totalSide));
 
-            sumSquares.append("text")
-            .text(state.ssTotal.toFixed(2))
+        sumSquares.append("text")
+            .text(summaryValues.total.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
             .attr("x", 0)
             .attr("y", 15);
 
-            sumSquares.append("rect")
+        sumSquares.append("rect")
             .attr("class", "summary-square")
             .attr("fill", "thistle")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "thistle")
-            .attr("x", sumScale(ssTotalSideLength))
+            .attr("x", sumScale(summaryValues.totalSide))
             .attr("y", 0)
-            .attr("width", sumScale(ssWithinSideLength))
-            .attr("height", sumScale(ssWithinSideLength));
+            .attr("width", sumScale(summaryValues.withinSide))
+            .attr("height", sumScale(summaryValues.withinSide));
 
-            sumSquares.append("text")
-            .text(state.ssWithin.toFixed(2))
+        sumSquares.append("text")
+            .text(summaryValues.within.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", sumScale(ssTotalSideLength))
+            .attr("x", sumScale(summaryValues.totalSide))
             .attr("y", 15)
 
-            sumSquares.append("rect")
+        sumSquares.append("rect")
             .attr("class", "summary-square")
             .attr("fill", "lightblue")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "lightblue")
-            .attr("x", sumScale(ssTotalSideLength) + sumScale(ssWithinSideLength))
+            .attr("x", sumScale(summaryValues.totalSide) + sumScale(summaryValues.withinSide))
             .attr("y", 0)
-            .attr("width", sumScale(ssBetweenSideLength))
-            .attr("height", sumScale(ssBetweenSideLength));
+            .attr("width", sumScale(summaryValues.betweenSide))
+            .attr("height", sumScale(summaryValues.betweenSide));
 
-            sumSquares.append("text")
-            .text(state.ssBetween.toFixed(2))
+        sumSquares.append("text")
+            .text(summaryValues.between.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", xScale(ssTotalSideLength) + xScale(ssWithinSideLength))
-            .attr("y", height - xScale(ssBetweenSideLength))
+            .attr("x", sumScale(summaryValues.totalSide) + sumScale(summaryValues.withinSide))
+            .attr("y", 15)
 
     }
 
     function drawWithinSquares(data) {
+        // svg.selectAll("path.enlarged-variability-square").remove();
         svg.selectAll("path.variability-square")
             .data(data, (d, i) => i)
             .join("path")
@@ -414,45 +452,61 @@ function initDataGraph() {
                 return makeSquare(d, groupMeanX, computeCy(d), height);
             });
     }
-
     function drawBetweenSquares() {
-        // Clear previous squares
-        svg.selectAll("path.variability-square").remove();
+        // svg.selectAll("path.variability-square").remove()
+        const grandMeanX = xScale(state.grandMean);
 
-        // Loop through each group first to ensure we correctly position dots within groups
-        const groups = Array.from(new Set(state.dataset.map(d => d.group)));
-
-        groups.forEach(groupId => {
-            // Get data for this group
-            const groupData = state.dataset.filter(d => d.group === groupId);
-            const groupStat = state.groupStats.find(g => g.group == groupId);
-
-            // Calculate positions for this group
-            groupData.forEach((d, i) => {
-                // Calculate y-position for this specific data point
-                // This needs to match how points are laid out in computeCy
-                const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
-
-                const groupMeanX = xScale(groupStat.mean);
-                const grandMeanX = xScale(state.grandMean);
+        svg.selectAll("path.variability-square")
+            .data(state.groupStats, d => d.group)
+            .join("path")
+            .attr("class", "variability-square")
+            .attr("fill", "lightblue")
+            .attr("fill-opacity", 0.5)
+            .attr("stroke", "lightblue")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "4 4")
+            .attr("d", d => {
+                const groupMeanX = xScale(d.mean);
                 const height = Math.abs(groupMeanX - grandMeanX);
-
-                // Draw the square for this data point
-                svg.append("path")
-                    .attr("class", "variability-square")
-                    .attr("fill", "lightblue")
-                    .attr("fill-opacity", 0.2)
-                    .attr("stroke", "lightblue")
-                    .attr("d", `M ${groupMeanX} ${y} 
-                              L ${groupMeanX} ${y - height}
-                              L ${grandMeanX} ${y - height}
-                              L ${grandMeanX} ${y}
-                              Z`);
+                return makeSquare({ value: d.mean }, grandMeanX, yScale(d.group) + yScale.bandwidth() / 2, height);
             });
-        });
+
+        // Draw the enlarged squares, scaled by the number of observations in the group
+        svg.selectAll("path.enlarged-variability-square")
+            .data(state.groupStats, d => d.group)
+            .join("path")
+            .attr("class", "enlarged-variability-square")
+            .attr("fill", "lightblue")
+            .attr("fill-opacity", 0.2)
+            .attr("stroke", "lightblue")
+            // .attr("stroke-dasharray", "4 4")
+            .attr("d", d => {
+            const groupMeanX = xScale(d.mean);
+            const centerY = yScale(d.group) + yScale.bandwidth() / 2;
+
+            // Compute the side length of the square, scaled by sqrt of group size
+            const sideLength = Math.abs(xScale(d.mean) - grandMeanX) * Math.sqrt(d.count);
+
+            // Compute the top-left corner of the square to center it
+            let x1, y1
+            if (groupMeanX > grandMeanX) {
+                x1 = groupMeanX - sideLength;
+                y1 = centerY - sideLength;
+            } else {
+                x1 = groupMeanX;
+                y1 = centerY - sideLength;
+            }
+
+            // Create the path for the square
+            return `M ${x1} ${y1} 
+                L ${x1 + sideLength} ${y1} 
+                L ${x1 + sideLength} ${y1 + sideLength} 
+                L ${x1} ${y1 + sideLength} 
+                Z`;
+            });
     }
 
-    
+
 
     function computeCy(d) {
         const groupDots = state.dataset.filter(item => item.group === d.group);
@@ -495,39 +549,53 @@ function initDataGraph() {
         // Clear previous arrows
         svg.selectAll("line.variability-arrow").remove();
 
-        // Loop through each group first to ensure we correctly position arrows within groups
-        const groups = Array.from(new Set(state.dataset.map(d => d.group)));
+        const grandMeanX = xScale(state.grandMean);
 
-        groups.forEach(groupId => {
-            // Get data for this group
-            const groupData = state.dataset.filter(d => d.group === groupId);
-            const groupStat = state.groupStats.find(g => g.group == groupId);
+        svg.selectAll("path.variability-square")
+            .data(state.groupStats, d => d.group)
+            .join("line")
+            .attr("class", "variability-arrow")
+            // .attr("fill", "lightblue")
+            // .attr("fill-opacity", 0.2)
+            .attr("stroke", d => colScale(d.group))
+            .attr("x1", d => xScale(d.mean))
+            .attr("x2", grandMeanX)
+            .attr("y1", d => yScale(d.group) + yScale.bandwidth() / 2)
+            .attr("y2", d => yScale(d.group) + yScale.bandwidth() / 2)
 
-            // Calculate positions for this group
-            groupData.forEach((d, i) => {
-                // Calculate y-position for this specific data point
-                const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
-                const color = colScale(d.group);
-                const groupMeanX = xScale(groupStat.mean);
-                const grandMeanX = xScale(state.grandMean);
+        // // Loop through each group first to ensure we correctly position arrows within groups
+        // const groups = Array.from(new Set(state.dataset.map(d => d.group)));
 
-                // Draw the arrow for this data point
-                svg.append("line")
-                    .attr("class", "variability-arrow")
-                    .attr("stroke", color)
-                    .attr("stroke-width", 1)
-                    .attr("x1", groupMeanX)
-                    .attr("x2", grandMeanX)
-                    .attr("y1", y)
-                    .attr("y2", y);
-            });
-        });
+        // groups.forEach(groupId => {
+        //     // Get data for this group
+        //     const groupData = state.dataset.filter(d => d.group === groupId);
+        //     const groupStat = state.groupStats.find(g => g.group == groupId);
+
+        //     // Calculate positions for this group
+        //     groupData.forEach((d, i) => {
+        //         // Calculate y-position for this specific data point
+        //         const y = yScale(d.group) + ((i + 1) / (groupData.length + 1)) * yScale.bandwidth();
+        //         const color = colScale(d.group);
+        //         const groupMeanX = xScale(groupStat.mean);
+        //         const grandMeanX = xScale(state.grandMean);
+
+        //         // Draw the arrow for this data point
+        //         svg.append("line")
+        //             .attr("class", "variability-arrow")
+        //             .attr("stroke", color)
+        //             .attr("stroke-width", 1)
+        //             .attr("x1", groupMeanX)
+        //             .attr("x2", grandMeanX)
+        //             .attr("y1", y)
+        //             .attr("y2", y);
+        //     });
+        // });
     }
 
     function update() {
-        const vals = state.dataset.map(d => d.value);
-        const xExtent = d3.extent(vals);
-        xScale.domain([xExtent[0] - 10, xExtent[1] + 10]);
+        // const vals = state.dataset.map(d => d.value);
+        // const xExtent = d3.extent(vals);
+        // xScale.domain([xExtent[0] - 10, xExtent[1] + 10]);
         const groups = Array.from(new Set(state.dataset.map(d => d.group)));
         yScale.domain(groups);
         colScale.domain(groups);
@@ -605,6 +673,7 @@ function initDataGraph() {
 
         svg.selectAll(".variability-arrow").remove();
         svg.selectAll(".variability-square").remove();
+        svg.selectAll(".enlarged-variability-square").remove();
 
         if (state.toggles.showArrows) {
             switch (state.variabilityComponent) {
@@ -629,7 +698,7 @@ function initDataGraph() {
                     drawWithinSquares(state.dataset);
                     break;
                 case "between":
-                    drawBetweenSquares();
+                    drawBetweenSquares(state.dataset);
                     break;
             }
         }
@@ -637,9 +706,9 @@ function initDataGraph() {
         makePopulations();
         drawSummarySquares();
     }
-    
+
     // Create a wrapper function to call the modular animation function with the right parameters
-    window.animateSquaresToCombined = function(type) {
+    window.animateSquaresToCombined = function (type) {
         if (window.vizHelpers && window.vizHelpers.animateSquaresToCombined) {
             window.vizHelpers.animateSquaresToCombined({
                 state: state,
@@ -774,12 +843,12 @@ function initFormulaPanel() {
         const fRatio = msBetween / msWithin;
 
         container.append("div")
-            .html("$$ \\text{MS}_{\\text{within}} = " + msWithin.toFixed(2) + " $$");
+            .html("$$ MS_{\\text{within}} = " + msWithin.toFixed(2) + " $$");
         container.append("div")
-            .html("$$ \\text{MS}_{\\text{between}} = " + msBetween.toFixed(2) + " $$");
+            .html("$$ MS_{\\text{between}} = " + msBetween.toFixed(2) + " $$");
 
         container.append("div")
-            .html("$$ \\text{F} = " + fRatio.toFixed(2) + " $$");
+            .html("$$ F = " + fRatio.toFixed(2) + " $$");
 
         if (window.MathJax) {
             MathJax.typesetPromise();
@@ -836,3 +905,16 @@ Promise.all([waitForMathJax(), loadVizHelpers()])
         // Fallback init if vizHelpers fails to load
         init();
     });
+
+
+
+// scale helpers
+function pixelsPerUnit(scale) {
+    const d = scale.domain();
+    const r = scale.range();
+    return Math.abs((r[1] - r[0]) / (d[1] - d[0]));
+}
+
+function unitsPerPixel(scale) {
+    return 1 / pixelsPerUnit(scale);
+}
