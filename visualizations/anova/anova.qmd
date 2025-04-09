@@ -8,6 +8,7 @@ include-in-header:
         <script>
 include-after-body: 
     text: |
+        <script src="./formula-panel.js"></script>
         <script src="./ui.js"></script>
         <script src="./main.js"></script>
 ---
