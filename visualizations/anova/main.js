@@ -343,14 +343,15 @@ function initDataGraph() {
     }
 
 
-    function drawSummarySquares() {
+    function drawSummarySquares(which) {
 
-        let summaryValues = computeSummaryValues("meansquares");
+        let summaryValues = computeSummaryValues(which);
 
         // Clear previous squares
         sumSquares.selectAll("rect.summary-square").remove();
         sumSquares.selectAll("text.summary-square").remove();
 
+        // total
         sumSquares.append("rect")
             .attr("class", "summary-square")
             .attr("fill", "grey")
@@ -370,30 +371,13 @@ function initDataGraph() {
             .attr("x", 0)
             .attr("y", 15);
 
-        sumSquares.append("rect")
-            .attr("class", "summary-square")
-            .attr("fill", "thistle")
-            .attr("fill-opacity", 0.2)
-            .attr("stroke", "thistle")
-            .attr("x", sumScale(summaryValues.totalSide))
-            .attr("y", 0)
-            .attr("width", sumScale(summaryValues.withinSide))
-            .attr("height", sumScale(summaryValues.withinSide));
-
-        sumSquares.append("text")
-            .text(summaryValues.within.toFixed(2))
-            .attr("class", "summary-square")
-            .attr("stroke", "grey")
-            .attr("stroke-dasharray", "5 5")
-            .attr("x", sumScale(summaryValues.totalSide))
-            .attr("y", 15)
-
+        // between
         sumSquares.append("rect")
             .attr("class", "summary-square")
             .attr("fill", "lightblue")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "lightblue")
-            .attr("x", sumScale(summaryValues.totalSide) + sumScale(summaryValues.withinSide))
+            .attr("x", sumScale(summaryValues.totalSide))
             .attr("y", 0)
             .attr("width", sumScale(summaryValues.betweenSide))
             .attr("height", sumScale(summaryValues.betweenSide));
@@ -403,8 +387,28 @@ function initDataGraph() {
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", sumScale(summaryValues.totalSide) + sumScale(summaryValues.withinSide))
+            .attr("x", sumScale(summaryValues.totalSide))
             .attr("y", 15)
+
+
+        // within
+        sumSquares.append("rect")
+            .attr("class", "summary-square")
+            .attr("fill", "thistle")
+            .attr("fill-opacity", 0.2)
+            .attr("stroke", "thistle")
+            .attr("x", sumScale(summaryValues.totalSide))
+            .attr("y", sumScale(summaryValues.betweenSide))
+            .attr("width", sumScale(summaryValues.withinSide))
+            .attr("height", sumScale(summaryValues.withinSide));
+
+        sumSquares.append("text")
+            .text(summaryValues.within.toFixed(2))
+            .attr("class", "summary-square")
+            .attr("stroke", "grey")
+            .attr("stroke-dasharray", "5 5")
+            .attr("x", sumScale(summaryValues.totalSide))
+            .attr("y", sumScale(summaryValues.betweenSide) + 15)
 
     }
 
@@ -453,24 +457,24 @@ function initDataGraph() {
             .attr("stroke", "lightblue")
             // .attr("stroke-dasharray", "4 4")
             .attr("d", d => {
-            const groupMeanX = xScale(d.mean);
-            const centerY = yScale(d.group) + yScale.bandwidth() / 2;
+                const groupMeanX = xScale(d.mean);
+                const centerY = yScale(d.group) + yScale.bandwidth() / 2;
 
-            // Compute the side length of the square, scaled by sqrt of group size
-            const sideLength = Math.abs(xScale(d.mean) - grandMeanX) * Math.sqrt(d.count);
+                // Compute the side length of the square, scaled by sqrt of group size
+                const sideLength = Math.abs(xScale(d.mean) - grandMeanX) * Math.sqrt(d.count);
 
-            // Compute the top-left corner of the square to center it
-            let x1, y1
-            if (groupMeanX > grandMeanX) {
-                x1 = groupMeanX - sideLength;
-                y1 = centerY - sideLength;
-            } else {
-                x1 = groupMeanX;
-                y1 = centerY - sideLength;
-            }
+                // Compute the top-left corner of the square to center it
+                let x1, y1
+                if (groupMeanX > grandMeanX) {
+                    x1 = groupMeanX - sideLength;
+                    y1 = centerY - sideLength;
+                } else {
+                    x1 = groupMeanX;
+                    y1 = centerY - sideLength;
+                }
 
-            // Create the path for the square
-            return `M ${x1} ${y1} 
+                // Create the path for the square
+                return `M ${x1} ${y1} 
                 L ${x1 + sideLength} ${y1} 
                 L ${x1 + sideLength} ${y1 + sideLength} 
                 L ${x1} ${y1 + sideLength} 
@@ -645,7 +649,7 @@ function initDataGraph() {
         }
 
         makePopulations();
-        drawSummarySquares();
+        drawSummarySquares("sumsquares");
     }
 
     // Create a wrapper function to call the modular animation function with the right parameters
