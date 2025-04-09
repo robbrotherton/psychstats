@@ -1,6 +1,7 @@
 ---
-title: ANOVA
-
+format:
+    html:
+        anchor-sections: false
 include-in-header:
     text: |
         <link rel="stylesheet" href="./styles.css"> 
@@ -34,21 +35,23 @@ include-after-body:
         <script src="./main.js"></script>
 ---
 
+# Visualizing ANOVA
+
 :::: {.main-container}
 
 ::: {.visualization-wrapper}
 
 <div class="control-sections">
 <div class="control-section population-controls">
-<h3>Population Controls</h3>
+<h3>Populations</h3>
 <div id="population-controls" class="control-content" style="max-height: 0px;"></div>
 </div>
 <div class="control-section sample-controls">
-<h3>Sample Visualization</h3>
+<h3>Samples</h3>
 <div id="sample-controls" class="control-content" style="max-height: 0px;"></div>
 </div>
 <div class="control-section summary-controls">
-<h3>Summary Controls</h3>
+<h3>Summary</h3>
 <div id="summary-controls" class="control-content" style="max-height: 0px;"></div>
 </div>
 </div>

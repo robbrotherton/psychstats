@@ -7,38 +7,38 @@ function initControlsPanel() {
     // ----- POPULATION CONTROLS -----
     const populationControls = d3.select("#population-controls");
     
-    // Groups slider
-    const groupsControl = populationControls.append("div");
-    groupsControl.append("label")
-        .attr("for", "groups-slider")
-        .text("Groups: ");
-    groupsControl.append("input")
-        .attr("id", "groups-slider")
-        .attr("type", "range")
-        .attr("min", 1)
-        .attr("max", 10)
-        .attr("value", state.numGroups)
-        .on("input", function () {
-            state.numGroups = +this.value;
-            d3.select("#groups-value").text(this.value);
-            state.updateDataset(true);
-        });
-    groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
+    // // Groups slider
+    // const groupsControl = populationControls.append("div");
+    // groupsControl.append("label")
+    //     .attr("for", "groups-slider")
+    //     .text("Groups: ");
+    // groupsControl.append("input")
+    //     .attr("id", "groups-slider")
+    //     .attr("type", "range")
+    //     .attr("min", 1)
+    //     .attr("max", 10)
+    //     .attr("value", state.numGroups)
+    //     .on("input", function () {
+    //         state.numGroups = +this.value;
+    //         d3.select("#groups-value").text(this.value);
+    //         state.updateDataset(true);
+    //     });
+    // groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
 
-    // Individuals per group slider
-    const indControl = populationControls.append("div").style("margin-top", "10px");
-    indControl.append("label").text("Individuals/Group: ");
-    indControl.append("input")
-        .attr("type", "range")
-        .attr("min", 5)
-        .attr("max", 50)
-        .attr("value", state.individualsPerGroup)
-        .on("input", function () {
-            state.individualsPerGroup = +this.value;
-            d3.select("#individuals-value").text(this.value);
-            state.updateDataset(false);
-        });
-    indControl.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
+    // // Individuals per group slider
+    // const indControl = populationControls.append("div").style("margin-top", "10px");
+    // indControl.append("label").text("Individuals/Group: ");
+    // indControl.append("input")
+    //     .attr("type", "range")
+    //     .attr("min", 5)
+    //     .attr("max", 50)
+    //     .attr("value", state.individualsPerGroup)
+    //     .on("input", function () {
+    //         state.individualsPerGroup = +this.value;
+    //         d3.select("#individuals-value").text(this.value);
+    //         state.updateDataset(false);
+    //     });
+    // indControl.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
 
     // Treatment effect slider
     const effectControl = populationControls.append("div").style("margin-top", "10px");
