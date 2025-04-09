@@ -106,6 +106,55 @@ function initControlsPanel() {
     
     visOptions.append("h3").text("Visualization Options");
 
+    // Summary type selector (sums of squares vs mean squares)
+    const summaryTypeForm = visOptions.append("div")
+        .attr("id", "summary-type-form")
+        .style("margin-bottom", "15px");
+    
+    summaryTypeForm.append("div")
+        .text("Summary Square Type:")
+        .style("font-weight", "bold")
+        .style("margin-bottom", "10px");
+    
+    // Sum of squares option
+    const ssDiv = summaryTypeForm.append("div")
+        .attr("class", "form-check");
+    ssDiv.append("input")
+        .attr("class", "form-check-input")
+        .attr("type", "radio")
+        .attr("id", "ss-type")
+        .attr("name", "summary-type")
+        .attr("value", "sumsquares")
+        .property("checked", true)
+        .on("change", function() {
+            if(this.checked) {
+                updateAll();
+            }
+        });
+    ssDiv.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "ss-type")
+        .text(" Sum of Squares");
+    
+    // Mean squares option
+    const msDiv = summaryTypeForm.append("div")
+        .attr("class", "form-check");
+    msDiv.append("input")
+        .attr("class", "form-check-input")
+        .attr("type", "radio")
+        .attr("id", "ms-type")
+        .attr("name", "summary-type")
+        .attr("value", "meansquares")
+        .on("change", function() {
+            if(this.checked) {
+                updateAll();
+            }
+        });
+    msDiv.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "ms-type")
+        .text(" Mean Squares");
+
     // Variability options
     const variabilityForm = visOptions.append("div").attr("id", "variability-form");
     

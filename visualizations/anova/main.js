@@ -648,8 +648,10 @@ function initDataGraph() {
             }
         }
 
+        // Check which summary square type is selected and draw the appropriate visualization
+        const summaryType = document.querySelector('input[name="summary-type"]:checked')?.value || "sumsquares";
         makePopulations();
-        drawSummarySquares("sumsquares");
+        drawSummarySquares(summaryType);
     }
 
     // Create a wrapper function to call the modular animation function with the right parameters
