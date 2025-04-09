@@ -3,23 +3,62 @@ title: ANOVA
 
 include-in-header:
     text: |
-        <link rel="stylesheet" href="./style.css"> 
+        <link rel="stylesheet" href="./styles.css"> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
         <script>
+        // Control panel toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // Toggle control section visibility when header is clicked
+                document.querySelectorAll('.control-section h3').forEach(header => {
+                    header.addEventListener('click', function() {
+                        const content = this.nextElementSibling;
+                        
+                        if (content.style.maxHeight === "" || content.style.maxHeight === "0px") {
+                            content.style.maxHeight = "500px";
+                            this.classList.add('collapsed');
+                        } else {
+                            content.style.maxHeight = "0px";
+                            this.classList.remove('collapsed');
+                        }
+                    });
+                });
+            }, 500); // Delay to ensure DOM is fully loaded
+        });
+        </script>
 include-after-body: 
     text: |
         <script src="./formula-panel.js"></script>
         <script src="./ui.js"></script>
+        <script src="./vizHelpers.js"></script>
         <script src="./main.js"></script>
 ---
 
-<!-- component 4: controls panel -->
-<div id="controls-panel"></div>
-<!-- component 1: data graph -->
-<div id="data-graph"></div>
-<!-- component 2: variance bar -->
-<div id="variance-bar"></div>
-<!-- component 3: formula panel -->
+:::: {.main-container}
+
+::: {.visualization-wrapper}
+
+<div class="control-sections">
+<div class="control-section population-controls">
+<h3>Population Controls</h3>
+<div id="population-controls" class="control-content" style="max-height: 0px;"></div>
+</div>
+<div class="control-section sample-controls">
+<h3>Sample Visualization</h3>
+<div id="sample-controls" class="control-content" style="max-height: 0px;"></div>
+</div>
+<div class="control-section summary-controls">
+<h3>Summary Controls</h3>
+<div id="summary-controls" class="control-content" style="max-height: 0px;"></div>
+</div>
+</div>
+<div id="data-graph" class="visualization-area"></div>
+
+:::
+
+::::
+
+
 <div id="formula-panel">$.$</div>
 
 ::: {.about}

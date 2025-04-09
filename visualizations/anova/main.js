@@ -681,6 +681,7 @@ function init() {
     // initVarianceBar();
     initFormulaPanel();
     initControlsPanel();
+    initControlToggles(); // Initialize the controls toggle functionality
 }
 
 // Add function to load the vizHelpers.js script
