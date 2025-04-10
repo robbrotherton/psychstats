@@ -5,17 +5,18 @@ function initDataGraph() {
     const svg = d3.select("#data-graph")
         .append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .style("fill", "transparent");
 
     // scales: x for values, y for groups
     const xScale = d3.scaleLinear()
         .domain([-10, 10])
         .range([margin.left, width - margin.right]);
 
-    xAxis = svg.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(10));
+    // xAxis = svg.append("g")
+    //     .attr("class", "x-axis")
+    //     .attr("transform", `translate(0, ${height - margin.bottom})`)
+    //     .call(d3.axisBottom(xScale).ticks(10));
     
     const yScale = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.2);
     const colScale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -69,7 +70,7 @@ function initDataGraph() {
         // Area generator for filling under the curves
         const areaGenerator = d3.area()
             .x(d => d[0])
-            .y0(margin.top) // Bottom of area at the top of the data area
+            .y0(margin.top * 0.9) // Bottom of area at the top of the data area
             .y1(d => d[1])
             .curve(d3.curveBasis);
 
@@ -94,14 +95,14 @@ function initDataGraph() {
             const step = (rangeMax - rangeMin) / 50;
 
             // Scale factor to make the curves fit nicely in the margin space
-            const heightScale = margin.top * 0.7;
+            const heightScale = margin.top * 0.8;
 
             for (let x = rangeMin; x <= rangeMax; x += step) {
                 const scaledX = xScale(x);
                 // Compute PDF value and scale it to fit in the margin
                 const pdfValue = normalPDF(x, mean, commonSD);
                 const maxPDFValue = normalPDF(mean, mean, commonSD); // max height at mean
-                const scaledY = margin.top - (pdfValue / maxPDFValue) * heightScale;
+                const scaledY = (margin.top * 0.9) - (pdfValue / maxPDFValue) * heightScale;
 
                 curveData.push([scaledX, scaledY]);
             }
@@ -247,7 +248,6 @@ function initDataGraph() {
             .text(summaryValues.total.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
-            .attr("stroke-dasharray", "5 5")
             .attr("x", xScale(-summaryValues.totalSide))
             .attr("y", 15);
 
@@ -266,10 +266,8 @@ function initDataGraph() {
             .text(summaryValues.between.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
-            .attr("stroke-dasharray", "5 5")
             .attr("x", xScale(0))
             .attr("y", 15)
-
 
         // within
         sumSquares.append("rect")
@@ -286,9 +284,19 @@ function initDataGraph() {
             .text(summaryValues.within.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
-            .attr("stroke-dasharray", "5 5")
             .attr("x", xScale(0))
             .attr("y", xScale(summaryValues.betweenSide) - xScale(0) + 15)
+
+        const totalSidePx = xScale(summaryValues.totalSide) - xScale(0);
+        const betweenSidePx = xScale(summaryValues.betweenSide) - xScale(0);
+        const withinSidePx = xScale(summaryValues.withinSide) - xScale(0);
+        const maxHeight = Math.max(totalSidePx, betweenSidePx + withinSidePx);
+        
+        d3.select(".main-container")
+            .style("height", `${600 + Math.max(200, maxHeight)}px`)
+        
+        d3.select(".summary-controls")
+            .style("height", `${maxHeight}px`)
 
     }
 

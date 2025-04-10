@@ -15,48 +15,53 @@
 
 /* Control sections */
 .control-sections {
-    width: 300px;
-    z-index: 10;
+    width: 100%;
+    /* z-index: -1; */
+    height: 200px;
+    pointer-events: none;
 }
 
 .control-section {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ddd;
+    /* background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd; */
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: inherit;
+    pointer-events: none;
 }
 
 .control-section h3 {
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-size: 1.1em;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     padding-bottom: 5px;
     cursor: pointer;
+    pointer-events: auto;
 }
 
 .control-section h3::after {
     content: " ⚙";
-    font-size: 1em;
+    font-size: 1.5em;
     color: #777;
-    float: right;
-}
-
-.control-section h3.collapsed::after {
-    content: " ▲";
+    vertical-align: middle;
 }
 
 .control-content {
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.3s ease-out;
+    /* pointer-events: auto; */
 }
 
 .control-content.expanded {
     max-height: 500px; /* Large enough to fit any content */
+}
+
+button, input, label {
+    pointer-events: auto;
 }
 
 label {
@@ -72,21 +77,27 @@ label.form-check-label {
 /* Position the three control sections */
 .population-controls {
     position: absolute;
-    top: 0;
+    /* top: 0; */
+    height: 150px;
     left: 0;
-    z-index: 10;
+    background-color: rgba(199, 220, 253, 0.2);
+    margin: 0;
 }
 
 .sample-controls {
     position: absolute;
-    top: 250px;
+    top: 150px;
+    height: 450px;
     left: 0;
+    background-color: rgba(212, 216, 174, 0.2);
 }
 
 .summary-controls {
     position: absolute;
-    top: 550px;
+    top: 600px;
     left: 0;
+    background-color: rgba(238, 238, 238, 0.2);
+    min-height: 200px
 }
 
 /* Visualization area */
@@ -94,12 +105,14 @@ label.form-check-label {
     flex-grow: 1;
     padding-left: 0px; /* Make room for the controls */
     overflow: visible;
+    height: auto;
 }
 
 /* Form elements styling */
 input[type="range"] {
     width: 50px;
     margin: 8px 0;
+    vertical-align: middle;;
 }
 
 button {
@@ -128,9 +141,9 @@ button:hover {
 
 /* Control group headings */
 .control-group h4 {
-    margin-top: 15px;
-    margin-bottom: 8px;
-    font-size: 0.95em;
+    /* margin-top: 15px; */
+    /* margin-bottom: 8px; */
+    /* font-size: 0.95em; */
     color: #555;
 }
 
@@ -139,6 +152,7 @@ button:hover {
     font-size: 0.9em;
     color: #666;
     margin: 0 5px;
+    vertical-align: middle;
 }
 
 /* Formula panel styling */

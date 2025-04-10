@@ -7,6 +7,8 @@ function initControlsPanel() {
     // ----- POPULATION CONTROLS -----
     const populationControls = d3.select("#population-controls");
     
+    populationControls.attr("style", "width: 100%;")
+
     // // Groups slider
     // const groupsControl = populationControls.append("div");
     // groupsControl.append("label")
@@ -41,8 +43,8 @@ function initControlsPanel() {
     // indControl.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
 
     // Treatment effect slider
-    const effectControl = populationControls.append("div").style("margin-top", "10px");
-    effectControl.append("label").text("Effect Size: ");
+    const effectControl = populationControls.append("div");
+    effectControl.append("label").text("Effect size: ");
 
     effectControl.append("span")
         .attr("id", "effect-value")
@@ -65,10 +67,13 @@ function initControlsPanel() {
         .text("more");
 
     // Population variability slider
-    const varControl = populationControls.append("div").style("margin-top", "10px");
+    const varControl = populationControls.append("div");
     varControl.append("label").text("Variability: ");
     
-    varControl.append("span").attr("id", "variability-value").text("less");
+    varControl.append("span")
+        .attr("id", "variability-value")
+        .attr("class", "slider-value")
+        .text("less");
     varControl.append("input")
         .attr("type", "range")
         .style("width", "auto")
@@ -80,7 +85,10 @@ function initControlsPanel() {
             state.populationVariability = +this.value;
             state.updateDataset(false);
         });
-    varControl.append("span").attr("id", "variability-value").text("more");
+    varControl.append("span")
+        .attr("id", "variability-value")
+        .attr("class", "slider-value")
+        .text("more");
 
     // Reset button
     const resetDiv = populationControls.append("div").style("margin-top", "15px");
@@ -93,7 +101,7 @@ function initControlsPanel() {
 
     // ----- SAMPLE VISUALIZATION CONTROLS -----
     const sampleControls = d3.select("#sample-controls");
-    
+            
     // Variability options
     const variabilityForm = sampleControls.append("div").attr("id", "variability-form");
     

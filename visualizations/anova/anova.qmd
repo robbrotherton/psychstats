@@ -30,9 +30,9 @@ include-in-header:
 include-after-body: 
     text: |
         <script src="./formula-panel.js"></script>
-        <script src="./ui.js"></script>
         <script src="./state.js"><script>
         <script src="./vizHelpers.js"></script>
+        <script src="./ui.js"></script>
         <script src="./main.js"></script>
 ---
 
@@ -48,7 +48,7 @@ include-after-body:
 <div id="population-controls" class="control-content" style="max-height: 0px;"></div>
 </div>
 <div class="control-section sample-controls">
-<h3>Samples</h3>
+<h3>Data</h3>
 <div id="sample-controls" class="control-content" style="max-height: 0px;"></div>
 </div>
 <div class="control-section summary-controls">
