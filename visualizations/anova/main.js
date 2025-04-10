@@ -137,6 +137,12 @@ function initDataGraph() {
     const xScale = d3.scaleLinear()
         .domain([-10, 10])
         .range([margin.left, width - margin.right]);
+
+    xAxis = svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(10));
+    
     const yScale = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.2);
     const colScale = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -358,17 +364,17 @@ function initDataGraph() {
             .attr("fill-opacity", 0.2)
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", 0)
+            .attr("x", xScale(-summaryValues.totalSide))
             .attr("y", 0)
-            .attr("width", sumScale(summaryValues.totalSide))
-            .attr("height", sumScale(summaryValues.totalSide));
+            .attr("width", xScale(0) - xScale(-summaryValues.totalSide))
+            .attr("height", xScale(0) - xScale(-summaryValues.totalSide));
 
         sumSquares.append("text")
             .text(summaryValues.total.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", 0)
+            .attr("x", xScale(-summaryValues.totalSide))
             .attr("y", 15);
 
         // between
@@ -377,17 +383,17 @@ function initDataGraph() {
             .attr("fill", "lightblue")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "lightblue")
-            .attr("x", sumScale(summaryValues.totalSide))
+            .attr("x", xScale(0))
             .attr("y", 0)
-            .attr("width", sumScale(summaryValues.betweenSide))
-            .attr("height", sumScale(summaryValues.betweenSide));
+            .attr("width", xScale(summaryValues.betweenSide) - xScale(0))
+            .attr("height", xScale(summaryValues.betweenSide) - xScale(0));
 
         sumSquares.append("text")
             .text(summaryValues.between.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", sumScale(summaryValues.totalSide))
+            .attr("x", xScale(0))
             .attr("y", 15)
 
 
@@ -397,18 +403,18 @@ function initDataGraph() {
             .attr("fill", "thistle")
             .attr("fill-opacity", 0.2)
             .attr("stroke", "thistle")
-            .attr("x", sumScale(summaryValues.totalSide))
-            .attr("y", sumScale(summaryValues.betweenSide))
-            .attr("width", sumScale(summaryValues.withinSide))
-            .attr("height", sumScale(summaryValues.withinSide));
+            .attr("x", xScale(0))
+            .attr("y", xScale(summaryValues.betweenSide) - xScale(0))
+            .attr("width", xScale(summaryValues.withinSide) - xScale(0))
+            .attr("height", xScale(summaryValues.withinSide) - xScale(0));
 
         sumSquares.append("text")
             .text(summaryValues.within.toFixed(2))
             .attr("class", "summary-square")
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "5 5")
-            .attr("x", sumScale(summaryValues.totalSide))
-            .attr("y", sumScale(summaryValues.betweenSide) + 15)
+            .attr("x", xScale(0))
+            .attr("y", xScale(summaryValues.betweenSide) - xScale(0) + 15)
 
     }
 
