@@ -4,12 +4,13 @@
 } */
 
 #formula-panel {
-    visibility: hidden
+    /* display: none; */
 }
 #controls-panel {
     margin-bottom: 20px;
     width: 100%;
 }
+
 
 .controls-flex-container {
     display: flex;
@@ -17,6 +18,10 @@
     gap: 20px;
     width: 100%;
     justify-content: space-between;
+}
+
+.variance-label {
+    font-size: 1.5em
 }
 
 .controls-flex-item {
@@ -46,7 +51,7 @@
 label {
     margin-right: 5px;
     display: inline-block;
-    width: 150px;
+    width: 7em;
 }
 
 input[type="range"] {

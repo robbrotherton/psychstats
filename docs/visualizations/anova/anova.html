@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Psych Stats - ANOVA</title>
+<title>Psych Stats</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,7 +29,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
@@ -52,10 +51,30 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./styles.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
 <script>
-<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css"/>
+// Control panel toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        // Toggle control section visibility when header is clicked
+        document.querySelectorAll('.control-section h3').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+
+                if (content.style.maxHeight === "" || content.style.maxHeight === "0px") {
+                    content.style.maxHeight = "500px";
+                    this.classList.add('collapsed');
+                } else {
+                    content.style.maxHeight = "0px";
+                    this.classList.remove('collapsed');
+                }
+            });
+        });
+    }, 500); // Delay to ensure DOM is fully loaded
+});
+</script>
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -148,43 +167,54 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">ANOVA</h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<!-- component 4: controls panel -->
-<div id="controls-panel">
+<section id="visualizing-anova" class="level1">
+<h1>Visualizing ANOVA</h1>
+<div class="main-container">
+<div class="visualization-wrapper">
+<div class="control-sections">
+<div class="control-section population-controls">
+<h3>
+Populations
+</h3>
+<div id="population-controls" class="control-content" style="max-height: 0px;">
 
 </div>
-<!-- component 1: data graph -->
-<div id="data-graph">
+</div>
+<div class="control-section sample-controls">
+<h3>
+Data
+</h3>
+<div id="sample-controls" class="control-content" style="max-height: 0px;">
 
 </div>
-<!-- component 2: variance bar -->
-<div id="variance-bar">
+</div>
+<div class="control-section summary-controls">
+<h3>
+Summary
+</h3>
+<div id="summary-controls" class="control-content" style="max-height: 0px;">
 
 </div>
-<!-- component 3: formula panel -->
+</div>
+</div>
+<div id="data-graph" class="visualization-area">
+
+</div>
+</div>
+</div>
 <div id="formula-panel">
 <span class="math inline">\(.\)</span>
 </div>
+<section id="about" class="level2 about">
+<h2 data-anchor-id="about">About</h2>
+<p>Something something sums of squares something something.</p>
+</section>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -351,13 +381,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -741,6 +764,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script src="./formula-panel.js"></script>
+<script src="./state.js"><script>
+<script src="./vizHelpers.js"></script>
 <script src="./ui.js"></script>
 <script src="./main.js"></script>
 

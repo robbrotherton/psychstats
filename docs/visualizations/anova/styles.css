@@ -1,0 +1,182 @@
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Visualization layout */
+.visualization-wrapper {
+    display: flex;
+    position: relative;
+    min-height: 800px;
+    margin: 0 auto;
+}
+
+/* Control sections */
+.control-sections {
+    width: 100%;
+    /* z-index: -1; */
+    height: 200px;
+    pointer-events: none;
+}
+
+.control-section {
+    /* background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd; */
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: inherit;
+    pointer-events: none;
+}
+
+.control-section h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.1em;
+    /* border-bottom: 1px solid #ddd; */
+    padding-bottom: 5px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.control-section h3::after {
+    content: " ⚙";
+    font-size: 1.5em;
+    color: #777;
+    vertical-align: middle;
+}
+
+.control-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    /* pointer-events: auto; */
+}
+
+.control-content.expanded {
+    max-height: 500px; /* Large enough to fit any content */
+}
+
+button, input, label {
+    pointer-events: auto;
+}
+
+label {
+    margin-right: 5px;
+    display: inline-block;
+    width: auto;
+}
+
+label.form-check-label {
+    margin-left: 1em;
+}
+
+/* Position the three control sections */
+.population-controls {
+    position: absolute;
+    /* top: 0; */
+    height: 150px;
+    left: 0;
+    background-color: rgba(199, 220, 253, 0.2);
+    margin: 0;
+}
+
+.sample-controls {
+    position: absolute;
+    top: 150px;
+    height: 450px;
+    left: 0;
+    background-color: rgba(212, 216, 174, 0.2);
+}
+
+.summary-controls {
+    position: absolute;
+    top: 600px;
+    left: 0;
+    background-color: rgba(238, 238, 238, 0.2);
+    min-height: 200px
+}
+
+/* Visualization area */
+.visualization-area {
+    flex-grow: 1;
+    padding-left: 0px; /* Make room for the controls */
+    overflow: visible;
+    height: auto;
+}
+
+/* Form elements styling */
+input[type="range"] {
+    width: 50px;
+    margin: 8px 0;
+    vertical-align: middle;;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+button:hover {
+    background-color: #0069d9;
+}
+
+/* Radio and checkbox styling */
+.form-check {
+    margin-bottom: 8px;
+}
+
+.form-check-input {
+    margin-right: 8px;
+}
+
+/* Control group headings */
+.control-group h4 {
+    /* margin-top: 15px; */
+    /* margin-bottom: 8px; */
+    /* font-size: 0.95em; */
+    color: #555;
+}
+
+/* Values display */
+.slider-value {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
+/* Formula panel styling */
+#formula-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* SVG styling for the visualization elements */
+svg {
+    overflow: visible;
+}
+
+.data-point {
+    cursor: move;
+}
+
+.group-mean, .grand-mean {
+    pointer-events: none;
+}
+
+.population-curve {
+    cursor: move;
+}

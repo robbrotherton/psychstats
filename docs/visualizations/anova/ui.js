@@ -1,101 +1,109 @@
 function initControlsPanel() {
-    const container = d3.select("#controls-panel");
-    container.html("");
+    // Clear previous controls
+    d3.select("#population-controls").html("");
+    d3.select("#sample-controls").html("");
+    d3.select("#summary-controls").html("");
 
-    // Create the main flex container
-    const flexContainer = container.append("div")
-        .attr("class", "controls-flex-container");
-
-    // Create the parameter controls section
-    const paramControls = flexContainer.append("div")
-        .attr("class", "controls-flex-item parameter-controls");
+    // ----- POPULATION CONTROLS -----
+    const populationControls = d3.select("#population-controls");
     
-    paramControls.append("h3").text("Parameter Controls");
+    populationControls.attr("style", "width: 100%;")
 
-    // Groups slider
-    const groupsControl = paramControls.append("div");
-    groupsControl.append("label")
-        // .attr("class", "form-label")
-        .attr("for", "groups-slider")
-        .text("groups: ");
-    groupsControl.append("input")
-        // .attr("class", "form-range")
-        .attr("id", "groups-slider")
-        .attr("type", "range")
-        .attr("min", 1)
-        .attr("max", 10)
-        .attr("value", state.numGroups)
-        .on("input", function () {
-            state.numGroups = +this.value;
-            d3.select("#groups-value").text(this.value);
-            state.updateDataset(true);
-        });
-    groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
+    // // Groups slider
+    // const groupsControl = populationControls.append("div");
+    // groupsControl.append("label")
+    //     .attr("for", "groups-slider")
+    //     .text("Groups: ");
+    // groupsControl.append("input")
+    //     .attr("id", "groups-slider")
+    //     .attr("type", "range")
+    //     .attr("min", 1)
+    //     .attr("max", 10)
+    //     .attr("value", state.numGroups)
+    //     .on("input", function () {
+    //         state.numGroups = +this.value;
+    //         d3.select("#groups-value").text(this.value);
+    //         state.updateDataset(true);
+    //     });
+    // groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
 
-    // Individuals per group slider
-    const indControl = paramControls.append("div").style("margin-top", "10px");
-    indControl.append("label").text("individuals/group: ");
-    indControl.append("input")
-        .attr("type", "range")
-        .attr("min", 5)
-        .attr("max", 50)
-        .attr("value", state.individualsPerGroup)
-        .on("input", function () {
-            state.individualsPerGroup = +this.value;
-            d3.select("#individuals-value").text(this.value);
-            state.updateDataset(false);
-        });
-    indControl.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
+    // // Individuals per group slider
+    // const indControl = populationControls.append("div").style("margin-top", "10px");
+    // indControl.append("label").text("Individuals/Group: ");
+    // indControl.append("input")
+    //     .attr("type", "range")
+    //     .attr("min", 5)
+    //     .attr("max", 50)
+    //     .attr("value", state.individualsPerGroup)
+    //     .on("input", function () {
+    //         state.individualsPerGroup = +this.value;
+    //         d3.select("#individuals-value").text(this.value);
+    //         state.updateDataset(false);
+    //     });
+    // indControl.append("span").attr("id", "individuals-value").text(state.individualsPerGroup);
 
     // Treatment effect slider
-    const effectControl = paramControls.append("div").style("margin-top", "10px");
-    effectControl.append("label").text("treatment effect: ");
+    const effectControl = populationControls.append("div");
+    effectControl.append("label").text("Effect size: ");
+
+    effectControl.append("span")
+        .attr("id", "effect-value")
+        .attr("class", "slider-value")
+        .text("less");
     effectControl.append("input")
         .attr("type", "range")
         .attr("min", 0)
         .attr("max", 3)
         .attr("step", "0.1")
+        .style("width", "auto")
         .attr("value", state.treatmentEffect)
         .on("input", function () {
             state.treatmentEffect = +this.value;
-            d3.select("#effect-value").text(this.value);
             state.updateDataset(false);
         });
-    effectControl.append("span").attr("id", "effect-value").text(state.treatmentEffect);
+    effectControl.append("span")
+        .attr("id", "effect-value")
+        .attr("class", "slider-value")
+        .text("more");
 
     // Population variability slider
-    const varControl = paramControls.append("div").style("margin-top", "10px");
-    varControl.append("label").text("population variability: ");
+    const varControl = populationControls.append("div");
+    varControl.append("label").text("Variability: ");
+    
+    varControl.append("span")
+        .attr("id", "variability-value")
+        .attr("class", "slider-value")
+        .text("less");
     varControl.append("input")
         .attr("type", "range")
+        .style("width", "auto")
         .attr("min", 0.1)
         .attr("max", 3)
         .attr("step", "0.1")
         .attr("value", state.populationVariability)
         .on("input", function () {
             state.populationVariability = +this.value;
-            d3.select("#variability-value").text(this.value);
             state.updateDataset(false);
         });
-    varControl.append("span").attr("id", "variability-value").text(state.populationVariability);
+    varControl.append("span")
+        .attr("id", "variability-value")
+        .attr("class", "slider-value")
+        .text("more");
 
     // Reset button
-    const resetDiv = paramControls.append("div").style("margin-top", "15px");
+    const resetDiv = populationControls.append("div").style("margin-top", "15px");
     resetDiv.append("button")
         .attr("class", "reset-button")
-        .text("Reset Dataset")
+        .text("New Data")
         .on("click", function () {
             state.updateDataset(true);
         });
 
-    // Create the visualization options section
-    const visOptions = flexContainer.append("div")
-        .attr("class", "controls-flex-item visualization-options");
-    
-    visOptions.append("h3").text("Visualization Options");
-
+    // ----- SAMPLE VISUALIZATION CONTROLS -----
+    const sampleControls = d3.select("#sample-controls");
+            
     // Variability options
-    const variabilityForm = visOptions.append("div").attr("id", "variability-form");
+    const variabilityForm = sampleControls.append("div").attr("id", "variability-form");
     
     variabilityForm.append("div")
         .text("Variability to Show:")
@@ -113,7 +121,6 @@ function initControlsPanel() {
         .attr("value", "total")
         .property("checked", state.variabilityComponent === "total")
         .on("change", function() {
-            console.log("Total selected");
             state.variabilityComponent = "total";
             updateAll();
         });
@@ -133,7 +140,6 @@ function initControlsPanel() {
         .attr("value", "within")
         .property("checked", state.variabilityComponent === "within")
         .on("change", function() {
-            console.log("Within selected");
             state.variabilityComponent = "within";
             updateAll();
         });
@@ -153,7 +159,6 @@ function initControlsPanel() {
         .attr("value", "between")
         .property("checked", state.variabilityComponent === "between")
         .on("change", function() {
-            console.log("Between selected");
             state.variabilityComponent = "between";
             updateAll();
         });
@@ -163,8 +168,9 @@ function initControlsPanel() {
         .text(" Between-groups");
 
     // Toggle buttons
-    const togglesDiv = visOptions.append("div")
-        .attr("class", "toggle-buttons");
+    const togglesDiv = sampleControls.append("div")
+        .attr("class", "toggle-buttons")
+        .style("margin-top", "15px");
     
     const devsToggle = togglesDiv.append("div")
         .attr("class", "form-check form-switch");
@@ -197,4 +203,85 @@ function initControlsPanel() {
         .attr("class", "form-check-label")
         .attr("for", "squares-toggle")
         .text("Squares");
+
+    // ----- SUMMARY CONTROLS -----
+    const summaryControls = d3.select("#summary-controls");
+    
+    // Summary type selector (sums of squares vs mean squares)
+    const summaryTypeForm = summaryControls.append("div")
+        .attr("id", "summary-type-form");
+    
+    summaryTypeForm.append("div")
+        .text("Summary Square Type:")
+        .style("font-weight", "bold")
+        .style("margin-bottom", "10px");
+    
+    // Sum of squares option
+    const ssDiv = summaryTypeForm.append("div")
+        .attr("class", "form-check");
+    ssDiv.append("input")
+        .attr("class", "form-check-input")
+        .attr("type", "radio")
+        .attr("id", "ss-type")
+        .attr("name", "summary-type")
+        .attr("value", "sumsquares")
+        .property("checked", true)
+        .on("change", function() {
+            if(this.checked) {
+                updateAll();
+            }
+        });
+    ssDiv.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "ss-type")
+        .text(" Sum of Squares");
+    
+    // Mean squares option
+    const msDiv = summaryTypeForm.append("div")
+        .attr("class", "form-check");
+    msDiv.append("input")
+        .attr("class", "form-check-input")
+        .attr("type", "radio")
+        .attr("id", "ms-type")
+        .attr("name", "summary-type")
+        .attr("value", "meansquares")
+        .on("change", function() {
+            if(this.checked) {
+                updateAll();
+            }
+        });
+    msDiv.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", "ms-type")
+        .text(" Mean Squares");
 }
+
+// Add toggle functionality for control sections
+function initControlToggles() {
+    // First set everything to be collapsed by default
+    document.querySelectorAll('.control-content').forEach(content => {
+        content.classList.remove('expanded');
+    });
+    
+    // Add click handlers to section headers
+    document.querySelectorAll('.control-section h3').forEach(header => {
+        header.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            
+            // Toggle expanded class
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                this.classList.remove('collapsed');
+            } else {
+                content.classList.add('expanded');
+                this.classList.add('collapsed');
+            }
+        });
+    });
+}
+
+// Initialize controls when the document is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Call this after the document is fully loaded
+    setTimeout(initControlToggles, 100);
+});
