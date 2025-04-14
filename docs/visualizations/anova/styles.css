@@ -19,6 +19,7 @@
     /* z-index: -1; */
     height: 200px;
     pointer-events: none;
+    position: absolute;
 }
 
 .control-section {
@@ -97,7 +98,6 @@ label.form-check-label {
     top: 600px;
     left: 0;
     background-color: rgba(238, 238, 238, 0.2);
-    min-height: 200px
 }
 
 /* Visualization area */
