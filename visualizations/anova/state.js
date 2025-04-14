@@ -11,7 +11,7 @@ const state = {
         showMeans: true
     },
     // Make sure this is initialized to "total" which is our default
-    variabilityComponent: "total",
+    variabilityComponent: "none",
     ssTotal: 0,
     ssWithin: 0,
     ssBetween: 0,

@@ -6,7 +6,7 @@ function initControlsPanel() {
 
     // ----- POPULATION CONTROLS -----
     const populationControls = d3.select("#population-controls");
-    
+
     populationControls.attr("style", "width: 100%;")
 
     // // Groups slider
@@ -69,7 +69,7 @@ function initControlsPanel() {
     // Population variability slider
     const varControl = populationControls.append("div");
     varControl.append("label").text("Variability: ");
-    
+
     varControl.append("span")
         .attr("id", "variability-value")
         .attr("class", "slider-value")
@@ -101,77 +101,13 @@ function initControlsPanel() {
 
     // ----- SAMPLE VISUALIZATION CONTROLS -----
     const sampleControls = d3.select("#sample-controls");
-            
-    // Variability options
-    const variabilityForm = sampleControls.append("div").attr("id", "variability-form");
-    
-    variabilityForm.append("div")
-        .text("Variability to Show:")
-        .style("font-weight", "bold")
-        .style("margin-bottom", "10px");
-    
-    // Total variability option - default checked
-    const totalDiv = variabilityForm.append("div")
-        .attr("class", "form-check");
-    totalDiv.append("input")
-        .attr("class", "form-check-input")
-        .attr("type", "radio")
-        .attr("id", "total-var")
-        .attr("name", "variability")
-        .attr("value", "total")
-        .property("checked", state.variabilityComponent === "total")
-        .on("change", function() {
-            state.variabilityComponent = "total";
-            updateAll();
-        });
-    totalDiv.append("label")
-        .attr("class", "form-check-label")
-        .attr("for", "total-var")
-        .text(" Total");
-    
-    // Within-group option
-    const withinDiv = variabilityForm.append("div")
-        .attr("class", "form-check");
-    withinDiv.append("input")
-        .attr("class", "form-check-input")
-        .attr("type", "radio")
-        .attr("id", "within-var")
-        .attr("name", "variability")
-        .attr("value", "within")
-        .property("checked", state.variabilityComponent === "within")
-        .on("change", function() {
-            state.variabilityComponent = "within";
-            updateAll();
-        });
-    withinDiv.append("label")
-        .attr("class", "form-check-label")
-        .attr("for", "within-var")
-        .text(" Within-groups");
-    
-    // Between-group option
-    const betweenDiv = variabilityForm.append("div")
-        .attr("class", "form-check");
-    betweenDiv.append("input")
-        .attr("class", "form-check-input")
-        .attr("type", "radio")
-        .attr("id", "between-var")
-        .attr("name", "variability")
-        .attr("value", "between")
-        .property("checked", state.variabilityComponent === "between")
-        .on("change", function() {
-            state.variabilityComponent = "between";
-            updateAll();
-        });
-    betweenDiv.append("label")
-        .attr("class", "form-check-label")
-        .attr("for", "between-var")
-        .text(" Between-groups");
+    createVariabilityControls(sampleControls);
 
     // Toggle buttons
     const togglesDiv = sampleControls.append("div")
         .attr("class", "toggle-buttons")
         .style("margin-top", "15px");
-    
+
     const devsToggle = togglesDiv.append("div")
         .attr("class", "form-check form-switch");
     devsToggle.append("input")
@@ -179,7 +115,7 @@ function initControlsPanel() {
         .attr("id", "deviations-toggle")
         .attr("type", "checkbox")
         .property("checked", state.toggles.showArrows)
-        .on("change", function() {
+        .on("change", function () {
             state.toggles.showArrows = this.checked;
             updateAll();
         });
@@ -195,7 +131,7 @@ function initControlsPanel() {
         .attr("id", "squares-toggle")
         .attr("type", "checkbox")
         .property("checked", state.toggles.showSquares)
-        .on("change", function() {
+        .on("change", function () {
             state.toggles.showSquares = this.checked;
             updateAll();
         });
@@ -206,16 +142,12 @@ function initControlsPanel() {
 
     // ----- SUMMARY CONTROLS -----
     const summaryControls = d3.select("#summary-controls");
-    
+
     // Summary type selector (sums of squares vs mean squares)
     const summaryTypeForm = summaryControls.append("div")
         .attr("id", "summary-type-form");
-    
-    summaryTypeForm.append("div")
-        .text("Summary Square Type:")
-        .style("font-weight", "bold")
-        .style("margin-bottom", "10px");
-    
+
+
     // Sum of squares option
     const ssDiv = summaryTypeForm.append("div")
         .attr("class", "form-check");
@@ -226,8 +158,8 @@ function initControlsPanel() {
         .attr("name", "summary-type")
         .attr("value", "sumsquares")
         .property("checked", true)
-        .on("change", function() {
-            if(this.checked) {
+        .on("change", function () {
+            if (this.checked) {
                 updateAll();
             }
         });
@@ -235,7 +167,7 @@ function initControlsPanel() {
         .attr("class", "form-check-label")
         .attr("for", "ss-type")
         .text(" Sum of Squares");
-    
+
     // Mean squares option
     const msDiv = summaryTypeForm.append("div")
         .attr("class", "form-check");
@@ -245,8 +177,8 @@ function initControlsPanel() {
         .attr("id", "ms-type")
         .attr("name", "summary-type")
         .attr("value", "meansquares")
-        .on("change", function() {
-            if(this.checked) {
+        .on("change", function () {
+            if (this.checked) {
                 updateAll();
             }
         });
@@ -260,14 +192,15 @@ function initControlsPanel() {
 function initControlToggles() {
     // First set everything to be collapsed by default
     document.querySelectorAll('.control-content').forEach(content => {
+        // content.classList.add('expanded');
         content.classList.remove('expanded');
     });
-    
+
     // Add click handlers to section headers
     document.querySelectorAll('.control-section h3').forEach(header => {
-        header.addEventListener('click', function() {
+        header.addEventListener('click', function () {
             const content = this.nextElementSibling;
-            
+
             // Toggle expanded class
             if (content.classList.contains('expanded')) {
                 content.classList.remove('expanded');
@@ -281,7 +214,57 @@ function initControlToggles() {
 }
 
 // Initialize controls when the document is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Call this after the document is fully loaded
     setTimeout(initControlToggles, 100);
 });
+
+
+function createVariabilityControls(sampleControls) {
+    const variabilityForm = sampleControls.append("div")
+        .attr("id", "variability-form");
+
+    variabilityForm.append("div")
+        .text("Variability to Show:")
+        .style("font-weight", "bold")
+        .style("margin-bottom", "10px");
+
+    const options = [
+        { id: 'total-var', value: 'total', label: 'Total' },
+        { id: 'within-var', value: 'within', label: 'Within-groups' },
+        { id: 'between-var', value: 'between', label: 'Between-groups' }
+    ];
+
+    options.forEach(option => {
+        const div = variabilityForm.append("div")
+            .attr("class", "form-check");
+
+        div.append("input")
+            .attr("class", "form-check-input")
+            .attr("type", "checkbox")
+            .attr("id", option.id)
+            .attr("name", "variability")
+            .attr("value", option.value)
+            .property("checked", state.variabilityComponent === option.value)
+            .on("change", function () {
+                if (this.checked) {
+                    // Uncheck all other boxes
+                    options.forEach(opt => {
+                        if (opt.value !== option.value) {
+                            d3.select(`#${opt.id}`).property("checked", false);
+                        }
+                    });
+                    state.variabilityComponent = option.value;
+                } else {
+                    // If unchecking, set to "none"
+                    state.variabilityComponent = "none";
+                }
+                updateAll();
+            });
+
+        div.append("label")
+            .attr("class", "form-check-label")
+            .attr("for", option.id)
+            .text(` ${option.label}`);
+    });
+}
