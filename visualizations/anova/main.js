@@ -630,12 +630,16 @@ function updateControlHeights(summaryHeight = currentMaxHeight) {
         '.summary-controls': currentMaxHeight      // original base height
     };
 
+        // Keep track of total height
+        let totalHeight = 0;
+
     // Update each control section
     Object.entries(controls).forEach(([selector, baseHeight]) => {
         const element = document.querySelector(selector);
         if (element) {
             const newHeight = baseHeight * scaleFactor;
             element.style.height = `${newHeight}px`;
+            totalHeight += newHeight;
 
             // Adjust top position for sample and summary controls
             if (selector === '.sample-controls') {
@@ -645,6 +649,11 @@ function updateControlHeights(summaryHeight = currentMaxHeight) {
             }
         }
     });
+
+    const mainContainer = document.querySelector('.main-container');
+    if (mainContainer) {
+        mainContainer.style.height = `${totalHeight}px`;
+    }
 }
 
 
