@@ -295,7 +295,7 @@ function initDataGraph() {
         const totalSidePx = xScale(summaryValues.totalSide) - xScale(0);
         const betweenSidePx = xScale(summaryValues.betweenSide) - xScale(0);
         const withinSidePx = xScale(summaryValues.withinSide) - xScale(0);
-        const maxHeight = Math.max(totalSidePx, betweenSidePx + withinSidePx);
+        const maxHeight = Math.max(totalSidePx, betweenSidePx + withinSidePx, 200);
 
         currentMaxHeight = maxHeight;
 
