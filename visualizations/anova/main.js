@@ -1,3 +1,6 @@
+let lastSummaryHeight = 200;
+let currentMaxHeight = 200;
+
 // component 1: data graph
 function initDataGraph() {
     const width = 800, height = 800;
@@ -294,7 +297,9 @@ function initDataGraph() {
         const withinSidePx = xScale(summaryValues.withinSide) - xScale(0);
         const maxHeight = Math.max(totalSidePx, betweenSidePx + withinSidePx);
 
-        updateControlHeights(maxHeight); // Call initially
+        currentMaxHeight = maxHeight;
+
+        updateControlHeights(maxHeight);
 
     }
 
@@ -610,7 +615,8 @@ Promise.all([waitForMathJax(), loadVizHelpers()])
         init();
     });
 
-function updateControlHeights(summaryHeight) {
+function updateControlHeights(summaryHeight = currentMaxHeight) {
+
     // Get the current width of the visualization area
     const visualizationWidth = document.querySelector('.visualization-area').getBoundingClientRect().width;
 
@@ -621,14 +627,14 @@ function updateControlHeights(summaryHeight) {
     const controls = {
         '.population-controls': 150,  // original height
         '.sample-controls': 450,      // original height
-        '.summary-controls': summaryHeight      // original base height
+        '.summary-controls': currentMaxHeight      // original base height
     };
 
     // Update each control section
     Object.entries(controls).forEach(([selector, baseHeight]) => {
         const element = document.querySelector(selector);
         if (element) {
-            const newHeight = baseHeight * scaleFactor; // Don't shrink below 50%
+            const newHeight = baseHeight * scaleFactor;
             element.style.height = `${newHeight}px`;
 
             // Adjust top position for sample and summary controls
