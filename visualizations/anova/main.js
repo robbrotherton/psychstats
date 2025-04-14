@@ -4,8 +4,10 @@ function initDataGraph() {
     const margin = { top: 150, right: 220, bottom: 200, left: 220 };
     const svg = d3.select("#data-graph")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .style("width", "100%")
+        .style("height", "auto")
         .style("fill", "transparent");
 
     // scales: x for values, y for groups
@@ -17,7 +19,7 @@ function initDataGraph() {
     //     .attr("class", "x-axis")
     //     .attr("transform", `translate(0, ${height - margin.bottom})`)
     //     .call(d3.axisBottom(xScale).ticks(10));
-    
+
     const yScale = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.2);
     const colScale = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -291,12 +293,8 @@ function initDataGraph() {
         const betweenSidePx = xScale(summaryValues.betweenSide) - xScale(0);
         const withinSidePx = xScale(summaryValues.withinSide) - xScale(0);
         const maxHeight = Math.max(totalSidePx, betweenSidePx + withinSidePx);
-        
-        d3.select(".main-container")
-            .style("height", `${600 + Math.max(200, maxHeight)}px`)
-        
-        d3.select(".summary-controls")
-            .style("height", `${maxHeight}px`)
+
+        updateControlHeights(maxHeight); // Call initially
 
     }
 
@@ -570,6 +568,9 @@ function init() {
     initFormulaPanel();
     initControlsPanel();
     initControlToggles(); // Initialize the controls toggle functionality
+
+    window.addEventListener('resize', updateControlHeights);
+    updateControlHeights(); // Call initially
 }
 
 // Add function to load the vizHelpers.js script
@@ -609,6 +610,36 @@ Promise.all([waitForMathJax(), loadVizHelpers()])
         init();
     });
 
+function updateControlHeights(summaryHeight) {
+    // Get the current width of the visualization area
+    const visualizationWidth = document.querySelector('.visualization-area').getBoundingClientRect().width;
+
+    // Calculate scale factor (how much it has shrunk from original 800px width)
+    const scaleFactor = visualizationWidth / 800;
+
+    // Update heights of control sections
+    const controls = {
+        '.population-controls': 150,  // original height
+        '.sample-controls': 450,      // original height
+        '.summary-controls': summaryHeight      // original base height
+    };
+
+    // Update each control section
+    Object.entries(controls).forEach(([selector, baseHeight]) => {
+        const element = document.querySelector(selector);
+        if (element) {
+            const newHeight = baseHeight * scaleFactor; // Don't shrink below 50%
+            element.style.height = `${newHeight}px`;
+
+            // Adjust top position for sample and summary controls
+            if (selector === '.sample-controls') {
+                element.style.top = `${150 * scaleFactor}px`;
+            } else if (selector === '.summary-controls') {
+                element.style.top = `${(150 + 450) * scaleFactor}px`;
+            }
+        }
+    });
+}
 
 
 // scale helpers
