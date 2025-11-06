@@ -1,6 +1,4 @@
----
-title: Least Squared Error
----
+
 
 # Regression: The Least Squared Error Solution
 
