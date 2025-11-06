@@ -114,6 +114,12 @@ changable_chart = {
   const ssResidualSquare = sumSquaresPlot.append("g").append("polygon")
     .style("fill", "plum")
     .style("opacity", 0.8)
+  
+  const ssResidualLabel = sumSquaresPlot.append("text")
+    .text("SSresidual")
+    .attr("x", 0)
+    .style("font-size", "0.9em")
+    .style("fill", "plum")
     
   dots.selectAll("circle").data(data).enter().append("circle")
     .attr("cx", d => x(d.xVal))
@@ -167,6 +173,9 @@ changable_chart = {
                      [0, squareSize],
                      [squareSize, squareSize],
                      [squareSize, 0]])
+    
+    ssResidualLabel
+    .attr("y", squareSize + 15)
   }
   
   drawFitLine();
@@ -187,13 +196,6 @@ changable_chart = {
       .attr("x", 0)
       .attr("y", -5)
       .style("font-size", "0.8em")
-      
-    sumSquaresPlot.append("text")
-      .text("SSresidual")
-      .attr("x", 0)
-      .attr("y", 20)
-      .style("font-size", "0.9em")
-      .style("fill", "plum")
   
 }
 ```
