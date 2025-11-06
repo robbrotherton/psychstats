@@ -460,7 +460,7 @@ function initDataGraph() {
 
         circles.exit().remove();
 
-        if (state.toggles.showMeans) {
+        if (state.variabilityComponent !== "total" && state.variabilityComponent !== "none") {
             const groupMeans = svg.selectAll("line.group-mean")
                 .data(state.groupStats, d => d.group);
 
@@ -478,91 +478,91 @@ function initDataGraph() {
                 .attr("y2", d => yScale(d.group) + yScale.bandwidth());
 
             groupMeans.exit().remove();
-
-            // Only show grand mean line when not showing within-group variability
-            if (state.variabilityComponent !== "within") {
-                const grandMeanLine = svg.selectAll("line.grand-mean")
-                    .data([state.grandMean]);
-
-                grandMeanLine.enter()
-                    .append("line")
-                    .attr("class", "grand-mean")
-                    .attr("stroke", "grey")
-                    .attr("stroke-dasharray", "20 10")
-                    .attr("stroke-width", 4)
-                    .merge(grandMeanLine)
-                    // .transition().duration(200)
-                    .attr("x1", d => xScale(d))
-                    .attr("x2", d => xScale(d))
-                    .attr("y1", margin.top)
-                    .attr("y2", height - margin.bottom);
-
-                grandMeanLine.exit().remove();
-            } else {
-                // Hide grand mean line when showing within-group variability
-                svg.selectAll("line.grand-mean").remove();
-            }
         } else {
+            // Hide group mean lines when showing total variability
             svg.selectAll("line.group-mean").remove();
+        }
+
+        // Only show grand mean line when not showing within-group variability
+        if (state.variabilityComponent !== "within" && state.variabilityComponent !== "none") {
+            const grandMeanLine = svg.selectAll("line.grand-mean")
+                .data([state.grandMean]);
+
+            grandMeanLine.enter()
+                .append("line")
+                .attr("class", "grand-mean")
+                .attr("stroke", "grey")
+                .attr("stroke-dasharray", "20 10")
+                .attr("stroke-width", 4)
+                .merge(grandMeanLine)
+                // .transition().duration(200)
+                .attr("x1", d => xScale(d))
+                .attr("x2", d => xScale(d))
+                .attr("y1", margin.top)
+                .attr("y2", height - margin.bottom);
+
+            grandMeanLine.exit().remove();
+        } else {
+            // Hide grand mean line when showing within-group variability
             svg.selectAll("line.grand-mean").remove();
         }
 
-        svg.selectAll(".variability-arrow").remove();
-        svg.selectAll(".variability-square").remove();
-        svg.selectAll(".enlarged-variability-square").remove();
+    svg.selectAll(".variability-arrow").remove();
+    svg.selectAll(".variability-square").remove();
+    svg.selectAll(".enlarged-variability-square").remove();
 
-        if (state.toggles.showArrows) {
-            switch (state.variabilityComponent) {
-                case "total":
-                    drawTotalArrows(state.dataset);
-                    break;
-                case "within":
-                    drawWithinArrows(state.dataset);
-                    break;
-                case "between":
-                    drawBetweenArrows();
-                    break;
-            }
+    if (state.toggles.showArrows) {
+        switch (state.variabilityComponent) {
+            case "total":
+                drawTotalArrows(state.dataset);
+                break;
+            case "within":
+                drawWithinArrows(state.dataset);
+                break;
+            case "between":
+                drawBetweenArrows();
+                break;
         }
-
-        if (state.toggles.showSquares) {
-            switch (state.variabilityComponent) {
-                case "total":
-                    drawTotalSquares(state.dataset);
-                    break;
-                case "within":
-                    drawWithinSquares(state.dataset);
-                    break;
-                case "between":
-                    drawBetweenSquares(state.dataset);
-                    break;
-            }
-        }
-
-        // Check which summary square type is selected and draw the appropriate visualization
-        const summaryType = document.querySelector('input[name="summary-type"]:checked')?.value || "sumsquares";
-        makePopulations();
-        drawSummarySquares(summaryType);
     }
 
-    // Create a wrapper function to call the modular animation function with the right parameters
-    window.animateSquaresToCombined = function (type) {
-        if (window.vizHelpers && window.vizHelpers.animateSquaresToCombined) {
-            window.vizHelpers.animateSquaresToCombined({
-                state: state,
-                svg: svg,
-                width: width,
-                height: height,
-                margin: margin,
-                type: type
-            });
-        } else {
-            console.error("vizHelpers not loaded properly");
+    if (state.toggles.showSquares) {
+        switch (state.variabilityComponent) {
+            case "total":
+                drawTotalSquares(state.dataset);
+                break;
+            case "within":
+                drawWithinSquares(state.dataset);
+                break;
+            case "between":
+                drawBetweenSquares(state.dataset);
+                break;
         }
-    };
+    }
 
-    subscribe(update);
-    update();
+    // Check which summary square type is selected and draw the appropriate visualization
+    const summaryType = document.querySelector('input[name="summary-type"]:checked')?.value || "sumsquares";
+    makePopulations();
+    drawSummarySquares(summaryType);
+}
+
+// Create a wrapper function to call the modular animation function with the right parameters
+window.animateSquaresToCombined = function (type) {
+    if (window.vizHelpers && window.vizHelpers.animateSquaresToCombined) {
+        window.vizHelpers.animateSquaresToCombined({
+            state: state,
+            svg: svg,
+            width: width,
+            height: height,
+            margin: margin,
+            type: type
+        });
+    } else {
+        console.error("vizHelpers not loaded properly");
+    }
+};
+
+subscribe(update);
+update();
 }
 
 // initialize all components (components 1:4)
@@ -630,8 +630,8 @@ function updateControlHeights(summaryHeight = currentMaxHeight) {
         '.summary-controls': currentMaxHeight      // original base height
     };
 
-        // Keep track of total height
-        let totalHeight = 0;
+    // Keep track of total height
+    let totalHeight = 0;
 
     // Update each control section
     Object.entries(controls).forEach(([selector, baseHeight]) => {

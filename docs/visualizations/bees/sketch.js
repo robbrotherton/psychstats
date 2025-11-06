@@ -214,6 +214,7 @@ function advanceSwarmOfflineAsync(swarm, numIterations) {
     
     if (offlineIterationsLeft > 0) {
       updateTime();
+      updatePieChart();
       setTimeout(processChunk, 0); // schedule next chunk
     } else {
       isAdvancing = false;

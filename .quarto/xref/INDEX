@@ -49,5 +49,11 @@
   },
   "visualizations/bees/bees.qmd": {
     "bees.html": "7ead4c2c"
+  },
+  "visualizations/anova/anova.qmd": {
+    "anova.html": "551397d8"
+  },
+  "visualizations/least-squared-error copy.qmd": {
+    "least-squared-error copy.html": "5d91e2fa"
   }
 }
