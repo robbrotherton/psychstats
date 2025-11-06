@@ -5,7 +5,7 @@ var flag = d3.select("#flag")
 var flag2 = d3.select("#flag2")
 var clicks = 0;
 var state;
-const target_clicks = 50;
+const target_clicks = 100;
 var mode = practice;
 
 var records = [{prev: 0, best: 0},{prev: 0, best: 0}]
