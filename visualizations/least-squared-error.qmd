@@ -13,6 +13,9 @@ title: Least Squared Error
 ::: {#error-plot-container}
 :::
 
+::: {#sum-squares-container}
+:::
+
 ::: {#summary-container}
 :::
 
@@ -64,13 +67,17 @@ changable_chart = {
     .attr("width", w)
     .attr("height", h)
     
+  const sumSquaresSvg = d3.select("#sum-squares-container").append("svg")
+    .attr("width", 400)
+    .attr("height", 400)
+    
   const axes = svg.append("g")
   const axisFontSize = "0.7em"
   axes.append("g").attr("transform", `translate(0, ${h - margin.bottom})`).call(xAxis).style("font-size", axisFontSize).attr("font-family", "Times New Roman");
   axes.append("g").attr("transform", `translate(${margin.left}, 0)`).call(yAxis).style("font-size", axisFontSize).attr("font-family", "Times New Roman");
   
-  const sumSquaresPlot = svg.append("g")
-  sumSquaresPlot.attr("transform", `translate(${x(12)}px, ${y(10)}px)`)
+  const sumSquaresPlot = sumSquaresSvg.append("g")
+  sumSquaresPlot.attr("transform", `translate(50, 50)`)
   
   const axisTitles = svg.append("g")
     .style("font-size", "0.8em")
@@ -154,37 +161,39 @@ changable_chart = {
                             [x(d.xVal + Math.abs(d.res)), y(d.yHat)],
                             [x(d.xVal + Math.abs(d.res)), y(d.yVal)]])
                             
+    const squareSize = x(Math.sqrt(ssResidual)) - x(0);
     ssResidualSquare
     .attr("points", [[0, 0],
-                     [0, y(10 - Math.sqrt(ssResidual)) - y(10)],
-                     [x(Math.sqrt(ssResidual)) - x(0), y(10 - Math.sqrt(ssResidual)) - y(10)],
-                     [x(Math.sqrt(ssResidual)) - x(0), 0]])
+                     [0, squareSize],
+                     [squareSize, squareSize],
+                     [squareSize, 0]])
   }
   
   drawFitLine();
   
   // this is the dashed outline of the minimum SSresidual
+  const lseSquareSize = x(Math.sqrt(6.5)) - x(0);
   sumSquaresPlot.append("polygon")
     .attr("points", [[0, 0],
-                     [0, y(0) - y(Math.sqrt(6.5))],
-                     [x(Math.sqrt(6.5)) - x(0), y(0) - y(Math.sqrt(6.5))],
-                     [x(Math.sqrt(6.5)) - x(0), 0]])
+                     [0, lseSquareSize],
+                     [lseSquareSize, lseSquareSize],
+                     [lseSquareSize, 0]])
     .style("fill", "none")
     .style("stroke", "black")
     .style("stroke-dasharray", [5, 3])
     
     sumSquaresPlot.append("text")
       .text("LSE solution")
-      .attr("x", x(0))
-      .attr("y", y(10.05))
-      .style("font-size", "0.4em")
+      .attr("x", 0)
+      .attr("y", -5)
+      .style("font-size", "0.8em")
       
     sumSquaresPlot.append("text")
       .text("SSresidual")
-      .attr("x", x(0))
-      .attr("y", y(9.6))
-      .style("font-size", "0.5em")
-      .style("fill", "white")
+      .attr("x", 0)
+      .attr("y", 20)
+      .style("font-size", "0.9em")
+      .style("fill", "plum")
   
 }
 ```
