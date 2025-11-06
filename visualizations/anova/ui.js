@@ -10,22 +10,22 @@ function initControlsPanel() {
     populationControls.attr("style", "width: 100%;")
 
     // // Groups slider
-    // const groupsControl = populationControls.append("div");
-    // groupsControl.append("label")
-    //     .attr("for", "groups-slider")
-    //     .text("Groups: ");
-    // groupsControl.append("input")
-    //     .attr("id", "groups-slider")
-    //     .attr("type", "range")
-    //     .attr("min", 1)
-    //     .attr("max", 10)
-    //     .attr("value", state.numGroups)
-    //     .on("input", function () {
-    //         state.numGroups = +this.value;
-    //         d3.select("#groups-value").text(this.value);
-    //         state.updateDataset(true);
-    //     });
-    // groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
+    const groupsControl = populationControls.append("div");
+    groupsControl.append("label")
+        .attr("for", "groups-slider")
+        .text("Groups: ");
+    groupsControl.append("input")
+        .attr("id", "groups-slider")
+        .attr("type", "range")
+        .attr("min", 2)
+        .attr("max", 3)
+        .attr("value", state.numGroups)
+        .on("input", function () {
+            state.numGroups = +this.value;
+            d3.select("#groups-value").text(this.value);
+            state.updateDataset(true);
+        });
+    groupsControl.append("span").attr("id", "groups-value").text(state.numGroups);
 
     // // Individuals per group slider
     // const indControl = populationControls.append("div").style("margin-top", "10px");
