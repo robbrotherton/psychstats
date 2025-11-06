@@ -1,14 +1,44 @@
 ---
 title: Correlation
 subtitle: The consistency of deviations
+crossref: false
 ---
 
 
 ::: {#container style="text-align: center; margin: 1em;"}
 :::
 
+
+<div class="controls" style="text-align: center; margin: 1em;">
+
 <label for="target-r" class="form-label">Strength of correlation</label>
-<input id="target-r" type="range" class="form-range" min=-1 max = 1 step = 0.01>
+<div style="width: 100%;">
+  <span style="margin-right: 10px;">-1</span>
+  <input id="target-r" type="range" class="form-range" min=-1 max=1 step=0.01 style="width: 80%; flex-grow: 1;">
+  <span style="margin-left: 10px;">1</span>
+</div>
+
+
+<div style="margin-top: 5px;">
+  <input type="checkbox" id="show-deviation-lines" checked>
+  <label for="show-deviation-lines">Show deviation lines</label>
+</div>
+
+<div style="margin-top: 5px;">
+<input type="checkbox" id="show-rectangles" checked>
+<label for="show-rectangles">Show deviation rectangles</label>
+</div>
+</div>
+
+<style>
+  input[type=checkbox] {
+    margin-right: 1em;
+    vertical-align: text-top;
+  }
+  .label {
+    vertical-align: middle;
+  }
+</style>
 
 <!-- ## About
 
@@ -23,6 +53,7 @@ chart = {
 
 const width = 500
 const height = 400
+
 
 const xScale = d3.scaleLinear()
   .domain([-0.1, 1.1])
@@ -51,11 +82,28 @@ axisLines.append("line")
   .attr("y1", height - 1).attr("y2", 1)
   .style("stroke", "black")
 
+// variables for viz options
+let showRectangles = true;
+let showDeviationLines = true;
+
+// inputs for viz options
 const rInput = d3.select("#target-r");
+const rectanglesToggle = d3.select("#show-rectangles");
+const deviationLinesToggle = d3.select("#show-deviation-lines");
 
-rInput.on("input", () => updateChart(rInput.property("value")))
+rInput.on("input", () => updateChart(rInput.property("value")));
 
-let data = makeInitialData(100);
+rectanglesToggle.on("change", function() {
+  showRectangles = this.checked;
+  updateChart(rInput.property("value"));
+});
+
+deviationLinesToggle.on("change", function() {
+  showDeviationLines = this.checked;
+  updateChart(rInput.property("value"));
+});
+
+let data = makeInitialData(10);
   
 
 
@@ -130,7 +178,7 @@ function updateChart(targetR) {
   svg.selectAll("circle").remove()
   svg.selectAll("circle").data(newData).enter().append("circle")
     .attr("cx", d => xScale(d.xVal))
-    .attr("r", 2)
+    .attr("r", 5)
     .attr("cy", d => yScale(d.yVal));
     
   let xArr = newData.map(obj => obj.xVal);
@@ -144,11 +192,13 @@ function updateChart(targetR) {
     .attr("x1", xScale(0)).attr("x2", xScale(1))
     .attr("y1", yScale(meanY)).attr("y2", yScale(meanY))
     .attr("stroke", "black")
+    .attr("stroke-width", 2)
     .attr("stroke-dasharray", [5,5])
   meanLines.append("line")
     .attr("x1", xScale(meanX)).attr("x2", xScale(meanX))
     .attr("y1", yScale(yLimits[0] + 0.1)).attr("y2", yScale(yLimits[1] - 0.1))
     .attr("stroke", "black")
+    .attr("stroke-width", 2)
     .attr("stroke-dasharray", [5,5])
     
   drawDeviationPolygons(meanX, meanY, yLimits);
@@ -159,47 +209,87 @@ function updateChart(targetR) {
   
 }
 
+// Step 1: Add new state variable to track if deviation lines are shown
 function drawDeviationPolygons(meanX, meanY, yLimits) {
-  
-  meanLines.selectAll("polygon").remove()
-  
-  // positive x & y
-  meanLines.append("polygon")
-    .attr("points", [[xScale(meanX), yScale(yLimits[1] - 0.1)],
-                     [xScale(1), yScale(yLimits[1] - 0.1)],
-                     [xScale(1), yScale(meanY)],
-                     [xScale(meanX), yScale(meanY)]])
-    .attr("fill", "green")
-    .attr("opacity", 0.2)
-  // negative x & y
-  meanLines.append("polygon")
-    .attr("points", [[xScale(0), yScale(meanY)],
-                     [xScale(meanX), yScale(meanY)],
-                     [xScale(meanX), yScale(yLimits[0] + 0.1)],
-                     [xScale(0), yScale(yLimits[0] + 0.1)]])
-    .attr("fill", "green")
-    .attr("opacity", 0.2)
+    // Clear previous polygons and lines
+    meanLines.selectAll("polygon").remove();
+    meanLines.selectAll(".deviation-line").remove();
     
-  // negative x, positive y
-  meanLines.append("polygon")
-    .attr("points", [[xScale(meanX), yScale(yLimits[1] - 0.1)],
-                     [xScale(meanX), yScale(meanY)],
-                     [xScale(0), yScale(meanY)],
-                     [xScale(0), yScale(yLimits[1] - 0.1)]])
-    .attr("fill", "red")
-    .attr("opacity", 0.2)
-  // positive x, negative y
-  meanLines.append("polygon")
-    .attr("points", [[xScale(meanX), yScale(meanY)],
-                     [xScale(1), yScale(meanY)],
-                     [xScale(1), yScale(yLimits[0] + 0.1)],
-                     [xScale(meanX), yScale(yLimits[0] + 0.1)]])
-    .attr("fill", "red")
-    .attr("opacity", 0.2)
+    // Get all circles (data points)
+    svg.selectAll("circle").each(function(d) {
+        const point = d3.select(this);
+        const x = +point.attr("cx");
+        const y = +point.attr("cy");
+        
+        // Calculate deviations
+        const xDeviation = d.xVal - meanX;
+        const yDeviation = d.yVal - meanY;
+        const sameDirection = (xDeviation * yDeviation) > 0;
+        
+        // Determine colors based on deviation directions
+        const xDeviationColor = xDeviation > 0 ? "green" : "red";
+        const yDeviationColor = yDeviation > 0 ? "green" : "red";
+        
+        // Draw deviation lines only if the toggle is checked
+        if (showDeviationLines) {
+            // Draw X deviation line
+            meanLines.append("line")
+                .attr("class", "deviation-line")
+                .attr("x1", x)
+                .attr("x2", xScale(meanX))
+                .attr("y1", y)
+                .attr("y2", y)
+                .attr("stroke", xDeviationColor)
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "2,2");
+                
+            // Draw Y deviation line
+            meanLines.append("line")
+                .attr("class", "deviation-line")
+                .attr("x1", x)
+                .attr("x2", x)
+                .attr("y1", y)
+                .attr("y2", yScale(meanY))
+                .attr("stroke", yDeviationColor)
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "2,2");
+        }
+            
+        // Only create rectangles if toggle is checked
+        if (showRectangles) {
+          svg.selectAll(".deviation-line")
+            .attr("stroke", "grey")
+            meanLines.append("polygon")
+                .attr("points", [
+                    [x, y],
+                    [x, yScale(meanY)],
+                    [xScale(meanX), yScale(meanY)],
+                    [xScale(meanX), y]
+                ])
+                .attr("fill", sameDirection ? "green" : "red")
+                .attr("opacity", 0.1);
+        }
+    });
+    
+    // Keep the mean lines
+    meanLines.append("line")
+        .attr("x1", xScale(0))
+        .attr("x2", xScale(1))
+        .attr("y1", yScale(meanY))
+        .attr("y2", yScale(meanY))
+        .attr("stroke", "black")
+        .attr("stroke-dasharray", "5,5");
+        
+    meanLines.append("line")
+        .attr("x1", xScale(meanX))
+        .attr("x2", xScale(meanX))
+        .attr("y1", yScale(yLimits[0] + 0.1))
+        .attr("y2", yScale(yLimits[1] - 0.1))
+        .attr("stroke", "black")
+        .attr("stroke-dasharray", "5,5");
 }
 
 updateChart(rInput.property("value"));
-
 
 }
 
