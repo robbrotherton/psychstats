@@ -70,8 +70,7 @@ canvas {
     width: 100%;
 }
 
-#controls-container span {
-}
+/* removed empty ruleset for cleanliness */
 
 #controls-container input[type="range"] {
     width: 100%;

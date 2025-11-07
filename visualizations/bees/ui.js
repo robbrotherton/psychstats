@@ -3,6 +3,7 @@ function setupUI() {
   let attractionContainer = createDiv('');
   let numberContainer = createDiv('');
   let differenceContainer = createDiv('');
+  let isSyncingUI = false;
   
   attractionContainer.parent('parameters');
   numberContainer.parent('parameters');
@@ -38,9 +39,9 @@ function setupUI() {
   medButton.class('btn btn-success');
   
   // Button click handlers
-  lowButton.mousePressed(() => updateVariability(0, lowButton, [medButton, highButton]));
-  medButton.mousePressed(() => updateVariability(1, medButton, [lowButton, highButton]));
-  highButton.mousePressed(() => updateVariability(2, highButton, [lowButton, medButton]));
+  lowButton.mousePressed(() => { updateVariability(0, lowButton, [medButton, highButton]); beesController.setVariability(0); });
+  medButton.mousePressed(() => { updateVariability(1, medButton, [lowButton, highButton]); beesController.setVariability(1); });
+  highButton.mousePressed(() => { updateVariability(2, highButton, [lowButton, medButton]); beesController.setVariability(2); });
 
 
   attractionLabel.style('margin-right', '10px');
@@ -59,14 +60,10 @@ function setupUI() {
   differenceSlider = createSlider(0, 100, 0);
   differenceSlider.class("form-range");
   differenceSlider.input(() => {
-    swarm.attractor = createVector(differenceSlider.value());
-    hive.attr("transform", "translate(" + (canvasWidth * 0.5 + differenceSlider.value()) + " " + canvasHeight * 0.5 + ")rotate(45)");
-
-    resetButtonClicked();
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
+    if (isSyncingUI) return;
+    // Delegate to controller to keep stats consistent
+    beesController.setHiveOffset(differenceSlider.value());
+    beesController.resetAll();
   });
 
   // Create number buttons container
@@ -92,9 +89,9 @@ function setupUI() {
   medButtonN.class('btn btn-success');
   
   // Button click handlers
-  smallButtonN.mousePressed(() => updateNumber(0, smallButtonN, [medButtonN, largeButtonN]));
-  medButtonN.mousePressed(() => updateNumber(1, medButtonN, [smallButtonN, largeButtonN]));
-  largeButtonN.mousePressed(() => updateNumber(2, largeButtonN, [smallButtonN, medButtonN]));
+  smallButtonN.mousePressed(() => { updateNumber(0, smallButtonN, [medButtonN, largeButtonN]); beesController.setNumber(0); });
+  medButtonN.mousePressed(() => { updateNumber(1, medButtonN, [smallButtonN, largeButtonN]); beesController.setNumber(1); });
+  largeButtonN.mousePressed(() => { updateNumber(2, largeButtonN, [smallButtonN, medButtonN]); beesController.setNumber(2); });
 
   numberLabel.style('margin-right', '10px');
   // numberLabel.style('min-width', '120px');
@@ -134,6 +131,65 @@ function setupUI() {
   createToggle("toggles", "mean-line", "Swarm average");
   createToggle("toggles", "distribution", "Null distribution");
   createToggle("toggles", "swarm-histogram", "Swarm distribution");
+
+  // Keep UI in sync with controller state (tutorial or programmatic changes)
+  window.addEventListener('bees:paramsChanged', (e) => {
+    try {
+      const detail = e.detail || {};
+      const p = (detail.params) ? detail.params : beesController.getParams();
+      // Update Cohen's d label
+      if (differenceLabel) {
+        differenceLabel.html("Hive position (Cohen's d): " + round(p.d, 2));
+      }
+
+      // Sync variability buttons
+      const varIndex = p.attractorStrengthIndex;
+      [lowButton, medButton, highButton].forEach((btn, idx) => {
+        if (!btn) return;
+        if (idx === varIndex) {
+          btn.class('btn btn-success');
+        } else {
+          btn.class('btn btn-outline-primary');
+        }
+      });
+
+      // Sync number buttons
+      const nIndex = p.nBeesIndex;
+      [smallButtonN, medButtonN, largeButtonN].forEach((btn, idx) => {
+        if (!btn) return;
+        if (idx === nIndex) {
+          btn.class('btn btn-success');
+        } else {
+          btn.class('btn btn-outline-primary');
+        }
+      });
+
+      // Sync slider to hive offset (avoid feedback loop)
+      isSyncingUI = true;
+      try {
+        if (typeof swarm !== 'undefined' && swarm.attractor) {
+          differenceSlider.value(swarm.attractor.x);
+        } else if (p.sd !== undefined && p.d !== undefined) {
+          differenceSlider.value(p.d * p.sd);
+        }
+      } finally {
+        isSyncingUI = false;
+      }
+
+      // Sync pause button UI (if tutorial paused/played)
+      if (typeof pauseButton !== 'undefined' && pauseButton) {
+        const paused = !!detail.paused;
+        if (paused) {
+          pauseButton.class("btn btn-warning");
+          pauseButton.html("play");
+        } else {
+          pauseButton.html("pause");
+          pauseButton.class("btn btn-outline-warning");
+        }
+      }
+
+    } catch (_) {}
+  });
 }
 
 function createToggle(parent, target, label) {
@@ -181,63 +237,20 @@ function pauseButtonClicked() {
   }
   
   function updateVariability(value, activeButton, inactiveButtons) {
-    resetButtonClicked();
-    // Update button states
+    // Update button states (controller handles stat resets)
     activeButton.class('btn btn-success');
     inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
-  
-    params.attractorStrengthIndex = value;
-    params.attractorStrength = params.attractorStrengthValues[value];
-  
-    params.se = seValues[value][params.nBeesIndex];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-
-    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
-
-    drawNullDistribution(params);
+    // Core stat updates handled by beesController
   }
   
   function updateNumber(value, activeButton, inactiveButtons) {
-
-    // console.log('currently at ' + params.nBees);
     // Update button states
     activeButton.class('btn btn-success');
     inactiveButtons.forEach(btn => btn.class('btn btn-outline-primary'));
-    params.nBeesIndex = value;
-    params.nBees = params.nBeesValues[value];
-
-    // console.log('setting nBees to: ' + params.nBees);
-    const difference = params.nBees - swarm.bees.length;
-    // console.log('difference: ' + difference);
-
-    if (swarm.bees.length < params.nBees) {
-      for (let i = 1; i <= difference; i++) {
-        // console.log('adding ' + i);
-        swarm.bees.push(new Bee(swarm.attractor.x, swarm.attractor.y));
-      }
-    }
-  
-    if (swarm.bees.length > params.nBees) {
-      // Remove excess bees
-      swarm.bees.splice(params.nBees);
-    //  console.log('keeping  ' + params.nBees);
-    }
-
-    // console.log('new N: ' + swarm.bees.length);
-    
-    params.se = seValues[params.attractorStrengthIndex][value];
-    params.sd = params.se * Math.sqrt(params.nBees);
-    params.d = differenceSlider.value() / params.sd;
-    differenceLabel.html("Hive position (Cohen's d): " + round(params.d, 2));
-    console.log("Cohen's d: " + params.d);
-    
-    params.lowerCrit = jStat.normal.inv(0.025, canvasWidth * 0.5, params.se);
-    params.upperCrit = jStat.normal.inv(0.975, canvasWidth * 0.5, params.se);
-    
-    drawNullDistribution(params);
-    resetButtonClicked();
+    // Core stat updates handled by beesController
+    // (controller resets histogram when appropriate)
   }
+
+ 
+
+// (UI sync handled inside setupUI())
