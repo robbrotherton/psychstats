@@ -107,3 +107,53 @@ canvas {
         order: -1;
     }
 }
+
+/* Tutorial feature styles */
+.about {
+    position: relative;
+}
+
+.about > p {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.about > p.active {
+    display: block;
+    opacity: 1;
+}
+
+.tutorial-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+    gap: 1em;
+}
+
+.tutorial-nav button {
+    padding: 0.5em 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.tutorial-nav button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.tutorial-nav button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.tutorial-progress {
+    font-size: 0.9em;
+    color: #666;
+}

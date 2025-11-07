@@ -33,6 +33,104 @@ include-after-body:
 ::: {.about}
 ## About
 
-How do you like these bees? 
+<p data-speed="2" data-spread="50">These simulated bees, gracefully buzzing around their digital hive, illustrate the central ideas of null hypothesis significance testing.
+<br><br>
+Watch them a while.</p>
+
+<p>Second paragraph.</p>
+
+<p data-speed="1" data-spread="25">Third paragraph.</p>
+
+<div class="tutorial-nav">
+  <button id="prev-btn" disabled>Previous</button>
+  <span class="tutorial-progress"><span id="current-step">1</span> / <span id="total-steps">3</span></span>
+  <button id="next-btn">Next</button>
+</div>
 
 :::
+
+<script>
+// Tutorial navigation
+(function() {
+  const aboutSection = document.querySelector('.about');
+  const paragraphs = Array.from(aboutSection.querySelectorAll('p'));
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const currentStepSpan = document.getElementById('current-step');
+  const totalStepsSpan = document.getElementById('total-steps');
+  
+  let currentStep = 0;
+  
+  // Initialize
+  totalStepsSpan.textContent = paragraphs.length;
+  
+  // Define your update function that will be called when stepping
+  function updateVisualization(params) {
+    console.log('Updating visualization with params:', params);
+    
+    // Example: Update your visualization based on parameters
+    // You can access any data attributes from the paragraph
+    if (params.speed !== undefined) {
+      console.log('Setting speed to:', params.speed);
+      // e.g., updateSpeed(params.speed);
+    }
+    
+    if (params.spread !== undefined) {
+      console.log('Setting spread to:', params.spread);
+      // e.g., updateSpread(params.spread);
+    }
+    
+    // Add any other parameter handling here
+    // You can call your existing visualization update functions
+  }
+  
+  function showStep(index) {
+    // Hide all paragraphs
+    paragraphs.forEach(p => p.classList.remove('active'));
+    
+    // Show current paragraph
+    if (paragraphs[index]) {
+      const currentParagraph = paragraphs[index];
+      currentParagraph.classList.add('active');
+      
+      // Extract data attributes from the paragraph
+      const params = {};
+      for (let attr in currentParagraph.dataset) {
+        const value = currentParagraph.dataset[attr];
+        // Convert to number if it's numeric
+        params[attr] = isNaN(value) ? value : Number(value);
+      }
+      
+      // Call the update function if there are any parameters
+      if (Object.keys(params).length > 0) {
+        updateVisualization(params);
+      }
+    }
+    
+    // Update button states
+    prevBtn.disabled = (index === 0);
+    nextBtn.disabled = (index === paragraphs.length - 1);
+    
+    // Update progress
+    currentStepSpan.textContent = index + 1;
+    
+    currentStep = index;
+  }
+  
+  // Event listeners
+  prevBtn.addEventListener('click', () => {
+    if (currentStep > 0) {
+      showStep(currentStep - 1);
+    }
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    if (currentStep < paragraphs.length - 1) {
+      showStep(currentStep + 1);
+    }
+  });
+  
+  // Show first step
+  showStep(0);
+})();
+</script>
