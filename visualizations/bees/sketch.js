@@ -5,7 +5,8 @@ const canvasWidth = 840;
 const canvasHeight = 400;
 
 let swarm, meanHistogram, estimatedParams;
-let pause;
+// Global pause flag; controller/UI coordinate via window.pause to avoid shadowing
+let pause; // retained for backwards compatibility; authoritative value kept on window.pause
 let xArray;
 let observations = 0;
 let sigs = 0;
@@ -51,6 +52,7 @@ function setup() {
   canvas.parent('swarm-container');
 
   pause = false;
+  try { window.pause = pause; } catch(_) {}
 
   swarm = new Swarm(params.nBees, palette.bees);
   meanHistogram = new Histogram(0, 840, 840);
@@ -89,9 +91,13 @@ function originaldraw() {
 
 function draw() {
 
+  // Sync local pause with window.pause if controller modified it
+  if (typeof window !== 'undefined' && typeof window.pause !== 'undefined' && window.pause !== pause) {
+    pause = window.pause;
+  }
+
   if (pause) {
-    // swarm.display();
-    return false;
+    return false; // early exit preserves last frame
   }
 
   if (!isAdvancing) {

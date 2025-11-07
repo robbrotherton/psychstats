@@ -11,12 +11,14 @@
 
   function applyAction(controller, action) {
     if (!controller) return;
+    try { console.debug('[tutorial] applying action', action); } catch(_) {}
     if (action.variability !== undefined) controller.setVariability(action.variability);
     if (action.number !== undefined) controller.setNumber(action.number);
     if (action.hiveOffset !== undefined) controller.setHiveOffset(action.hiveOffset);
     if (action.advance) controller.advance(action.advance);
-    if (action.pause === true) controller.pause();
-    if (action.play === true) controller.play();
+    if (action.pause === true) { try { console.debug('[tutorial] pause'); } catch(_) {}; controller.pause(); }
+    if (action.play === true) { try { console.debug('[tutorial] play'); } catch(_) {}; controller.play(); }
+    if (action.togglePause === true && typeof controller.togglePause === 'function') { try { console.debug('[tutorial] togglePause'); } catch(_) {}; controller.togglePause(); }
     if (action.reset === true) controller.resetAll();
     if (action.layers) {
       Object.entries(action.layers).forEach(([name, vis]) => controller.toggleLayer(name, !!vis));

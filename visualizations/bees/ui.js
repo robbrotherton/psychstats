@@ -178,7 +178,12 @@ function setupUI() {
 
       // Sync pause button UI (if tutorial paused/played)
       if (typeof pauseButton !== 'undefined' && pauseButton) {
-        const paused = !!detail.paused;
+        // Prefer event detail; fall back to controller's isPaused (handles late listener attachment)
+        const paused = (detail.paused !== undefined)
+          ? !!detail.paused
+          : (typeof beesController !== 'undefined' && typeof beesController.isPaused === 'function'
+              ? beesController.isPaused()
+              : !!pause);
         if (paused) {
           pauseButton.class("btn btn-warning");
           pauseButton.html("play");
@@ -214,15 +219,21 @@ function createToggle(parent, target, label) {
 }
 
 function pauseButtonClicked() {
-    pause = !pause;
-    if (pause) {
-      pauseButton.class("btn btn-warning")
-      pauseButton.html("play");
-    } else {
-      pauseButton.html("pause");
-      pauseButton.class("btn btn-outline-warning")
-    }
+  // Delegate to controller so events propagate and other consumers stay in sync
+  if (typeof beesController !== 'undefined' && typeof beesController.togglePause === 'function') {
+    beesController.togglePause(); // UI will update via bees:paramsChanged listener
+    return;
   }
+  // Fallback (should rarely run): local toggle & manual UI update
+  pause = !pause;
+  if (pause) {
+    pauseButton.class("btn btn-warning");
+    pauseButton.html("play");
+  } else {
+    pauseButton.html("pause");
+    pauseButton.class("btn btn-outline-warning");
+  }
+}
   
   function resetButtonClicked() {
     sigCounter = { sigs: 0, obs: 0 };

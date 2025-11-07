@@ -40,8 +40,8 @@ include-after-body:
 <br><br>
 Watch them a while.</p>
 
-<p data-action='{"variability":0,"hiveOffset":20}'>Second paragraph: adjust variability to low and shift hive slightly.</p>
+<p data-action='{"variability":1,"hiveOffset":20,"pause": true}'>Second paragraph: shift hive slightly.</p>
 
-<p data-action='{"variability":2,"number":100,"advance":1800}'>Third paragraph: increase variability, sample size, and fast-forward simulation.</p>
+<p data-action='{"variability":2,"number":100,"play": true}'>Third paragraph: increase variability, sample size, and fast-forward simulation.</p>
 
 :::

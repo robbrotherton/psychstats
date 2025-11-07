@@ -89,8 +89,9 @@ const beesController = (function() {
     advanceSwarmOfflineAsync(swarm, steps);
   }
 
-  function pause() { pause = true; _emitParamsChanged(); }
-  function play() { pause = false; _emitParamsChanged(); }
+  function _setPaused(v) { try { window.pause = !!v; } catch(_) { pause = !!v; } _emitParamsChanged(); }
+  function pause() { _setPaused(true); }
+  function play() { _setPaused(false); }
   function resetHistogram() {
     sigCounter = { sigs: 0, obs: 0 };
     meanHistogram = new Histogram(0, 840, 840);
@@ -119,7 +120,8 @@ const beesController = (function() {
 
   function _emitParamsChanged() {
     try {
-      window.dispatchEvent(new CustomEvent('bees:paramsChanged', { detail: { params: getParams(), sig: getSigStats(), paused: pause } }));
+      const pausedState = (typeof window !== 'undefined' && typeof window.pause !== 'undefined') ? window.pause : pause;
+      window.dispatchEvent(new CustomEvent('bees:paramsChanged', { detail: { params: getParams(), sig: getSigStats(), paused: pausedState } }));
     } catch (e) {
       // ignore if CustomEvent unsupported
     }
@@ -133,3 +135,15 @@ setTimeout(() => { if (typeof swarm !== 'undefined') beesController.init(); }, 0
 
 // Expose on window for tutorial engine and other consumers
 try { window.beesController = beesController; } catch (_) {}
+
+// Extend controller with pause helpers and toggle (non-breaking augmentation)
+if (window.beesController && !window.beesController.isPaused) {
+  window.beesController.isPaused = function() {
+    if (typeof window !== 'undefined' && typeof window.pause !== 'undefined') return !!window.pause;
+    return !!pause;
+  };
+  window.beesController.togglePause = function() {
+    const nowPaused = this.isPaused();
+    return nowPaused ? (this.play(), false) : (this.pause(), true);
+  };
+}
