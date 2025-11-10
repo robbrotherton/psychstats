@@ -38,9 +38,11 @@ include-after-body:
 
 <p data-action='{"variability":1,"hiveOffset":0}'>These simulated bees, gracefully buzzing around their digital hive, illustrate the central ideas of null hypothesis significance testing.
 <br><br>
-Watch them a while.</p>
+Watch them a while. What do you notice? Obviously they are attracted to a central point, the brown diamond we'll call their hive. In hypothesis testing, this is analagous to the population parameter $\mu$, the true center of our bee population. The random buzzing of each bee, this way and that, adds up to a swarm that clusters around this central point.</p>
 
-<p data-action='{"variability":1,"hiveOffset":20,"pause": true}'>Second paragraph: shift hive slightly.</p>
+<p data-action='{"variability":1,"hiveOffset":20,"pause": true}'>But at any given moment the swarm isn't *perfectly* centered. If we could calculate the average x-position of each bee, that calculated average wouldn't always be preceisly equal to the true center. The calculated average is shown here as the vertical dashed line. </p>
+
+<p data-action='{"variability":2,"number":100,"play": true}'>If we pause the animation, we're looking at a single sample mean for this moment in time. As the simulation runs, each moment provides a new sample mean. This idea, of collecting a vast number of sample means, is the gist of the Central Limit Theorem: if we could take every possible sample of a given size from a population, what would the distribution of sample statistics look like? The Central Limit Theorem tells us that the center of this sampling distribution would be equal to the center of the population, and that its variability would be a function of sample size and the variability in the population.</p>
 
 <p data-action='{"variability":2,"number":100,"play": true}'>Third paragraph: increase variability, sample size, and fast-forward simulation.</p>
 
