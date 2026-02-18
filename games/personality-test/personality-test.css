@@ -1,0 +1,325 @@
+.pt-warning {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #f2cc66;
+  background: #fff8e5;
+}
+
+.pt-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.pt-panel {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.pt-form-panel {
+  margin-top: 1rem;
+}
+
+.pt-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.pt-image-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  border: 2px solid #d0d0d0;
+  border-radius: 0.6rem;
+  padding: 0.25rem;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.pt-image-card:hover {
+  transform: translateY(-1px);
+  border-color: #777;
+}
+
+.pt-image-card.selected {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+.pt-image-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.35rem;
+}
+
+#pt-rock-grid .pt-image-card img {
+  aspect-ratio: 1024 / 683;
+}
+
+.pt-number-badge {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  line-height: 1;
+  border-radius: 999px;
+  background: #222;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.pt-image-name {
+  width: 100%;
+  text-align: center;
+  font-size: 0.84rem;
+  line-height: 1.2;
+  color: #333;
+}
+
+.pt-pick-label {
+  margin: 0.75rem 0 0;
+}
+
+.pt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.pt-iframe-wrap {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.pt-iframe-wrap iframe {
+  width: 100%;
+  min-height: 820px;
+  border: 0;
+}
+
+.pt-help-link {
+  margin-top: 0.5rem;
+}
+
+.pt-loading-dots::after {
+  display: inline-block;
+  width: 1.5em;
+  content: "...";
+  animation: pt-dots 1s steps(4, end) infinite;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+@keyframes pt-dots {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 1.5em;
+  }
+}
+
+.pt-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.pt-filter-row label {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.pt-filter-row .form-control {
+  width: auto;
+  min-width: 10rem;
+}
+
+.pt-filter-row .form-select {
+  width: auto;
+}
+
+#pt-results-actions #pt-back-to-form {
+  margin-left: auto;
+}
+
+.pt-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.pt-modal-card {
+  width: min(420px, calc(100vw - 2rem));
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+}
+
+.pt-modal-card h5 {
+  margin-top: 0;
+}
+
+.pt-modal-card label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.pt-modal-card .form-control {
+  width: 100%;
+}
+
+#pt-sum-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pt-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 0.8rem;
+}
+
+.pt-chart-panel {
+  border: 1px solid #ddd;
+  border-radius: 0.6rem;
+  padding: 0.6rem;
+  background: #fcfcfc;
+}
+
+.pt-chart-panel h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.pt-small-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pt-axis-label {
+  font-size: 0.9rem;
+  fill: #333;
+}
+
+.pt-summary {
+  margin: 0.75rem 0 1rem;
+}
+
+.pt-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.pt-summary-card {
+  border: 1px solid #ddd;
+  border-radius: 0.6rem;
+  padding: 0.6rem;
+  background: #fcfcfc;
+  text-align: center;
+}
+
+.pt-summary-card h5 {
+  margin: 0 0 0.4rem;
+}
+
+.pt-summary-card img {
+  display: block;
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+}
+
+.pt-summary-card p {
+  margin: 0.45rem 0 0;
+}
+
+.pt-summary-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.pt-summary-sum {
+  font-size: 6rem;
+  font-weight: 700;
+}
+
+#pt-summary-sum-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#pt-summary-sum {
+  margin: auto 0 0;
+}
+
+.pt-hist-row {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr 2.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.pt-hist-label,
+.pt-hist-count {
+  font-weight: 700;
+}
+
+.pt-hist-track {
+  position: relative;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: #ececec;
+  overflow: hidden;
+}
+
+.pt-hist-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f4a259, #6a9cf4);
+}
+
+@media (max-width: 900px) {
+  .pt-layout,
+  .pt-summary-grid,
+  .pt-results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pt-image-card img {
+    height: 95px;
+  }
+}

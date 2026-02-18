@@ -1,0 +1,139 @@
+---
+title: "Personality Test"
+toc: false
+css: personality-test.css
+include-in-header:
+  text: |
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+include-after-body:
+  text: |
+    <script src="personality-test.js"></script>
+---
+
+Which soil type are you? What is your spirit rock? Take this totally real, definitely not frivolous personality test to find out!^[It's not really about personality. It's about random sampling.]
+
+```{=html}
+<div id="pt-config-warning" class="pt-warning" hidden></div>
+
+<div id="pt-selection-layout" class="pt-layout">
+  <section id="pt-step-soil" class="pt-panel">
+    <h3 style="margin-top: 0;">Step 1: Pick a Soil Type</h3>
+    <div id="pt-soil-grid" class="pt-image-grid"></div>
+    <p id="pt-soil-pick" class="pt-pick-label">Selected soil number: none</p>
+  </section>
+
+  <section id="pt-step-rock" class="pt-panel" hidden>
+    <h3 style="margin-top: 0;">Step 2: Pick a Rock</h3>
+    <div id="pt-rock-grid" class="pt-image-grid"></div>
+    <p id="pt-rock-pick" class="pt-pick-label">Selected rock number: none</p>
+  </section>
+</div>
+
+<section id="pt-form-view" class="pt-panel pt-form-panel">
+  <h3 style="margin-top: 0;">Submit Your Picks</h3>
+  <p>After selecting both images, submit your response.</p>
+  <div class="pt-actions">
+    <button id="pt-submit-response" type="button" class="btn btn-primary">Submit Response</button>
+    <button id="pt-show-results" type="button" class="btn btn-outline-secondary">Show the Results and Explanation</button>
+  </div>
+  <p id="pt-submit-status" class="pt-help-link"></p>
+</section>
+
+<section id="pt-results-view" class="pt-panel" hidden>
+  <h3 style="margin-top: 0;">Results</h3>
+  <div id="pt-submitted-summary" class="pt-summary" hidden>
+    <h4>Your choices</h4>
+    <div class="pt-summary-grid">
+      <div class="pt-summary-card">
+        <h5>Soil</h5>
+        <img id="pt-summary-soil-img" alt="Selected soil">
+        <p id="pt-summary-soil-text"></p>
+      </div>
+      <div class="pt-summary-card">
+        <h5>Rock</h5>
+        <img id="pt-summary-rock-img" alt="Selected rock">
+        <p id="pt-summary-rock-text"></p>
+      </div>
+      <div id="pt-summary-sum-card" class="pt-summary-card">
+        <h5>Sum</h5>
+        <p id="pt-summary-sum" class="pt-summary-sum"></p>
+      </div>
+    </div>
+  </div>
+  <div id="pt-custom-filter-modal" class="pt-modal" hidden>
+    <div class="pt-modal-card">
+      <h5>Custom Date Range</h5>
+      <label for="pt-custom-start">From</label>
+      <input id="pt-custom-start" type="date" class="form-control">
+      <label for="pt-custom-end">To</label>
+      <input id="pt-custom-end" type="date" class="form-control">
+      <div class="pt-actions">
+        <button id="pt-save-custom-filter" type="button" class="btn btn-primary">Save</button>
+        <button id="pt-cancel-custom-filter" type="button" class="btn btn-outline-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div id="pt-custom-results" hidden>
+    <div>
+      <h4>Distribution of Response Sums (2-12)</h4>
+      <div id="pt-sum-chart"></div>
+    </div>
+  </div>
+  <p id="pt-filter-meta" class="pt-help-link"></p>
+  <div id="pt-results-actions" class="pt-actions">
+    <div id="pt-filter-controls" class="pt-filter-row" hidden>
+      <label for="pt-filter-mode">Range</label>
+      <select id="pt-filter-mode" class="form-select">
+        <option value="all">All time</option>
+        <option value="today">Today</option>
+        <option value="week">Past week</option>
+        <option value="month">Past month</option>
+        <option value="custom">Custom...</option>
+      </select>
+      <button id="pt-edit-custom-filter" type="button" class="btn btn-outline-secondary" hidden>Edit Custom Dates</button>
+    </div>
+    <button id="pt-refresh-results" type="button" class="btn btn-outline-primary">Refresh Results</button>
+    <button id="pt-back-to-form" type="button" class="btn btn-outline-secondary">Back to Selection</button>
+  </div>
+</section>
+```
+
+::: {#pt-about-section hidden=true}
+## About
+
+Okay, this personality test probably doesn't say much about your personality. But it does illustrate something about sampling distributions.
+
+A *sampling distribution* is the distribution of a statistic produced by repeated sampling. Here, the statistic is the sum of two numbers.
+
+The soil and rock choices are just a way of generating those two numbers. Each image is labeled 1-6, and those labels are shuffled for each person who takes the test. As responses accumulate, the distribution of sums tends to take on a familiar symmetric, normal-ish shape: middle values are more common than extremes.
+
+So the point is not personality typing. The point is watching a distribution emerge from repeated random draws. This is the same idea as the [Dice Roller](../../visualizations/dice/dice.qmd), just wrapped in a sillier prompt.
+
+Random label shuffling matters because it breaks any stable mapping between a specific image and a specific number.
+
+So two different patterns can coexist:
+
+- Some images may be genuinely more popular (a preference signal).
+- The *number* choices for soils and rocks should still be roughly flat across 1-6 (because numbering is randomized).
+
+```{=html}
+<div class="pt-results-grid">
+  <div class="pt-chart-panel">
+    <h4>Soil Choices (by Name)</h4>
+    <div id="pt-soil-name-chart" class="pt-small-chart"></div>
+  </div>
+  <div class="pt-chart-panel">
+    <h4>Soil Choices (by Number)</h4>
+    <div id="pt-soil-number-chart" class="pt-small-chart"></div>
+  </div>
+  <div class="pt-chart-panel">
+    <h4>Rock Choices (by Name)</h4>
+    <div id="pt-rock-name-chart" class="pt-small-chart"></div>
+  </div>
+  <div class="pt-chart-panel">
+    <h4>Rock Choices (by Number)</h4>
+    <div id="pt-rock-number-chart" class="pt-small-chart"></div>
+  </div>
+</div>
+```
+:::

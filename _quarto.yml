@@ -1,7 +1,9 @@
 project:
   type: website
   output-dir: docs
-  resources: theme-dark.scss
+  resources:
+    - theme-dark.scss
+    - games/personality-test/images
 
 website:
   title: Psych Stats
@@ -36,4 +38,3 @@ format:
 execute: 
   freeze: true
   echo: false
-
