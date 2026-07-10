@@ -38,7 +38,7 @@ toc: false
 
 [Jellybeans](games/jellybeans.qmd)
 
-[Personality Test](games/personality-test/personality-test.qmd)
+<!-- [Personality Test](games/personality-test/personality-test.qmd) -->
 
 [Quincunx](visualizations/quincunx.qmd)
 
