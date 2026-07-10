@@ -1,0 +1,9 @@
+/* Generic tutorial styles usable across pages */
+.tutorial, .about { position: relative; }
+.tutorial > p, .about > p { display: none; opacity: 0; transition: opacity 0.25s ease; }
+.tutorial > p.active, .about > p.active { display: block; opacity: 1; }
+
+.tutorial-nav { display:flex; justify-content:space-between; align-items:center; gap:1em; margin-top:1em; }
+.tutorial-nav button { padding:0.5em 1em; border:none; border-radius:4px; background:#007bff; color:#fff; cursor:pointer; }
+.tutorial-nav button:disabled { background:#ccc; cursor:not-allowed; opacity:0.7; }
+.tutorial-progress { font-size:0.9em; color:#666; }

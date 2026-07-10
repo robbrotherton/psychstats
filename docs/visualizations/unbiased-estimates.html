@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.8.21">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -63,18 +63,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea1d7ac60288e0f1efdbc993fd8432ae.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-7e9717d9caa9b4d114d189eaeb260ada.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea1d7ac60288e0f1efdbc993fd8432ae.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-1531ffb064922147940455c834c5b004.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6981febcbadf64080173f1f8baf440c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ccf5b4a9908cfd10ca94645d098fdf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-6981febcbadf64080173f1f8baf440c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -114,7 +115,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -287,6 +288,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
@@ -301,6 +303,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
@@ -402,7 +406,7 @@ window.Quarto = {
 <p>This visualization can demonstrate this effect: if you take many samples and calculate the sample standard deviation using <em>n</em> and <em>n - 1</em> in the denominator, you’ll see that the average of the sample standard deviations calculated with <em>n - 1</em> in the denominator will be closer to the true population standard deviation, while those calculated with ‘n’ in the denominator will tend to underestimate it. This shows how the <em>n - 1</em> adjustment corrects for the bias in estimating the population standard deviation from a sample.</p>
 </section>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="53" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 52;"><span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>jStat <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="53" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 52;"><span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>jStat <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -410,7 +414,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="72" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">800</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="72" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="dv">800</span></span>
 <span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="dv">400</span></span>
 <span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>maxWidth <span class="op">=</span> <span class="dv">900</span><span class="op">;</span></span>
@@ -458,7 +462,7 @@ window.Quarto = {
 <span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>xAxisEstimates <span class="op">=</span> d3<span class="op">.</span><span class="fu">axisBottom</span>(xScalePopulation)</span>
 <span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">tickValues</span>(xAxisEstimatesValues)</span>
 <span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">tickFormat</span>(d <span class="kw">=&gt;</span> d)</span>
-<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">tickSize</span>(<span class="op">-</span>maxHeight <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> estimatesSubPanelProportion) <span class="op">-</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">tickSize</span>(<span class="op">-</span>maxHeight <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> estimatesSubPanelProportion) <span class="op">-</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
@@ -615,7 +619,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="124" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 123;"><span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>update_svg <span class="op">=</span> {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="124" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 123;"><span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>update_svg <span class="op">=</span> {</span>
 <span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> sample <span class="op">=</span> []<span class="op">;</span></span>
 <span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> sampleData <span class="op">=</span> []<span class="op">;</span></span>
@@ -1167,7 +1171,7 @@ window.Quarto = {
 <span id="cb3-673"><a href="#cb3-673" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb3-674"><a href="#cb3-674" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb3-675"><a href="#cb3-675" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-676"><a href="#cb3-676" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-676"><a href="#cb3-676" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="declaration">
 
@@ -1175,7 +1179,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="687" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 686;"><span id="cb4-687"><a href="#cb4-687" aria-hidden="true" tabindex="-1"></a>dodger <span class="op">=</span> radius <span class="kw">=&gt;</span> {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="687" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 686;"><span id="cb4-687"><a href="#cb4-687" aria-hidden="true" tabindex="-1"></a>dodger <span class="op">=</span> radius <span class="kw">=&gt;</span> {</span>
 <span id="cb4-688"><a href="#cb4-688" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> radius2 <span class="op">=</span> radius <span class="op">**</span> <span class="fl">1.9</span><span class="op">;</span></span>
 <span id="cb4-689"><a href="#cb4-689" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bisect <span class="op">=</span> d3<span class="op">.</span><span class="fu">bisector</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)<span class="op">;</span></span>
 <span id="cb4-690"><a href="#cb4-690" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> circles <span class="op">=</span> []<span class="op">;</span></span>
@@ -1199,7 +1203,7 @@ window.Quarto = {
 <span id="cb4-708"><a href="#cb4-708" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
 <span id="cb4-709"><a href="#cb4-709" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb4-710"><a href="#cb4-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-711"><a href="#cb4-711" aria-hidden="true" tabindex="-1"></a>dodge <span class="op">=</span> <span class="fu">dodger</span>(radius <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.75</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-711"><a href="#cb4-711" aria-hidden="true" tabindex="-1"></a>dodge <span class="op">=</span> <span class="fu">dodger</span>(radius <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.75</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -1216,7 +1220,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="716" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 715;"><span id="cb5-716"><a href="#cb5-716" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">mean</span>(array) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="716" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 715;"><span id="cb5-716"><a href="#cb5-716" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">mean</span>(array) {</span>
 <span id="cb5-717"><a href="#cb5-717" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b) <span class="op">/</span> array<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
 <span id="cb5-718"><a href="#cb5-718" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-719"><a href="#cb5-719" aria-hidden="true" tabindex="-1"></a></span>
@@ -1260,7 +1264,7 @@ window.Quarto = {
 <span id="cb5-757"><a href="#cb5-757" aria-hidden="true" tabindex="-1"></a>      l<span class="op">.</span><span class="at">classList</span> <span class="op">=</span> <span class="st">"axis-minor"</span><span class="op">;</span></span>
 <span id="cb5-758"><a href="#cb5-758" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb5-759"><a href="#cb5-759" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb5-760"><a href="#cb5-760" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-760"><a href="#cb5-760" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">

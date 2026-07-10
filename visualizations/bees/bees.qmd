@@ -33,6 +33,8 @@ include-after-body:
   <div id="indicator-container"></div>
 </div>
 
+<!-- 
+
 ::: {.about}
 ## About
 
@@ -47,3 +49,6 @@ Watch them a while. What do you notice? Obviously they are attracted to a centra
 <p data-action='{"variability":2,"number":100,"play": true}'>Third paragraph: increase variability, sample size, and fast-forward simulation.</p>
 
 :::
+
+
+ -->
