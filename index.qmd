@@ -38,6 +38,8 @@ toc: false
 
 [Jellybeans](games/jellybeans.qmd)
 
+[Personality Test](games/personality-test/personality-test.qmd)
+
 [Quincunx](visualizations/quincunx.qmd)
 
 [Dice Roller](visualizations/dice/dice.qmd)
