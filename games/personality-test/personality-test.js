@@ -162,6 +162,7 @@ async function onSubmitResponse() {
 
     revealAboutSection();
     updateFilterControlsUI();
+    scrollToSection("pt-results-view");
     await onRefreshResults();
   } catch (error) {
     setSubmitStatus(`Submit failed (${error.message}).`, true);
@@ -180,6 +181,7 @@ function onShowResults() {
   setHidden("pt-filter-controls", false);
   revealAboutSection();
   updateFilterControlsUI();
+  scrollToSection("pt-results-view");
   onRefreshResults();
 }
 
@@ -204,6 +206,7 @@ function onBackToForm() {
 
   renderAll();
   updateSelectionFlow();
+  scrollToSection("pt-selection-layout");
 }
 
 function onFilterModeChange(event) {
@@ -316,10 +319,17 @@ function renderGrid(containerId, type, basePath, options) {
     }
 
     button.addEventListener("click", () => {
+      const rockStep = document.getElementById("pt-step-rock");
+      const revealsRockStep = type === "soil" && rockStep?.hidden;
+
       state.picks[type] = number;
       markSelectedInContainer(container, number);
       updatePickLabels();
       updateSelectionFlow();
+
+      if (revealsRockStep) {
+        scrollToSection("pt-step-rock", "smooth");
+      }
     });
 
     const badge = document.createElement("span");
@@ -1125,6 +1135,17 @@ function setHidden(id, hidden) {
   if (element) {
     element.hidden = hidden;
   }
+}
+
+// Hiding the tall selection grids shortens the page, which otherwise leaves the
+// viewport at the old scroll offset (near the bottom). Re-anchor explicitly.
+function scrollToSection(id, behavior = "auto") {
+  const element = document.getElementById(id);
+  if (!element) {
+    return;
+  }
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  element.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : behavior });
 }
 
 function sleep(ms) {

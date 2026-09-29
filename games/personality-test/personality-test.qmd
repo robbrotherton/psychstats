@@ -105,11 +105,11 @@ Okay, this personality test probably doesn't say much about your personality. Bu
 
 A *sampling distribution* is the distribution of a statistic produced by repeated sampling. Here, the statistic is the sum of two numbers.
 
-The soil and rock choices are just a way of generating those two numbers. Each image is labeled 1-6, and those labels are shuffled for each person who takes the test. As responses accumulate, the distribution of sums tends to take on a familiar symmetric, normal-ish shape: middle values are more common than extremes.
+The soil and rock choices are just a way of generating those two numbers. Each image is labeled 1-6, and the numbers are shuffled for each person who takes the test. As responses accumulate, the distribution of sums tends to take on a familiar symmetric, normal-ish shape: middle values are more common than extremes.
 
-So the point is not personality typing. The point is watching a distribution emerge from repeated random draws. This is the same idea as the [Dice Roller](../../visualizations/dice/dice.qmd), just wrapped in a sillier prompt.
+So the point is not personality typing via geologic preferences. The point is seeing a predictable distribution emerge from randomness. This is the same idea as the [Dice Roller](../../visualizations/dice/dice.qmd), just wrapped in a sillier prompt.
 
-Random label shuffling matters because it breaks any stable mapping between a specific image and a specific number.
+Shuffling the numbers is important because it breaks any stable mapping between a specific image and a specific number.
 
 So two different patterns can coexist:
 

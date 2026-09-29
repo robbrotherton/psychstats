@@ -323,3 +323,10 @@
     height: 95px;
   }
 }
+
+/* Keep scrollIntoView targets clear of Quarto's fixed navbar. */
+#pt-results-view,
+#pt-selection-layout,
+#pt-step-rock {
+  scroll-margin-top: 5rem;
+}
