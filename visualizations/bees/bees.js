@@ -92,11 +92,13 @@ class Swarm {
   }
 
   run() {
+    let sumX = 0;
     for (let bee of this.bees) {
       bee.flock(this.bees, this.attractor);
       bee.update();
+      sumX += bee.position.x;
     }
-    this.currentMean = jStat.mean(this.bees.map(bee => bee.position.x));
+    this.currentMean = sumX / this.bees.length;
   }
 
   display() {

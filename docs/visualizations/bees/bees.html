@@ -61,6 +61,35 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -329,9 +358,20 @@ Swarm controls
 
 </div>
 </div>
-<section id="about" class="level2 about">
+<section id="about" class="level2 about" style="display: none;">
 <h2 class="anchored" data-anchor-id="about">About</h2>
-<p>How do you like these bees?</p>
+<p data-action="{&quot;variability&quot;:1,&quot;number&quot;: 15, &quot;hiveOffset&quot;:0,&quot;number&quot;: 1, &quot;pause&quot;: false}">
+These simulated bees, gracefully buzzing around their digital hive, illustrate the central ideas of null hypothesis significance testing. <br><br> Watch them a while. What do you notice? Obviously they are attracted to a central point, the brown diamond we’ll call their hive. In hypothesis testing, this is analagous to the population parameter <span class="math inline">\(\mu\)</span>, the true center of our bee population. The random buzzing of each bee, this way and that, adds up to a swarm that clusters around this central point.
+</p>
+<p data-action="{&quot;variability&quot;:2,&quot;hiveOffset&quot;:0,&quot;pause&quot;: true}">
+But at any given moment the swarm isn’t <em>perfectly</em> centered. If we could calculate the average x-position of each bee, that calculated average wouldn’t always be preceisly equal to the true center. The calculated average is shown here as the vertical dashed line.
+</p>
+<p data-action="{&quot;variability&quot;:2, &quot;number&quot;: 15, &quot;play&quot;: true}">
+If we pause the animation, we’re looking at a single sample mean for this moment in time. As the simulation runs, each moment provides a new sample mean. This idea, of collecting a vast number of sample means, is the gist of the Central Limit Theorem: if we could take every possible sample of a given size from a population, what would the distribution of sample statistics look like? The Central Limit Theorem tells us that the center of this sampling distribution would be equal to the center of the population, and that its variability would be a function of sample size and the variability in the population.
+</p>
+<p data-action="{&quot;variability&quot;:2,&quot;number&quot;:100,&quot;play&quot;: true}">
+Third paragraph: increase variability, sample size, and fast-forward simulation.
+</p>
 </section>
 
 
@@ -754,6 +794,9 @@ Swarm controls
 <script src="bees.js"></script>
 <script src="distributions.js"></script>
 <script src="ui.js"></script>
+<script src="beesController.js"></script>
+<link rel="stylesheet" href="../tutorial/tutorial.css">
+<script src="../tutorial/tutorial.js"></script>
 
 
 

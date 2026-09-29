@@ -1,5 +1,6 @@
 let svg, path, x, y, lineGenerator;
 let leftTail, rightTail, meanLine;  // Add meanLine variable
+let bars;
 const margin = { top: 20, right: 0, bottom: 30, left: 0 };
 const width = canvasWidth;
 const height = canvasHeight;
@@ -9,6 +10,7 @@ let time;
 
 let pieSvg, pieG;
 const pieRadius = 40;
+let pieGenerator, pieArcGenerator, piePaths, piePercentText;
 
 function setupDistributionViz() {
   // Create SVG with viewBox and preserveAspectRatio for proper scaling
@@ -110,6 +112,24 @@ function setupIndicators() {
   pieG = pieSvg.append("g")
     .attr("transform", `translate(${pieRadius},${pieRadius})`);
 
+  pieGenerator = d3.pie()
+    .value(d => d.value)
+    .sort(null);
+
+  pieArcGenerator = d3.arc()
+    .innerRadius(0)
+    .outerRadius(pieRadius);
+
+  piePaths = pieG.selectAll("path")
+    .data([0, 0])
+    .enter()
+    .append("path");
+
+  piePercentText = pieG.append("text")
+    .attr("text-anchor", "middle")
+    .attr("dy", "0.3em")
+    .style("font-size", "16px");
+
   d3.select("#indicator-container")
     .append("div")
     .append("text")
@@ -134,36 +154,12 @@ function updatePieChart() {
     { value: 1 - sigProp, color: "#cccccc" }
   ];
 
-  const pie = d3.pie()
-    .value(d => d.value)
-    .sort(null);
-
-  const arc = d3.arc()
-    .innerRadius(0)
-    .outerRadius(pieRadius);
-
-  const paths = pieG.selectAll("path")
-    .data(pie(data));
-
-  paths.enter()
-    .append("path")
-    .merge(paths)
-    .attr("d", arc)
+  piePaths
+    .data(pieGenerator(data))
+    .attr("d", pieArcGenerator)
     .attr("fill", d => d.data.color);
 
-  paths.exit().remove();
-
-  // Add percentage text in center
-  const percentText = pieG.selectAll("text")
-    .data([sigProp.toFixed(3)]);
-
-  percentText.enter()
-    .append("text")
-    .merge(percentText)
-    .attr("text-anchor", "middle")
-    .attr("dy", "0.3em")
-    .style("font-size", "16px")
-    .text(d => `${d}`);
+  piePercentText.text(sigProp.toFixed(3));
 
   updateTime();
   
@@ -194,20 +190,20 @@ function updateDistribution(swarm, histogram) {
   }));
 
   // Update the bars
-  const bars = svg.select("g").selectAll("rect")
+  const barsSelection = bars.selectAll("rect")
     .data(histogramData, d => d.x);
 
   // Enter new bars
-  bars.enter()
+  barsSelection.enter()
     .append("rect")
-    .merge(bars)
+    .merge(barsSelection)
     .attr("x", d => x(d.x))
     .attr("height", d => height - margin.bottom - y(d.count))
     .attr("width", 1) // 1 pixel wide by default
     .attr("y", d => y(d.count));
 
   // Remove old bars
-  bars.exit().remove();
+  barsSelection.exit().remove();
 
   // determine significance: current mean falls outside the 95% interval?
   const isSignificant = (currentMean < params.lowerCrit) || (currentMean > params.upperCrit);

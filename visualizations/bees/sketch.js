@@ -5,8 +5,8 @@ const canvasWidth = 840;
 const canvasHeight = 400;
 
 let swarm, meanHistogram, estimatedParams;
-// Global pause flag; controller/UI coordinate via window.pause to avoid shadowing
-let pause; // retained for backwards compatibility; authoritative value kept on window.pause
+// Global pause flag; mirror to window.pause for compatibility with external consumers.
+let pause;
 let xArray;
 let observations = 0;
 let sigs = 0;
@@ -90,14 +90,15 @@ function originaldraw() {
 }
 
 function draw() {
-
-  // Sync local pause with window.pause if controller modified it
-  if (typeof window !== 'undefined' && typeof window.pause !== 'undefined' && window.pause !== pause) {
-    pause = window.pause;
+  // Normalize frame rate as soon as playback mode is finished,
+  // even if user paused before draw reaches the normal render branch.
+  if (!isAdvancing && playbackFrameRateIsReduced) {
+    frameRate(60);
+    playbackFrameRateIsReduced = false;
   }
 
   if (pause) {
-    return false; // early exit preserves last frame
+    return; // early exit preserves last frame
   }
 
   if (!isAdvancing) {
@@ -110,27 +111,27 @@ function draw() {
   translate(CANVAS_WIDTH * 0.5, CANVAS_HEIGHT);
 
   if (isAdvancing) {
-    // frameCounter++;
-    newFPS = max(1, 60 - framePlaybackIndex * 2);
-    // console.log(newFPS);
-    frameRate(10);
+    if (!playbackFrameRateIsReduced) {
+      frameRate(10);
+      playbackFrameRateIsReduced = true;
+    }
+    if (!playbackFillColor) {
+      playbackFillColor = color(palette.bees);
+    }
 
     if (framePlaybackIndex < capturedFrames.length) {
       clear();
+      noStroke();
       for (let i = 0; i <= framePlaybackIndex; i++) {
-        frame = capturedFrames[i];
+        const frame = capturedFrames[i];
         // Scale alpha from 255 (newest frame) down to ~50 (oldest frame)
-        let fillAlpha = map(i, framePlaybackIndex, framePlaybackIndex - 10, 100, 0);
+        const frameAlpha = map(i, framePlaybackIndex, framePlaybackIndex - 10, 100, 0);
         // fillAlpha = max(0, fillAlpha);
-        fillColor = color(palette.bees);
-        fillColor.setAlpha(fillAlpha); // Corrected usage
+        playbackFillColor.setAlpha(frameAlpha);
+        fill(playbackFillColor);
 
-        for (bee of frame) {
-          push()
-          noStroke();
-          fill(fillColor);
+        for (const bee of frame) {
           circle(bee.position.x, bee.position.y, 20);
-          pop();
         }
       }
 
@@ -153,6 +154,8 @@ function draw() {
 }
 let fillAlpha = 255;
 let newFPS;
+let playbackFillColor;
+let playbackFrameRateIsReduced = false;
 function advanceSwarmOffline(swarm, numIterations) {
 
   for (let i = 0; i < numIterations; i++) {
@@ -186,6 +189,7 @@ function advanceSwarmOfflineAsync(swarm, numIterations) {
   capturedFrames = [];
   framePlaybackIndex = 0;
   playbackInterval = 1;
+  playbackFrameRateIsReduced = false;
 
   // **capture the first 30 frames**
   for (let i = 0; i < 30; i++) {
@@ -224,7 +228,10 @@ function advanceSwarmOfflineAsync(swarm, numIterations) {
       setTimeout(processChunk, 0); // schedule next chunk
     } else {
       isAdvancing = false;
-      frameRate(60); // reset normal speed
+      if (playbackFrameRateIsReduced) {
+        frameRate(60); // reset normal speed
+        playbackFrameRateIsReduced = false;
+      }
     }
   }
 
