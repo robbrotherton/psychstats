@@ -88,14 +88,14 @@
     "href": "index.html",
     "title": "PSYCH STATS",
     "section": "",
-    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nBees\n\nConfidence Intervals"
+    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\nPolling and Sampling\n(Un)Biased Estimates\nBees\n\nConfidence Intervals"
   },
   {
     "objectID": "index.html#visualizations",
     "href": "index.html#visualizations",
     "title": "PSYCH STATS",
     "section": "",
-    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\n(Un)Biased Estimates\nBees\n\nConfidence Intervals"
+    "text": "Interactive visualizations of fundamental statistical concepts.\nCentral Tendency and the Mean\nSampling\nPolling and Sampling\n(Un)Biased Estimates\nBees\n\nConfidence Intervals"
   },
   {
     "objectID": "index.html#games",
@@ -180,5 +180,61 @@
     "title": "Personality Test",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nIt’s not really about personality. It’s about random sampling.↩︎"
+  },
+  {
+    "objectID": "visualizations/polling/polling.html",
+    "href": "visualizations/polling/polling.html",
+    "title": "Polling and Sampling",
+    "section": "",
+    "text": "Population\n    \n    \n    \n  \n  \n    Sample size:\n    \n    Draw sample\n    \n    Reset\n  \n  \n  \n  Draw a sample to estimate the proportion blue.\n  \n    \n      Sampling distribution\n      \n    \n    \n    \n    \n      Samples: 0\n      Average estimate: —\n      Spread (SD): —\n    \n  \n  \n    Population & display settings\n    \n      Population blue: 50%\n      \n    \n     Show normal approximation\n    \n    Changing the sample size or population starts a new sampling distribution."
+  },
+  {
+    "objectID": "visualizations/polling/polling.html#about",
+    "href": "visualizations/polling/polling.html#about",
+    "title": "Polling and Sampling",
+    "section": "About",
+    "text": "About\nA population has a fixed proportion of blue and red members. A random sample usually will not reproduce that proportion exactly. Different random samples therefore give different estimates of the same population value. Here the observations are categorical—blue or red—so our statistic is the proportion blue, \\(\\hat p = \\text{number blue} / n\\), rather than a mean of numerical card values.\nThe symbol \\(\\hat p\\) (pronounced “p-hat”) means the sample estimate; \\(p\\) means the true population proportion. For example, 4 blue cards out of 6 gives \\(\\hat p \\approx 67\\%\\), even though the population is 50% blue.\nEach poll adds one to the bar containing its estimate: the histogram counts entire polls, not individual people. Repeating the poll builds a sampling distribution: the estimates cluster around the true population proportion, \\(p\\). The vertical scale starts at 20 polls, then expands as the bars grow. The average estimate tends toward the population value as more polls accumulate; collecting more polls reveals the distribution, while increasing the number of people in each poll makes it narrower.\nTry a few samples of 6, then use play or +1,000 to see the pattern emerge. Compare sample sizes of 20, 100, and 400 on the same horizontal scale. Larger samples tend to vary less, and under common conditions their sampling distribution becomes approximately normal—even though each individual observation is just blue or red. Try changing the population to 20% blue to see how small samples can produce a skewed distribution.\nThe initial deck represents 50 distinct people. Cards are drawn without replacement within a poll, then all returned before the next poll. Polling all 50 people is a census: every estimate equals the true proportion. For samples above 50, the demonstration switches to independent draws from a very large population with the same proportion blue.\nAn opinion poll reporting 52% support is one sample from a population. Another equally valid random sample might report 49% or 55%. Larger polls tend to fluctuate less from sample to sample, which is the basic idea behind the margins of error reported with polls. Real polls also depend on how people are recruited and who responds; increasing sample size alone does not remove sampling bias.\nLater, confidence intervals give us a formal way to express uncertainty associated with a sample estimate."
+  },
+  {
+    "objectID": "visualizations/polling/spec.html",
+    "href": "visualizations/polling/spec.html",
+    "title": "polling and sampling distributions visualization",
+    "section": "",
+    "text": "create a new interactive visualization page for the psychstats site demonstrating how random samples from a population produce variable estimates, and how the sampling distribution of a proportion becomes more stable, narrower, and approximately normal as sample size increases.\nthe motivating scenario is an opinion poll.\nthe visualization should establish the conceptual logic behind:\n\nrandom sampling\nsample-to-sample variability\npopulation parameters versus sample statistics\nsampling distributions\nstandard error / precision in an intuitive, pre-formula sense\nwhy larger polls have smaller margins of error\nemergence of an approximately normal sampling distribution\n\ndo not make this primarily a confidence-interval demonstration. there is already a separate confidence-interval visualization on the site. this page should prepare students for that later material rather than duplicate it."
+  },
+  {
+    "objectID": "visualizations/polling/spec.html#purpose",
+    "href": "visualizations/polling/spec.html#purpose",
+    "title": "polling and sampling distributions visualization",
+    "section": "",
+    "text": "create a new interactive visualization page for the psychstats site demonstrating how random samples from a population produce variable estimates, and how the sampling distribution of a proportion becomes more stable, narrower, and approximately normal as sample size increases.\nthe motivating scenario is an opinion poll.\nthe visualization should establish the conceptual logic behind:\n\nrandom sampling\nsample-to-sample variability\npopulation parameters versus sample statistics\nsampling distributions\nstandard error / precision in an intuitive, pre-formula sense\nwhy larger polls have smaller margins of error\nemergence of an approximately normal sampling distribution\n\ndo not make this primarily a confidence-interval demonstration. there is already a separate confidence-interval visualization on the site. this page should prepare students for that later material rather than duplicate it."
+  },
+  {
+    "objectID": "visualizations/polling/spec.html#initial-state",
+    "href": "visualizations/polling/spec.html#initial-state",
+    "title": "polling and sampling distributions visualization",
+    "section": "initial state",
+    "text": "initial state\nshow a visual population/deck consisting of blue and red cards.\ndefault text should make the known population explicit:\npopulation: 50 people — 25 blue, 25 red\nor equivalent concise wording.\nshow:\n\npopulation proportion blue: (p=.50)\nsample size: (n=6)\nnumber of samples collected: 0\n\nbelow or beside the population, show six blank sample-card positions.\nprovide:\n\ndraw sample button\nplay button for continuous sampling\nreset button"
+  },
+  {
+    "objectID": "visualizations/polling/spec.html#draw-sample",
+    "href": "visualizations/polling/spec.html#draw-sample",
+    "title": "polling and sampling distributions visualization",
+    "section": "draw sample",
+    "text": "draw sample\nwhen the user presses draw:\n\nrandomly draw (n) cards.\nvisually reveal the sampled cards.\ncount the blue cards.\ncalculate (p).\ndisplay the result prominently, e.g.:\n4 of 6 blue → (p=.67)\nadd this sample proportion to the sampling-distribution plot.\n\nthe animation should be fast enough for lecture use. a single manual draw can reveal cards sequentially; continuous mode should use a quicker animation or update."
+  },
+  {
+    "objectID": "visualizations/polling/spec.html#finite-deck-demonstration",
+    "href": "visualizations/polling/spec.html#finite-deck-demonstration",
+    "title": "polling and sampling distributions visualization",
+    "section": "finite-deck demonstration",
+    "text": "finite-deck demonstration\nwhen (n N), the visualization may literally draw from the displayed finite population without replacement."
+  },
+  {
+    "objectID": "visualizations/polling/spec.html#polling-large-population-simulation",
+    "href": "visualizations/polling/spec.html#polling-large-population-simulation",
+    "title": "polling and sampling distributions visualization",
+    "section": "polling / large-population simulation",
+    "text": "polling / large-population simulation\nfor sample sizes exceeding the displayed population, interpret the population as a conceptual very large population having the specified proportion blue.\nfor example:\n\nimagine a very large population in which 50% support blue.\n\nthen generate independent bernoulli observations with probability (p).\nthis prevents the displayed 50-card deck from creating the nonsensical implication that a sample of 400 is being drawn from only 50 people.\nthe interface should make this transition comprehensible rather than silently changing the statistical model.\none clean implementation:\n\nphysical deck mode for small (n)\nlarge population mode for larger (n)\n\nbut avoid unnecessary UI clutter. automatic switching plus a concise explanatory note may be better."
   }
 ]

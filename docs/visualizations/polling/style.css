@@ -1,0 +1,78 @@
+#polling-demo {
+  --poll-blue: var(--bs-blue, #0d6efd);
+  --poll-red: var(--bs-red, #dc3545);
+  max-width: 1050px;
+  margin: auto;
+  text-align: center;
+}
+#polling-demo h2 { border: 0; font-size: 1.3rem; margin: 0 0 .5rem; }
+#polling-demo p { margin-bottom: .65rem; }
+.polling-controls { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: .6rem; }
+#polling-demo .form-select { width: auto; }
+.polling-population { margin-bottom: 1.2rem; }
+#population-cards { display: grid; grid-template-columns: repeat(25, 1fr); gap: 3px; max-width: 550px; margin: .8rem auto; }
+#population-cards[hidden] { display: none; }
+#polling-demo .playing-card-container {
+  --card-ink: var(--poll-blue);
+  --card-paper: color-mix(in srgb, var(--card-ink) 12%, white);
+  color: var(--card-ink);
+  background-color: var(--card-paper);
+  /* The same four-gradient card-back pattern as the confidence-interval demo. */
+  background-image: linear-gradient(135deg, var(--card-ink) 25%, transparent 25%),
+    linear-gradient(225deg, var(--card-ink) 25%, transparent 25%),
+    linear-gradient(45deg, var(--card-ink) 25%, transparent 25%),
+    linear-gradient(315deg, var(--card-ink) 25%, var(--card-paper) 25%);
+  background-position: 10px 0, 10px 0, 0 0, 0 0;
+  background-size: 10px 10px;
+  background-repeat: repeat;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 35px;
+  height: 50px;
+}
+#population-cards .playing-card-container { height: 29px; }
+#population-cards.has-sample .playing-card-container:not(.is-selected) { opacity: .25; }
+#population-cards .playing-card-container.is-selected {
+  outline: 2px solid var(--bs-body-color, #212529);
+  outline-offset: 1px;
+  transform: translateY(-3px);
+}
+#polling-demo .playing-card-blue { --card-ink: var(--poll-blue); }
+#polling-demo .playing-card-red { --card-ink: var(--poll-red); }
+#polling-demo .playing-card-blank {
+  --card-ink: var(--bs-border-color, #adb5bd);
+  --card-paper: var(--bs-secondary-bg, #eee);
+}
+#sample-cards { min-height: 115px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: .45rem; max-width: 500px; margin: auto; padding: .6rem 0; }
+#sample-cards[hidden], #sample-bar[hidden] { display: none; }
+#sample-bar { display: flex; max-width: 500px; height: 30px; margin: 42px auto; overflow: hidden; border: 1px solid currentColor; border-radius: 3px; }
+.polling-blue { background: var(--poll-blue); }
+.polling-red { background: var(--poll-red); }
+#current-poll { min-height: 2rem; font-size: 1.2rem; }
+.polling-note { font-size: .9rem; color: var(--bs-secondary-color, inherit); }
+#sampling-note { min-height: 2.8em; }
+.polling-chart-heading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: 1.2rem; }
+#poll-plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+#poll-plot text { fill: currentColor; font-family: inherit; font-size: 15px; }
+#poll-plot .poll-mark { fill: var(--poll-blue); opacity: .75; }
+#poll-plot .true-line { stroke: currentColor; stroke-dasharray: 5 5; stroke-width: 1.5; opacity: .65; }
+#poll-plot .normal-curve { fill: none; stroke: var(--poll-red); stroke-width: 2.5; }
+#poll-plot .grid line { stroke: currentColor; opacity: .1; }
+#poll-plot .grid path { display: none; }
+.polling-summary { display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem 2rem; }
+.polling-settings { text-align: left; max-width: 650px; margin: 1.5rem auto; }
+.polling-settings summary { cursor: pointer; margin-bottom: .8rem; }
+.polling-settings .polling-controls { justify-content: flex-start; margin-bottom: .8rem; }
+#poll-proportion { width: 220px; }
+#normal-note { margin-top: .6rem; }
+@media (max-width: 600px) {
+  #population-cards { grid-template-columns: repeat(10, 1fr); max-width: 280px; }
+  .polling-chart-heading { flex-direction: column; }
+  #polling-demo .playing-card-container { flex-basis: 29px; height: 43px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #polling-demo * { transition: none !important; }
+}

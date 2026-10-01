@@ -58,5 +58,8 @@
   },
   "games/personality-test/personality-test.qmd": {
     "personality-test.html": "3d503531"
+  },
+  "visualizations/polling/polling.qmd": {
+    "polling.html": "997ead67"
   }
 }

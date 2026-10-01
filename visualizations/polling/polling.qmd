@@ -1,0 +1,74 @@
+---
+title: Polling and Sampling
+subtitle: How different random samples produce different estimates
+page-layout: full
+include-in-header:
+  text: |
+    <link rel="stylesheet" href="./style.css?v=4">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+include-after-body:
+  text: |
+    <script type="module" src="./main.js?v=4"></script>
+resources:
+  - model.mjs
+---
+
+```{=html}
+<div id="polling-demo">
+  <section class="polling-population" aria-labelledby="population-heading">
+    <h2 id="population-heading">Population</h2>
+    <p id="population-description"></p>
+    <div id="population-cards" aria-hidden="true"></div>
+    <p id="sampling-note" class="polling-note"></p>
+  </section>
+  <div class="polling-controls">
+    <label for="poll-size">Sample size:</label>
+    <select id="poll-size" class="form-select"></select>
+    <button id="poll-draw" class="btn btn-primary">Draw sample</button>
+    <button id="poll-play" class="btn btn-outline-success" aria-label="Start continuous sampling" aria-pressed="false"><i class="bi bi-play" aria-hidden="true"></i></button>
+    <button id="poll-reset" class="btn btn-outline-secondary">Reset</button>
+  </div>
+  <div id="sample-cards" aria-label="Current sample"></div>
+  <div id="sample-bar" hidden aria-label="Current sample composition"><div class="polling-blue"></div><div class="polling-red"></div></div>
+  <p id="current-poll" role="status" aria-live="polite">Draw a sample to estimate the proportion blue.</p>
+  <section aria-labelledby="distribution-heading">
+    <div class="polling-chart-heading">
+      <h2 id="distribution-heading">Sampling distribution</h2>
+      <div class="polling-controls" id="bulk-controls"></div>
+    </div>
+    <div id="poll-plot"></div>
+    <p id="plot-note" class="polling-note"></p>
+    <div class="polling-summary">
+      <span>Samples: <strong id="poll-count">0</strong></span>
+      <span id="running-mean">Average estimate: <strong id="poll-average">—</strong></span>
+      <span id="empirical-sd" hidden>Spread (SD): <strong id="poll-sd">—</strong></span>
+    </div>
+  </section>
+  <details class="polling-settings">
+    <summary>Population &amp; display settings</summary>
+    <div class="polling-controls">
+      <label for="poll-proportion">Population blue: <output id="poll-p-label" for="poll-proportion">50%</output></label>
+      <input id="poll-proportion" type="range" class="form-range" min="10" max="90" step="2" value="50">
+    </div>
+    <label><input id="poll-normal" type="checkbox" class="form-check-input"> Show normal approximation</label>
+    <p id="normal-note" class="polling-note" hidden></p>
+    <p class="polling-note">Changing the sample size or population starts a new sampling distribution.</p>
+  </details>
+</div>
+```
+
+<!-- ## About
+
+A population has a fixed proportion of blue and red members. A random sample usually will not reproduce that proportion exactly. Different random samples therefore give different estimates of the same population value. Here the observations are **categorical**—blue or red—so our statistic is the proportion blue, $\hat p = \text{number blue} / n$, rather than a mean of numerical card values.
+
+The symbol $\hat p$ (pronounced “p-hat”) means the **sample estimate**; $p$ means the **true population proportion**. For example, 4 blue cards out of 6 gives $\hat p \approx 67\%$, even though the population is 50% blue.
+
+Each poll adds one to the bar containing its estimate: the histogram counts **entire polls**, not individual people. Repeating the poll builds a **sampling distribution**: the estimates cluster around the true population proportion, $p$. The vertical scale starts at 20 polls, then expands as the bars grow. The average estimate tends toward the population value as more polls accumulate; collecting more polls reveals the distribution, while increasing the number of people in each poll makes it narrower.
+
+Try a few samples of 6, then use play or **+1,000** to see the pattern emerge. Compare sample sizes of 20, 100, and 400 on the same horizontal scale. Larger samples tend to vary less, and under common conditions their sampling distribution becomes approximately normal—even though each individual observation is just blue or red. Try changing the population to 20% blue to see how small samples can produce a skewed distribution.
+
+The initial deck represents 50 distinct people. Cards are drawn **without replacement within a poll**, then all returned before the next poll. Polling all 50 people is a census: every estimate equals the true proportion. For samples above 50, the demonstration switches to independent draws from a very large population with the same proportion blue.
+
+An opinion poll reporting 52% support is one sample from a population. Another equally valid random sample might report 49% or 55%. Larger polls tend to fluctuate less from sample to sample, which is the basic idea behind the margins of error reported with polls. Real polls also depend on how people are recruited and who responds; increasing sample size alone does not remove sampling bias.
+
+Later, [confidence intervals](../confidence-intervals.qmd) give us a formal way to express uncertainty associated with a sample estimate. -->

@@ -19,6 +19,8 @@ toc: false
 
 [Sampling](visualizations/sampling/sampling.qmd)
 
+[Polling and Sampling](visualizations/polling/polling.qmd)
+
 [(Un)Biased Estimates](visualizations/unbiased-estimates.qmd)
 
 [Bees](visualizations/bees/bees.qmd)

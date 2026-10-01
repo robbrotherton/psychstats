@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A collection of interactive demos, visualizations, and games I find useful when I teach statistics for psychologists.">
 
-<title>PSYCH STATS – Psych Stats</title>
+<title>spec – Psych Stats</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,61 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-1531ffb064922147940455c834c5b004.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-1531ffb064922147940455c834c5b004.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-5f5a75e31cf15bec343c40b11e7d7279.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -91,24 +55,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<style>
-
-      .quarto-title-block .quarto-title-banner {
-        background: #c3ddff;
-      }
-</style>
-<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<script type="ojs-define">
-{"contents":[{"name":"radius","value":1}]}
-</script>
-<script type="ojs-define">
-{"contents":[{"name":"data","value":[{"x":27,"y":1},{"x":21,"y":1},{"x":32,"y":1},{"x":30,"y":1},{"x":38,"y":1},{"x":31,"y":1},{"x":15,"y":1},{"x":23,"y":1},{"x":40,"y":1},{"x":39,"y":1},{"x":30,"y":2},{"x":25,"y":1},{"x":28,"y":1},{"x":25,"y":2},{"x":25,"y":3},{"x":26,"y":1},{"x":34,"y":1},{"x":25,"y":4},{"x":24,"y":1},{"x":23,"y":2},{"x":37,"y":1},{"x":26,"y":2},{"x":35,"y":1},{"x":35,"y":2},{"x":30,"y":3},{"x":23,"y":3},{"x":35,"y":3},{"x":32,"y":2},{"x":18,"y":1},{"x":35,"y":4},{"x":26,"y":3},{"x":33,"y":1},{"x":19,"y":1},{"x":13,"y":1},{"x":32,"y":3},{"x":22,"y":1},{"x":23,"y":4},{"x":32,"y":4},{"x":21,"y":2},{"x":20,"y":1},{"x":36,"y":1},{"x":26,"y":4},{"x":35,"y":5},{"x":11,"y":1},{"x":18,"y":2},{"x":18,"y":3},{"x":26,"y":5},{"x":22,"y":2},{"x":31,"y":2},{"x":11,"y":2},{"x":20,"y":2},{"x":20,"y":3},{"x":24,"y":2},{"x":28,"y":2},{"x":41,"y":1},{"x":20,"y":4},{"x":21,"y":3},{"x":31,"y":3},{"x":24,"y":3},{"x":36,"y":2},{"x":16,"y":1},{"x":34,"y":2},{"x":14,"y":1},{"x":42,"y":1},{"x":26,"y":6},{"x":23,"y":5},{"x":22,"y":3},{"x":32,"y":5},{"x":29,"y":1},{"x":24,"y":4},{"x":26,"y":7},{"x":21,"y":4},{"x":17,"y":1},{"x":26,"y":8},{"x":31,"y":4},{"x":22,"y":4},{"x":27,"y":2},{"x":20,"y":5},{"x":19,"y":2},{"x":25,"y":5},{"x":35,"y":6},{"x":23,"y":6},{"x":20,"y":6},{"x":13,"y":2},{"x":17,"y":2},{"x":15,"y":2},{"x":18,"y":4},{"x":16,"y":2},{"x":28,"y":3},{"x":23,"y":7},{"x":15,"y":3},{"x":19,"y":3},{"x":26,"y":9},{"x":30,"y":4},{"x":31,"y":5},{"x":25,"y":6},{"x":44,"y":1},{"x":20,"y":7},{"x":33,"y":2},{"x":23,"y":8},{"x":30,"y":5},{"x":24,"y":5},{"x":22,"y":5},{"x":24,"y":6},{"x":25,"y":7},{"x":11,"y":3},{"x":37,"y":2},{"x":31,"y":6},{"x":16,"y":3},{"x":11,"y":4},{"x":28,"y":4},{"x":31,"y":7},{"x":32,"y":6},{"x":27,"y":3},{"x":24,"y":7},{"x":28,"y":5},{"x":19,"y":4},{"x":20,"y":8},{"x":39,"y":2},{"x":19,"y":5},{"x":24,"y":8},{"x":17,"y":3},{"x":40,"y":2},{"x":22,"y":6},{"x":33,"y":3},{"x":33,"y":4},{"x":17,"y":4},{"x":28,"y":6},{"x":20,"y":9},{"x":6,"y":1},{"x":34,"y":3},{"x":30,"y":6},{"x":17,"y":5},{"x":9,"y":1},{"x":20,"y":10},{"x":33,"y":5},{"x":29,"y":2},{"x":24,"y":9},{"x":12,"y":1},{"x":35,"y":7},{"x":33,"y":6},{"x":31,"y":8},{"x":18,"y":5},{"x":30,"y":7},{"x":19,"y":6},{"x":21,"y":5},{"x":15,"y":4},{"x":28,"y":7},{"x":21,"y":6},{"x":32,"y":7},{"x":32,"y":8},{"x":18,"y":6},{"x":37,"y":3},{"x":36,"y":3},{"x":21,"y":7},{"x":29,"y":3},{"x":18,"y":7},{"x":19,"y":7},{"x":8,"y":1},{"x":34,"y":4},{"x":28,"y":8},{"x":29,"y":4},{"x":18,"y":8},{"x":14,"y":2},{"x":33,"y":7},{"x":13,"y":3},{"x":25,"y":8},{"x":19,"y":8},{"x":23,"y":9},{"x":23,"y":10},{"x":39,"y":3},{"x":21,"y":8},{"x":20,"y":11},{"x":7,"y":1},{"x":38,"y":2},{"x":26,"y":10},{"x":21,"y":9},{"x":30,"y":8},{"x":19,"y":9},{"x":16,"y":4},{"x":17,"y":6},{"x":26,"y":11},{"x":28,"y":9},{"x":12,"y":2},{"x":40,"y":3},{"x":19,"y":10},{"x":28,"y":10},{"x":29,"y":5},{"x":27,"y":4},{"x":24,"y":10},{"x":19,"y":11},{"x":25,"y":9},{"x":30,"y":9},{"x":15,"y":5},{"x":22,"y":7},{"x":20,"y":12},{"x":18,"y":9},{"x":37,"y":4},{"x":15,"y":6},{"x":39,"y":4},{"x":35,"y":8},{"x":13,"y":4},{"x":23,"y":11},{"x":33,"y":8},{"x":19,"y":12},{"x":37,"y":5},{"x":6,"y":2},{"x":29,"y":6},{"x":34,"y":5},{"x":26,"y":12},{"x":23,"y":12},{"x":23,"y":13},{"x":23,"y":14},{"x":42,"y":2},{"x":38,"y":3},{"x":17,"y":7},{"x":25,"y":10},{"x":14,"y":3},{"x":26,"y":13},{"x":19,"y":13},{"x":23,"y":15},{"x":30,"y":10},{"x":24,"y":11},{"x":27,"y":5},{"x":34,"y":6},{"x":13,"y":5},{"x":30,"y":11},{"x":21,"y":10},{"x":34,"y":7},{"x":24,"y":12},{"x":16,"y":5},{"x":30,"y":12},{"x":25,"y":11},{"x":30,"y":13},{"x":18,"y":10},{"x":22,"y":8},{"x":25,"y":12},{"x":22,"y":9},{"x":22,"y":10},{"x":28,"y":11},{"x":17,"y":8},{"x":25,"y":13},{"x":18,"y":11},{"x":29,"y":7},{"x":18,"y":12},{"x":34,"y":8},{"x":25,"y":14},{"x":26,"y":14},{"x":29,"y":8},{"x":29,"y":9},{"x":28,"y":12},{"x":18,"y":13},{"x":20,"y":13},{"x":9,"y":2},{"x":26,"y":15},{"x":35,"y":9},{"x":16,"y":6},{"x":29,"y":10},{"x":30,"y":14},{"x":25,"y":15},{"x":15,"y":7},{"x":21,"y":11},{"x":36,"y":4},{"x":31,"y":9},{"x":29,"y":11},{"x":44,"y":2},{"x":23,"y":16},{"x":27,"y":6},{"x":31,"y":10},{"x":24,"y":13},{"x":33,"y":9},{"x":29,"y":12},{"x":23,"y":17},{"x":24,"y":14},{"x":5,"y":1},{"x":20,"y":14},{"x":25,"y":16},{"x":35,"y":10},{"x":19,"y":14},{"x":13,"y":6},{"x":23,"y":18},{"x":25,"y":17},{"x":13,"y":7},{"x":10,"y":1},{"x":18,"y":14},{"x":35,"y":11},{"x":14,"y":4},{"x":28,"y":13},{"x":26,"y":16},{"x":30,"y":15},{"x":30,"y":16},{"x":45,"y":1},{"x":27,"y":7},{"x":20,"y":15},{"x":26,"y":17},{"x":15,"y":8},{"x":22,"y":11},{"x":19,"y":15},{"x":24,"y":15},{"x":17,"y":9}]}]}
-</script>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css">
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -275,11 +225,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title"><svg id="logo-svg" viewbox="0 0 170 40"><polyline class="logo-path" points="0,38 1.99999999999999,38 4,38 6,38 8.00000000000001,38 10,38 12,38 14,38 16,38 18,38 20,38 22,38 24,38 26,38 28,38 30,38 32,38 34,38 36,38 38,38 40,38 42,38 44,37.99999 46,37.99998 48,37.99995 50,37.99987 52,37.99964 54,37.99908 56,37.99775 58,37.99468 60,37.98792 62,37.97366 64,37.94478 66,37.88881 68,37.78486 70,37.60008 72,37.28572 74,36.77429 76,35.97915 78,34.79882 80,33.12793 82,30.87565 84,27.99066 86,24.4888 88,20.47692 90,16.1649 92,11.85863 94,7.93027 96,4.76781 98,2.71285 100,2 102,2.71285 104,4.76781 106,7.93027 108,11.85863 110,16.1649 112,20.47692 114,24.4888 116,27.99066 118,30.87565 120,33.12793 122,34.79882 124,35.97915 126,36.77429 128,37.28572 130,37.60008 132,37.78486 134,37.88881 136,37.94478 138,37.97366 140,37.98792 142,37.99468 144,37.99775 146,37.99908 148,37.99964 150,37.99987 152,37.99995 154,37.99998 156,37.99999 158,38 160,38 162,38 164,38 166,38 168,38 170,38 172,38 174,38 176,38 178,38 180,38 182,38 184,38 186,38 188,38 190,38 192,38 194,38 196,38 198,38 200,38"></polyline><text class="logo-text" x="0" y="30">PSYCH</text><text class="logo-text" x="185" y="30" text-anchor="end">STATS</text></svg></span>
     </a>
   </div>
@@ -289,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -323,105 +273,550 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">PSYCH STATS</h1>
-                  <div>
-        <div class="description">
-          A collection of interactive demos, visualizations, and games I find useful when I teach statistics for psychologists.
-        </div>
-      </div>
-                </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
 
-
-<style>
-.quarto-title .title {
-    display: none;
-}
-</style>
-<section id="visualizations" class="level2">
-<h2 class="anchored" data-anchor-id="visualizations">Visualizations</h2>
-<p><span class="lead">Interactive visualizations of fundamental statistical concepts.</span></p>
-<p><a href="./visualizations/mean-balance-beam/balance.html">Central Tendency and the Mean</a></p>
-<p><a href="./visualizations/sampling/sampling.html">Sampling</a></p>
-<p><a href="./visualizations/polling/polling.html">Polling and Sampling</a></p>
-<p><a href="./visualizations/unbiased-estimates.html">(Un)Biased Estimates</a></p>
-<p><a href="./visualizations/bees/bees.html">Bees</a></p>
-<!-- [Regression: The Least Squared Error Method](visualizations/least-squared-error.qmd) -->
-<p><a href="./visualizations/confidence-intervals.html">Confidence Intervals</a></p>
+<section id="polling-and-sampling-distributions-visualization" class="level1">
+<h1>polling and sampling distributions visualization</h1>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">purpose</h2>
+<p>create a new interactive visualization page for the psychstats site demonstrating how random samples from a population produce variable estimates, and how the sampling distribution of a proportion becomes more stable, narrower, and approximately normal as sample size increases.</p>
+<p>the motivating scenario is an opinion poll.</p>
+<p>the visualization should establish the conceptual logic behind:</p>
+<ul>
+<li>random sampling</li>
+<li>sample-to-sample variability</li>
+<li>population parameters versus sample statistics</li>
+<li>sampling distributions</li>
+<li>standard error / precision in an intuitive, pre-formula sense</li>
+<li>why larger polls have smaller margins of error</li>
+<li>emergence of an approximately normal sampling distribution</li>
+</ul>
+<p>do <strong>not</strong> make this primarily a confidence-interval demonstration. there is already a separate confidence-interval visualization on the site. this page should prepare students for that later material rather than duplicate it.</p>
+<hr>
 </section>
-<section id="games" class="level2">
-<h2 class="anchored" data-anchor-id="games">Games</h2>
-<p><span class="lead">Some ‘games’ (I’m using the term loosely!) that I use to illustrate statistical concepts or generate data for analysis.</span></p>
-<p><a href="./games/guess-the-correlation.html">Guess the Correlation</a></p>
-<p><a href="./games/triplett/triplett.html">Triplett</a></p>
-<p><a href="./games/jellybeans.html">Jellybeans</a></p>
-<p><a href="./games/personality-test/personality-test.html">Personality Test</a></p>
-<p><a href="./visualizations/quincunx.html">Quincunx</a></p>
-<p><a href="./visualizations/dice/dice.html">Dice Roller</a></p>
-<div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="66" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 65;"><span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>bannerImage <span class="op">=</span> {</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(<span class="st">".quarto-title"</span>)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"title-svg"</span>)</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMinYMin meet"</span>)</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="st">"0 0 "</span> <span class="op">+</span> <span class="dv">50</span> <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="dv">20</span>)</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"circle"</span>)<span class="op">.</span><span class="fu">data</span>(data)<span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> <span class="op">-</span><span class="dv">5</span>)</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="fl">0.5</span>)</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> (d<span class="op">,</span> i) <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[i <span class="op">%</span> <span class="dv">10</span>])</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">transition</span>()<span class="op">.</span><span class="fu">duration</span>(<span class="dv">800</span>)<span class="op">.</span><span class="fu">ease</span>(d3<span class="op">.</span><span class="at">easeCubicIn</span>)</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">delay</span>( (d<span class="op">,</span> i) <span class="kw">=&gt;</span> i <span class="op">*</span> <span class="dv">8</span>)</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="dv">20</span> <span class="op">-</span> d<span class="op">.</span><span class="at">y</span>)</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div id="ojs-cell-1" data-nodetype="declaration">
+</section>
+<section id="basic-metaphor" class="level1">
+<h1>basic metaphor</h1>
+<p>represent a finite population as a deck containing two categories of cards:</p>
+<ul>
+<li>blue cards = supports candidate blue</li>
+<li>red cards = supports candidate red</li>
+</ul>
+<p>default population:</p>
+<ul>
+<li>population size: (N=50)</li>
+<li>blue cards: 25</li>
+<li>red cards: 25</li>
+<li>true population proportion blue: (p=.50)</li>
+</ul>
+<p>a sample consists of drawing (n) cards and calculating:</p>
+<p>[ p = ]</p>
+<p>for the default classroom demonstration:</p>
+<p>[ n=6 ]</p>
+<p>this gives a natural center of 3 blue / 3 red and possible observed proportions:</p>
+<p>[ 0,&nbsp;.167,&nbsp;.333,&nbsp;.500,&nbsp;.667,&nbsp;.833,&nbsp;1. ]</p>
+<hr>
+</section>
+<section id="relationship-to-existing-site-architecture" class="level1">
+<h1>relationship to existing site architecture</h1>
+<p>inspect the existing psychstats visualizations before implementing.</p>
+<p>in particular, reuse the interaction/UI conventions already used by the confidence-interval visualization where practical:</p>
+<ul>
+<li>playing-card visual components</li>
+<li>draw button</li>
+<li>play/stop button for continuous sampling</li>
+<li>sample-size selector/control</li>
+<li>animation timing conventions</li>
+<li>responsive svg/chart structure</li>
+<li>bootstrap icon/button conventions</li>
+<li>existing css classes and theme variables</li>
+<li>reset behavior and general layout</li>
+</ul>
+<p>the existing confidence-interval page already implements animated cards, repeated sampling, a play/stop control, adjustable sample size, and an accumulating d3 plot. reuse/refactor those patterns rather than independently reinventing them.</p>
+<p>the new visualization should nevertheless have separate underlying logic because the outcome is binary categorical and the statistic is a proportion rather than a quantitative mean.</p>
+<hr>
+</section>
+<section id="primary-interaction" class="level1">
+<h1>primary interaction</h1>
+<section id="initial-state" class="level2">
+<h2 class="anchored" data-anchor-id="initial-state">initial state</h2>
+<p>show a visual population/deck consisting of blue and red cards.</p>
+<p>default text should make the known population explicit:</p>
+<p><strong>population: 50 people — 25 blue, 25 red</strong></p>
+<p>or equivalent concise wording.</p>
+<p>show:</p>
+<ul>
+<li>population proportion blue: (p=.50)</li>
+<li>sample size: (n=6)</li>
+<li>number of samples collected: 0</li>
+</ul>
+<p>below or beside the population, show six blank sample-card positions.</p>
+<p>provide:</p>
+<ul>
+<li><code>draw sample</code> button</li>
+<li>play button for continuous sampling</li>
+<li>reset button</li>
+</ul>
+</section>
+<section id="draw-sample" class="level2">
+<h2 class="anchored" data-anchor-id="draw-sample">draw sample</h2>
+<p>when the user presses draw:</p>
+<ol type="1">
+<li><p>randomly draw (n) cards.</p></li>
+<li><p>visually reveal the sampled cards.</p></li>
+<li><p>count the blue cards.</p></li>
+<li><p>calculate (p).</p></li>
+<li><p>display the result prominently, e.g.:</p>
+<p><strong>4 of 6 blue → (p=.67)</strong></p></li>
+<li><p>add this sample proportion to the sampling-distribution plot.</p></li>
+</ol>
+<p>the animation should be fast enough for lecture use. a single manual draw can reveal cards sequentially; continuous mode should use a quicker animation or update.</p>
+<hr>
+</section>
+</section>
+<section id="sampling-method" class="level1">
+<h1>sampling method</h1>
+<p>for the default physical-deck mode, sample <strong>without replacement within each sample</strong>, then return all sampled cards before drawing the next sample.</p>
+<p>thus:</p>
+<ul>
+<li>cards within a sample are not replaced one-by-one.</li>
+<li>after each complete sample, restore the population before the next sample.</li>
+</ul>
+<p>this corresponds naturally to polling distinct individuals.</p>
+<p>for (N=50,n=6), the sampling fraction is modest enough for the introductory demonstration.</p>
+<p>the code architecture should nevertheless support alternative sampling modes as a parameter:</p>
+<ul>
+<li>without replacement</li>
+<li>with replacement / independent sampling</li>
+</ul>
+<p>do not expose this control prominently by default unless it improves the page. it may be useful as an advanced/configuration option.</p>
+<hr>
+</section>
+<section id="main-visualization-sampling-distribution" class="level1">
+<h1>main visualization: sampling distribution</h1>
+<p>the central plot should accumulate the value of (p) across repeated samples.</p>
+<p>because (n=6) produces discrete possible values, use a dot plot / stacked-dot histogram rather than pretending the variable is continuous.</p>
+<p>possible x positions in the default state:</p>
+<ul>
+<li>0/6</li>
+<li>1/6</li>
+<li>2/6</li>
+<li>3/6</li>
+<li>4/6</li>
+<li>5/6</li>
+<li>6/6</li>
+</ul>
+<p>prefer axis labels as proportions or percentages, e.g.:</p>
+<p><code>0%  17%  33%  50%  67%  83%  100%</code></p>
+<p>each newly drawn sample should visibly add one observation to the appropriate stack.</p>
+<p>include a vertical reference line at the true population proportion:</p>
+<p>[ p=.50 ]</p>
+<p>label it something like:</p>
+<p><strong>true population proportion</strong></p>
+<p>the pedagogical visual should make it obvious that:</p>
+<ul>
+<li>individual samples vary</li>
+<li>estimates cluster around the true value</li>
+<li>extreme estimates occur less often</li>
+</ul>
+<hr>
+</section>
+<section id="continuous-sampling" class="level1">
+<h1>continuous sampling</h1>
+<p>reuse the existing play/stop convention from the site.</p>
+<p>pressing play should repeatedly generate samples and add them to the sampling distribution.</p>
+<p>desired behavior:</p>
+<ul>
+<li>first several samples remain slow enough to perceive individually</li>
+<li>optionally accelerate after some threshold, or simply use the site’s existing continuous-sampling speed</li>
+<li>allow hundreds/thousands of samples to accumulate without performance degradation</li>
+<li>stop button pauses but does not reset</li>
+<li>reset clears all accumulated samples and restores the initial state</li>
+</ul>
+<p>display continuously:</p>
+<p><strong>samples: 127</strong></p>
+<p>and optionally:</p>
+<p><strong>mean of sample proportions: .503</strong></p>
+<p>the latter is useful because it demonstrates that the sampling distribution is centered on the population proportion.</p>
+<hr>
+</section>
+<section id="sample-size-manipulation" class="level1">
+<h1>sample-size manipulation</h1>
+<p>sample size should be a parameter and an exposed control.</p>
+<p>suggested selectable values:</p>
+<ul>
+<li>6</li>
+<li>10</li>
+<li>20</li>
+<li>50</li>
+<li>100</li>
+<li>400</li>
+</ul>
+<p>however, there are two conceptually different regimes.</p>
+<section id="finite-deck-demonstration" class="level2">
+<h2 class="anchored" data-anchor-id="finite-deck-demonstration">finite-deck demonstration</h2>
+<p>when (n N), the visualization may literally draw from the displayed finite population without replacement.</p>
+</section>
+<section id="polling-large-population-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="polling-large-population-simulation">polling / large-population simulation</h2>
+<p>for sample sizes exceeding the displayed population, interpret the population as a conceptual very large population having the specified proportion blue.</p>
+<p>for example:</p>
+<blockquote class="blockquote">
+<p>imagine a very large population in which 50% support blue.</p>
+</blockquote>
+<p>then generate independent bernoulli observations with probability (p).</p>
+<p>this prevents the displayed 50-card deck from creating the nonsensical implication that a sample of 400 is being drawn from only 50 people.</p>
+<p>the interface should make this transition comprehensible rather than silently changing the statistical model.</p>
+<p>one clean implementation:</p>
+<ul>
+<li><code>physical deck</code> mode for small (n)</li>
+<li><code>large population</code> mode for larger (n)</li>
+</ul>
+<p>but avoid unnecessary UI clutter. automatic switching plus a concise explanatory note may be better.</p>
+<hr>
+</section>
+</section>
+<section id="changing-sample-size" class="level1">
+<h1>changing sample size</h1>
+<p>changing (n) should normally reset the accumulated sampling distribution, since the distribution being generated has changed.</p>
+<p>after changing (n):</p>
+<ul>
+<li>clear previous samples</li>
+<li>update sample-card display</li>
+<li>update possible x values / histogram binning</li>
+<li>keep population (p) unchanged</li>
+</ul>
+<p>for larger (n), switch from stacked dots at every possible proportion to a conventional histogram or sufficiently fine binned dot plot.</p>
+<p>expected pedagogical effect:</p>
+<section id="n-6" class="level3">
+<h3 class="anchored" data-anchor-id="n-6">n = 6</h3>
+<p>very discrete, chunky sampling distribution.</p>
+</section>
+<section id="n-20" class="level3">
+<h3 class="anchored" data-anchor-id="n-20">n = 20</h3>
+<p>clearer mound around .50.</p>
+</section>
+<section id="n-100" class="level3">
+<h3 class="anchored" data-anchor-id="n-100">n = 100</h3>
+<p>smooth-looking, substantially narrower distribution.</p>
+</section>
+<section id="n-400" class="level3">
+<h3 class="anchored" data-anchor-id="n-400">n = 400</h3>
+<p>very tightly concentrated around .50.</p>
+<p>students should be able to see both:</p>
+<ol type="1">
+<li>increasing normality/smoothness</li>
+<li>decreasing spread</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="optional-normal-curve-overlay" class="level1">
+<h1>optional normal curve overlay</h1>
+<p>support a normal-approximation overlay, but keep it <strong>off by default</strong>.</p>
+<p>parameter/control:</p>
+<p><code>show normal approximation</code></p>
+<p>when enabled, overlay the corresponding theoretical normal distribution of sample proportions.</p>
+<p>for independent sampling:</p>
+<p>[ _{p}=p ]</p>
+<p>[ _{p}= ]</p>
+<p>for finite sampling without replacement, apply the finite-population correction where appropriate:</p>
+<p>[ . ]</p>
+<p>the overlay is pedagogically useful after enough samples have accumulated, but the initial experience should let students see the distribution emerge empirically before putting a normal curve on top of it.</p>
+<hr>
+</section>
+<section id="population-composition-control" class="level1">
+<h1>population composition control</h1>
+<p>make population proportion (p) configurable.</p>
+<p>possible implementation:</p>
+<ul>
+<li>slider from .10 to .90</li>
+<li>or direct number input</li>
+<li>or blue/red card counts</li>
+</ul>
+<p>default:</p>
+<p>[ p=.50. ]</p>
+<p>changing (p) should reset accumulated samples.</p>
+<p>the population/deck visualization should immediately update its blue/red composition.</p>
+<p>this control permits later demonstrations such as:</p>
+<ul>
+<li>(p=.50): symmetric sampling distribution</li>
+<li>(p=.20): skewed at small (n)</li>
+<li>larger (n): increasingly normal despite the underlying binary observations</li>
+</ul>
+<p>this is useful for showing that normal approximation depends partly on (np) and (n(1-p)), without necessarily introducing those criteria on this page.</p>
+<hr>
+</section>
+<section id="population-size-control" class="level1">
+<h1>population-size control</h1>
+<p>population size (N) should exist as an implementation parameter.</p>
+<p>default:</p>
+<p>[ N=50. ]</p>
+<p>it does not necessarily need to be a prominent student-facing control.</p>
+<p>possible exposed choices:</p>
+<ul>
+<li>20</li>
+<li>50</li>
+<li>100</li>
+<li>very large population</li>
+</ul>
+<p>if finite-population effects are not part of the lesson, keep this under an expandable settings area or simply implement it as a code-level parameter.</p>
+<p>the primary introductory state should stay visually simple.</p>
+<hr>
+</section>
+<section id="number-of-samples-controls" class="level1">
+<h1>number-of-samples controls</h1>
+<p>support both incremental and bulk sampling.</p>
+<p>recommended controls:</p>
+<ul>
+<li>draw 1</li>
+<li>continuous play/stop</li>
+<li>optionally <code>+100</code> or <code>run 1,000</code></li>
+</ul>
+<p>a bulk option is useful during lecture because waiting for the continuous animation to build a smooth distribution is tedious.</p>
+<p>if bulk samples are added, do not animate each individual card draw. update the distribution quickly.</p>
+<p>possible behavior:</p>
+<ul>
+<li>manual draw → full card animation</li>
+<li>play → abbreviated animation</li>
+<li>bulk draw → no card animation, plot update only</li>
+</ul>
+<hr>
+</section>
+<section id="summary-statistics-displayed" class="level1">
+<h1>summary statistics displayed</h1>
+<p>show only statistics that reinforce the lesson.</p>
+<p>recommended:</p>
+<ul>
+<li>current sample: <code>4 / 6 blue</code></li>
+<li>current estimate: <code>p̂ = .67</code></li>
+<li>true population proportion: <code>p = .50</code></li>
+<li>number of samples collected</li>
+<li>mean of all accumulated sample proportions</li>
+<li>optionally empirical sd of accumulated sample proportions</li>
+</ul>
+<p>avoid initially labeling the empirical sd as a “standard error” unless that terminology has already been introduced in the surrounding course sequence.</p>
+<p>a later toggle could show:</p>
+<p><strong>standard error ≈ .05</strong></p>
+<p>if desired.</p>
+<hr>
+</section>
+<section id="conceptual-annotations" class="level1">
+<h1>conceptual annotations</h1>
+<p>the visualization should have a short “about” section analogous to other psychstats pages.</p>
+<p>core explanation:</p>
+<p>a population has a fixed proportion of blue and red members. a random sample usually will not reproduce that proportion exactly. different random samples therefore produce different estimates of the same population proportion.</p>
+<p>if sampling is repeated many times, those estimates form a sampling distribution. the distribution is centered around the true population value. larger samples tend to produce estimates closer to the truth, so their sampling distributions are narrower.</p>
+<p>under common conditions, the sampling distribution of a sample proportion becomes approximately normal as sample size increases.</p>
+<p>connect this explicitly to opinion polling:</p>
+<blockquote class="blockquote">
+<p>a poll reporting 52% support is one random sample from a population. another equally valid random sample might produce 49% or 55%. larger polls tend to vary less from sample to sample, which is the basic idea behind the margin of error reported with polls.</p>
+</blockquote>
+<p>stop there.</p>
+<p>do <strong>not</strong> explain formal confidence-level coverage on this page.</p>
+<hr>
+</section>
+<section id="connection-to-later-confidence-interval-visualization" class="level1">
+<h1>connection to later confidence-interval visualization</h1>
+<p>optionally include one sentence/link near the bottom:</p>
+<blockquote class="blockquote">
+<p>later, confidence intervals give us a formal way to express the amount of uncertainty associated with a sample estimate.</p>
+</blockquote>
+<p>link to the existing confidence-interval visualization if appropriate.</p>
+<p>the intentional conceptual sequence is:</p>
+<ol type="1">
+<li>population parameter exists</li>
+<li>random samples differ</li>
+<li>sample statistics differ</li>
+<li>repeated statistics form a sampling distribution</li>
+<li>larger (n) → less sampling variability</li>
+<li>sampling distribution becomes approximately normal</li>
+<li>later: standard errors and confidence intervals quantify this variability</li>
+</ol>
+<hr>
+</section>
+<section id="important-distinction-from-the-existing-ci-card-demo" class="level1">
+<h1>important distinction from the existing ci card demo</h1>
+<p>the existing confidence-interval visualization treats card values quantitatively and estimates a population <strong>mean</strong>.</p>
+<p>this visualization treats card color categorically and estimates a population <strong>proportion</strong>.</p>
+<p>that distinction should be explicit enough to avoid students treating them as the same statistic.</p>
+<p>suggested language:</p>
+<blockquote class="blockquote">
+<p>here the individual observations are categorical—blue or red—so the statistic we calculate is the proportion of blue cards. elsewhere, when cards have numerical values, we can instead calculate a sample mean. in either case, the statistic varies from sample to sample.</p>
+</blockquote>
+<p>this common structure is pedagogically desirable:</p>
+<p>[ . ]</p>
+<hr>
+</section>
+<section id="configurable-parameters" class="level1">
+<h1>configurable parameters</h1>
+<p>implement the visualization so these values are easy to alter centrally, even if not all are exposed in the ui:</p>
+<pre class="text"><code>populationSize = 50
+populationProportionBlue = 0.50
 
-</div>
-</div>
-</div>
+sampleSize = 6
+
+samplingMode =
+  "without-replacement"
+  | "independent"
+
+continuousSamplingSpeed = ...
+manualCardRevealSpeed = ...
+
+histogramBinCount = ...
+dotPlotThreshold = ...
+
+showPopulation = true
+showTrueParameterLine = true
+showRunningMean = true
+showEmpiricalSD = false
+showNormalApproximation = false
+
+bulkSampleOptions = [100, 1000]
+
+sampleSizeOptions = [6, 10, 20, 50, 100, 400]</code></pre>
+<p>also make colors use the site’s css/theme rather than hardcoded values where feasible.</p>
+<hr>
+</section>
+<section id="responsive-behavior" class="level1">
+<h1>responsive behavior</h1>
+<p>the page must work both projected in lecture and on student laptops/mobile devices.</p>
+<p>priorities:</p>
+<ul>
+<li>central sampling distribution should receive most horizontal space</li>
+<li>cards may shrink/wrap at small viewport widths</li>
+<li>for large (n), do not render hundreds of individual card elements; summarize the sample visually instead, e.g.&nbsp;a compact red/blue bar plus count</li>
+<li>avoid layout shifts when new samples appear</li>
+<li>svg should use <code>viewBox</code> / responsive conventions consistent with existing visualizations</li>
+</ul>
+<hr>
+</section>
+<section id="performance" class="level1">
+<h1>performance</h1>
+<p>continuous or bulk simulation may involve many thousands of samples.</p>
+<p>do not append an unlimited number of individual svg/dom nodes.</p>
+<p>use an aggregated representation once necessary:</p>
+<ul>
+<li>counts per discrete outcome for small (n)</li>
+<li>histogram-bin counts for larger (n)</li>
+</ul>
+<p>the internal model may retain summary counts rather than every simulated sample unless individual samples are needed for some feature.</p>
+<p>target smooth interaction at at least 10,000 simulated samples.</p>
+<hr>
+</section>
+<section id="suggested-initial-page-layout" class="level1">
+<h1>suggested initial page layout</h1>
+<pre class="text"><code>polling and sampling
+
+population
+[ visual 25 blue / 25 red ]
+50 people: 50% blue
+
+sample size: [ 6 ▼ ]
+
+[ blank/sample cards ]
+
+[ draw sample ] [ ▶ ] [ reset ]
+
+current poll:
+4 of 6 blue
+p̂ = .67
+
+
+sampling distribution
+
+                •
+                •
+        •       •       •
+        •   •   •   •   •
+--------------------------------
+0%  17%  33%  50%  67%  83%  100%
+              ↑
+       true p = 50%
+
+samples: 47
+average estimate: 49.6%
+
+[ optional controls / settings ]</code></pre>
+<p>for larger (n), replace discrete stacks with an appropriately binned histogram.</p>
+<hr>
+</section>
+<section id="default-teaching-path-the-visualization-should-support" class="level1">
+<h1>default teaching path the visualization should support</h1>
+<p>the page should make this lecture sequence easy:</p>
+<section id="phase-1" class="level3">
+<h3 class="anchored" data-anchor-id="phase-1">phase 1</h3>
+<p>start at:</p>
+<ul>
+<li>(N=50)</li>
+<li>(p=.50)</li>
+<li>(n=6)</li>
+</ul>
+<p>manually draw a few samples.</p>
+<p>ask students whether each poll exactly reproduces 50%.</p>
+</section>
+<section id="phase-2" class="level3">
+<h3 class="anchored" data-anchor-id="phase-2">phase 2</h3>
+<p>press play.</p>
+<p>allow a sampling distribution to emerge.</p>
+<p>point out that estimates vary but pile up around .50.</p>
+</section>
+<section id="phase-3" class="level3">
+<h3 class="anchored" data-anchor-id="phase-3">phase 3</h3>
+<p>generate hundreds/thousands of samples.</p>
+<p>point out the stable shape.</p>
+</section>
+<section id="phase-4" class="level3">
+<h3 class="anchored" data-anchor-id="phase-4">phase 4</h3>
+<p>increase (n).</p>
+<p>compare (n=6), 20, 100, 400.</p>
+<p>the distribution should visibly narrow.</p>
+</section>
+<section id="phase-5" class="level3">
+<h3 class="anchored" data-anchor-id="phase-5">phase 5</h3>
+<p>optionally enable the normal approximation.</p>
+<p>make the connection:</p>
+<p>the bell curve is describing the long-run behavior of the <strong>sample statistic</strong>, even though each individual observation is merely red or blue.</p>
+</section>
+<section id="phase-6" class="level3">
+<h3 class="anchored" data-anchor-id="phase-6">phase 6</h3>
+<p>connect to polling:</p>
+<p>larger polls fluctuate less from sample to sample; this is why their reported margins of error are smaller.</p>
+<p>formal confidence intervals are deferred to the separate ci lesson/visualization.</p>
+<hr>
+</section>
+</section>
+<section id="acceptance-criteria" class="level1">
+<h1>acceptance criteria</h1>
+<p>the implementation is complete when:</p>
+<ol type="1">
+<li>a user can draw a sample of blue/red observations and see the resulting sample proportion.</li>
+<li>repeated samples accumulate into a clear sampling distribution.</li>
+<li>the true population proportion is visibly marked.</li>
+<li>play/stop and reset work consistently with the existing psychstats interaction style.</li>
+<li>changing sample size clearly changes the spread of the sampling distribution.</li>
+<li>large sample sizes can be simulated without implying that hundreds of cards are being drawn from a literal 50-card deck.</li>
+<li>the distribution transitions sensibly from discrete dot stacks to a histogram as (n) grows.</li>
+<li>population proportion is configurable.</li>
+<li>the normal approximation can optionally be shown but is not required for the initial view.</li>
+<li>the visualization does not duplicate the site’s existing confidence-interval coverage lesson.</li>
+<li>implementation reuses existing site components/styles/code patterns wherever reasonable.</li>
+<li>the page includes concise explanatory text connecting the demonstration to opinion polling and later margin-of-error/confidence-interval material.</li>
+</ol>
 
 
 </section>
 
 </main> <!-- /main -->
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuYmFubmVySW1hZ2UgPSB7XG5cbiAgICBjb25zdCBzdmcgPSBkMy5zZWxlY3QoXCIucXVhcnRvLXRpdGxlXCIpLmFwcGVuZChcInN2Z1wiKVxuICAgICAgICAuYXR0cihcImlkXCIsIFwidGl0bGUtc3ZnXCIpXG4gICAgICAgIC5hdHRyKFwicHJlc2VydmVBc3BlY3RSYXRpb1wiLCBcInhNaW5ZTWluIG1lZXRcIilcbiAgICAgICAgLmF0dHIoXCJ2aWV3Qm94XCIsIFwiMCAwIFwiICsgNTAgKyBcIiBcIiArIDIwKVxuXG4gICAgc3ZnLnNlbGVjdEFsbChcImNpcmNsZVwiKS5kYXRhKGRhdGEpLmVudGVyKCkuYXBwZW5kKFwiY2lyY2xlXCIpXG4gICAgICAgIC5hdHRyKFwiY3hcIiwgZCA9PiBkLngpXG4gICAgICAgIC5hdHRyKFwiY3lcIiwgLTUpXG4gICAgICAgIC5hdHRyKFwiclwiLCAwLjUpXG4gICAgICAgIC5hdHRyKFwic3Ryb2tlXCIsIFwibm9uZVwiKVxuICAgICAgICAuYXR0cihcImZpbGxcIiwgKGQsIGkpID0+IGQzLnNjaGVtZUNhdGVnb3J5MTBbaSAlIDEwXSlcbiAgICAgICAgLnRyYW5zaXRpb24oKS5kdXJhdGlvbig4MDApLmVhc2UoZDMuZWFzZUN1YmljSW4pXG4gICAgICAgIC5kZWxheSggKGQsIGkpID0+IGkgKiA4KVxuICAgICAgICAuYXR0cihcImN5XCIsIGQgPT4gMjAgLSBkLnkpXG5cbn1cblxuIn1dfQ==
-</script>
-<script type="module">
-if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../..";
-window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "";
-window._ojs.selfContained = false;
-window._ojs.runtime.interpretFromScriptTags();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
