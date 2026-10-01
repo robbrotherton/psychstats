@@ -55,10 +55,39 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link rel="stylesheet" href="./style.css?v=4">
+<link rel="stylesheet" href="./style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tex-gyre-adventor" type="text/css">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -344,23 +373,17 @@ ul.task-list li input[type="checkbox"] {
     <p class="polling-note">Changing the sample size or population starts a new sampling distribution.</p>
   </details>
 </div>
-<!-- ## About
-
-A population has a fixed proportion of blue and red members. A random sample usually will not reproduce that proportion exactly. Different random samples therefore give different estimates of the same population value. Here the observations are **categorical**—blue or red—so our statistic is the proportion blue, $\hat p = \text{number blue} / n$, rather than a mean of numerical card values.
-
-The symbol $\hat p$ (pronounced “p-hat”) means the **sample estimate**; $p$ means the **true population proportion**. For example, 4 blue cards out of 6 gives $\hat p \approx 67\%$, even though the population is 50% blue.
-
-Each poll adds one to the bar containing its estimate: the histogram counts **entire polls**, not individual people. Repeating the poll builds a **sampling distribution**: the estimates cluster around the true population proportion, $p$. The vertical scale starts at 20 polls, then expands as the bars grow. The average estimate tends toward the population value as more polls accumulate; collecting more polls reveals the distribution, while increasing the number of people in each poll makes it narrower.
-
-Try a few samples of 6, then use play or **+1,000** to see the pattern emerge. Compare sample sizes of 20, 100, and 400 on the same horizontal scale. Larger samples tend to vary less, and under common conditions their sampling distribution becomes approximately normal—even though each individual observation is just blue or red. Try changing the population to 20% blue to see how small samples can produce a skewed distribution.
-
-The initial deck represents 50 distinct people. Cards are drawn **without replacement within a poll**, then all returned before the next poll. Polling all 50 people is a census: every estimate equals the true proportion. For samples above 50, the demonstration switches to independent draws from a very large population with the same proportion blue.
-
-An opinion poll reporting 52% support is one sample from a population. Another equally valid random sample might report 49% or 55%. Larger polls tend to fluctuate less from sample to sample, which is the basic idea behind the margins of error reported with polls. Real polls also depend on how people are recruited and who responds; increasing sample size alone does not remove sampling bias.
-
-Later, [confidence intervals](../confidence-intervals.qmd) give us a formal way to express uncertainty associated with a sample estimate. -->
+<section id="about" class="level2">
+<h2 class="anchored" data-anchor-id="about">About</h2>
+<p>A population has a fixed proportion of blue and red members. A random sample usually will not reproduce that proportion exactly. Different random samples therefore give different estimates of the same population value. Here the observations are <strong>categorical</strong>—blue or red—so our statistic is the proportion blue, <span class="math inline">\(\hat p = \text{number blue} / n\)</span>, rather than a mean of numerical card values.</p>
+<p>Each dot in the plot represents the estimate from <strong>one entire poll</strong>, not one person. Repeating the poll builds a <strong>sampling distribution</strong>: the estimates cluster around the true population proportion, <span class="math inline">\(p\)</span>. With many samples, dots are summarized as bars. The average estimate tends toward the population value as more polls accumulate; collecting more polls reveals the distribution, while increasing the number of people in each poll makes it narrower.</p>
+<p>Try a few samples of 6, then use play or <strong>+1,000</strong> to see the pattern emerge. Compare sample sizes of 20, 100, and 400 on the same horizontal scale. Larger samples tend to vary less, and under common conditions their sampling distribution becomes approximately normal—even though each individual observation is just blue or red. Try changing the population to 20% blue to see how small samples can produce a skewed distribution.</p>
+<p>The initial deck represents 50 distinct people. Cards are drawn <strong>without replacement within a poll</strong>, then all returned before the next poll. Polling all 50 people is a census: every estimate equals the true proportion. For samples above 50, the demonstration switches to independent draws from a very large population with the same proportion blue.</p>
+<p>An opinion poll reporting 52% support is one sample from a population. Another equally valid random sample might report 49% or 55%. Larger polls tend to fluctuate less from sample to sample, which is the basic idea behind the margins of error reported with polls. Real polls also depend on how people are recruited and who responds; increasing sample size alone does not remove sampling bias.</p>
+<p>Later, <a href="../../visualizations/confidence-intervals.html">confidence intervals</a> give us a formal way to express uncertainty associated with a sample estimate.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -776,7 +799,7 @@ Later, [confidence intervals](../confidence-intervals.qmd) give us a formal way 
   });
   </script>
 </div> <!-- /content -->
-<script type="module" src="./main.js?v=4"></script>
+<script type="module" src="./main.js"></script>
 
 
 

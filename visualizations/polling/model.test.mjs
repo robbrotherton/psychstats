@@ -78,3 +78,15 @@ test('end bins have the same width as interior bins and extend half a bin past 0
     assert.ok(Math.abs(bins.at(-1).right - 1 - width / 2) < 1e-12);
   }
 });
+
+test('bins hold equal numbers of outcomes and center on 50% for even sample sizes', () => {
+  for (const n of [6, 10, 20, 50, 100, 200, 400]) {
+    const model = new PollingModel({ sampleSize: n });
+    model.counts = Array.from({ length: n + 1 }, () => 1);
+    const bins = model.bins();
+    const interior = bins.slice(1, -1).map(bin => bin.count);
+    assert.ok(interior.every(count => count === interior[0]), `equal bins for n=${n}`);
+    assert.equal(bins[0].count, bins.at(-1).count, `symmetric ends for n=${n}`);
+    assert.ok(bins.some(bin => Math.abs(bin.x - .5) < 1e-12), `bin centered on 50% for n=${n}`);
+  }
+});

@@ -6,7 +6,7 @@ export const config = {
   samplingMode: 'without-replacement',
   continuousSamplingSpeed: 150,
   manualCardRevealSpeed: 100,
-  histogramBinCount: 50,
+  histogramBinCount: 101,
   initialYAxisMax: 20,
   maxSampleCards: 20,
   showPopulation: true,
@@ -84,7 +84,13 @@ export class PollingModel {
   bins() {
     const n = this.options.sampleSize;
     // Center equal-width bins on 0% and 100%, including full end bins.
-    const step = Math.max(1, Math.ceil((n + 1) / this.options.histogramBinCount));
+    // An odd step that divides n gives every bin the same outcomes, no outcome on a
+    // bin edge, and (for even n) a bin centered on exactly 50%.
+    const maxBins = this.options.histogramBinCount;
+    let step = Math.max(1, Math.ceil((n + 1) / maxBins));
+    for (let s = 1; s <= n; s += 2) {
+      if (n % s === 0 && n / s + 1 <= maxBins) { step = s; break; }
+    }
     const intervals = Math.max(1, Math.round(n / step));
     const width = 1 / intervals;
     const bins = Array.from({ length: intervals + 1 }, (_, index) => ({
